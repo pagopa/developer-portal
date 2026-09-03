@@ -58,7 +58,7 @@ on:
         default: true
 
   schedule:
-    - cron: '0 0 * * 1-5'  # Run daily at midnight UTC (weekdays only)
+    - cron: '0 * * * 1-5'  # Run every hour on weekdays (UTC)
 
 permissions:
   id-token: write
