@@ -2,13 +2,14 @@
 module "cms_load_balancer" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
-  name                  = "cms-load-balancer"
-  vpc_id                = module.vpc.vpc_id
-  subnets               = module.vpc.public_subnets
-  security_groups       = [aws_security_group.cms_lb.id]
-  internal              = false
-  create_security_group = false
-  load_balancer_type    = "application"
+  name                       = "cms-load-balancer"
+  vpc_id                     = module.vpc.vpc_id
+  subnets                    = module.vpc.public_subnets
+  security_groups            = [aws_security_group.cms_lb.id]
+  internal                   = false
+  create_security_group      = false
+  load_balancer_type         = "application"
+  enable_deletion_protection = true
 
   listeners = {
     front_end_http = {
@@ -105,13 +106,14 @@ module "cms_load_balancer" {
 module "cms_load_balancer_internal" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
-  name                  = "cms-load-balancer-internal"
-  vpc_id                = module.vpc.vpc_id
-  subnets               = module.vpc.private_subnets
-  security_groups       = [aws_security_group.cms_lb.id]
-  internal              = true
-  create_security_group = false
-  load_balancer_type    = "application"
+  name                       = "cms-load-balancer-internal"
+  vpc_id                     = module.vpc.vpc_id
+  subnets                    = module.vpc.private_subnets
+  security_groups            = [aws_security_group.cms_lb.id]
+  internal                   = true
+  create_security_group      = false
+  load_balancer_type         = "application"
+  enable_deletion_protection = true
 
   listeners = {
     front_end_http = {

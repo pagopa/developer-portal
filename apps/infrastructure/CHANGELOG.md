@@ -1,5 +1,18 @@
 # infrastructure
 
+## 13.5.0
+
+### Minor Changes
+
+- 2ccf9b5: Set the "delete protection" to main resources: DynamoDB tables, RDS and Aurora databases and Load balancer.
+
+## 13.4.0
+
+### Minor Changes
+
+- d0569fb: Update elastic chache version to 9.1 since we were using a deprecated version
+- f6be60a: Update dos68k docker image version.
+
 ## 13.3.0
 
 ### Minor Changes
