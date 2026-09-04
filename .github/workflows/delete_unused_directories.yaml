@@ -32,25 +32,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
+      - name: Set up uv
+        run: python3 -m pip install --disable-pip-version-check uv
 
-      - name: Cache npm dependencies
-        id: cache-npm
+      - name: Cache uv dependencies
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
+          path: ~/.cache/uv
+          key: ${{ runner.os }}-uv-${{ hashFiles('apps/gitbook-docs-sync/uv.lock') }}
 
-      - name: Install dependencies
-        run: |
-          npm config set cache ~/.npm
-          npm ci
-
-      - name: Compile packages
-        run: npm run compile
+      - name: Install Python dependencies
+        run: uv sync --directory apps/gitbook-docs-sync --locked --all-groups
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
@@ -67,5 +59,4 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-        run: npm run delete-unused-directories -w gitbook-docs
-
+        run: uv run --directory apps/gitbook-docs-sync --locked python -m gitbook_docs_sync --cleanup-only
