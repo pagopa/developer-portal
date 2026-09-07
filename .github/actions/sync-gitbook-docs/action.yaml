@@ -121,15 +121,7 @@ runs:
           echo "SITEMAP_URL=https://developer.pagopa.it/sitemap.xml" >> $GITHUB_ENV
         fi
         echo "::endgroup::"
-
-    - name: Check Secret Availability
-      shell: bash
-      run: |
-        if [ -z "${{ inputs.documentation_repository_token }}" ]; then
-          echo "::error::DEVPORTAL_DOCS_TOKEN is missing or empty!"
-          exit 1
-        fi
-
+        
     - name: Checkout documentation repo
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
