@@ -123,7 +123,7 @@ resource "aws_cloudfront_distribution" "vod" {
 
   # API Gateway HTTP API origin for the ingest endpoint
   origin {
-    domain_name = replace(aws_apigatewayv2_api.ingest.api_endpoint, "https://", "")
+    domain_name = replace(aws_apigatewayv2_api.webinar_api.api_endpoint, "https://", "")
     origin_id   = "APIGW-${var.project_name}-ingest"
 
     custom_origin_config {
@@ -142,6 +142,22 @@ resource "aws_cloudfront_distribution" "vod" {
   # Cache behavior for the ingest API endpoint
   ordered_cache_behavior {
     path_pattern     = "/ingest"
+    allowed_methods  = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "APIGW-${var.project_name}-ingest"
+
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.ingest_cors_policy.id
+
+    viewer_protocol_policy = "https-only"
+    compress               = true
+  }
+
+  # Cache behavior for the certificate API endpoint (served by the same
+  # ingest API Gateway origin, see webinar_certificate.tf)
+  ordered_cache_behavior {
+    path_pattern     = "/certificate"
     allowed_methods  = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "APIGW-${var.project_name}-ingest"

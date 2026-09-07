@@ -253,11 +253,11 @@ resource "aws_lambda_function" "ingest_lambda" {
 # 4. API Gateway HTTP API for ingest
 # ---------------------------------------------------------------------------
 
-resource "aws_apigatewayv2_api" "ingest" {
+resource "aws_apigatewayv2_api" "webinar_api" {
   provider      = aws.eu-south-1
-  name          = "${var.project_name}-ingest-api"
+  name          = "${var.project_name}-webinar-api"
   protocol_type = "HTTP"
-  description   = "HTTP API for heartbeat ingest Lambda"
+  description   = "HTTP API for webinar heartbeat ingestion and certificate eligibility"
 
   cors_configuration {
     allow_origins = compact([
@@ -279,7 +279,7 @@ resource "aws_apigatewayv2_api" "ingest" {
 
 resource "aws_apigatewayv2_integration" "ingest_lambda" {
   provider               = aws.eu-south-1
-  api_id                 = aws_apigatewayv2_api.ingest.id
+  api_id                 = aws_apigatewayv2_api.webinar_api.id
   integration_type       = "AWS_PROXY"
   integration_uri        = aws_lambda_function.ingest_lambda.invoke_arn
   integration_method     = "POST"
@@ -288,7 +288,7 @@ resource "aws_apigatewayv2_integration" "ingest_lambda" {
 
 resource "aws_apigatewayv2_authorizer" "ingest_cognito" {
   provider         = aws.eu-south-1
-  api_id           = aws_apigatewayv2_api.ingest.id
+  api_id           = aws_apigatewayv2_api.webinar_api.id
   authorizer_type  = "JWT"
   identity_sources = ["$request.header.Authorization"]
   name             = "${var.project_name}-ingest-cognito-authorizer"
@@ -301,7 +301,7 @@ resource "aws_apigatewayv2_authorizer" "ingest_cognito" {
 
 resource "aws_apigatewayv2_route" "ingest" {
   provider           = aws.eu-south-1
-  api_id             = aws_apigatewayv2_api.ingest.id
+  api_id             = aws_apigatewayv2_api.webinar_api.id
   route_key          = "POST /ingest"
   target             = "integrations/${aws_apigatewayv2_integration.ingest_lambda.id}"
   authorization_type = "JWT"
@@ -310,7 +310,7 @@ resource "aws_apigatewayv2_route" "ingest" {
 
 resource "aws_apigatewayv2_stage" "ingest" {
   provider    = aws.eu-south-1
-  api_id      = aws_apigatewayv2_api.ingest.id
+  api_id      = aws_apigatewayv2_api.webinar_api.id
   name        = "$default"
   auto_deploy = true
 }
@@ -321,7 +321,7 @@ resource "aws_lambda_permission" "apigw_ingest" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.ingest_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.ingest.execution_arn}/*/*"
+  source_arn    = "${aws_apigatewayv2_api.webinar_api.execution_arn}/*/*"
 }
 
 # ---------------------------------------------------------------------------
