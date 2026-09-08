@@ -9,7 +9,7 @@ export type ApiDataListPage = {
   readonly id: number;
   readonly title: string;
   readonly description?: string;
-  readonly product: StrapiBaseProductWithRelations;
+  readonly product?: StrapiBaseProductWithRelations;
   readonly updatedAt: string;
   readonly api_data: readonly ApiData[];
   readonly bannerLinks: readonly StrapiBannerLink[];
