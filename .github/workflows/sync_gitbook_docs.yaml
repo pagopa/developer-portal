@@ -58,7 +58,7 @@ on:
         default: true
 
   schedule:
-    - cron: '0 0 * * 1-5'  # Run daily at midnight UTC (weekdays only)
+    - cron: '0 0 * * 1-5' # Run daily at midnight UTC (weekdays only)
 
 permissions:
   id-token: write
@@ -77,7 +77,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          ref: ${{ inputs.environment == 'dev' && github.ref || format('nextjs-website@latest-deployed-in-{0}', inputs.environment) }}
+          ref: ${{ github.ref }}
 
       - name: Sync GitBook Docs
         uses: ./.github/actions/sync-gitbook-docs
@@ -87,6 +87,7 @@ jobs:
           dir_names_filter: ${{ inputs.dir_names_filter }}
           documentation_repository: ${{ inputs.locale == 'en' && 'pagopa/devportal-docs-translations' || 'pagopa/devportal-docs' }}
           documentation_branch: ${{ inputs.locale == 'en' && 'main' || 'docs/from-gitbook' }}
+          documentation_repository_token: ${{ secrets.DEVPORTAL_DOCS_TOKEN }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
@@ -107,6 +108,7 @@ jobs:
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
           generate_and_sync_sitemap: ${{ inputs.generate_and_sync_sitemap }}
+          pat_token: ${{ secrets.PAT_TOKEN }}
 
   scheduled_sync_gitbook_docs_it:
     name: Sync italian gitbook Docs to S3 (scheduled on prod)
@@ -120,7 +122,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          ref: 'nextjs-website@latest-deployed-in-prod'
+          ref: ${{ github.ref }}
 
 
       - name: Sync GitBook Docs using 'it' locale
@@ -130,6 +132,7 @@ jobs:
           locale: 'it'
           documentation_repository: 'pagopa/devportal-docs'
           documentation_branch: 'docs/from-gitbook'
+          documentation_repository_token: ${{ secrets.DEVPORTAL_DOCS_TOKEN }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
@@ -149,6 +152,7 @@ jobs:
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+          pat_token: ${{ secrets.PAT_TOKEN }}
 
   scheduled_sync_gitbook_docs_en:
     name: Sync english gitbook Docs to S3 (scheduled on prod)
@@ -162,7 +166,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          ref: 'nextjs-website@latest-deployed-in-prod'
+          ref: ${{ github.ref }}
 
       - name: Sync GitBook Docs using 'en' locale
         uses: ./.github/actions/sync-gitbook-docs

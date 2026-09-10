@@ -20,6 +20,10 @@ inputs:
     description: 'Branch of the documentation repository'
     required: false
     default: 'docs/from-gitbook'
+  documentation_repository_token:
+    description: 'GitHub token used to checkout the documentation repository'
+    required: false
+    default: ''
   deploy_iam_role:
     description: 'AWS IAM Role to assume for deployment'
     required: true
@@ -93,6 +97,10 @@ inputs:
     description: 'Whether to generate and sync sitemap to S3'
     required: false
     default: 'true'
+  pat_token:
+    description: 'GitHub PAT token with permissions to trigger workflows on the documentation repository'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -113,12 +121,14 @@ runs:
           echo "SITEMAP_URL=https://developer.pagopa.it/sitemap.xml" >> $GITHUB_ENV
         fi
         echo "::endgroup::"
-
+        
     - name: Checkout documentation repo
-      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         repository: ${{ inputs.documentation_repository }}
         ref: ${{ inputs.documentation_branch }}
+        token: ${{ inputs.documentation_repository_token || github.token }}
+        persist-credentials: false
         path: devportal-docs
 
     - name: Setup Node.JS
