@@ -21,6 +21,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { notFound } from 'next/navigation';
 
 export type GuideListPageProps = {
   readonly product: Product;
@@ -39,10 +40,13 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const { locale, productSlug } = await props.params;
   const resolvedParent = await parent;
-  const { path, abstract, seo, product } = await getGuideListPages(
-    locale,
-    productSlug
-  );
+  const guideListPageProps = await getGuideListPages(locale, productSlug);
+
+  if (!guideListPageProps) {
+    notFound();
+  }
+
+  const { path, abstract, seo, product } = guideListPageProps;
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -58,8 +62,14 @@ export const generateMetadata = async (
 
 const GuideListPage = async (props: ProductParams) => {
   const { locale, productSlug } = await props.params;
+  const guideListPageProps = await getGuideListPages(locale, productSlug);
+
+  if (!guideListPageProps) {
+    notFound();
+  }
+
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
-    await getGuideListPages(locale, productSlug);
+    guideListPageProps;
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

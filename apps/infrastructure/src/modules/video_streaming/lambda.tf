@@ -1,4 +1,4 @@
-## Lambda function for webinar metrics ##
+## Lambda function for webinar metrics — eu-south-1 ##
 
 locals {
   webinar_metrics_lambda_name = "${var.project_name}-webinar-metrics"
@@ -11,11 +11,13 @@ data "archive_file" "webinar_metrics" {
 }
 
 resource "aws_cloudwatch_log_group" "webinar_metrics_logs" {
+  provider          = aws.eu-south-1
   name              = "/aws/lambda/${local.webinar_metrics_lambda_name}"
   retention_in_days = 14
 }
 
 resource "aws_lambda_function" "webinar_metrics" {
+  provider      = aws.eu-south-1
   function_name = local.webinar_metrics_lambda_name
   description   = "Lambda function that collects webinar metrics from IVS and Athena."
 

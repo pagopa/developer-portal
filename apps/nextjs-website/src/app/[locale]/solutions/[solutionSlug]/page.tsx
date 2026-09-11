@@ -8,6 +8,7 @@ import { getSolution } from '@/lib/api';
 import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { notFound } from 'next/navigation';
 
 type Params = {
   locale: string;
@@ -20,6 +21,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { locale, solutionSlug } = await props.params;
   const solution = await getSolution(locale, solutionSlug);
+
+  if (!solution) {
+    notFound();
+  }
 
   if (solution.seo) {
     return makeMetadataFromStrapi(solution.seo);
@@ -35,6 +40,10 @@ export async function generateMetadata(props: {
 const Page = async (props: { params: Promise<Params> }) => {
   const { locale, solutionSlug } = await props.params;
   const solution = await getSolution(locale, solutionSlug);
+
+  if (!solution) {
+    notFound();
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

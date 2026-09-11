@@ -11,7 +11,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 type Params = {
   locale: string;
@@ -21,22 +21,25 @@ type Params = {
 
 export async function generateMetadata(props: {
   params: Promise<Params>;
-}): Promise<Metadata | undefined> {
+}): Promise<Metadata> {
   const { locale, productSlug, productTutorialPage } = await props.params;
   const tutorialPath = productTutorialPage?.join('/');
   const tutorialProps = await getTutorial(locale, productSlug, [tutorialPath]);
-  if (tutorialProps) {
-    const { title, path, seo } = tutorialProps;
 
-    if (seo) {
-      return makeMetadataFromStrapi(seo);
-    }
-
-    return makeMetadata({
-      title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
-      url: path,
-    });
+  if (!tutorialProps) {
+    notFound();
   }
+
+  const { title, path, seo } = tutorialProps;
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
+
+  return makeMetadata({
+    title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
+    url: path,
+  });
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
@@ -46,6 +49,10 @@ const Page = async (props: { params: Promise<Params> }) => {
   const strapiTutorialProps = await getTutorial(locale, productSlug, [
     tutorialPath,
   ]);
+
+  if (!strapiTutorialProps) {
+    notFound();
+  }
 
   if (
     strapiTutorialProps?.redirectPath &&

@@ -1,5 +1,31 @@
 # nextjs-website
 
+## 17.4.4
+
+### Patch Changes
+
+- 1f6b554: Fixed GitBook documentation synchronization to use the documentation repository token.
+- bad38e1: Temporarily fix scheduled GitBook documentation synchronization by checking out the workflow branch until the latest deployed nextjs-website tag is updated.
+
+## 17.4.3
+
+### Patch Changes
+
+- 9512f85: Improve HTTP 404 handling for missing resources
+
+## 17.4.2
+
+### Patch Changes
+
+- 04454bc: Fix error page status codes
+
+## 17.4.1
+
+### Patch Changes
+
+- 79c9f3c: Reduce paragraph bottom margin in case histories
+- f528a67: Add Arcade embed support
+
 ## 17.4.0
 
 ### Minor Changes

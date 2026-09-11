@@ -49,8 +49,9 @@ resource "aws_iam_policy" "deploy_lambda" {
 
 
 resource "aws_iam_role_policy" "webinar_metrics" {
-  name = "${var.project_name}-webinar-metrics-policy"
-  role = aws_iam_role.webinar_metrics.id
+  provider = aws.eu-south-1
+  name     = "${var.project_name}-webinar-metrics-policy"
+  role     = aws_iam_role.webinar_metrics.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
