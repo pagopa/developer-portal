@@ -33,6 +33,7 @@ import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvi
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
 import { Box } from '@mui/material';
+import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -154,6 +155,7 @@ export default async function RootLayout({
               }
             />
             <AuthProvider>
+              <QualtricsIntercept />
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
                 <SiteHeader
                   locale={locale}
