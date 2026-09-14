@@ -1,8 +1,7 @@
-import React from 'react';
-import PageNotFound from '../not-found';
+import { notFound } from 'next/navigation';
 
 const ProductPage = () => {
-  return <PageNotFound />;
+  notFound();
 };
 
 export default ProductPage;

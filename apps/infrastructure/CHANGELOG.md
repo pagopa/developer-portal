@@ -1,5 +1,25 @@
 # infrastructure
 
+## 13.5.0
+
+### Minor Changes
+
+- 2ccf9b5: Set the "delete protection" to main resources: DynamoDB tables, RDS and Aurora databases and Load balancer.
+
+## 13.4.0
+
+### Minor Changes
+
+- d0569fb: Update elastic chache version to 9.1 since we were using a deprecated version
+- f6be60a: Update dos68k docker image version.
+
+## 13.3.0
+
+### Minor Changes
+
+- 0abff4d: Bash scripts to enable ALB access logs and athena table to query them.
+- 7fc3392: Update max ACU from 3 to 6 for the CMS Aurora RDS cluster.
+
 ## 13.2.0
 
 ### Minor Changes

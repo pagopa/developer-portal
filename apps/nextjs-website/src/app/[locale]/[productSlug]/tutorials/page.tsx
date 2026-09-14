@@ -19,6 +19,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
+import { notFound } from 'next/navigation';
 
 export type TutorialsPageProps = {
   readonly updatedAt: string;
@@ -40,6 +41,10 @@ export async function generateMetadata(
   const resolvedParent = await parent;
   const tutorialListPage = await getTutorialListPageProps(locale, productSlug);
 
+  if (!tutorialListPage) {
+    notFound();
+  }
+
   if (tutorialListPage?.seo) {
     return makeMetadataFromStrapi(tutorialListPage.seo);
   }
@@ -59,6 +64,10 @@ const TutorialsPage = async (props: ProductParams) => {
   const { locale, productSlug } = await props.params;
   const tutorialListPage = await getTutorialListPageProps(locale, productSlug);
 
+  if (!tutorialListPage) {
+    notFound();
+  }
+
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(locale, tutorialListPage?.product),
@@ -72,6 +81,7 @@ const TutorialsPage = async (props: ProductParams) => {
     ],
     seo: tutorialListPage?.seo,
   });
+
   const mappedTutorials = tutorialListPage?.tutorials?.map((tutorial) => {
     return {
       tags: tutorial.tags || [],
