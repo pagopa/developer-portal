@@ -9,31 +9,83 @@ import InfoIcon from '@mui/icons-material/Info';
 import React from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { Webinar } from '@/lib/webinars/types';
+import { pdf } from '@react-pdf/renderer';
+import CertificateTemplate from '@/components/templates/CertificateTemplate/CertificateTemplate';
 
 export type CertificatesListProps = {
   webinars: readonly Webinar[];
+};
+
+const handleDownload = async (
+  userName: string,
+  webinarName: string,
+  createdOn: string,
+  title: string,
+  subtitle: string,
+  createdAt: string,
+  certification: string,
+  attended: string
+) => {
+  const blob = await pdf(
+    <CertificateTemplate
+      userName={userName}
+      webinarName={webinarName}
+      createdOn={createdOn}
+      title={title}
+      subtitle={subtitle}
+      createdAt={createdAt}
+      certification={certification}
+      attended={attended}
+    />
+  ).toBlob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  // eslint-disable-next-line functional/immutable-data
+  link.href = url;
+  // eslint-disable-next-line functional/immutable-data
+  link.download = 'documento.pdf';
+  link.click();
+  URL.revokeObjectURL(url);
 };
 
 const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
 
-  const { webinarSubscriptions } = useUser();
+  const { user, webinarSubscriptions } = useUser();
 
-  const subscribedWebinars = webinarSubscriptions?.map((webinar) => {
-    return webinar.certificateCreatedAt && webinar.webinarId;
-  });
-  const filteredWebinars = webinars.filter((webinar) => {
-    return subscribedWebinars?.includes(webinar.slug) ? webinar : null;
-  });
+  const certificateDatesBySlug = new Map(
+    webinarSubscriptions
+      ?.filter((webinar) => webinar.certificateCreatedAt && webinar.webinarId)
+      .map((webinar) => [webinar.webinarId, webinar.certificateCreatedAt]) ?? []
+  );
+
+  const filteredWebinars = webinars.filter((webinar) =>
+    certificateDatesBySlug.has(webinar.slug)
+  );
 
   const cardsToShow = filteredWebinars.map((webinar) => {
+    const certificateCreatedAt = certificateDatesBySlug.get(webinar.slug);
     return {
       title: webinar.title,
       text: '',
       useSrc: false,
       ctaLabel: t('profile.certificateList.cta'),
       endIcon: <DownloadIcon />,
+      onClick: () =>
+        handleDownload(
+          user?.attributes.given_name + ' ' + user?.attributes.family_name,
+          webinar.title,
+          new Date(certificateCreatedAt || '').toLocaleString('it-IT', {
+            dateStyle: 'long',
+            timeStyle: 'short',
+          }),
+          t('profile.certificateList.certificate.title'),
+          t('profile.certificateList.certificate.subtitle'),
+          t('profile.certificateList.certificate.createdAt'),
+          t('profile.certificateList.certificate.certification'),
+          t('profile.certificateList.certificate.attended')
+        ),
       image: (
         <Box
           borderRadius={'16px'}
