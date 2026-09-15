@@ -1,26 +1,26 @@
 # Default owners
-* @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+* @pagopa/devportal-maintain @simosalsi @salvatorediocaro
 
 # Website
-apps/nextjs-website/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+apps/nextjs-website/ @simosalsi @salvatorediocaro
 
 # Email templates
-apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+apps/cognito-functions/src/templates/ @simosalsi @salvatorediocaro
 
 # Storybook
-apps/storybook-app/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+apps/storybook-app/ @simosalsi @salvatorediocaro
 
 # GitBook docs
-packages/gitbook-docs/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+packages/gitbook-docs/ @simosalsi @salvatorediocaro
 
 # Active Campaign Client
-packages/active-campaign-client/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+packages/active-campaign-client/ @simosalsi @salvatorediocaro
 
 # IVS Functions
-packages/ivs-functions/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+packages/ivs-functions/ @simosalsi @salvatorediocaro
 
 # Lint rules
-**/.eslintrc.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+**/.eslintrc.json @pagopa/devportal-maintain @simosalsi @salvatorediocaro
 
 .changeset/README.md @pagopa/devportal-maintain
 .changeset/config.json @pagopa/devportal-maintain
@@ -29,6 +29,6 @@ packages/ivs-functions/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBer
 .changeset/*
 
 # Required to merge Push next releases PR
-package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
-**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
-**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+package-lock.json @pagopa/devportal-maintain @simosalsi @salvatorediocaro
+**/package.json @pagopa/devportal-maintain @simosalsi @salvatorediocaro
+**/CHANGELOG.md @pagopa/devportal-maintain @simosalsi @salvatorediocaro

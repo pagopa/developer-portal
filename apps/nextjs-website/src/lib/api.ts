@@ -35,13 +35,6 @@ function manageUndefined<T>(props: undefined | null | T) {
   return props;
 }
 
-async function manageUndefinedAndAddProducts<T>(
-  locale: string,
-  props: undefined | null | T
-) {
-  return { ...manageUndefined(props), products: await getProducts(locale) };
-}
-
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
   locale: string,
@@ -56,7 +49,17 @@ export async function getGuidePage(
       guidePaths.length > 0 ? guidePaths[0] : ''
     ),
   ]);
-  const guideProps = manageUndefined(guideResult);
+  if (!guideResult) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Guide not found: locale="${locale}", productSlug="${productSlug}", guideSlug="${
+        guidePaths[0] || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  const guideProps = guideResult;
 
   // Path construction
   const guidePath = [
@@ -72,35 +75,55 @@ export async function getGuidePage(
     }) || guideProps.versions.find((v) => v.main); // Fallback to main version if specific version is not found
   if (!guideToFind) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error(`No guide version found matching path "${guidePath}"`);
+    console.error(`Guide version not found for path "${guidePath}"`);
     return undefined;
   }
 
   const guidesMetadata = await getGuidesMetadata(locale, guideToFind.dirName);
-  return manageUndefined(
-    await parseS3GuidePage({
-      guideProps,
-      guidePath,
-      guidesMetadata,
-      products,
-      locale,
-    })
-  );
+  return parseS3GuidePage({
+    guideProps,
+    guidePath,
+    guidesMetadata,
+    products,
+    locale,
+  });
 }
 
 export async function getGuideListPages(locale: string, productSlug?: string) {
-  const props = manageUndefined(
-    await GuideListPagesRepository.getByProductSlug(locale, productSlug || '')
+  const props = await GuideListPagesRepository.getByProductSlug(
+    locale,
+    productSlug || ''
   );
-  return manageUndefinedAndAddProducts(locale, props);
+
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Guide list page not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return { ...props, products: await getProducts(locale) };
 }
 
 export async function getOverview(locale: string, productSlug?: string) {
-  return manageUndefined(
-    (await OverviewsRepository.getAll(locale)).find(
-      (overviewData) => overviewData.product.slug === productSlug
-    )
+  const overview = (await OverviewsRepository.getAll(locale)).find(
+    (overviewData) => overviewData.product.slug === productSlug
   );
+
+  if (!overview) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Overview not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return overview;
 }
 
 export async function getProducts(locale: string): Promise<readonly Product[]> {
@@ -108,10 +131,25 @@ export async function getProducts(locale: string): Promise<readonly Product[]> {
 }
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
-  const props = manageUndefined(
-    await QuickStartGuidesRepository.getByProductSlug(locale, productSlug || '')
+  const props = await QuickStartGuidesRepository.getByProductSlug(
+    locale,
+    productSlug || ''
   );
-  return manageUndefinedAndAddProducts(locale, props);
+
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Quick start guide not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return {
+    ...props,
+    products: await getProducts(locale),
+  };
 }
 
 export async function getTutorial(
@@ -123,10 +161,16 @@ export async function getTutorial(
   const tutorialPath = `/${locale}/${productSlug}/tutorials/${tutorialSubPath}`;
 
   const product = await getProduct(locale, productSlug);
+  const props = await TutorialRepository.getByPath(locale, tutorialPath);
 
-  const props = manageUndefined(
-    await TutorialRepository.getByPath(locale, tutorialPath)
-  );
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Tutorial not found: locale="${locale}", productSlug="${productSlug}", path="${tutorialPath}"`
+    );
+    return undefined;
+  }
+
   return {
     ...props,
     product,
@@ -137,10 +181,25 @@ export async function getTutorialListPageProps(
   locale: string,
   productSlug?: string
 ) {
-  const tutorialListPages = manageUndefined(
-    await TutorialListPageRepository.getByProductSlug(locale, productSlug || '')
+  const tutorialListPages = await TutorialListPageRepository.getByProductSlug(
+    locale,
+    productSlug || ''
   );
-  return manageUndefinedAndAddProducts(locale, tutorialListPages);
+
+  if (!tutorialListPages) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Tutorial list page not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return {
+    ...tutorialListPages,
+    products: await getProducts(locale),
+  };
 }
 
 export async function getVisibleInListWebinars(
@@ -154,10 +213,19 @@ export async function getVisibleInListWebinars(
 export async function getWebinar(
   locale: string,
   webinarSlug?: string
-): Promise<Webinar> {
-  const props = manageUndefined(
-    await WebinarsRepository.getBySlug(locale, webinarSlug || '')
-  );
+): Promise<Webinar | undefined> {
+  const props = await WebinarsRepository.getBySlug(locale, webinarSlug || '');
+
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Webinar not found: locale="${locale}", webinarSlug="${
+        webinarSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
   return props;
 }
 
@@ -182,11 +250,21 @@ export async function getReleaseNotes(locale: string) {
 }
 
 export async function getCaseHistory(locale: string, caseHistorySlug?: string) {
-  return manageUndefined(
-    (await CaseHistoriesRepository.getAll(locale)).find(
-      ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
-    )
+  const caseHistory = (await CaseHistoriesRepository.getAll(locale)).find(
+    ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
   );
+
+  if (!caseHistory) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Case history not found: locale="${locale}", caseHistorySlug="${
+        caseHistorySlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return caseHistory;
 }
 
 export async function getApiDataParams(locale: string) {
@@ -267,11 +345,20 @@ export async function getReleaseNote(
 }
 
 export async function getSolution(locale: string, solutionSlug?: string) {
-  const props = manageUndefined(
-    solutionSlug
-      ? await SolutionRepository.getBySlug(locale, solutionSlug)
-      : undefined
-  );
+  const props = solutionSlug
+    ? await SolutionRepository.getBySlug(locale, solutionSlug)
+    : undefined;
+
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Solution not found: locale="${locale}", solutionSlug="${
+        solutionSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
   return props;
 }
 
@@ -286,9 +373,9 @@ export async function getSolutionDetail(
   solutionSubPathSlugs: readonly string[]
 ) {
   const solution = await getSolution(locale, solutionSlug);
+
   if (!solution) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(`No solution found matching slug "${solutionSlug}"`);
+    return undefined;
   }
 
   const solutionsMetadata = await getSolutionsMetadata(
@@ -316,10 +403,16 @@ export async function getUseCase(
   const useCasePath = `/${locale}/${productSlug}/use-cases/${useCaseSubPath}`;
 
   const product = await getProduct(locale, productSlug);
+  const props = await UseCasesRepository.getByPath(locale, useCasePath);
 
-  const props = manageUndefined(
-    await UseCasesRepository.getByPath(locale, useCasePath)
-  );
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Use case not found: locale="${locale}", productSlug="${productSlug}", path="${useCasePath}"`
+    );
+    return undefined;
+  }
+
   return {
     ...props,
     product,
@@ -335,7 +428,20 @@ export async function getUseCaseListPageProps(
     productSlug || ''
   );
 
-  return manageUndefinedAndAddProducts(locale, props);
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Use case list page not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return {
+    ...props,
+    products: await getProducts(locale),
+  };
 }
 
 export async function getCustomMessagesMapProps(locale: string) {

@@ -3,10 +3,11 @@
 ###############################################################################
 
 resource "aws_dynamodb_table" "sessions" {
-  name         = "sessions"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "userId"
-  range_key    = "id"
+  name                        = "sessions"
+  billing_mode                = "PAY_PER_REQUEST"
+  hash_key                    = "userId"
+  range_key                   = "id"
+  deletion_protection_enabled = true
 
   attribute {
     name = "userId"
@@ -25,10 +26,11 @@ resource "aws_dynamodb_table" "sessions" {
 }
 
 resource "aws_dynamodb_table" "queries" {
-  name         = "queries"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "sessionId"
-  range_key    = "id"
+  name                        = "queries"
+  billing_mode                = "PAY_PER_REQUEST"
+  hash_key                    = "sessionId"
+  range_key                   = "id"
+  deletion_protection_enabled = true
 
   attribute {
     name = "sessionId"
