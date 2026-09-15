@@ -29,6 +29,8 @@ import NewsShowcase, {
 import type { UseCase } from '@/lib/useCases/types';
 import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
 import OverviewItemList from '@/components/organisms/OverviewItemList/OverviewItemList';
+import { notFound } from 'next/navigation';
+
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -107,7 +109,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale, productSlug } = await params;
   const resolvedParent = await parent;
-  const { product, path, seo, hero } = await getOverview(locale, productSlug);
+  const overview = await getOverview(locale, productSlug);
+
+  if (!overview) {
+    notFound();
+  }
+
+  const { product, path, seo, hero } = overview;
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -124,6 +132,12 @@ export async function generateMetadata(
 
 const OverviewPage = async ({ params }: ProductParams) => {
   const { locale, productSlug } = await params;
+  const overview = await getOverview(locale, productSlug);
+
+  if (!overview) {
+    notFound();
+  }
+
   const {
     hero,
     startInfo,
@@ -137,7 +151,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     bannerLinks,
     seo,
     product,
-  } = await getOverview(locale, productSlug);
+  } = overview;
 
   // Calculate which sections will be shown to determine alternating backgrounds
   const sectionsToShow = [

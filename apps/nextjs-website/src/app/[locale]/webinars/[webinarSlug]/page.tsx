@@ -10,6 +10,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import WebinarDetailTemplate from '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate';
 import { Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { notFound } from 'next/navigation';
 
 type Params = {
   locale: string;
@@ -21,6 +22,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { locale, webinarSlug } = await props.params;
   const webinar = await getWebinar(locale, webinarSlug);
+
+  if (!webinar) {
+    notFound();
+  }
 
   if (webinar.seo) {
     return makeMetadataFromStrapi(webinar.seo);
@@ -37,6 +42,10 @@ export async function generateMetadata(props: {
 const Page = async (props: { params: Promise<Params> }) => {
   const { locale, webinarSlug } = await props.params;
   const webinar = await getWebinar(locale, webinarSlug);
+
+  if (!webinar) {
+    notFound();
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

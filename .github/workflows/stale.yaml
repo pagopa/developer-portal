@@ -12,7 +12,7 @@ jobs:
       contents: write # only for delete-branch option
 
     env:
-      DAYS_BEFORE_STALE: 14
+      DAYS_BEFORE_STALE: 90
       DAYS_BEFORE_CLOSE: 21
 
     steps:

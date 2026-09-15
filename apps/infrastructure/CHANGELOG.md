@@ -1,5 +1,40 @@
 # infrastructure
 
+## 13.5.0
+
+### Minor Changes
+
+- 2ccf9b5: Set the "delete protection" to main resources: DynamoDB tables, RDS and Aurora databases and Load balancer.
+
+## 13.4.0
+
+### Minor Changes
+
+- d0569fb: Update elastic chache version to 9.1 since we were using a deprecated version
+- f6be60a: Update dos68k docker image version.
+
+## 13.3.0
+
+### Minor Changes
+
+- 0abff4d: Bash scripts to enable ALB access logs and athena table to query them.
+- 7fc3392: Update max ACU from 3 to 6 for the CMS Aurora RDS cluster.
+
+## 13.2.0
+
+### Minor Changes
+
+- b1a3a65: Alarms for lambda chatbot index and dead letter queue to collect failing messages
+- 87e7115: Bash script to help redrive SQS messages from the AC resync DLQ.
+
+## 13.1.0
+
+### Minor Changes
+
+- cca2f74: Update clickhouse EFS throughput mode to spare some bread
+- 98a82a6: Update some cloudwatch alarms and create those missed.
+- d9b8772: Set Strapi CMS desired task count to 2 in production only
+
 ## 13.0.0
 
 ### Major Changes

@@ -11,6 +11,7 @@ import {
   convertSeoToStructuredDataArticle,
   getItemFromPaths,
 } from '@/helpers/structuredData.helpers';
+import { notFound } from 'next/navigation';
 
 type Params = {
   locale: string;
@@ -22,6 +23,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { locale, caseHistorySlug } = await props.params;
   const caseHistory = await getCaseHistory(locale, caseHistorySlug);
+
+  if (!caseHistory) {
+    notFound();
+  }
 
   if (caseHistory?.seo) {
     return makeMetadataFromStrapi(caseHistory.seo);
@@ -37,6 +42,10 @@ export async function generateMetadata(props: {
 const Page = async (props: { params: Promise<Params> }) => {
   const { locale, caseHistorySlug } = await props.params;
   const caseHistory = await getCaseHistory(locale, caseHistorySlug);
+
+  if (!caseHistory) {
+    notFound();
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
