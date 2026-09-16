@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 2.4.1
+
+### Patch Changes
+
+- 7bce954: Fix GitBook documentation syncs when the source repository is private.
+
 ## 2.4.0
 
 ### Minor Changes

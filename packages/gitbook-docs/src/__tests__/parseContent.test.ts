@@ -1072,6 +1072,28 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should parse @arcade/embed', () => {
+    const embed =
+      '{% @arcade/embed flowId="1gW7gb7eAeL5fnBfsTDY" url="https://app.arcade.software/flows/1gW7gb7eAeL5fnBfsTDY/view" %}';
+
+    expect(parseContent(embed, config)).toStrictEqual([
+      new Markdoc.Tag('Embed', {
+        url: 'https://app.arcade.software/flows/1gW7gb7eAeL5fnBfsTDY/view',
+      }),
+    ]);
+  });
+
+  it('should parse @arcade/embed with share url', () => {
+    const embed =
+      '{% @arcade/embed flowId="IHtdEHRJ1yec31yrSIey" url="https://app.arcade.software/share/IHtdEHRJ1yec31yrSIey" %}';
+
+    expect(parseContent(embed, config)).toStrictEqual([
+      new Markdoc.Tag('Embed', {
+        url: 'https://app.arcade.software/share/IHtdEHRJ1yec31yrSIey',
+      }),
+    ]);
+  });
+
   it('should parse strong html tag', () => {
     const strongText = '<strong>Text</strong>';
     expect(parseContent(strongText, config)).toStrictEqual([

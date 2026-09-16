@@ -104,6 +104,7 @@ No requirements.
 | <a name="input_custom_domain_id"></a> [custom\_domain\_id](#input\_custom\_domain\_id) | Route53 Hosted Zone ID for custom domain | `string` | n/a | yes |
 | <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | Langfuse and Grafana custom domain name. If you set example.com, the domain will be langfuse.example.com and grafana.example.com | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
+| <a name="input_efs_provisioned_throughput_in_mibps"></a> [efs\_provisioned\_throughput\_in\_mibps](#input\_efs\_provisioned\_throughput\_in\_mibps) | Provisioned throughput for Langfuse ClickHouse EFS in MiB/s | `number` | `25` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | Private subnet IDs on which to deploy Langfuse worker / Clickhouse / Aurora Serverless v2 / ElastiCache | `list(string)` | n/a | yes |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Public subnet IDs used to expose Langfuse through the load balancer | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region on which to deploy | `string` | n/a | yes |

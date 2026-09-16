@@ -71,6 +71,11 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
           "arn:aws:s3:::${var.s3_bucket_name_static_content}/*",
           "arn:aws:s3:::${var.s3_bucket_name_static_content}"
         ]
+      },
+      {
+        Action   = ["sqs:SendMessage"]
+        Effect   = "Allow"
+        Resource = [aws_sqs_queue.chatbot_index_dlq.arn]
       }
     ]
   })
@@ -154,4 +159,18 @@ resource "aws_s3_bucket_notification" "index_lambda_trigger" {
   }
 
   depends_on = [aws_lambda_permission.allow_s3_invoke_index]
+}
+
+# Retry configuration and on-failure DLQ routing for async S3 invocations
+resource "aws_lambda_function_event_invoke_config" "lambda_index" {
+  function_name = aws_lambda_function.chatbot_index_lambda.function_name
+
+  maximum_event_age_in_seconds = 3600 # 1 hour — accounts for the 15-min timeout
+  maximum_retry_attempts       = 1
+
+  destination_config {
+    on_failure {
+      destination = aws_sqs_queue.chatbot_index_dlq.arn
+    }
+  }
 }
