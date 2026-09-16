@@ -70,6 +70,9 @@ const LoginContent = () => {
       } catch {
         redirectPath = undefined;
       }
+      
+      console.log('USER LOGGED IN');
+
       if (redirectPath && canRedirectToUrl(redirectPath)) {
         router.replace(redirectPath);
       } else {
