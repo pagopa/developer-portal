@@ -214,7 +214,7 @@ export const useWebinar = () => {
     }, webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
-  }, [webinar, isVideoPlaying, webinarState]);
+  }, [webinar, isVideoPlaying, webinarState, user]);
 
   return {
     webinarState,

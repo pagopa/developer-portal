@@ -4,7 +4,6 @@ import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { makeErrorByMessage } from '@/lib/makeError';
 import { Auth } from 'aws-amplify';
-import { date } from 'fp-ts';
 
 export type WebinarHeartbeatEnv = {
   readonly config: {
