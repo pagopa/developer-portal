@@ -14,11 +14,11 @@ const QualtricsIntercept = () => {
     if (user) {
       console.log(
         'custom:first_login = ',
-        user?.attributes['custom:first_login'],
+        user?.attributes['custom:first_login']
       );
       console.log(
         'Session storage value = ',
-        sessionStorage.getItem('WRITE_TEST'),
+        sessionStorage.getItem('WRITE_TEST')
       );
     }
 
