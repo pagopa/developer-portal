@@ -26,6 +26,8 @@ function setLoggedInCookie(): void {
   const expires = new Date();
   expires.setDate(expires.getDate() + authCookieValidityInDays);
   document.cookie = `${loggedInCookieName}=true; ${getAuthCookieAttributes()}; expires=${expires.toUTCString()}`;
+
+  sessionStorage.setItem('WRITE_TEST', new Date().toISOString());
 }
 
 function deleteLoggedInCookie(): void {

@@ -11,6 +11,11 @@ const QualtricsIntercept = () => {
       src: 'https://zn1dbdheb2vgg54ei-pagopa.siteintercept.qualtrics.com/SIE/?Q_ZID=ZN_1dbDHeb2VGg54EI',
     });
 
+    if (user) {
+      console.log('custom:first_login = ', user?.attributes['custom:first_login']);
+      console.log('Session storage value = ', sessionStorage.getItem('WRITE_TEST'));
+    }
+
     if (user && user.attributes['custom:survey_accepted']) {
       document.body.appendChild(script);
     }

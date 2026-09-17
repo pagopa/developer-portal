@@ -16,6 +16,7 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:privacy_accepted': boolean;
     readonly 'custom:user_preferences'?: string;
     readonly 'custom:preferred_language'?: string;
+    readonly 'custom:first_login'?: string;
   };
   readonly webinarSubscriptions?: readonly WebinarSubscription[];
 };
