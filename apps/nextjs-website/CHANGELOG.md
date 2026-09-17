@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.4.5
+
+### Patch Changes
+
+- 6e7379f: Implement Qualtrics al Layout level
+
 ## 17.4.4
 
 ### Patch Changes

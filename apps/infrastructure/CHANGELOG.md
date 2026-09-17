@@ -1,5 +1,11 @@
 # infrastructure
 
+## 13.6.0
+
+### Minor Changes
+
+- 6983fe9: Add `first_login` custom attribute schema to Cognito User Pool
+
 ## 13.5.0
 
 ### Minor Changes
