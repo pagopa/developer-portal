@@ -14,7 +14,10 @@ import {
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
-import { snackbarAutoHideDurationMs } from '@/config';
+import {
+  isWebinarHeartbeatEnabled,
+  snackbarAutoHideDurationMs,
+} from '@/config';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 import { useParams } from 'next/navigation';
 
@@ -24,7 +27,7 @@ interface Info {
   isError: boolean;
 }
 
-type SubscribeField = 'mailinglist' | 'survey';
+type SubscribeField = 'mailinglist' | 'survey' | 'webinar';
 
 const Agreements = () => {
   const t = useTranslations();
@@ -39,6 +42,8 @@ const Agreements = () => {
     user?.attributes['custom:mailinglist_accepted'] === 'true';
   const hasAcceptedSurveySubscription =
     user?.attributes['custom:survey_accepted'] === 'true';
+  const hasAcceptedWebinarSubscription =
+    user?.attributes['custom:webinar_accepted'] === 'true';
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
@@ -50,10 +55,13 @@ const Agreements = () => {
         {
           ...user.attributes,
           'custom:mailinglist_accepted': `${
-            field === 'mailinglist' ? true : hasAcceptedMailingListSubscription
+            field === 'mailinglist' || hasAcceptedMailingListSubscription
           }`,
           'custom:survey_accepted': `${
-            field === 'survey' ? true : hasAcceptedSurveySubscription
+            field === 'survey' || hasAcceptedSurveySubscription
+          }`,
+          'custom:webinar_accepted': `${
+            field === 'webinar' || hasAcceptedWebinarSubscription
           }`,
         },
         () => {
@@ -64,7 +72,11 @@ const Agreements = () => {
           setInfo({
             message: t(
               `profile.agreements.${
-                field === 'mailinglist' ? 'newsletter' : 'survey'
+                field === 'mailinglist'
+                  ? 'newsletter'
+                  : field === 'survey'
+                  ? 'survey'
+                  : 'webinar'
               }.error.subscribe`
             ),
             isError: true,
@@ -82,10 +94,13 @@ const Agreements = () => {
         {
           ...user.attributes,
           'custom:mailinglist_accepted': `${
-            field === 'mailinglist' ? false : hasAcceptedMailingListSubscription
+            field !== 'mailinglist' && hasAcceptedMailingListSubscription
           }`,
           'custom:survey_accepted': `${
-            field === 'survey' ? false : hasAcceptedSurveySubscription
+            field !== 'survey' && hasAcceptedSurveySubscription
+          }`,
+          'custom:webinar_accepted': `${
+            field !== 'webinar' && hasAcceptedWebinarSubscription
           }`,
         },
         () => {
@@ -96,7 +111,11 @@ const Agreements = () => {
           setInfo({
             message: t(
               `profile.agreements.${
-                field === 'mailinglist' ? 'newsletter' : 'survey'
+                field === 'mailinglist'
+                  ? 'newsletter'
+                  : field === 'survey'
+                  ? 'survey'
+                  : 'webinar'
               }.error.unsubscribe`
             ),
             isError: true,
@@ -171,6 +190,20 @@ const Agreements = () => {
           subscribeLabel={t('profile.agreements.survey.subscribe')}
           unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
         ></AgreementItem>
+        <Box sx={{ marginY: '32px' }} />
+        {isWebinarHeartbeatEnabled && (
+          <AgreementItem
+            title={t('profile.agreements.webinar.title')}
+            description={t('profile.agreements.webinar.description')}
+            subscribed={hasAcceptedWebinarSubscription}
+            loading={loading}
+            disabled={isSubscriptionButtonDisabled}
+            onSubscribe={() => handleSubscribe('webinar')}
+            onUnsubscribe={() => handleUnsubscribe('webinar')}
+            subscribeLabel={t('profile.agreements.webinar.subscribe')}
+            unsubscribeLabel={t('profile.agreements.webinar.unsubscribe')}
+          ></AgreementItem>
+        )}
         <Divider sx={{ marginY: '32px' }} />
         <Typography
           variant='h6'
