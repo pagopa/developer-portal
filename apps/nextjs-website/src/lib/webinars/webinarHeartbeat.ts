@@ -20,6 +20,9 @@ export type WebinarHeartbeatParams = {
   readonly webinarSlug: string;
   readonly isLive: boolean;
   readonly action: string;
+  readonly startedAt?: string;
+  readonly consent: boolean;
+  readonly duration: number;
 };
 
 export const makeWebinarHeartbeatEnv = (url: string): WebinarHeartbeatEnv => ({
@@ -62,6 +65,9 @@ export const postWebinarHeartbeat = (params: WebinarHeartbeatParams) =>
                   webinarId: params.webinarSlug,
                   isLive: params.isLive,
                   action: params.action,
+                  duration: params.duration,
+                  consent: params.consent,
+                  startedAt: params.startedAt,
                 }),
               }),
             E.toError

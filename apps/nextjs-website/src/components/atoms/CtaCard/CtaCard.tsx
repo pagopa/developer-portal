@@ -24,13 +24,17 @@ export type CtaCardProps = {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly label: string | ReactNode;
     readonly href?: string;
+    readonly onClick?: () => null | Promise<void>;
     readonly variant?: 'text' | 'contained' | 'outlined';
+    readonly endIcon?: ReactNode;
+    readonly style?: SxProps;
   };
   readonly comingSoon?: boolean;
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
   readonly labels?: { readonly label: string; readonly path?: string }[];
   readonly variant?: Variant;
+  readonly cardContentStyle?: SxProps;
 };
 
 const StyledCardContent = styled(CardContent)(() => ({
@@ -49,6 +53,7 @@ const CtaCard = ({
   children,
   labels,
   variant = 'h3',
+  cardContentStyle,
 }: CtaCardProps) => {
   return (
     <Card
@@ -64,7 +69,11 @@ const CtaCard = ({
       <div style={{ opacity: comingSoon ? 0.5 : 1, flexGrow: 1 }}>
         {children && <CardMedia>{children}</CardMedia>}
         <StyledCardContent
-          sx={{ minHeight: minHeight || 'auto', height: '100%' }}
+          sx={{
+            ...cardContentStyle,
+            minHeight: minHeight || 'auto',
+            height: '100%',
+          }}
         >
           {icon}
           <Typography
@@ -107,18 +116,32 @@ const CtaCard = ({
           )}
         </StyledCardContent>
       </div>
-      <CardActions style={{ bottom: 0 }}>
-        {cta && (
-          <Link href={cta.href || '#'} target={cta.target || '_self'}>
+      <CardActions style={{ bottom: 0 }} sx={cardContentStyle}>
+        {cta &&
+          (cta.onClick ? (
             <Button
               disabled={comingSoon}
               variant={cta.variant || 'contained'}
               size='small'
+              endIcon={cta.endIcon}
+              onClick={cta.onClick}
+              sx={cta.style || {}}
             >
               {cta.label}
             </Button>
-          </Link>
-        )}
+          ) : (
+            <Link href={cta.href || '#'} target={cta.target || '_self'}>
+              <Button
+                disabled={comingSoon}
+                variant={cta.variant || 'contained'}
+                size='small'
+                endIcon={cta.endIcon}
+                sx={cta.style || {}}
+              >
+                {cta.label}
+              </Button>
+            </Link>
+          ))}
       </CardActions>
     </Card>
   );
