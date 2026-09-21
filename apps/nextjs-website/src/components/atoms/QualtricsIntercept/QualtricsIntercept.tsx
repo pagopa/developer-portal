@@ -15,14 +15,9 @@ const QualtricsIntercept = () => {
 
     if (user && user.attributes['custom:survey_accepted']) {
       if (['/', '/it', '/en'].includes(pathname)) {
-        console.log(
-          'HOMEPAGE - SessionStorage value: ',
-          sessionStorage.getItem('isFirstLogin')
-        );
         // Homepage, only show survey if second login or more
         if (sessionStorage.getItem('isFirstLogin') === 'false') {
           document.body.appendChild(script);
-          console.log('HOMEPAGE - Script loaded');
         }
       } else {
         document.body.appendChild(script);
