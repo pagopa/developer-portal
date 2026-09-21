@@ -17,7 +17,7 @@ const QualtricsIntercept = () => {
       if (['/', '/it', '/en'].includes(pathname)) {
         console.log(
           'HOMEPAGE - SessionStorage value: ',
-          sessionStorage.getItem('isFirstLogin'),
+          sessionStorage.getItem('isFirstLogin')
         );
         // Homepage, only show survey if second login or more
         if (sessionStorage.getItem('isFirstLogin') === 'false') {
