@@ -38,7 +38,10 @@ async function resolveFirstLogin(): Promise<void> {
   const claim = session.getIdToken().decodePayload()['custom:first_login'];
   const isFirstLogin = !claim;
 
+  console.log('LOG IN - Claim: ', claim);
+
   if (isFirstLogin) {
+    console.log('LOG IN - Populating user attribute');
     const user = await Auth.currentAuthenticatedUser();
     await Auth.updateUserAttributes(user, {
       // Consider this the first login and save current datetime as epoch in seconds (cognito field has max 10 chars)
@@ -47,12 +50,15 @@ async function resolveFirstLogin(): Promise<void> {
   }
 
   sessionStorage.setItem('isFirstLogin', String(isFirstLogin));
+  console.log('LOG IN - Populated sessionStorage with ', String(isFirstLogin));
 }
 
 function hydrateFirstLoginOnBoot(user: CognitoUser) {
   const session = user.getSignInUserSession();
   const claim = session?.getIdToken().decodePayload()['custom:first_login'];
   sessionStorage.setItem('isFirstLogin', String(!claim));
+
+  console.log('BOOT - Claim: ', claim);
 }
 
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
