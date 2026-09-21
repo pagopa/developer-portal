@@ -16,7 +16,7 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:privacy_accepted': boolean;
     readonly 'custom:user_preferences'?: string;
     readonly 'custom:preferred_language'?: string;
-    readonly 'custom:first_login'?: string; // ISO format timestamp of first login
+    readonly 'custom:first_login'?: string; // epoch timestamp of first login in seconds
   };
   readonly webinarSubscriptions?: readonly WebinarSubscription[];
 };
