@@ -41,7 +41,8 @@ async function resolveFirstLogin(): Promise<void> {
   if (isFirstLogin) {
     const user = await Auth.currentAuthenticatedUser();
     await Auth.updateUserAttributes(user, {
-      'custom:first_login': new Date().toISOString(),
+      // Consider this the first login and save current datetime as epoch in seconds (cognito field has max 10 chars)
+      'custom:first_login': String(Math.floor(Date.now() / 1000)),
     });
   }
 
