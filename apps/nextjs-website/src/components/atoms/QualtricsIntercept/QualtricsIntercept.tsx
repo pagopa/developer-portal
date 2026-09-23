@@ -1,5 +1,6 @@
 'use client';
 import { useUser } from '@/helpers/user.helper';
+import { getUserWebinarCertificates } from '@/lib/webinarApi';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -19,6 +20,11 @@ const QualtricsIntercept = () => {
         if (sessionStorage.getItem('isFirstLogin') === 'false') {
           document.body.appendChild(script);
         }
+      } else if (pathname.endsWith('webinars')) {
+        // Webinars overview page, only show survey if user has completed at least one webinar before
+        // TODO
+        console.log(user.webinarCertificates);
+        document.body.appendChild(script);
       } else {
         document.body.appendChild(script);
       }

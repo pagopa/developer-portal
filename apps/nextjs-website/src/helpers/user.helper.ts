@@ -1,6 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
 import type { DevPortalUser } from '@/lib/auth/user/types';
-import { getUserWebinarSubscriptions } from '@/lib/webinarApi';
+import {
+  getUserWebinarCertificates,
+  getUserWebinarSubscriptions,
+} from '@/lib/webinarApi';
 import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
@@ -13,6 +16,9 @@ export const useUser = () => {
   const [user, setUser] = useState<DevPortalUser | null>(null);
   const [webinarSubscriptions, setSubscriptions] = useState<
     readonly WebinarSubscription[]
+  >([]);
+  const [webinarCertificates, setCertificates] = useState<
+    ReadonlyArray<string>
   >([]);
 
   const signOutUser = useCallback(async (user?: DevPortalUser | null) => {
@@ -42,7 +48,7 @@ export const useUser = () => {
     [authStatus, signOutUser]
   );
 
-  const fetchUserAndSubscriptions = useCallback(async () => {
+  const fetchUserAndWebinarData = useCallback(async () => {
     const user = await Auth.currentAuthenticatedUser().catch(() => {
       setLoading(false);
       setAligned(true);
@@ -58,10 +64,13 @@ export const useUser = () => {
       user.username
     ).catch(() => []);
 
+    const certificates = await getUserWebinarCertificates().catch(() => []);
+
     setLoading(false);
     setAligned(true);
     setUser(user);
     setSubscriptions(subscriptions);
+    setCertificates(certificates);
   }, []);
 
   const setUserAttributes = async (
@@ -72,7 +81,7 @@ export const useUser = () => {
     setAligned(false);
     return await Auth.updateUserAttributes(user, attributes)
       .then(() => {
-        fetchUserAndSubscriptions();
+        fetchUserAndWebinarData();
         if (onSuccess) onSuccess();
         setAligned(true);
       })
@@ -84,8 +93,8 @@ export const useUser = () => {
 
   const reloadUser = useCallback(async () => {
     setLoading(true);
-    await fetchUserAndSubscriptions();
-  }, [fetchUserAndSubscriptions]);
+    await fetchUserAndWebinarData();
+  }, [fetchUserAndWebinarData]);
 
   useEffect(() => {
     isUserLoggedIn(user);
@@ -93,7 +102,7 @@ export const useUser = () => {
 
   useEffect(() => {
     if (authStatus === 'authenticated') {
-      fetchUserAndSubscriptions();
+      fetchUserAndWebinarData();
       return;
     }
     if (authStatus === 'unauthenticated') {
@@ -102,7 +111,7 @@ export const useUser = () => {
       setUser(null);
       setSubscriptions([]);
     }
-  }, [authStatus, fetchUserAndSubscriptions]);
+  }, [authStatus, fetchUserAndWebinarData]);
 
   useEffect(() => {
     const cancel = Hub.listen('auth', (event) => {
@@ -135,6 +144,7 @@ export const useUser = () => {
   return {
     user,
     webinarSubscriptions,
+    webinarCertificates,
     loading: isLoaded,
     setUserAttributes,
     aligned,
