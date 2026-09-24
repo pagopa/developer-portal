@@ -72,9 +72,38 @@ describe('SignUpForm', () => {
         <SignUpForm
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
+          signUpError={false}
         />
       </Wrapper>
     );
+  });
+
+  it('should show a generic error when signUpError is true', () => {
+    render(
+      <Wrapper>
+        <SignUpForm
+          onSignUp={mockOnSignUp}
+          userAlreadyExist={mockUserAlreadyExist}
+          signUpError={true}
+        />
+      </Wrapper>
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      labels.genericError.description
+    );
+  });
+
+  it('should not show a generic error when signUpError is false', () => {
+    render(
+      <Wrapper>
+        <SignUpForm
+          onSignUp={mockOnSignUp}
+          userAlreadyExist={mockUserAlreadyExist}
+          signUpError={false}
+        />
+      </Wrapper>
+    );
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('should validate form fields and set errors', () => {
@@ -83,6 +112,7 @@ describe('SignUpForm', () => {
         <SignUpForm
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
+          signUpError={false}
         />
       </Wrapper>
     );
@@ -114,7 +144,11 @@ describe('SignUpForm', () => {
   it('should set user already exists error', () => {
     render(
       <Wrapper>
-        <SignUpForm onSignUp={mockOnSignUp} userAlreadyExist />
+        <SignUpForm
+          onSignUp={mockOnSignUp}
+          signUpError={false}
+          userAlreadyExist
+        />
       </Wrapper>
     );
 
@@ -132,6 +166,7 @@ describe('SignUpForm', () => {
         <SignUpForm
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
+          signUpError={false}
         />
       </Wrapper>
     );
@@ -184,6 +219,7 @@ describe('SignUpForm', () => {
         <SignUpForm
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
+          signUpError={false}
         />
       </Wrapper>
     );

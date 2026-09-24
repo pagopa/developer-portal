@@ -21,7 +21,7 @@ const SignUpContent = () => {
   const params = useSearchParams();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const signUp = useTranslations('auth.signUp');
-
+  const [signUpError, setSignUpError] = useState(false);
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
@@ -36,6 +36,7 @@ const SignUpContent = () => {
   const onSignUp = (userData: SignUpUserData) => {
     setUserAlreadyExist(false);
     setSubmitting(true);
+    setSignUpError(false);
     Auth.signUp(generateSignUpData(userData))
       .then(() => {
         setEmail(userData.username);
@@ -43,6 +44,7 @@ const SignUpContent = () => {
       })
       .catch((error) => {
         setUserAlreadyExist(error.code === 'UsernameExistsException');
+        setSignUpError(error.code !== 'UsernameExistsException');
       })
       .finally(() => {
         setSubmitting(false);
@@ -94,6 +96,7 @@ const SignUpContent = () => {
                 userAlreadyExist={userAlreadyExist}
                 submitting={submitting}
                 onSignUp={onSignUp}
+                signUpError={signUpError}
               />
             )}
             {signUpStep === SignUpSteps.CONFIRM_SIGN_UP && (
