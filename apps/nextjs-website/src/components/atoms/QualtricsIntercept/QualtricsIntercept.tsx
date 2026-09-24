@@ -1,9 +1,11 @@
 'use client';
 import { useUser } from '@/helpers/user.helper';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 const QualtricsIntercept = () => {
   const { user } = useUser();
+  const pathname = usePathname();
 
   useEffect(() => {
     const script = Object.assign(document.createElement('script'), {
@@ -12,14 +14,21 @@ const QualtricsIntercept = () => {
     });
 
     if (user && user.attributes['custom:survey_accepted']) {
-      document.body.appendChild(script);
+      if (['/', '/it', '/en'].includes(pathname)) {
+        // Homepage, only show survey if second login or more
+        if (sessionStorage.getItem('isFirstLogin') === 'false') {
+          document.body.appendChild(script);
+        }
+      } else {
+        document.body.appendChild(script);
+      }
     }
 
     return () => {
-      // Optional cleanup if the component is unmounted.
+      // The pathname dependency currently means that the script gets removed at every page change
       script.remove();
     };
-  }, [user]);
+  }, [user, pathname]);
 
   return <div id='ZN_1dbDHeb2VGg54EI' />;
 };

@@ -75,7 +75,7 @@ describe('mapOverviewsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
+      'Error while processing Overview with title "Test Overview": associated product is missing, unpublished, or has no slug. Skipping...'
     );
   });
 
@@ -87,7 +87,7 @@ describe('mapOverviewsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
+      'Error while processing Overview with title "Test Overview": associated product is missing, unpublished, or has no slug. Skipping...'
     );
   });
 
@@ -100,8 +100,7 @@ describe('mapOverviewsProps', () => {
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      "tutorial's product slug is missing:",
-      'Tutorial 1'
+      'Error while processing tutorial with title "Tutorial 1": associated product is missing, unpublished, or has no slug. Skipping...'
     );
   });
 
