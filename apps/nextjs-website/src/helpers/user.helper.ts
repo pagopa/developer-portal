@@ -110,6 +110,7 @@ export const useUser = () => {
       setAligned(true);
       setUser(null);
       setSubscriptions([]);
+      setCertificates([]);
     }
   }, [authStatus, fetchUserAndWebinarData]);
 
