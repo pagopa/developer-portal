@@ -1,6 +1,6 @@
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type { StrapiBannerLink } from '@/lib/bannerLink/types';
-import type { StrapiBaseGuide } from '@/lib/guides/strapiTypes';
+import type { StrapiBaseGuide, StrapiGuide } from '@/lib/guides/strapiTypes';
 import type { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import type { StrapiMedia } from '@/lib/media/strapiTypes';
 import type { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
@@ -64,7 +64,7 @@ export type StrapiPostIntegration = {
   readonly link?: StrapiLink;
   readonly guidesTitle?: string;
   readonly documents: readonly StrapiCard[];
-  readonly guides: readonly StrapiBaseGuide[];
+  readonly guides: readonly StrapiGuide[];
   readonly serviceModels: readonly StrapiServiceModel[];
 };
 

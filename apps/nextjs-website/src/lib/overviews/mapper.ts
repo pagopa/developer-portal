@@ -198,7 +198,11 @@ export function mapOverviewsProps(
                     mobileImagePath: guide.mobileImage.url,
                     link: {
                       label: 'shared.goToGuide',
-                      href: `guides/${guide.slug}`,
+                      href: `${
+                        guide.product && guide.product.slug
+                          ? `/${locale}/${guide.product.slug}/`
+                          : ''
+                      }guides/${guide.slug}`,
                       translate: true,
                     },
                   };
