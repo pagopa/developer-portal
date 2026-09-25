@@ -42,7 +42,7 @@ export const makeWebinarHeartbeatEnvConfig = (
 ): E.Either<string, WebinarHeartbeatEnv> =>
   url
     ? E.right(makeWebinarHeartbeatEnv(url))
-    : E.left('Missing env var NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL');
+    : E.left('Missing webinar heartbeat URL');
 
 export const postWebinarHeartbeat = (params: WebinarHeartbeatParams) =>
   pipe(

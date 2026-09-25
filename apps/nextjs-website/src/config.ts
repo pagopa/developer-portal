@@ -52,8 +52,6 @@ export const chatMaxHistoryMessages =
 export const headingLevelsToShowInMenu = [2, 3];
 export const isWebinarHeartbeatEnabled =
   process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED === 'true';
-export const webinarHeartbeatUrl =
-  process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL;
 export const webinarHeartbeatIntervalInSeconds =
   parseInt(
     process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS || '60'
