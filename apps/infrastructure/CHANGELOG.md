@@ -1,5 +1,12 @@
 # infrastructure
 
+## 13.6.0
+
+### Minor Changes
+
+- 98f3a6d: Expose the video API base URL to the website runtime configuration
+- 6983fe9: Add `first_login` custom attribute schema to Cognito User Pool
+
 ## 13.5.0
 
 ### Minor Changes

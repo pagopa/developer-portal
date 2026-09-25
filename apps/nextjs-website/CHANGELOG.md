@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 17.4.5
+
+### Patch Changes
+
+- 6e7379f: Implement Qualtrics al Layout level
+- a950216: Skip content linked to unpublished products
+
 ## 17.4.4
 
 ### Patch Changes
