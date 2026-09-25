@@ -1,6 +1,6 @@
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import type { DevPortalUser } from '@/lib/auth/user/types';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Snackbar, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
 import { useParams, useRouter } from 'next/navigation';
@@ -20,12 +20,14 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   const deleteUser = useCallback(async () => {
     if (user) {
       setDeleting(true);
       await Auth.deleteUser()
         .then(() => {
+          setDeleted(true);
           // eslint-disable-next-line functional/immutable-data
           router.push(`/${locale}`);
           setDeleting(false);
@@ -38,71 +40,79 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
   }, [user, router, locale]);
 
   return (
-    <Box display={'flex'} flexDirection={'column'} maxWidth={'900px'}>
-      <Typography
-        variant='h6'
-        sx={{
-          marginBottom: '24px',
-          fontSize: '16px !important',
-          fontWeight: '600',
-        }}
-      >
-        {t('personalData.deleteAccountSection')}
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          gap: { xs: '10px', md: '100px' },
-        }}
-      >
+    <>
+      <Snackbar
+        open={deleted}
+        autoHideDuration={3000}
+        onClose={() => setDeleted(false)}
+        message={'personalData.deleteAccount.deleted'}
+      />
+      <Box display={'flex'} flexDirection={'column'} maxWidth={'900px'}>
         <Typography
-          variant='body2'
+          variant='h6'
           sx={{
-            fontSize: '14px',
-            color: palette.text.secondary,
+            marginBottom: '24px',
+            fontSize: '16px !important',
+            fontWeight: '600',
           }}
         >
-          {t('personalData.deleteAccount.sectionLabel')}
+          {t('personalData.deleteAccountSection')}
         </Typography>
-        <Box sx={{ margin: 0, padding: 0 }}>
-          <ButtonNaked
-            component={'button'}
-            onClick={() => setOpenDeleteModal(true)}
-            color='error'
-            variant='text'
-            sx={{ whiteSpace: 'nowrap', color: palette.error.dark }}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: { xs: '10px', md: '100px' },
+          }}
+        >
+          <Typography
+            variant='body2'
+            sx={{
+              fontSize: '14px',
+              color: palette.text.secondary,
+            }}
           >
-            {t('personalData.deleteAccount.buttonLabel')}
-          </ButtonNaked>
+            {t('personalData.deleteAccount.sectionLabel')}
+          </Typography>
+          <Box sx={{ margin: 0, padding: 0 }}>
+            <ButtonNaked
+              component={'button'}
+              onClick={() => setOpenDeleteModal(true)}
+              color='error'
+              variant='text'
+              sx={{ whiteSpace: 'nowrap', color: palette.error.dark }}
+            >
+              {t('personalData.deleteAccount.buttonLabel')}
+            </ButtonNaked>
+          </Box>
+          <ConfirmationModal
+            title={t('personalData.deleteAccount.modalTitle')}
+            text={t('personalData.deleteAccount.modalText')}
+            open={openDeleteModal}
+            cancelCta={{
+              onClick: () => {
+                setOpenDeleteModal(false);
+                return null;
+              },
+              disabled: deleting,
+              label: sharedTranslate('cancel'),
+            }}
+            confirmCta={{
+              onClick: () => {
+                deleteUser();
+                return null;
+              },
+              disabled: deleting,
+              label: t('personalData.deleteAccount.buttonLabel'),
+            }}
+            setOpen={(value: boolean) => {
+              setOpenDeleteModal(value);
+              return null;
+            }}
+          />
         </Box>
-        <ConfirmationModal
-          title={t('personalData.deleteAccount.modalTitle')}
-          text={t('personalData.deleteAccount.modalText')}
-          open={openDeleteModal}
-          cancelCta={{
-            onClick: () => {
-              setOpenDeleteModal(false);
-              return null;
-            },
-            disabled: deleting,
-            label: sharedTranslate('cancel'),
-          }}
-          confirmCta={{
-            onClick: () => {
-              deleteUser();
-              return null;
-            },
-            disabled: deleting,
-            label: t('personalData.deleteAccount.buttonLabel'),
-          }}
-          setOpen={(value: boolean) => {
-            setOpenDeleteModal(value);
-            return null;
-          }}
-        />
       </Box>
-    </Box>
+    </>
   );
 };
 
