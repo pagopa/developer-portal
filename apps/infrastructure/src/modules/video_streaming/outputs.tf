@@ -56,7 +56,7 @@ output "deploy_lambda_role_arn" {
   value       = aws_iam_role.deploy_lambda.arn
 }
 
-output "ingest_api_endpoint" {
-  description = "The domain of the HTTP API for the ingest Lambda."
-  value       = "https://${var.custom_domain_name}/ingest"
+output "video_api_base_url" {
+  description = "The base URL of the video API."
+  value       = "https://${var.custom_domain_name}"
 }

@@ -129,9 +129,10 @@ variable "vpc" {
   description = "The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC."
 }
 
-variable "webinar_heartbeat" {
+variable "webinar_video_api" {
   type = object({
-    url                 = string
+    ingest_url          = string
+    base_url            = string
     interval_in_seconds = number
     enabled             = bool
   })
