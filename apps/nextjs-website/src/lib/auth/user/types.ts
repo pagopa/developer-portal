@@ -20,6 +20,7 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:first_login'?: string; // epoch timestamp of first login in seconds
   };
   readonly webinarSubscriptions?: readonly WebinarSubscription[];
+  readonly webinarCertificates?: ReadonlyArray<string>;
 };
 
 export type UserPreferences = {

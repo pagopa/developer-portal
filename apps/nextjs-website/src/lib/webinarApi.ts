@@ -24,6 +24,7 @@ import {
   WebinarHeartbeatParams,
 } from './webinars/webinarHeartbeat';
 import { webinarHeartbeatUrl } from '@/config';
+import { listUserWebinarCertificates } from './webinars/webinarCertificates';
 
 // a BrowserEnv instance ready to be used
 const browserEnv = pipe(
@@ -80,3 +81,6 @@ export const unsubscribeToWebinar = (webinarId: string, username: string) =>
 
 export const getUserWebinarSubscriptions = (username: string) =>
   pipe(listUserWebinarSubscriptions(username)(browserEnv), makePromiseFromTE)();
+
+export const getUserWebinarCertificates = () =>
+  pipe(listUserWebinarCertificates()(browserEnv), makePromiseFromTE)();

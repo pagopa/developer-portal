@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 const QualtricsIntercept = () => {
-  const { user } = useUser();
+  const { user, webinarCertificates } = useUser();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -17,6 +17,11 @@ const QualtricsIntercept = () => {
       if (['/', '/it', '/en'].includes(pathname)) {
         // Homepage, only show survey if second login or more
         if (sessionStorage.getItem('isFirstLogin') === 'false') {
+          document.body.appendChild(script);
+        }
+      } else if (pathname.endsWith('webinars')) {
+        // Webinars overview page, only show survey if user has completed at least one webinar before
+        if (webinarCertificates.length > 0) {
           document.body.appendChild(script);
         }
       } else {
