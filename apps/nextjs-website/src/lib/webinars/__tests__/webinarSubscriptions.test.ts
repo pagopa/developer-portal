@@ -1,7 +1,6 @@
 import { mock } from 'jest-mock-extended';
 import * as E from 'fp-ts/lib/Either';
 import {
-  WebinarEnv,
   WebinarSubscription,
   deleteWebinarSubscription,
   insertWebinarSubscription,
@@ -13,6 +12,7 @@ import {
   QueryCommand,
 } from '@aws-sdk/client-dynamodb';
 import { makeDynamodbItemFromWebinarSubscription } from '../dynamodb/webinar';
+import { WebinarEnv } from '../webinarQuestions';
 
 const aWebinarSubscription: WebinarSubscription = {
   username: 'aUsername@mail.com',

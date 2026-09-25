@@ -22,6 +22,8 @@ import { compact } from 'lodash';
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
   readonly nowDate: () => Date;
+  readonly videoApiBaseUrl: string;
+  readonly getVideoApiToken: () => TE.TaskEither<Error, string>;
 };
 
 export type InsertWebinarQuestion = {
