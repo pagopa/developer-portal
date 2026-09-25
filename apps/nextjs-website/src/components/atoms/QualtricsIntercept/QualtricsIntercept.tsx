@@ -21,9 +21,9 @@ const QualtricsIntercept = () => {
         }
       } else if (pathname.endsWith('webinars')) {
         // Webinars overview page, only show survey if user has completed at least one webinar before
-        // TODO
-        console.log(webinarCertificates);
-        document.body.appendChild(script);
+        if (webinarCertificates.length > 0) {
+          document.body.appendChild(script);
+        }
       } else {
         document.body.appendChild(script);
       }

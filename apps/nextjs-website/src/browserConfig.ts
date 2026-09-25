@@ -21,9 +21,7 @@ export const publicEnv = {
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
     secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID ||
     process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
-  NEXT_PUBLIC_VIDEO_API_BASE_URL:
-    process.env.NEXT_PUBLIC_VIDEO_API_BASE_URL ||
-    'https://video.dev.developer.pagopa.it',
+  NEXT_PUBLIC_VIDEO_API_BASE_URL: process.env.NEXT_PUBLIC_VIDEO_API_BASE_URL,
 };
 
 export const makeBrowserConfig = (
