@@ -5,6 +5,7 @@ import {
   webinarHeartbeatIntervalInSeconds,
 } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
+import { useUser } from '@/helpers/user.helper';
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
@@ -25,13 +26,24 @@ export const useWebinar = () => {
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [isVideoPlaying, setIsVideoPlayingState] = useState<boolean>(false);
   const [isQuestionFormEnabled, setIsQuestionFormEnabled] =
     useState<boolean>(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
   const [isLiveStreamAvailable, setIsLiveStreamAvailable] = useState(false);
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
   const lastHeartbeatSentTime = useRef<Date | null>(null);
+  const videoStartedAt = useRef<string | null>(null);
+  const { user } = useUser();
+
+  const setIsVideoPlaying = useCallback((isPlaying: boolean) => {
+    if (isPlaying) {
+      // eslint-disable-next-line functional/immutable-data
+      videoStartedAt.current = new Date().toISOString();
+    }
+
+    setIsVideoPlayingState(isPlaying);
+  }, []);
 
   const setWebinar = (nextWebinar: Webinar | null) => {
     const hasChanged = nextWebinar?.slug !== webinar?.slug;
@@ -185,12 +197,23 @@ export const useWebinar = () => {
       ) {
         return;
       }
+
+      const durationMs =
+        webinar.startDateTime && webinar.endDateTime
+          ? new Date(webinar.endDateTime).getTime() -
+            new Date(webinar.startDateTime).getTime()
+          : 0;
+
+      const durationMinutes = Math.round(durationMs / 60000);
       // eslint-disable-next-line functional/immutable-data
       lastHeartbeatSentTime.current = now;
       await sendWebinarHeartbeat({
         webinarSlug: webinar.slug,
         isLive: webinarState === WebinarState.live,
         action: 'playing',
+        startedAt: videoStartedAt.current ?? undefined,
+        consent: user?.attributes['custom:webinar_accepted'] === 'true',
+        duration: durationMinutes,
       });
     };
 
@@ -203,7 +226,7 @@ export const useWebinar = () => {
     }, webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
-  }, [webinar, isVideoPlaying, webinarState]);
+  }, [webinar, isVideoPlaying, webinarState, user]);
 
   return {
     webinarState,

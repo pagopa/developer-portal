@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Box, Grid, GridSize, SxProps, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
@@ -13,12 +13,17 @@ export type CardProps = {
   title: string;
   text: string;
   href?: string;
+  onClick?: () => Promise<void>;
   ctaLabel?: string;
+  endIcon?: React.ReactNode;
+  ctaStyle?: SxProps;
+  image?: ReactNode;
   icon?: string;
   iconColor?: string;
   labels?: { readonly label: string; readonly path?: string }[];
   useSrc: boolean;
   tags?: readonly Tag[];
+  cardContentStyle?: SxProps;
 };
 
 export type CardsGridProps = {
@@ -26,6 +31,7 @@ export type CardsGridProps = {
     xs: boolean | GridSize;
     md: boolean | GridSize;
   };
+  readonly spacing?: string | number;
   readonly containerSx?: SxProps;
   readonly ctaButtonsVariant?: 'text' | 'contained' | 'outlined';
   readonly cards: readonly CardProps[];
@@ -36,6 +42,7 @@ const CardsGrid = ({
   cardSize,
   containerSx,
   ctaButtonsVariant,
+  spacing = 3,
 }: CardsGridProps) => {
   const { palette } = useTheme();
   const t = useTranslations('shared');
@@ -43,7 +50,7 @@ const CardsGrid = ({
   return (
     <EContainer containerSx={containerSx}>
       <Box pb={4} width={'100%'}>
-        <Grid container spacing={3}>
+        <Grid container spacing={spacing}>
           {cards.map(
             (
               {
@@ -51,12 +58,17 @@ const CardsGrid = ({
                 title,
                 text,
                 href,
+                onClick,
                 icon,
                 comingSoon,
                 iconColor,
                 labels,
                 ctaLabel,
+                endIcon,
                 useSrc,
+                ctaStyle,
+                image,
+                cardContentStyle,
               },
               index
             ) => {
@@ -77,16 +89,22 @@ const CardsGrid = ({
                         ? ctaLabel
                         : t(comingSoon ? 'comingSoon' : 'moreInfo'),
                       href,
+                      onClick,
                       variant: ctaButtonsVariant,
+                      endIcon: endIcon,
+                      style: ctaStyle,
                     }}
+                    cardContentStyle={cardContentStyle}
                     icon={
-                      icon && (
-                        <IconWrapper
-                          color={iconColor || palette.text.primary}
-                          icon={icon}
-                          useSrc={useSrc}
-                        />
-                      )
+                      image
+                        ? image
+                        : icon && (
+                            <IconWrapper
+                              color={iconColor || palette.text.primary}
+                              icon={icon}
+                              useSrc={useSrc}
+                            />
+                          )
                     }
                     labels={labels}
                   />

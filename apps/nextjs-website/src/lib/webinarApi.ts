@@ -23,7 +23,6 @@ import {
   postWebinarHeartbeat,
   WebinarHeartbeatParams,
 } from './webinars/webinarHeartbeat';
-import { webinarHeartbeatUrl } from '@/config';
 import { listUserWebinarCertificates } from './webinars/webinarCertificates';
 
 // a BrowserEnv instance ready to be used
@@ -51,7 +50,7 @@ export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
 
 const getWebinarHeartbeatEnv = () =>
   pipe(
-    makeWebinarHeartbeatEnvConfig(webinarHeartbeatUrl),
+    makeWebinarHeartbeatEnvConfig(`${browserEnv.videoApiBaseUrl}/ingest`),
     E.getOrElseW((error) => {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error(`Failed to create WebinarHeartbeatEnv: ${error}`);
