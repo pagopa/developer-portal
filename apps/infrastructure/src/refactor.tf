@@ -92,6 +92,11 @@ moved {
   to   = module.langfuse[0]
 }
 
+moved {
+  from = module.video_streaming.aws_apigatewayv2_api.ingest
+  to   = module.video_streaming.aws_apigatewayv2_api.webinar_api
+}
+
 locals {
   api_stages = {
     dev = {
