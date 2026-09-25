@@ -21,6 +21,7 @@ import {
   TextField,
   Typography,
   useTheme,
+  Alert,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -35,6 +36,7 @@ interface SignUpFormProps {
   onSignUp: (userData: SignUpUserData) => void;
   userAlreadyExist: boolean;
   submitting?: boolean;
+  signUpError: boolean;
 }
 
 interface SignUpFieldsError {
@@ -50,6 +52,7 @@ const SignUpForm = ({
   onSignUp,
   userAlreadyExist,
   submitting = false,
+  signUpError,
 }: SignUpFormProps) => {
   const { locale } = useParams<{ locale: string }>();
   const t = useTranslations();
@@ -345,6 +348,9 @@ const SignUpForm = ({
                   sx={{ alignItems: 'flex-start', marginTop: 2 }}
                 />
               </Grid>
+              {signUpError && (
+                <Alert severity='error'>{t('genericError.description')}</Alert>
+              )}
               <Stack pt={3}>
                 <Stack direction='row' justifyContent='center'>
                   <Button
