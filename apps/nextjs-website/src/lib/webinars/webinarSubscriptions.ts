@@ -12,11 +12,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { makeWebinarSubscriptionFromDynamodbItem } from './dynamodb/webinar';
 import { WebinarSubscriptionDynamoDb } from './dynamodb/types/webinarSubscription';
-
-export type WebinarEnv = {
-  readonly dynamoDBClient: DynamoDBClient;
-  readonly nowDate: () => Date;
-};
+import { WebinarEnv } from './webinarQuestions';
 
 export type WebinarSubscription = {
   readonly webinarId: string;
