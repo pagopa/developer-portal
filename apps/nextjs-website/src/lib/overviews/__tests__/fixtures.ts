@@ -167,6 +167,8 @@ export const strapiOverviews = {
         ],
         guides: [
           {
+            versions: [],
+            bannerLinks: [],
             title: 'Guide 1',
             slug: 'guide-1',
             listItems: [{ text: 'Guide item 1' }, { text: 'Guide item 2' }],
