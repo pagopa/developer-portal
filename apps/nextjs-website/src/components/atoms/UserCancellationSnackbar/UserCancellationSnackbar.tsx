@@ -1,22 +1,21 @@
 'use client';
 
 import { Snackbar } from '@mui/material';
-import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import useSessionStorageBoolean from './UserCancellationSnackbar.hook';
 
 const UserCancellationSnackbar = () => {
-  const [show, setShow] = useState(false);
-  const showUserCancellationSnackbar =
-    sessionStorage.getItem('showUserCancellationSnackbar') === 'true';
-  if (showUserCancellationSnackbar) {
-    setShow(true);
-    sessionStorage.removeItem('showUserCancellationSnackbar');
-  }
+  const t = useTranslations('profile');
+  const [show, setShow] = useSessionStorageBoolean(
+    'showUserCancellationSnackbar'
+  );
+
   return (
     <Snackbar
       open={show}
       autoHideDuration={3000}
       onClose={() => setShow(false)}
-      message={'personalData.deleteAccount.deleted'}
+      message={t('personalData.deleteAccount.deleted')}
     />
   );
 };
