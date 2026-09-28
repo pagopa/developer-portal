@@ -6,17 +6,13 @@ import { useState } from 'react';
 
 const UserCancellationSnackbar = () => {
   const t = useTranslations('profile');
-  const [show, setShow] = useState(false);
-
-  if (sessionStorage.getItem('showUserCancellationSnackbar') === 'true') {
-    setShow(true);
+  const [show, setShow] = useState<boolean>(() => {
+    const stored = sessionStorage.getItem('showUserCancellationSnackbar');
     sessionStorage.removeItem('showUserCancellationSnackbar');
-  }
+    return stored === 'true';
+  });
 
   return (
-    /*
-      autoHideDuration works only if onClose callback prop is set
-    */
     <Snackbar
       open={show}
       autoHideDuration={3000}
