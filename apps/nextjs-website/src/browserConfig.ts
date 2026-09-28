@@ -5,6 +5,7 @@ export type BrowserConfig = {
   readonly NEXT_PUBLIC_COGNITO_REGION: string;
   readonly NEXT_PUBLIC_COGNITO_USER_POOL_ID: string;
   readonly NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: string;
+  readonly NEXT_PUBLIC_VIDEO_API_BASE_URL: string;
 };
 
 // TODO: Migrate all the above environment
@@ -20,6 +21,7 @@ export const publicEnv = {
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
     secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID ||
     process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
+  NEXT_PUBLIC_VIDEO_API_BASE_URL: process.env.NEXT_PUBLIC_VIDEO_API_BASE_URL,
 };
 
 export const makeBrowserConfig = (
@@ -28,10 +30,12 @@ export const makeBrowserConfig = (
   (env.NEXT_PUBLIC_COGNITO_REGION &&
     env.NEXT_PUBLIC_COGNITO_USER_POOL_ID &&
     env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID &&
+    env.NEXT_PUBLIC_VIDEO_API_BASE_URL &&
     E.right({
       NEXT_PUBLIC_COGNITO_REGION: env.NEXT_PUBLIC_COGNITO_REGION,
       NEXT_PUBLIC_COGNITO_USER_POOL_ID: env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
       NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
         env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
+      NEXT_PUBLIC_VIDEO_API_BASE_URL: env.NEXT_PUBLIC_VIDEO_API_BASE_URL,
     })) ||
   E.left('Missing environment variables');
