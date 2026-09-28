@@ -2,19 +2,19 @@
 
 import { Snackbar } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import useSessionStorageBoolean from './UserCancellationSnackbar.hook';
 
 const UserCancellationSnackbar = () => {
   const t = useTranslations('profile');
-  const [show, setShow] = useSessionStorageBoolean(
-    'showUserCancellationSnackbar'
-  );
+  const showUserCancellationSnackbar =
+    sessionStorage.getItem('showUserCancellationSnackbar') === 'true';
+  if (showUserCancellationSnackbar) {
+    sessionStorage.removeItem('showUserCancellationSnackbar');
+  }
 
   return (
     <Snackbar
-      open={show}
+      open={showUserCancellationSnackbar}
       autoHideDuration={3000}
-      onClose={() => setShow(false)}
       message={t('personalData.deleteAccount.deleted')}
     />
   );
