@@ -26,6 +26,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
       setDeleting(true);
       await Auth.deleteUser()
         .then(() => {
+          sessionStorage.setItem('showUserCancellationSnackbar', 'true');
           // eslint-disable-next-line functional/immutable-data
           router.push(`/${locale}`);
           setDeleting(false);

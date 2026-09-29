@@ -63,7 +63,8 @@
         "sectionLabel": "You can decide to delete your PagoPA DevPortal account at any time. Your data will be deleted from our systems.",
         "buttonLabel": "Delete account",
         "modalTitle": "Do you confirm you want to delete your account?",
-        "modalText": "If you delete your PagoPA DevPortal account all your preferences and data will be deleted from our systems. This action is irreversible."
+        "modalText": "If you delete your PagoPA DevPortal account all your preferences and data will be deleted from our systems. This action is irreversible.",
+        "deleted": "Account deleted"
       },
       "deleteAccountButton": "Delete account",
       "addField": "Enter",

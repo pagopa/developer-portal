@@ -24,6 +24,7 @@ import type { SEO } from '@/lib/seo/types';
 import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import { HomepageRepository } from '@/lib/homepage';
+import UserCancellationSnackbar from '@/components/atoms/UserCancellationSnackbar/UserCancellationSnackbar';
 
 type EcosystemCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
@@ -133,6 +134,7 @@ const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
               links={comingsoonDocumentation.links}
             />
           )}
+        <UserCancellationSnackbar />
       </ContentWrapper>
     </>
   );
