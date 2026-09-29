@@ -14,6 +14,7 @@ const UserCancellationSnackbar = () => {
 
   return (
     <Snackbar
+      anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
       open={show}
       autoHideDuration={3000}
       onClose={() => setShow(false)}
