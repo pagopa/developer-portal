@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 17.4.4
+
+### Patch Changes
+
+- 1f6b554: Fixed GitBook documentation synchronization to use the documentation repository token.
+- bad38e1: Temporarily fix scheduled GitBook documentation synchronization by checking out the workflow branch until the latest deployed nextjs-website tag is updated.
+
 ## 17.4.3
 
 ### Patch Changes

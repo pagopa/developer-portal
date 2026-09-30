@@ -8,4 +8,5 @@ export type User = {
   readonly 'custom:company_type': string;
   readonly 'custom:job_role': string;
   readonly 'custom:preferred_language'?: string;
+  readonly 'custom:first_login'?: string;
 };

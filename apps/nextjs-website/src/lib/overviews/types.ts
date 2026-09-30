@@ -82,7 +82,7 @@ export type StrapiOverview = {
   readonly useCaseSection?: StrapiUseCaseSection;
   readonly postIntegration?: StrapiPostIntegration;
   readonly relatedLinks?: StrapiRelatedLinks;
-  readonly product: StrapiProduct;
+  readonly product?: StrapiProduct;
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
   readonly whatsNew?: StrapiNewsShowcase;
