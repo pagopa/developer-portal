@@ -51,6 +51,10 @@
         "https://aws-mcp.us-east-1.api.aws/mcp",
         "--metadata", "AWS_REGION=eu-south-1"
       ]
+    },
+    "atlassian": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v2/mcp"
     }
   }
 }
