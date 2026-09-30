@@ -11,6 +11,7 @@ WITH sorted_heartbeats AS (
   FROM "webinar_heartbeats"
   WHERE userid = '<USER_ID>'
     AND action = 'playing'
+    AND consent = true
 ),
 calculated_engagement AS (
   SELECT

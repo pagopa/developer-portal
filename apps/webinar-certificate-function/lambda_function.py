@@ -6,7 +6,7 @@ import boto3
 ATHENA_DATABASE = os.environ.get("ATHENA_DATABASE", "webinar_analytics")
 ATHENA_OUTPUT_LOCATION = os.environ["ATHENA_OUTPUT_LOCATION"]
 ATHENA_WORKGROUP = os.environ.get("ATHENA_WORKGROUP", "primary")
-POLL_INTERVAL_SECONDS = int(os.environ.get("POLL_INTERVAL_SECONDS", "2"))
+POLL_INTERVAL_SECONDS = float(os.environ.get("POLL_INTERVAL_SECONDS", "0.2"))
 MAX_WAIT_SECONDS = int(os.environ.get("MAX_WAIT_SECONDS", "60"))
 
 SQL_FILE = os.path.join(os.path.dirname(__file__), "athena", "search-certificates-by-user.sql")

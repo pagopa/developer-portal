@@ -112,7 +112,7 @@ def lambda_handler(event, context):
             "receivedat": timestamp,
             "islive": bool(data.get("isLive", data.get("islive", False))),
             "action": str(data.get("action", "")),
-            "startedAt": _parse_optional_string(data.get("startedAt", data.get("startedat"))),
+            "startedat": _parse_optional_string(data.get("startedAt", data.get("startedat"))),
             "consent": consent,
             "duration": _parse_optional_number(data.get("duration")),
             "year": year,
