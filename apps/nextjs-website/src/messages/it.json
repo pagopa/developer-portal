@@ -63,7 +63,8 @@
         "sectionLabel": "Puoi decidere di eliminare il tuo account su PagoPA DevPortal in qualsiasi momento. I tuoi dati verranno cancellati dai nostri sistemi.",
         "buttonLabel": "Elimina account",
         "modalTitle": "Confermi di voler eliminare il tuo account?",
-        "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile."
+        "modalText": "Se elimini il tuo account PagoPA DevPortal tutte le tue preferenze e i tuoi dati verranno cancellati dai nostri sistemi. Questa azione non è reversibile.",
+        "deleted": "Account eliminato"
       },
       "deleteAccountButton": "Elimina account",
       "addField": "Inserisci",
