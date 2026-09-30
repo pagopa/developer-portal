@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 17.4.5
+
+### Patch Changes
+
+- 6e7379f: Implement Qualtrics al Layout level
+- b5468c6: Show a generic error message when sign-up fails
+- ecdabd5: Add visual feedback when user delete its account
+- 5ab1d58: Prevent API documentation from being accessed under a different product.
+- a950216: Skip content linked to unpublished products
+
 ## 17.4.4
 
 ### Patch Changes
