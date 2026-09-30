@@ -164,8 +164,9 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
-  webinar_heartbeat = {
-    url                 = module.video_streaming.ingest_api_endpoint
+  webinar_video_api = {
+    ingest_url          = "${module.video_streaming.video_api_base_url}/ingest"
+    base_url            = module.video_streaming.video_api_base_url
     interval_in_seconds = 60
     enabled             = var.environment == "prod" ? false : true
   }
