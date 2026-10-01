@@ -15,6 +15,7 @@ from selenium.webdriver.chrome.options import Options
 from urllib.parse import quote
 from typing import Tuple, List, Dict
 import xml.etree.ElementTree as ET
+from botocore.exceptions import ClientError
 
 from llama_index.core import Document
 
@@ -57,19 +58,22 @@ def read_file_from_s3(
         file_path (str): The path to the file in the S3 bucket.
         bucket_name (str | None): The name of the S3 bucket. If None, uses the default bucket name.
     Returns:
-        str | None: The content of the file as a string, or None if the file is not found.
+        str: The content of the file as a string, or an empty string if the file is not found.
+    Raises:
+        ClientError: If the file cannot be read for any reason other than not existing.
     """
 
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
-    text = ""
     try:
         obj = AWS_S3_RESOURCE.Object(bucket_name, file_path)
         return obj.get()["Body"].read().decode("utf-8")
 
-    except Exception as e:
-        LOGGER.error(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+    except ClientError as e:
+        if e.response.get("Error", {}).get("Code") not in ("NoSuchKey", "404"):
+            raise
+        LOGGER.warning(f"File {bucket_name}/{file_path} not found in S3.")
 
-    return text
+    return ""
 
 
 def get_folders_list(
@@ -105,6 +109,7 @@ def get_folders_list(
         solution_folders_filepath,
         release_notes_folders_filepath,
     ]:
+        folders_content = {"dirNames": []}
         s3_content = read_file_from_s3(filepath)
         if s3_content:
             try:
@@ -179,16 +184,10 @@ def get_metadata_from_s3(
     folders_list = get_folders_list()
     metadata = []
     for folder_name in folders_list:
-        folder_metadata = []
-        try:
-            s3_content = read_file_from_s3(
-                os.path.join(docs_parent_folder, folder_name, "metadata.json")
-            )
-            folder_metadata = safe_json_load(s3_content) if s3_content else []
-        except Exception as e:
-            LOGGER.warning(
-                f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
-            )
+        s3_content = read_file_from_s3(
+            os.path.join(docs_parent_folder, folder_name, "metadata.json")
+        )
+        folder_metadata = safe_json_load(s3_content) if s3_content else []
 
         metadata.extend(folder_metadata)
     if not metadata:

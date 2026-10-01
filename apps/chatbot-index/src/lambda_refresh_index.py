@@ -87,45 +87,38 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], bool]:
 
         if event_action == "ObjectCreated":
             if object_key != DIRNAMES_TO_REMOVE_PATH:
-                try:
-                    folders_list = get_folders_list()
-                    folder_name = find_docs_folder(
-                        object_key, folders_list, DOCS_PARENT_FOLDER
-                    )
-                    if folder_name is None:
-                        LOGGER.warning(
-                            f"File {object_key} is not in any known docs folder. Skipping."
-                        )
-                        continue
-
-                    metadata = get_one_metadata_from_s3(
-                        folder_name,
-                        folders_list=folders_list,
-                    )
-                    # A main version page has one entry per URL (with and without the version)
-                    file_metadata = [
-                        m for m in metadata if m.get("contentS3Path") == object_key
-                    ]
-                    if not file_metadata:
-                        LOGGER.warning(
-                            f"File {object_key} not in metadata files. Skipping."
-                        )
-                        continue
-
-                    for m in file_metadata:
-                        static_docs_to_update.append(
-                            StaticMetadata(
-                                url=SETTINGS.website_url + m.get("path"),
-                                s3_file_path=m.get("contentS3Path"),
-                                title=m.get("title"),
-                            )
-                        )
-
-                except Exception as e:
+                folders_list = get_folders_list()
+                folder_name = find_docs_folder(
+                    object_key, folders_list, DOCS_PARENT_FOLDER
+                )
+                if folder_name is None:
                     LOGGER.warning(
-                        f"File {object_key} not in metadata files. Skipping because {e}"
+                        f"File {object_key} is not in any known docs folder. Skipping."
                     )
                     continue
+
+                metadata = get_one_metadata_from_s3(
+                    folder_name,
+                    folders_list=folders_list,
+                )
+                # A main version page has one entry per URL (with and without the version)
+                file_metadata = [
+                    m for m in metadata if m.get("contentS3Path") == object_key
+                ]
+                if not file_metadata:
+                    LOGGER.warning(
+                        f"File {object_key} not in metadata files. Skipping."
+                    )
+                    continue
+
+                for m in file_metadata:
+                    static_docs_to_update.append(
+                        StaticMetadata(
+                            url=SETTINGS.website_url + m.get("path"),
+                            s3_file_path=m.get("contentS3Path"),
+                            title=m.get("title"),
+                        )
+                    )
 
             else:
                 # The main version of some guides changed: the folders lists in S3 are the
