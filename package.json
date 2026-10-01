@@ -23,6 +23,7 @@
     "turbo": "^2.5.8"
   },
   "dependencies": {
+    "cookies-next": "^6.1.1",
     "crypto-js": "^4.2.0",
     "elliptic": "^6.6.1",
     "rapidoc": "^9.3.8"
