@@ -10,6 +10,7 @@ from src.modules.documents import (
     get_one_metadata_from_s3,
     DOCS_PARENT_FOLDER,
 )
+from src.modules.docs_folders import find_docs_folder
 from src.modules.vector_index import LlamaVectorIndex
 
 
@@ -87,8 +88,17 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
             if object_key != DIRNAMES_TO_REMOVE_PATH:
                 try:
                     folders_list = get_folders_list()
+                    folder_name = find_docs_folder(
+                        object_key, folders_list, DOCS_PARENT_FOLDER
+                    )
+                    if folder_name is None:
+                        LOGGER.warning(
+                            f"File {object_key} is not in any known docs folder. Skipping."
+                        )
+                        continue
+
                     metadata = get_one_metadata_from_s3(
-                        object_key.split(DOCS_PARENT_FOLDER)[1].split("/")[0],
+                        folder_name,
                         folders_list=folders_list,
                     )
                     s3_paths = [m["contentS3Path"] for m in metadata]

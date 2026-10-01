@@ -5,6 +5,7 @@ from src.modules.documents import (
     StaticMetadata,
     DOCS_PARENT_FOLDER,
 )
+from src.modules.docs_folders import split_ref_docs_by_folder
 from src.modules.vector_index import LlamaVectorIndex
 from src.modules.settings import SETTINGS
 
@@ -25,15 +26,12 @@ if __name__ == "__main__":
     index = VECTOR_INDEX.get_index()
     ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
     ref_doc_ids = list(ref_doc_info.keys())
-    ref_folders = [
-        doc_id.split(DOCS_PARENT_FOLDER)[1].split("/")[0]
-        for doc_id in ref_doc_ids
-        if DOCS_PARENT_FOLDER in doc_id  # "it/devportal-docs/docs/<folder_name>/"
-    ]
-    ref_folders = list(set(ref_folders))
+    # dirNames can contain slashes, so they are matched against the known folders
+    ref_folders, orphan_doc_ids = split_ref_docs_by_folder(
+        ref_doc_ids, folders, DOCS_PARENT_FOLDER
+    )
 
     static_docs_to_add = []
-    folders_to_remove = []
 
     for folder in folders:
         if folder in ref_folders:
@@ -54,17 +52,14 @@ if __name__ == "__main__":
                     )
                 )
 
-    for ref_folder in ref_folders:
-        if ref_folder not in folders:
-            LOGGER.info(
-                f"Folder '{ref_folder}' is in the vector index but not in S3 folders list. Adding to removal list."
-            )
-            folders_to_remove.append(ref_folder)
+    for doc_id in orphan_doc_ids:
+        LOGGER.info(
+            f"Document '{doc_id}' is in the vector index but not in any S3 folder of the folders list. Adding to removal list."
+        )
 
     if index:
-        if static_docs_to_add:
-            VECTOR_INDEX.refresh_index_static_docs(index, static_docs_to_add, [])
-        if folders_to_remove:
-            for folder_to_remove in folders_to_remove:
-                VECTOR_INDEX.remove_docs_in_folder(index, folder_to_remove)
+        if static_docs_to_add or orphan_doc_ids:
+            VECTOR_INDEX.refresh_index_static_docs(
+                index, static_docs_to_add, orphan_doc_ids
+            )
         LOGGER.info("Static docs refresh process completed.")
