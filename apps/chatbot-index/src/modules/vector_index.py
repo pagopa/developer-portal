@@ -21,6 +21,9 @@ from redisvl.schema import IndexSchema
 from src.modules.logger import get_logger
 from src.modules.documents import (
     StaticMetadata,
+    get_folders_list,
+    get_one_metadata_from_s3,
+    DOCS_PARENT_FOLDER,
     get_documents,
     get_dynamic_metadata,
     get_api_docs,
@@ -28,6 +31,7 @@ from src.modules.documents import (
     get_dynamic_docs,
     get_structured_docs,
 )
+from src.modules.docs_folders import split_ref_docs_by_folder
 from src.modules.models import get_llm, get_embed_model
 from src.modules.settings import SETTINGS
 
@@ -234,7 +238,6 @@ class LlamaVectorIndex:
             refreshed_documents = [False] * len(documents)
 
             for i, doc in enumerate(documents):
-
                 nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
                 existing_doc_hash = index.storage_context.docstore.get_document_hash(
                     doc.id_
@@ -376,6 +379,55 @@ class LlamaVectorIndex:
                 self._delete_docs(index, static_docs_ids_to_delete)
             except Exception as e:
                 LOGGER.error(f"Error deleting Static Documents: {e}")
+
+    def refresh_index_static_folders(self, index: VectorStoreIndex) -> None:
+        """
+        Aligns the static documents of the vector index with the S3 folders lists: adds the
+        documents of the listed folders that are not in the index yet and removes the documents
+        that are not inside any listed folder (e.g. guide versions that are no longer main).
+
+        Args:
+            index (VectorStoreIndex): The vector store index instance.
+        Returns:
+            None
+        """
+
+        folders = get_folders_list()
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+        # dirNames can contain slashes, so they are matched against the known folders
+        ref_folders, orphan_doc_ids = split_ref_docs_by_folder(
+            ref_doc_ids, folders, DOCS_PARENT_FOLDER
+        )
+
+        static_docs_to_add = []
+
+        for folder in folders:
+            if folder in ref_folders:
+                LOGGER.info(
+                    f"Folder '{folder}' is referenced in the vector index. Skipping."
+                )
+            else:
+                LOGGER.info(
+                    f"Folder '{folder}' is not referenced in the vector index. Getting relative metadata to add to the vector index."
+                )
+                metadata = get_one_metadata_from_s3(folder, folders)
+                for m in metadata:
+                    static_docs_to_add.append(
+                        StaticMetadata(
+                            url=SETTINGS.website_url + m.get("path"),
+                            s3_file_path=m.get("contentS3Path"),
+                            title=m.get("title"),
+                        )
+                    )
+
+        for doc_id in orphan_doc_ids:
+            LOGGER.info(
+                f"Document '{doc_id}' is in the vector index but not in any S3 folder of the folders list. Adding to removal list."
+            )
+
+        if static_docs_to_add or orphan_doc_ids:
+            self.refresh_index_static_docs(index, static_docs_to_add, orphan_doc_ids)
 
     def refresh_index_dynamic_docs(
         self, index: VectorStoreIndex, static_metadata: List[StaticMetadata]

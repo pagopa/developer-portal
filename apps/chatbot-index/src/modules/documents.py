@@ -21,6 +21,7 @@ from llama_index.core import Document
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
 from src.modules.codec import safe_json_load
+from src.modules.docs_folders import dedupe_static_metadata
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
@@ -503,6 +504,7 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
+    static_metadata = dedupe_static_metadata(static_metadata)
     static_docs = []
     for item in tqdm.tqdm(
         static_metadata, total=len(static_metadata), desc="Getting static documents"

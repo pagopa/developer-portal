@@ -1,4 +1,7 @@
-from typing import Iterable, List, Set, Tuple
+from typing import Iterable, List, Set, Tuple, TypeVar
+
+
+T = TypeVar("T")
 
 
 def find_docs_folder(
@@ -66,3 +69,24 @@ def split_ref_docs_by_folder(
 
     return ref_folders, orphan_doc_ids
 
+
+def dedupe_static_metadata(static_metadata: Iterable[T]) -> List[T]:
+    """Keeps one metadata item per S3 file, so each page is indexed only once.
+
+    The pages of a guide main version have two metadata items with the same S3 file: one with
+    the versioned URL and one with the versionless URL. The versionless URL always points to
+    the latest version, so the item with the shortest URL is kept.
+
+    Args:
+        static_metadata (Iterable[T]): Items with `s3_file_path` and `url` attributes.
+    Returns:
+        List[T]: One item per `s3_file_path`, in the order of first appearance.
+    """
+
+    selected = {}
+    for item in static_metadata:
+        current = selected.get(item.s3_file_path)
+        if current is None or len(item.url) < len(current.url):
+            selected[item.s3_file_path] = item
+
+    return list(selected.values())

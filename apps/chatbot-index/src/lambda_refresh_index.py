@@ -1,4 +1,3 @@
-import json
 from typing import Tuple, List
 
 from src.modules.settings import SETTINGS
@@ -6,7 +5,6 @@ from src.modules.logger import get_logger
 from src.modules.documents import (
     StaticMetadata,
     get_folders_list,
-    read_file_from_s3,
     get_one_metadata_from_s3,
     DOCS_PARENT_FOLDER,
 )
@@ -16,7 +14,10 @@ from src.modules.vector_index import LlamaVectorIndex
 
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = LlamaVectorIndex()
-DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
+# Written by the gitbook-docs sync when the main version of a guide changes
+DIRNAMES_TO_REMOVE_PATH = (
+    f"{SETTINGS.language_code}/main-guide-versions-dirNames-to-remove.json"
+)
 
 # S3 event example:
 
@@ -62,20 +63,20 @@ DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 """
 
 
-def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[str]]:
+def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], bool]:
     """Reads the S3 event payload and extracts the necessary information for updating the index.
     Args:
         payload (dict): The S3 event payload.
     Returns:
-        Tuple[List[StaticMetadata], List[str], List[str]]: A tuple containing three elements:
+        Tuple[List[StaticMetadata], List[str], bool]: A tuple containing three elements:
             - A list of StaticMetadata objects to update in the index.
             - A list of S3 object keys to delete from the index.
-            - A list of directory names to remove from the index.
+            - Whether the static folders of the index must be aligned with the S3 folders lists.
     """
 
     static_docs_to_update = []
     static_docs_ids_to_delete = []
-    dirnames_to_remove = []
+    refresh_static_folders = False
 
     for record in payload.get("Records", []):
         event_name = record.get("eventName", "")
@@ -101,15 +102,24 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
                         folder_name,
                         folders_list=folders_list,
                     )
-                    s3_paths = [m["contentS3Path"] for m in metadata]
-                    idx = s3_paths.index(object_key)
-                    static_docs_to_update.append(
-                        StaticMetadata(
-                            url=SETTINGS.website_url + metadata[idx].get("path"),
-                            s3_file_path=metadata[idx].get("contentS3Path"),
-                            title=metadata[idx].get("title"),
+                    # A main version page has one entry per URL (with and without the version)
+                    file_metadata = [
+                        m for m in metadata if m.get("contentS3Path") == object_key
+                    ]
+                    if not file_metadata:
+                        LOGGER.warning(
+                            f"File {object_key} not in metadata files. Skipping."
                         )
-                    )
+                        continue
+
+                    for m in file_metadata:
+                        static_docs_to_update.append(
+                            StaticMetadata(
+                                url=SETTINGS.website_url + m.get("path"),
+                                s3_file_path=m.get("contentS3Path"),
+                                title=m.get("title"),
+                            )
+                        )
 
                 except Exception as e:
                     LOGGER.warning(
@@ -118,23 +128,10 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
                     continue
 
             else:
-                # DIRNAMES_TO_REMOVE_PATH content example:
-                # {
-                #   "dirNames": [
-                #     "6MUyXVMtPXJBZM12qMoI"
-                #   ]
-                # }
-                try:
-                    s3_content = read_file_from_s3(object_key)
-                    dirnames = (
-                        json.loads(s3_content).get("dirNames", []) if s3_content else []
-                    )
-
-                except Exception as e:
-                    LOGGER.warning(f"Failed to decode {object_key}: {e}")
-                    dirnames = []
-
-                dirnames_to_remove.extend(dirnames)
+                # The main version of some guides changed: the folders lists in S3 are the
+                # source of truth, so the index is aligned with them instead of removing
+                # the listed dirNames by substring (e.g. "v1.1" would also match "v1.1.3").
+                refresh_static_folders = True
 
         elif event_action == "ObjectRemoved":
             static_docs_ids_to_delete.append(object_key)
@@ -144,16 +141,15 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
     # Remove eventual duplicates
     static_docs_to_update = list({m.url: m for m in static_docs_to_update}.values())
     static_docs_ids_to_delete = list(set(static_docs_ids_to_delete))
-    dirnames_to_remove = list(set(dirnames_to_remove))
 
-    return static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove
+    return static_docs_to_update, static_docs_ids_to_delete, refresh_static_folders
 
 
 def lambda_handler(event, context):
     LOGGER.info(f"event: {event}")
 
-    static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove = read_payload(
-        event
+    static_docs_to_update, static_docs_ids_to_delete, refresh_static_folders = (
+        read_payload(event)
     )
     index = VECTOR_INDEX.get_index()
     if index:
@@ -164,8 +160,7 @@ def lambda_handler(event, context):
                 static_docs_ids_to_delete=static_docs_ids_to_delete,
             )
 
-        if len(dirnames_to_remove) > 0:
-            for dirname in dirnames_to_remove:
-                VECTOR_INDEX.remove_docs_in_folder(index, folder_name=dirname)
+        if refresh_static_folders:
+            VECTOR_INDEX.refresh_index_static_folders(index)
 
     return {"statusCode": 200, "result": True, "event": event}
