@@ -35,7 +35,7 @@ export const overviewsPopulate = {
         'guides.image',
         'guides.listItems',
         'guides.mobileImage',
-        'guides.guide.product',
+        'guides.product',
         'documents.image',
         'documents.mobileImage',
         'serviceModels',
