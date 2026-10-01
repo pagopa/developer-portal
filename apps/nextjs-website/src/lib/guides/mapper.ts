@@ -33,6 +33,7 @@ export function mapGuides(
           guide: {
             name: guide.title,
             slug: guide.slug,
+            product,
           },
           versions: guide.versions,
           bannerLinks:
