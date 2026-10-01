@@ -47,6 +47,7 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
             sx={{
               width: 32,
               height: 32,
+              marginTop: 1,
               borderRadius: '50%',
               backgroundColor: 'primary.main',
               color: 'primary.contrastText',
