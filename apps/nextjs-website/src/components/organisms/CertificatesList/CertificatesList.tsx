@@ -143,11 +143,10 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
             mb={2.5}
             mx={'16px'}
           >
-            {
-              t.rich('profile.certificateList.body', {
-                strong: (chunks) => <strong>{chunks}</strong>,
-                br: () => <br></br>,
-              })}
+            {t.rich('profile.certificateList.body', {
+              strong: (chunks) => <strong>{chunks}</strong>,
+              br: () => <br></br>,
+            })}
           </Typography>
         </GenericAlertBanner>
       </Stack>
