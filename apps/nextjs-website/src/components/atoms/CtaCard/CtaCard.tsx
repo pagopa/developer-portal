@@ -24,7 +24,7 @@ export type CtaCardProps = {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly label: string | ReactNode;
     readonly href?: string;
-    readonly onClick?: () => null | Promise<void>;
+    readonly onClick?: () => void | Promise<void>;
     readonly variant?: 'text' | 'contained' | 'outlined';
     readonly endIcon?: ReactNode;
     readonly style?: SxProps;

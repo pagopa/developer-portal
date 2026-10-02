@@ -136,7 +136,7 @@
       "certificate": {
         "title": "CERTIFICATE",
         "subtitle": "OF PARTICIPATION",
-        "createdAt": "Created at ",
+        "createdAt": "Created at",
         "certification": "This certificate attests that:",
         "attended": "Attended the online webinar via the PagoPa DevPortal"
       }

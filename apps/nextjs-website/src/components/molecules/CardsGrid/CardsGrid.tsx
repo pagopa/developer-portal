@@ -13,7 +13,7 @@ export type CardProps = {
   title: string;
   text: string;
   href?: string;
-  onClick?: () => Promise<void>;
+  onClick?: () => void | Promise<void>;
   ctaLabel?: string;
   endIcon?: React.ReactNode;
   ctaStyle?: SxProps;

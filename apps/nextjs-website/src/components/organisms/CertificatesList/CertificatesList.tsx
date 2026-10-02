@@ -1,6 +1,6 @@
 'use client';
 import { Box, Typography, useTheme } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Stack } from '@mui/system';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -43,7 +43,7 @@ const handleDownload = async (
   // eslint-disable-next-line functional/immutable-data
   link.href = url;
   // eslint-disable-next-line functional/immutable-data
-  link.download = 'documento.pdf';
+  link.download = 'webinar-certificate.pdf';
   link.click();
   URL.revokeObjectURL(url);
 };
@@ -51,8 +51,9 @@ const handleDownload = async (
 const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
+  const locale = useLocale();
 
-  const { user, webinarSubscriptions } = useUser();
+  const { userFullName, webinarSubscriptions } = useUser();
 
   const certificateDatesBySlug = new Map(
     webinarSubscriptions
@@ -74,9 +75,9 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
       endIcon: <DownloadIcon />,
       onClick: () =>
         handleDownload(
-          user?.attributes.given_name + ' ' + user?.attributes.family_name,
+          userFullName,
           webinar.title,
-          new Date(certificateCreatedAt || '').toLocaleString('it-IT', {
+          new Date(certificateCreatedAt || '').toLocaleString(locale, {
             dateStyle: 'long',
             timeStyle: 'short',
           }),
