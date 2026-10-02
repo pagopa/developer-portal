@@ -30,7 +30,7 @@ const GenericAlertBanner: FC<GenericAlertBannerProps> = ({
         mb: '32px',
         width: '100%',
         backgroundColor: palette.primaryAction.selected,
-        border: `1px ${palette.primaryAction.selected}`,
+        border: `1px solid ${palette.primaryAction.selected}`,
         borderRadius: 2,
         '& .MuiAlert-message': {
           width: '100%',

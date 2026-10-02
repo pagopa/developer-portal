@@ -93,6 +93,7 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
           component='img'
           width={'100%'}
           src={webinar.imagePath}
+          alt={webinar.title}
         />
       ),
       cardContentStyle: {
@@ -102,7 +103,6 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
         fontWeight: 700,
         fontSize: '16px',
         letterSpacing: '0.3px',
-        fontStyle: 'bold',
         pl: '0',
       },
     };
@@ -147,8 +147,7 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
               t.rich('profile.certificateList.body', {
                 strong: (chunks) => <strong>{chunks}</strong>,
                 br: () => <br></br>,
-              }) as string
-            }
+              })}
           </Typography>
         </GenericAlertBanner>
       </Stack>

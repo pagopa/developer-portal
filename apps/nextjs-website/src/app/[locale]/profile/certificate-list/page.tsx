@@ -6,12 +6,14 @@ import { getVisibleInListWebinars } from '@/lib/api';
 const CertificateListPage = async (props: {
   params: Promise<{ locale: string }>;
 }) => {
+  if (!isWebinarHeartbeatEnabled) {
+    return null;
+  }
+
   const { locale } = await props.params;
   const webinars = await getVisibleInListWebinars(locale);
 
-  return isWebinarHeartbeatEnabled ? (
-    <CertificatesList webinars={webinars} />
-  ) : null;
+  return <CertificatesList webinars={webinars} />;
 };
 
 export default CertificateListPage;
