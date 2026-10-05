@@ -3,7 +3,7 @@
 # Exposes a GET /certificate endpoint (JWT-protected via Cognito) that returns
 # the list of webinar IDs for which the authenticated user may obtain a certificate.
 # The Lambda executes the Athena query in
-#   apps/webinar-certificate-function/athena/search-certificates-by-user.sql
+#   apps/webinar-certificate-functions/athena/search-certificates-by-user.sql
 
 locals {
   webinar_certificate_lambda_name = "${var.project_name}-webinar-certificate"
@@ -16,8 +16,8 @@ locals {
 data "archive_file" "webinar_certificate" {
   type = "zip"
   # Include both the handler and the SQL file it reads at runtime
-  source_dir  = "${path.root}/../../webinar-certificate-function"
-  output_path = "${path.root}/../../webinar-certificate-function/out/webinar-certificate.zip"
+  source_dir  = "${path.root}/../../webinar-certificate-functions"
+  output_path = "${path.root}/../../webinar-certificate-functions/out/webinar-certificate.zip"
   excludes    = ["out", "package.json"]
 }
 
