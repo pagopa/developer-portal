@@ -29,7 +29,7 @@ const StyledText = ({ style, children }: StyledTextProps) => {
           variant='body1'
           fontWeight='bold'
           component='span'
-          sx={{ fontSize: 'inherit' }}
+          sx={{ fontSize: 'inherit', lineHeight: 'inherit' }}
         >
           {children}
         </Typography>

@@ -29,6 +29,25 @@ export const ApiDataListRepository = {
     return all.find((apiData) => apiData.apiDataSlug === apiDataSlug);
   },
   /**
+   * Returns API Data by matching its product and API slugs.
+   * @param locale The locale used to get the API Data collection.
+   * @param productSlug The slug of the product that owns the API Data.
+   * @param apiDataSlug The slug of the API Data to retrieve.
+   * @returns The matching API Data entry, or `undefined` if no entry is found.
+   */
+  getByProductAndSlug: async (
+    locale: string,
+    productSlug: string,
+    apiDataSlug: string
+  ): Promise<ApiDataPageProps | undefined> => {
+    const all = await ApiDataListRepository.getAll(locale);
+    return all.find(
+      (apiData) =>
+        apiData.apiDataSlug === apiDataSlug &&
+        apiData.product?.slug === productSlug
+    );
+  },
+  /**
    * Fetches API Data entries for a specific product.
    * Only retrieves 'updatedAt' and the slug from either 'apiRestDetail' or 'apiSoapDetail'.
    * @param locale The locale used to get the API Data collection.

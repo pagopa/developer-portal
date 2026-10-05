@@ -48,33 +48,35 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
-  const ApiDataProps = await ApiDataListRepository.getBySlug(
+  const apiDataProps = await ApiDataListRepository.getByProductAndSlug(
     params.locale,
+    params.productSlug,
     params.apiDataSlug
   );
-  if (!ApiDataProps) {
+  if (!apiDataProps) {
     console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
     notFound();
   }
 
-  if (ApiDataProps?.seo) {
-    return makeMetadataFromStrapi(ApiDataProps.seo);
+  if (apiDataProps?.seo) {
+    return makeMetadataFromStrapi(apiDataProps.seo);
   }
 
   return makeMetadata({
-    title: [ApiDataProps?.specUrlsName, ApiDataProps?.product?.name]
+    title: [apiDataProps?.specUrlsName, apiDataProps?.product?.name]
       .filter(Boolean)
       .join(' | '),
-    description: ApiDataProps?.product?.description,
-    url: ApiDataProps?.path,
+    description: apiDataProps?.product?.description,
+    url: apiDataProps?.path,
     parent: resolvedParent,
   });
 };
 
 const ApiDataPage = async (props: ApiDataParams) => {
   const params = await props.params;
-  const apiDataProps = await ApiDataListRepository.getBySlug(
+  const apiDataProps = await ApiDataListRepository.getByProductAndSlug(
     params.locale,
+    params.productSlug,
     params.apiDataSlug
   );
   if (!apiDataProps) {
