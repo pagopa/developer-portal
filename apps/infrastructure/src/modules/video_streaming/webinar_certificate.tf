@@ -16,8 +16,8 @@ locals {
 data "archive_file" "webinar_certificate" {
   type = "zip"
   # Include both the handler and the SQL file it reads at runtime
-  source_dir  = "${path.root}/../../webinar-certificate-function"
-  output_path = "${path.root}/../../webinar-certificate-function/out/webinar-certificate.zip"
+  source_dir  = "${path.root}/../../webinar-certificate-functions"
+  output_path = "${path.root}/../../webinar-certificate-functions/out/webinar-certificate.zip"
   excludes    = ["out", "package.json"]
 }
 
