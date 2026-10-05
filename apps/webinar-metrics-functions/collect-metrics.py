@@ -57,6 +57,22 @@ def _parse_optional_string(value: Any) -> str | None:
 def lambda_handler(event, context):
     try:
 
+        # Identify the user from the JWT bearer token (API Gateway JWT
+        # authorizer claims) rather than trusting a client-supplied payload
+        # field.
+        claims = (
+            event.get("requestContext", {})
+            .get("authorizer", {})
+            .get("jwt", {})
+            .get("claims", {})
+        )
+        user_id = claims.get("sub") or claims.get("cognito:username") or claims.get("username")
+        if user_id is None or str(user_id).strip() == "":
+            return {
+                "statusCode": 401,
+                "body": json.dumps({"error": "Unauthorized: missing user identity"}),
+            }
+
         # Parse the incoming JSON body
         body_str = event.get('body', '{}')
         data = json.loads(body_str)
@@ -69,10 +85,6 @@ def lambda_handler(event, context):
         consent = _parse_consent(data.get("consent"))
 
         # Hash userId by default; keep it plain only with explicit consent=true.
-        user_id = data.get('userId') or data.get('userid')
-        if user_id is None or str(user_id).strip() == "":
-            raise ValueError("userId is required in the incoming data.")
-
         user_id_str = str(user_id)
         stored_user_id = user_id_str if consent else hashlib.sha256(user_id_str.encode('utf-8')).hexdigest()
 
@@ -100,7 +112,7 @@ def lambda_handler(event, context):
             "receivedat": timestamp,
             "islive": bool(data.get("isLive", data.get("islive", False))),
             "action": str(data.get("action", "")),
-            "startedAt": _parse_optional_string(data.get("startedAt", data.get("startedat"))),
+            "startedat": _parse_optional_string(data.get("startedAt", data.get("startedat"))),
             "consent": consent,
             "duration": _parse_optional_number(data.get("duration")),
             "year": year,
