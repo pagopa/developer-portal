@@ -1,5 +1,22 @@
 # infrastructure
 
+## 14.0.0
+
+### Major Changes
+
+- f8d8d73: Add webinar certificate eligibility support with a new Lambda function and Terraform deployment in eu-south-1.
+
+### Minor Changes
+
+- a65ffb3: Upgrade Terraform to 1.16.4 and the AWS provider to 6.67.0, and refresh infrastructure module documentation.
+- 98f3a6d: Expose the video API base URL to the website runtime configuration
+- 6983fe9: Add `first_login` custom attribute schema to Cognito User Pool
+- ec02020: Update the allowed email domains for user signup.
+
+### Patch Changes
+
+- e5b9881: Fix the webinar certificate Lambda path used by the infrastructure deployment.
+
 ## 13.5.0
 
 ### Minor Changes
