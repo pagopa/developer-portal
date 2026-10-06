@@ -1,0 +1,106 @@
+---
+# Local replica of the chatbot vector index (KB) refresh flow:
+#   S3 bucket (LocalStack) --event--> index lambda (LocalStack, zip + hot-reload) --> Redis
+# plus an "indexer" container to run the scripts used by the GitHub actions
+# (index creation from scratch and the full refreshes).
+# Host paths are built from ${PWD}: run docker compose from this folder (kb.sh does).
+name: local-kb
+
+services:
+  # Installs the lambda dependencies in .lambda-deps, on the same base image of the
+  # lambda deployed in AWS (apps/chatbot-index/docker/lambda_refresh_index.Dockerfile)
+  lambda-deps:
+    platform: linux/amd64
+    image: public.ecr.aws/lambda/python:3.12@sha256:2b907880cd2ebc58e8913e939e81627d57307a62e536faf0a8232b74e2557d4a
+    entrypoint: ["/bin/bash", "/opt/local-kb/lambda/build-deps.sh"]
+    volumes:
+      - ./lambda:/opt/local-kb/lambda:ro
+      - ../apps/chatbot-index/pyproject.toml:/src/pyproject.toml:ro
+      - ../apps/chatbot-index/poetry.lock:/src/poetry.lock:ro
+      - ./.lambda-deps:/deps
+    restart: "no"
+
+  localstack:
+    image: localstack/localstack:2026.09.0@sha256:801a3dff7f6a23857e7310b7602e67d52a29dfdcb03e09f7c608d5c57d24b792
+    ports:
+      - "4566:4566"
+    environment:
+      LOCALSTACK_AUTH_TOKEN: ${LOCALSTACK_AUTH_TOKEN:?set LOCALSTACK_AUTH_TOKEN in local-kb/.env}
+      AWS_DEFAULT_REGION: eu-south-1
+      # Lambda containers join this network to reach Redis
+      LAMBDA_DOCKER_NETWORK: local-kb
+      # The lambda imports llama-index and connects to Redis at startup
+      LAMBDA_RUNTIME_ENVIRONMENT_TIMEOUT: 120
+      # Lambda layers are not in the free plan: the dependencies are mounted directly
+      LAMBDA_DOCKER_FLAGS: -v ${PWD}/.lambda-deps:/opt/deps:ro
+      # Host folder mounted as /var/task with hot-reload: code changes apply immediately
+      LAMBDA_CODE_DIR: ${PWD}/../apps/chatbot-index
+      BUCKET_NAME: ${BUCKET_NAME:-devportal-local-website-static-content}
+      LAMBDA_NAME: ${LAMBDA_NAME:-chatbot-local-index-lambda}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./localstack/init/ready.d:/etc/localstack/init/ready.d:ro
+      - ./chatbot.env:/opt/local-kb/chatbot.env:ro
+      - ./s3-data:/opt/local-kb/s3-data:ro
+    healthcheck:
+      # Healthy once the init script (bucket, data, lambda, notifications) completed without errors
+      test: ["CMD-SHELL", "r=$$(curl -sf localhost:4566/_localstack/init/ready) && echo \"$$r\" | grep -Eq '\"completed\": ?true' && ! echo \"$$r\" | grep -q ERROR"]
+      interval: 5s
+      timeout: 5s
+      retries: 120
+    depends_on:
+      lambda-deps:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis/redis-stack:7.2.0-v13@sha256:2b000b938e407d14acafa9b7affd4c5a94ceeec572b25b15dcef0d3a6c064d7e
+    ports:
+      - "6379:6379"
+      # RedisInsight UI
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+
+  # Runs the chatbot-index scripts, e.g.:
+  #   docker compose run --rm indexer src/modules/create_vector_index.py --static
+  # It uses the image deployed as the index lambda in AWS, which includes Chrome for
+  # the dynamic docs. The source code is mounted, so changes do not need a rebuild.
+  indexer:
+    platform: linux/amd64
+    image: local-kb/chatbot-index:latest
+    build:
+      context: ../apps/chatbot-index
+      dockerfile: docker/lambda_refresh_index.Dockerfile
+    profiles: ["tools"]
+    entrypoint: ["python"]
+    env_file: ./chatbot.env
+    environment:
+      AWS_ENDPOINT_URL: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: eu-south-1
+      CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT: ${BUCKET_NAME:-devportal-local-website-static-content}
+    volumes:
+      - ../apps/chatbot-index/src:/var/task/src:ro
+      - ../apps/chatbot-index/config:/var/task/config:ro
+      - ./tools:/var/task/tools:ro
+    depends_on:
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  default:
+    name: local-kb

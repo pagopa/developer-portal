@@ -1,0 +1,7 @@
+# Data downloaded from the dev bucket
+s3-data/
+# LocalStack auth token
+**.env
+# Lambda dependencies installed by the lambda-deps service
+.lambda-deps/
+!.env.example
