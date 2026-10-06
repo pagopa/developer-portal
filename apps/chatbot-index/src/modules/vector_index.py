@@ -159,6 +159,10 @@ def build_index_redis(
         index_store=REDIS_INDEX_STORE,
     )
     storage_context.docstore.add_documents(nodes)
+    # The updates compare these hashes: without them, the first update of each document
+    # would insert its nodes again next to the existing ones
+    for doc in documents:
+        storage_context.docstore.set_document_hash(doc.id_, doc.hash)
 
     LOGGER.info(f"Creating vector index: {index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)

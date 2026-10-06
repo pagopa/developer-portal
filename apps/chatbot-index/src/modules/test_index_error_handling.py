@@ -7,6 +7,9 @@ import boto3
 import pytest
 from botocore.exceptions import ClientError
 from llama_index.core import Document
+from llama_index.core.storage.docstore import SimpleDocumentStore
+from llama_index.core.storage.index_store import SimpleIndexStore
+from llama_index.core.vector_stores import SimpleVectorStore
 
 
 def _import_without_aws():
@@ -203,6 +206,35 @@ def test_new_document_is_added_with_its_hash() -> None:
     assert VECTOR_INDEX.LlamaVectorIndex()._update_doc(index, doc) is True
     index._insert.assert_called_once()
     docstore.set_document_hash.assert_called_once_with(doc.id_, doc.hash)
+
+
+def test_unchanged_document_is_not_duplicated_after_index_creation() -> None:
+    # Regression: the index creation did not store the document hashes, so the first update
+    # of each document (S3 event or refresh) found no hash and inserted its nodes again
+    # next to the existing ones, duplicating its chunks in the vector store.
+    doc = Document(id_="it/devportal-docs/docs/app-io/v1.0/page.md", text="Testo")
+    docstore = SimpleDocumentStore()
+
+    with (
+        mock.patch.object(VECTOR_INDEX, "REDIS_CLIENT"),
+        mock.patch.object(VECTOR_INDEX, "REDIS_DOCSTORE", docstore),
+        mock.patch.object(VECTOR_INDEX, "REDIS_INDEX_STORE", SimpleIndexStore()),
+        mock.patch.object(
+            VECTOR_INDEX,
+            "RedisVectorStore",
+            side_effect=lambda **_: SimpleVectorStore(),
+        ),
+        mock.patch.object(VECTOR_INDEX, "get_documents", return_value=[doc]),
+    ):
+        index = VECTOR_INDEX.build_index_redis(
+            "test-index", static=True, dynamic=False, api=False, structured=False
+        )
+    nodes_after_creation = docstore.get_ref_doc_info(doc.id_).node_ids
+
+    updated = VECTOR_INDEX.LlamaVectorIndex()._update_doc(index, doc)
+
+    assert updated is False
+    assert docstore.get_ref_doc_info(doc.id_).node_ids == nodes_after_creation
 
 
 def test_one_failing_url_does_not_stop_the_other_urls() -> None:
