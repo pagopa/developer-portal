@@ -12,6 +12,7 @@ type LinkButtonProps = {
   readonly size?: number;
   readonly width?: string;
   readonly disabled?: boolean;
+  readonly showArrow?: boolean;
 };
 
 const LinkButton = ({
@@ -22,6 +23,7 @@ const LinkButton = ({
   size = 14,
   width,
   disabled = false,
+  showArrow = true,
 }: LinkButtonProps) => {
   const labelComponent = (
     <Typography
@@ -59,14 +61,16 @@ const LinkButton = ({
           {labelComponent}
         </LinkMui>
       )}
-      <ArrowForward
-        sx={{
-          color: disabled ? disabledColor : color,
-          marginLeft: 0.5,
-          height: 24,
-          width: 24,
-        }}
-      />
+      {showArrow ? (
+        <ArrowForward
+          sx={{
+            color: disabled ? disabledColor : color,
+            marginLeft: 0.5,
+            height: 24,
+            width: 24,
+          }}
+        />
+      ) : null}
     </Stack>
   );
 };
