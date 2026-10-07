@@ -7,9 +7,10 @@
 Terraform creates the SSM parameter `NEXT_PUBLIC_MIXPANEL_TOKEN` as a
 `SecureString` with the initial value `PLACEHOLDER`. After the first apply,
 replace it with the Mixpanel project token in AWS Systems Manager Parameter
-Store. Terraform ignores value changes so subsequent applies preserve the
-manually configured token. Run another Terraform apply after changing the
-parameter to refresh the OpenNext server's environment variable.
+manually configured token. After changing the parameter, run another Terraform
+apply and then redeploy the standalone website so the OpenNext build reads the
+updated Lambda environment and inlines the `NEXT_PUBLIC_` value into the browser
+bundle.
 
 The token is stored in Terraform state and the Lambda environment. The
 `NEXT_PUBLIC_` prefix also means it may be exposed to the browser; use a Mixpanel
