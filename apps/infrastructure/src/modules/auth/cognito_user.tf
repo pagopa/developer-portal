@@ -128,8 +128,7 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   schema {
-    name = "webinar_accepted"
-
+    name                     = "webinar_accepted"
     attribute_data_type      = "Boolean"
     developer_only_attribute = false
     mutable                  = true

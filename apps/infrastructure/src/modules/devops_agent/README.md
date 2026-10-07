@@ -1,8 +1,9 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.33.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.67.0 |
 | <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | >= 1.84.0 |
 
 ## Providers
@@ -10,8 +11,8 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.33.0 |
-| <a name="provider_aws.service"></a> [aws.service](#provider\_aws.service) | >= 5.33.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.67.0 |
+| <a name="provider_aws.service"></a> [aws.service](#provider\_aws.service) | >= 6.67.0 |
 | <a name="provider_awscc"></a> [awscc](#provider\_awscc) | >= 1.84.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 | <a name="provider_time"></a> [time](#provider\_time) | n/a |
@@ -54,13 +55,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_agent_space_name"></a> [agent\_space\_name](#input\_agent\_space\_name) | Name for the DevOps Agent Space | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(string)` | n/a | yes |
 | <a name="input_agent_space_arn"></a> [agent\_space\_arn](#input\_agent\_space\_arn) | ARN of the Agent Space from the primary deployment. Required before deploying the service account resources. | `string` | `""` | no |
 | <a name="input_agent_space_description"></a> [agent\_space\_description](#input\_agent\_space\_description) | Description for the DevOps Agent Space | `string` | `"AgentSpace for monitoring my application"` | no |
+| <a name="input_agent_space_name"></a> [agent\_space\_name](#input\_agent\_space\_name) | Name for the DevOps Agent Space | `string` | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region for DevOps Agent deployment | `string` | `"eu-central-1"` | no |
 | <a name="input_name_postfix"></a> [name\_postfix](#input\_name\_postfix) | Postfix for resource names to ensure uniqueness | `string` | `""` | no |
 | <a name="input_service_account_id"></a> [service\_account\_id](#input\_service\_account\_id) | Account ID of the secondary (service) account for cross-account monitoring. Leave empty to skip. | `string` | `""` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(string)` | n/a | yes |
 
 ## Outputs
 
@@ -76,3 +77,4 @@ No modules.
 | <a name="output_primary_account_id"></a> [primary\_account\_id](#output\_primary\_account\_id) | Primary (monitoring) account ID |
 | <a name="output_secondary_account_association_id"></a> [secondary\_account\_association\_id](#output\_secondary\_account\_association\_id) | ID of the secondary AWS account association |
 | <a name="output_secondary_account_role_arn"></a> [secondary\_account\_role\_arn](#output\_secondary\_account\_role\_arn) | ARN of the Secondary Account Role for Agent Space |
+<!-- END_TF_DOCS -->
