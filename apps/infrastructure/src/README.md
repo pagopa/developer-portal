@@ -61,6 +61,7 @@
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_cms_repository"></a> [github\_cms\_repository](#input\_github\_cms\_repository) | The repository where the CMS workflows will run | `string` | `"pagopa/developer-portal-cms"` | no |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
+| <a name="input_next_public_mixpanel_api_host"></a> [next\_public\_mixpanel\_api\_host](#input\_next\_public\_mixpanel\_api\_host) | Mixpanel API host for the OpenNext server | `string` | n/a | yes |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
 | <a name="input_rds_cms_scaling_configuration"></a> [rds\_cms\_scaling\_configuration](#input\_rds\_cms\_scaling\_configuration) | Scaling configuration for the RDS Aurora instance | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | <pre>{<br/>  "max_capacity": 1,<br/>  "min_capacity": 0.5<br/>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |

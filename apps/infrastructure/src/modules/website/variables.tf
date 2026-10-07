@@ -108,6 +108,11 @@ variable "next_public_feedback_form_enabled" {
   default     = false
 }
 
+variable "next_public_mixpanel_api_host" {
+  type        = string
+  description = "Mixpanel API host for the OpenNext server"
+}
+
 variable "next_public_soap_api_page_active" {
   type        = bool
   description = "Defines if the SOAP API page should be active"

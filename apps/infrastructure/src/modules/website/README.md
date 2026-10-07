@@ -1,3 +1,20 @@
+## Mixpanel configuration
+
+`NEXT_PUBLIC_MIXPANEL_API_HOST` is configured through
+`next_public_mixpanel_api_host` in each environment's
+`apps/infrastructure/src/env/<environment>/terraform.tfvars`.
+
+Terraform creates the SSM parameter `NEXT_PUBLIC_MIXPANEL_TOKEN` as a
+`SecureString` with the initial value `PLACEHOLDER`. After the first apply,
+replace it with the Mixpanel project token in AWS Systems Manager Parameter
+Store. Terraform ignores value changes so subsequent applies preserve the
+manually configured token. Run another Terraform apply after changing the
+parameter to refresh the OpenNext server's environment variable.
+
+The token is stored in Terraform state and the Lambda environment. The
+`NEXT_PUBLIC_` prefix also means it may be exposed to the browser; use a Mixpanel
+project token, not a privileged API secret.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -65,6 +82,7 @@
 | [aws_s3_bucket_versioning.website_standalone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_object.error_404_page](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_ssm_parameter.cookie_domain_script](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.mixpanel_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.strapi_api_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_integer.website_bucket_random_integer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
@@ -93,6 +111,7 @@
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |
 | <a name="input_next_public_feedback_form_enabled"></a> [next\_public\_feedback\_form\_enabled](#input\_next\_public\_feedback\_form\_enabled) | Defines if the feedback form should be enabled | `bool` | `false` | no |
+| <a name="input_next_public_mixpanel_api_host"></a> [next\_public\_mixpanel\_api\_host](#input\_next\_public\_mixpanel\_api\_host) | Mixpanel API host for the OpenNext server | `string` | n/a | yes |
 | <a name="input_next_public_soap_api_page_active"></a> [next\_public\_soap\_api\_page\_active](#input\_next\_public\_soap\_api\_page\_active) | Defines if the SOAP API page should be active | `bool` | `false` | no |
 | <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
