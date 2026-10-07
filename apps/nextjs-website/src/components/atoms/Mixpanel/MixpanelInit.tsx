@@ -1,17 +1,15 @@
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 
-declare global {
-  interface Window {
+interface OTWindow extends Window {
+  // eslint-disable-next-line functional/no-return-void
+  OptanonWrapper: () => void;
+  OneTrust: {
     // eslint-disable-next-line functional/no-return-void
-    OptanonWrapper: () => void;
-    OneTrust: {
-      // eslint-disable-next-line functional/no-return-void
-      OnConsentChanged: (callback: () => void) => void;
-      // eslint-disable-next-line functional/no-return-void
-      ToggleInfoDisplay: () => void;
-    };
-  }
+    OnConsentChanged: (callback: () => void) => void;
+    // eslint-disable-next-line functional/no-return-void
+    ToggleInfoDisplay: () => void;
+  };
 }
 
 const targCookiesGroup = 'C0002'; // Target cookies (Mixpanel)
@@ -54,8 +52,9 @@ const MixpanelInit = (config: MixpanelConfig) => {
     };
 
     // eslint-disable-next-line functional/immutable-data
-    window.OptanonWrapper = function () {
-      window.OneTrust.OnConsentChanged(() => {
+    const otWindow = window as unknown as OTWindow;
+    otWindow.OptanonWrapper = function () {
+      otWindow.OneTrust.OnConsentChanged(() => {
         if (hasConsent()) {
           initMixpanel();
         }
