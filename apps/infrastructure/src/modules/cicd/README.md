@@ -1,14 +1,15 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.67.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.67.0 |
 
 ## Modules
 
@@ -60,3 +61,4 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_iam_role_deploy_standalone_website_arn"></a> [iam\_role\_deploy\_standalone\_website\_arn](#output\_iam\_role\_deploy\_standalone\_website\_arn) | n/a |
+<!-- END_TF_DOCS -->

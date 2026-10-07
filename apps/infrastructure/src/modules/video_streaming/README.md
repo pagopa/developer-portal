@@ -1,17 +1,18 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.67.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
-| <a name="provider_aws.eu-south-1"></a> [aws.eu-south-1](#provider\_aws.eu-south-1) | >= 6.28.0 |
-| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | >= 6.28.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.67.0 |
+| <a name="provider_aws.eu-south-1"></a> [aws.eu-south-1](#provider\_aws.eu-south-1) | >= 6.67.0 |
+| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | >= 6.67.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
@@ -112,16 +113,16 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alerting_email"></a> [alerting\_email](#input\_alerting\_email) | Email address used for SNS alarm subscriptions | `string` | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to deploy resources in. | `string` | `"eu-central-1"` | no |
 | <a name="input_cognito_user_pool_client_id"></a> [cognito\_user\_pool\_client\_id](#input\_cognito\_user\_pool\_client\_id) | The Cognito User Pool Client ID used as audience for the JWT authorizer | `string` | n/a | yes |
 | <a name="input_cognito_user_pool_endpoint"></a> [cognito\_user\_pool\_endpoint](#input\_cognito\_user\_pool\_endpoint) | The endpoint of the Cognito User Pool for JWT authorization (e.g. cognito-idp.eu-south-1.amazonaws.com/eu-south-1\_XXXXX) | `string` | n/a | yes |
+| <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | The custom domain name (e.g., video.example.com) to assign to the CloudFront distribution. | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The GitHub repository (e.g., org/repo) allowed to assume the deploy role via OIDC. | `string` | n/a | yes |
-| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | A name for the project to prefix resources. | `string` | n/a | yes |
-| <a name="input_strapi_api_url"></a> [strapi\_api\_url](#input\_strapi\_api\_url) | The URL of the Strapi API. | `string` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to deploy resources in. | `string` | `"eu-central-1"` | no |
-| <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | The custom domain name (e.g., video.example.com) to assign to the CloudFront distribution. | `string` | `null` | no |
 | <a name="input_ivs_channels"></a> [ivs\_channels](#input\_ivs\_channels) | A map of IVS channels to create. The key will be used for resource identification. | <pre>map(object({<br/>    name         = string<br/>    latency_mode = optional(string, "LOW")<br/>    type         = optional(string, "STANDARD")<br/>  }))</pre> | `{}` | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | A name for the project to prefix resources. | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | The ID of the existing Route 53 hosted zone for the custom domain. | `string` | `null` | no |
+| <a name="input_strapi_api_url"></a> [strapi\_api\_url](#input\_strapi\_api\_url) | The URL of the Strapi API. | `string` | n/a | yes |
 | <a name="input_webinar_metrics_channel_key"></a> [webinar\_metrics\_channel\_key](#input\_webinar\_metrics\_channel\_key) | The key from ivs\_channels to use for the webinar metrics Lambda. If null, IVS\_CHANNEL\_ARN is not set and the Lambda uses its default. | `string` | `null` | no |
 | <a name="input_webinar_metrics_stage_name"></a> [webinar\_metrics\_stage\_name](#input\_webinar\_metrics\_stage\_name) | The api webinar metrics stage name. | `string` | `"v1"` | no |
 
@@ -133,10 +134,11 @@ No modules.
 | <a name="output_athena_results_bucket_name"></a> [athena\_results\_bucket\_name](#output\_athena\_results\_bucket\_name) | The name of the S3 bucket where Athena query results are stored. |
 | <a name="output_athena_workgroup_name"></a> [athena\_workgroup\_name](#output\_athena\_workgroup\_name) | The name of the Athena workgroup for running queries. |
 | <a name="output_deploy_lambda_role_arn"></a> [deploy\_lambda\_role\_arn](#output\_deploy\_lambda\_role\_arn) | The ARN of the IAM role used by GitHub Actions to deploy the IVS video processing Lambda. |
-| <a name="output_ingest_api_endpoint"></a> [ingest\_api\_endpoint](#output\_ingest\_api\_endpoint) | The domain of the HTTP API for the ingest Lambda. |
 | <a name="output_ivs_channel_details"></a> [ivs\_channel\_details](#output\_ivs\_channel\_details) | A map containing the details for each created IVS channel. |
 | <a name="output_s3_recording_bucket_name"></a> [s3\_recording\_bucket\_name](#output\_s3\_recording\_bucket\_name) | The name of the S3 bucket where all recordings will be stored. |
+| <a name="output_video_api_base_url"></a> [video\_api\_base\_url](#output\_video\_api\_base\_url) | The base URL of the video API. |
 | <a name="output_webinar_metrics_api_key_id"></a> [webinar\_metrics\_api\_key\_id](#output\_webinar\_metrics\_api\_key\_id) | The ID of the API key for the webinar metrics API. Retrieve the value with: aws apigateway get-api-key --api-key <id> --include-value |
 | <a name="output_webinar_metrics_api_url"></a> [webinar\_metrics\_api\_url](#output\_webinar\_metrics\_api\_url) | The invoke URL of the webinar metrics API Gateway. |
 | <a name="output_webinar_metrics_lambda_arn"></a> [webinar\_metrics\_lambda\_arn](#output\_webinar\_metrics\_lambda\_arn) | The ARN of the webinar metrics Lambda function. |
 | <a name="output_webinar_metrics_lambda_name"></a> [webinar\_metrics\_lambda\_name](#output\_webinar\_metrics\_lambda\_name) | The name of the webinar metrics Lambda function. |
+<!-- END_TF_DOCS -->

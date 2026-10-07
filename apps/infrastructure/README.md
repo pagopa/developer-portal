@@ -101,6 +101,26 @@ And finally execute the following command that upload state to S3. Reply yes to 
 In order to allow github to manage the aws resources you have to add the `IAM_ROLE` environment secret filled with the `arn` of `GitHubActionIACRole` role. Find the `arn` of the role via management console. 
 
 
+## How to upgrade the AWS provider
+
+Set the AWS provider constraint in `src/main.tf` (for example, `~> 6.67.0`
+allows only 6.67 patch releases) and align the minimum version in local modules.
+Child modules inherit the provider selected by the root; third-party modules do
+not need matching minimum versions as long as their constraints are compatible.
+
+Initialize the target environment with upgrades enabled before running a plan:
+
+```sh
+cd apps/infrastructure/src
+./terraform.sh init <env_name> -upgrade
+./terraform.sh plan <env_name>
+```
+
+`-upgrade` can also update other providers and remote modules within their
+configured constraints. Review and commit the generated `.terraform.lock.hcl`
+changes together with the provider constraints. Do not manually edit provider
+versions or checksums in the lock file.
+
 ## How to update the Infrastructure documentation
 
 ```sh
