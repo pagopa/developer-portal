@@ -1,9 +1,10 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.14.3 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.16.4 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.67.0 |
 | <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | ~> 1.84.0 |
 
 ## Providers
@@ -39,11 +40,6 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cms_app_image_tag"></a> [cms\_app\_image\_tag](#input\_cms\_app\_image\_tag) | Docker image tag for the CMS Strapi application | `string` | n/a | yes |
-| <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
-| <a name="input_dns_domain_name_cms"></a> [dns\_domain\_name\_cms](#input\_dns\_domain\_name\_cms) | DNS domain name of the Developer Portal's CMS | `map(any)` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
-| <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_ac_integration_is_enabled"></a> [ac\_integration\_is\_enabled](#input\_ac\_integration\_is\_enabled) | Defines if Active Campaign integration should be enabled | `bool` | `false` | no |
 | <a name="input_aws_chatbot_region"></a> [aws\_chatbot\_region](#input\_aws\_chatbot\_region) | AWS region to create AI chatbot's resources | `string` | `"eu-west-3"` | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
@@ -51,15 +47,20 @@
 | <a name="input_chatbot_ecs_monitoring"></a> [chatbot\_ecs\_monitoring](#input\_chatbot\_ecs\_monitoring) | Langfuse configuration for the AI chatbot | <pre>object({<br/>    cpu       = optional(number, 2048)<br/>    memory    = optional(number, 4096)<br/>    image_uri = optional(string, "ghcr.io/langfuse/langfuse:sha-9375250")<br/>    port      = optional(number, 3000)<br/>  })</pre> | <pre>{<br/>  "cpu": 512,<br/>  "image_uri": "ghcr.io/langfuse/langfuse:sha-9375250",<br/>  "memory": 1024,<br/>  "port": 3000<br/>}</pre> | no |
 | <a name="input_chatbot_ecs_redis"></a> [chatbot\_ecs\_redis](#input\_chatbot\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br/>    cpu       = optional(number, 2048)<br/>    memory    = optional(number, 4096)<br/>    image_uri = optional(string, "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186")<br/>    port      = optional(number, 6379)<br/>  })</pre> | <pre>{<br/>  "cpu": 256,<br/>  "image_uri": "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186",<br/>  "memory": 512,<br/>  "port": 6379<br/>}</pre> | no |
 | <a name="input_chatbot_models"></a> [chatbot\_models](#input\_chatbot\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider      = string<br/>    generation    = string<br/>    embeddings    = string<br/>    reranker      = string<br/>    use_multi_rag = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "embeddings": "gemini-embedding-001",<br/>  "generation": "gemini-3.1-flash-lite-preview",<br/>  "provider": "google",<br/>  "reranker": "semantic-ranker-default-004",<br/>  "use_multi_rag": false<br/>}</pre> | no |
+| <a name="input_cms_app_image_tag"></a> [cms\_app\_image\_tag](#input\_cms\_app\_image\_tag) | Docker image tag for the CMS Strapi application | `string` | n/a | yes |
 | <a name="input_cms_ecs_desired_count"></a> [cms\_ecs\_desired\_count](#input\_cms\_ecs\_desired\_count) | Desired number of running ECS tasks for the CMS Strapi service | `number` | `1` | no |
 | <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
 | <a name="input_create_devops_agent"></a> [create\_devops\_agent](#input\_create\_devops\_agent) | Defines if the DevOps Agent Space should be created | `bool` | `false` | no |
 | <a name="input_create_dos68k_chatbotapi"></a> [create\_dos68k\_chatbotapi](#input\_create\_dos68k\_chatbotapi) | Defines if dos68k Chatbot API should be created | `bool` | `false` | no |
 | <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
+| <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
+| <a name="input_dns_domain_name_cms"></a> [dns\_domain\_name\_cms](#input\_dns\_domain\_name\_cms) | DNS domain name of the Developer Portal's CMS | `map(any)` | n/a | yes |
 | <a name="input_docs_redirect_is_enabled"></a> [docs\_redirect\_is\_enabled](#input\_docs\_redirect\_is\_enabled) | Defines if Docs redirect should be enabled | `bool` | `false` | no |
 | <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the dos68k Chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "2.1.0",<br/>  "memory": 2048<br/>}</pre> | no |
 | <a name="input_ecs_chatbotapi_enable_scheduled_scaling"></a> [ecs\_chatbotapi\_enable\_scheduled\_scaling](#input\_ecs\_chatbotapi\_enable\_scheduled\_scaling) | Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET) | `bool` | `false` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_cms_repository"></a> [github\_cms\_repository](#input\_github\_cms\_repository) | The repository where the CMS workflows will run | `string` | `"pagopa/developer-portal-cms"` | no |
+| <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
 | <a name="input_rds_cms_scaling_configuration"></a> [rds\_cms\_scaling\_configuration](#input\_rds\_cms\_scaling\_configuration) | Scaling configuration for the RDS Aurora instance | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | <pre>{<br/>  "max_capacity": 1,<br/>  "min_capacity": 0.5<br/>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
@@ -76,3 +77,4 @@
 | <a name="output_terraform_backend_bucket_name"></a> [terraform\_backend\_bucket\_name](#output\_terraform\_backend\_bucket\_name) | n/a |
 | <a name="output_terraform_lock_dynamodb_table"></a> [terraform\_lock\_dynamodb\_table](#output\_terraform\_lock\_dynamodb\_table) | n/a |
 | <a name="output_video_streaming"></a> [video\_streaming](#output\_video\_streaming) | Outputs from the video streaming module. |
+<!-- END_TF_DOCS -->
