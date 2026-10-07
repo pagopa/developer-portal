@@ -19,10 +19,10 @@ export type CertificatesListProps = {
 const handleDownload = async (
   userName: string,
   webinarName: string,
-  createdOn: string,
+  // createdOn: string,
   title: string,
   subtitle: string,
-  createdAt: string,
+  // createdAt: string,
   certification: string,
   attended: string
 ) => {
@@ -30,10 +30,10 @@ const handleDownload = async (
     <CertificateTemplate
       userName={userName}
       webinarName={webinarName}
-      createdOn={createdOn}
+      // createdOn={createdOn}
       title={title}
       subtitle={subtitle}
-      createdAt={createdAt}
+      // createdAt={createdAt}
       certification={certification}
       attended={attended}
     />
@@ -51,22 +51,16 @@ const handleDownload = async (
 const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
-  const locale = useLocale();
+  // const locale = useLocale();
 
-  const { userFullName, webinarSubscriptions } = useUser();
-
-  const certificateDatesBySlug = new Map(
-    webinarSubscriptions
-      ?.filter((webinar) => webinar.certificateCreatedAt && webinar.webinarId)
-      .map((webinar) => [webinar.webinarId, webinar.certificateCreatedAt]) ?? []
-  );
+  const { userFullName, webinarCertificates } = useUser();
 
   const filteredWebinars = webinars.filter((webinar) =>
-    certificateDatesBySlug.has(webinar.slug)
+    webinarCertificates.includes(webinar.slug)
   );
 
   const cardsToShow = filteredWebinars.map((webinar) => {
-    const certificateCreatedAt = certificateDatesBySlug.get(webinar.slug);
+    // const certificateCreatedAt = certificateDatesBySlug.get(webinar.slug);
     return {
       title: webinar.title,
       text: '',
@@ -77,13 +71,13 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
         handleDownload(
           userFullName,
           webinar.title,
-          new Date(certificateCreatedAt || '').toLocaleString(locale, {
-            dateStyle: 'long',
-            timeStyle: 'short',
-          }),
+          // new Date(certificateCreatedAt || '').toLocaleString(locale, {
+          //   dateStyle: 'long',
+          //   timeStyle: 'short',
+          // }),
           t('profile.certificateList.certificate.title'),
           t('profile.certificateList.certificate.subtitle'),
-          t('profile.certificateList.certificate.createdAt'),
+          // t('profile.certificateList.certificate.createdAt'),
           t('profile.certificateList.certificate.certification'),
           t('profile.certificateList.certificate.attended')
         ),
