@@ -74,10 +74,6 @@ inputs:
     description: 'Cognito Region'
     required: false
     default: 'eu-south-1'
-  fetch_from_strapi:
-    description: 'Fetch from Strapi'
-    required: false
-    default: 'true'
   s3_dirname_metadata_json_path:
     description: 'S3 Dirname Metadata JSON Path'
     required: true
@@ -240,7 +236,6 @@ runs:
         S3_DOC_EXTRACTION_BUCKET_NAME: ${{ inputs.s3_doc_extraction_bucket_name }}
         S3_PATH_TO_GITBOOK_DOCS: ${{ inputs.s3_path_to_gitbook_docs }}
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.next_public_cognito_region }}
-        FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
         GENERATE_URL_METADATA: 'true'
         GENERATE_METADATA: 'true'
         SAVE_STRAPI_RESPONSES: 'true'
@@ -280,7 +275,6 @@ runs:
       shell: bash
       env:
         ENV_SHORT: ${{ env.ENV_SHORT }}
-        FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         S3_DIRNAMES_JSON_PATH: ${{ inputs.s3_dirnames_json_path }}
         S3_PATH_TO_GITBOOK_DOCS: ${{ inputs.s3_path_to_gitbook_docs }}

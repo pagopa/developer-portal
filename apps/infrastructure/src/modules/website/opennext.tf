@@ -46,7 +46,6 @@ module "opennext" {
     environment_variables = {
       NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT                  = aws_ssm_parameter.cookie_domain_script.value
       ENVIRONMENT                                       = var.environment
-      FETCH_FROM_STRAPI                                 = "true"
       NEXT_PUBLIC_CHATBOT_ACTIVE                        = var.create_chatbot ? "true" : "false"
       NEXT_PUBLIC_CHATBOT_HOST                          = var.create_chatbot ? "https://api.chatbot.${var.dns_domain_name}" : ""
       NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES             = "5"
