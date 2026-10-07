@@ -14,6 +14,7 @@ import {
 import { Authenticator } from '@aws-amplify/ui-react';
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { CognitoUser } from '@aws-amplify/auth';
+import mixpanel from 'mixpanel-browser';
 
 Amplify.configure(amplifyConfig);
 
@@ -55,6 +56,15 @@ function hydrateFirstLoginOnBoot(user: CognitoUser) {
   sessionStorage.setItem('isFirstLogin', String(!claim));
 }
 
+function registerAuthStatusForMixpanel(status: boolean) {
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    mixpanel.register({ Authenticated: status });
+  } catch {
+    // Mixpanel is not initalized yet
+  }
+}
+
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     // Restore or clear the sentinel cookie on page load based on current session state
@@ -62,15 +72,21 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       .then((user) => {
         setLoggedInCookie();
         hydrateFirstLoginOnBoot(user);
+        registerAuthStatusForMixpanel(true);
       })
-      .catch(deleteLoggedInCookie);
+      .catch(() => {
+        deleteLoggedInCookie();
+        registerAuthStatusForMixpanel(false);
+      });
 
     return Hub.listen('auth', ({ payload: { event } }) => {
       if (event === 'signIn' || event === 'autoSignIn') {
         setLoggedInCookie();
         resolveFirstLogin();
+        registerAuthStatusForMixpanel(true);
       } else if (event === 'signOut') {
         deleteLoggedInCookie();
+        registerAuthStatusForMixpanel(false);
       }
     });
   }, []);
