@@ -199,10 +199,8 @@ export const useWebinar = () => {
       }
 
       const durationMs =
-        webinar.startDateTime && webinar.endDateTime
-          ? new Date(webinar.endDateTime).getTime() -
-            new Date(webinar.startDateTime).getTime()
-          : 0;
+        new Date(webinar.endDateTime).getTime() -
+        new Date(webinar.startDateTime).getTime();
 
       const durationMinutes = Math.round(durationMs / 60000);
       // eslint-disable-next-line functional/immutable-data
