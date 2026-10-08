@@ -18,7 +18,7 @@ export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
   <Stack
     sx={{
       display: 'flex',
-      flexDirection: { xs: 'column', md: 'row' },
+      flexDirection: { xs: 'column', lg: 'row' },
       alignItems: 'stretch',
       justifyContent: 'space-between',
       width: '100%',

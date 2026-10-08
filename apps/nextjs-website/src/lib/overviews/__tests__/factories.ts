@@ -105,7 +105,10 @@ export function overviewsWithItemWithEmptyGuideProductSlug(): StrapiOverviews {
           guides: [
             {
               ...strapiOverviews.data[0]?.postIntegration?.guides[0],
-              slug: '',
+              product: {
+                ...strapiOverviews.data[0]?.postIntegration?.guides[0]?.product,
+                slug: '',
+              },
             },
           ],
         },
@@ -125,7 +128,10 @@ export function overviewsWithItemMissingGuideProductSlug(): StrapiOverviews {
           guides: [
             {
               ...strapiOverviews.data[0]?.postIntegration?.guides[0],
-              slug: undefined as any,
+              product: {
+                ...strapiOverviews.data[0]?.postIntegration?.guides[0]?.product,
+                slug: undefined as any,
+              },
             },
           ],
         },
