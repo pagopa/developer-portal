@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 17.4.6
+
+### Patch Changes
+
+- 8b725bf: Make webinar dates mandatory
+- 8b725bf: - Update Cognito custom parameter and add webinar monitoring consent
+  - Add PDF download and webinar certificate functionality
+  - Add LiveWebinarWarningBanner and its Storybook story
+  - Add CertificateBanner and its Storybook story
+  - Show webinar monitoring components only when the feature flag is enabled
+  - Add consent popup when subscribing to a webinar
+  - Add parameters to the heartbeat API call
+  - Add webinar certificate list page, shown only when the feature flag is enabled
+- 7711e9c: Fix post-integration guide links
+- 3924ad8: Fix BannerLink padding
+
 ## 17.4.5
 
 ### Patch Changes
