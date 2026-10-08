@@ -11,7 +11,7 @@ terraform {
 
     awscc = {
       source  = "hashicorp/awscc"
-      version = "~> 1.84.0"
+      version = "~> 1.105.0"
     }
   }
 }
@@ -321,18 +321,18 @@ module "video_streaming" {
 # DevOps Agent
 ################################################################################
 module "devops_agent" {
-  count  = var.create_devops_agent ? 1 : 0
+  count  = var.environment == "prod" && var.create_devops_agent ? 1 : 0
   source = "./modules/devops_agent"
 
   providers = {
-    aws         = aws
-    aws.service = aws
-    awscc       = awscc.eu-central-1
+    aws   = aws.eu-central-1
+    awscc = awscc.eu-central-1
   }
 
   agent_space_name = "DevPortalAgentSpace"
 
   agent_space_description = "Space for DevOps agent of Developer Portal"
+  name_postfix            = "1efc2e23"
 
   tags = var.tags
 }

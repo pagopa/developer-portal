@@ -2,7 +2,7 @@
 
 output "agent_space_id" {
   description = "The ID of the created Agent Space"
-  value       = awscc_devopsagent_agent_space.main.id
+  value       = awscc_devopsagent_agent_space.main.agent_space_id
 }
 
 output "agent_space_arn" {
@@ -32,20 +32,10 @@ output "primary_account_id" {
 
 output "primary_account_association_id" {
   description = "ID of the primary AWS account association"
-  value       = awscc_devopsagent_association.primary_aws_account.id
-}
-
-output "secondary_account_role_arn" {
-  description = "ARN of the Secondary Account Role for Agent Space"
-  value       = local.create_service_account ? aws_iam_role.secondary_account[0].arn : null
-}
-
-output "secondary_account_association_id" {
-  description = "ID of the secondary AWS account association"
-  value       = local.create_service_account ? awscc_devopsagent_association.secondary_aws_account[0].id : null
+  value       = awscc_devopsagent_association.primary_aws_account.association_id
 }
 
 output "aws_region" {
   description = "AWS region"
-  value       = var.aws_region
+  value       = data.aws_region.current.region
 }

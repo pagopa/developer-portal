@@ -225,7 +225,7 @@ variable "docs_redirect_is_enabled" {
 ################################################################################
 variable "create_devops_agent" {
   type        = bool
-  description = "Defines if the DevOps Agent Space should be created"
+  description = "Enable the DevOps Agent Space in production only; ignored in other environments"
   default     = false
 }
 

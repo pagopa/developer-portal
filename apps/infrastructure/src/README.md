@@ -5,7 +5,7 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.16.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.67.0 |
-| <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | ~> 1.84.0 |
+| <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | ~> 1.105.0 |
 
 ## Providers
 
@@ -50,7 +50,7 @@
 | <a name="input_cms_app_image_tag"></a> [cms\_app\_image\_tag](#input\_cms\_app\_image\_tag) | Docker image tag for the CMS Strapi application | `string` | n/a | yes |
 | <a name="input_cms_ecs_desired_count"></a> [cms\_ecs\_desired\_count](#input\_cms\_ecs\_desired\_count) | Desired number of running ECS tasks for the CMS Strapi service | `number` | `1` | no |
 | <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
-| <a name="input_create_devops_agent"></a> [create\_devops\_agent](#input\_create\_devops\_agent) | Defines if the DevOps Agent Space should be created | `bool` | `false` | no |
+| <a name="input_create_devops_agent"></a> [create\_devops\_agent](#input\_create\_devops\_agent) | Enable the DevOps Agent Space in production only; ignored in other environments | `bool` | `false` | no |
 | <a name="input_create_dos68k_chatbotapi"></a> [create\_dos68k\_chatbotapi](#input\_create\_dos68k\_chatbotapi) | Defines if dos68k Chatbot API should be created | `bool` | `false` | no |
 | <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
