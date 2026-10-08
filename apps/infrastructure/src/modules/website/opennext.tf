@@ -12,6 +12,21 @@ resource "aws_ssm_parameter" "cookie_domain_script" {
   }
 }
 
+resource "aws_ssm_parameter" "mixpanel_token" {
+  name        = "NEXT_PUBLIC_MIXPANEL_TOKEN"
+  description = "Mixpanel project token for OpenNext"
+  type        = "SecureString"
+  value       = "PLACEHOLDER"
+  tags        = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      insecure_value,
+      value
+    ]
+  }
+}
+
 resource "aws_ssm_parameter" "strapi_api_token" {
   name = "STRAPI_API_TOKEN"
 
@@ -56,6 +71,8 @@ module "opennext" {
       NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID       = var.cognito_user_pool_client_id
       NEXT_PUBLIC_ENVIRONMENT                           = var.environment
       NEXT_PUBLIC_I18N_ACTIVE_LANGUAGES                 = "false"
+      NEXT_PUBLIC_MIXPANEL_API_HOST                     = var.next_public_mixpanel_api_host
+      NEXT_PUBLIC_MIXPANEL_TOKEN                        = aws_ssm_parameter.mixpanel_token.value
       NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS             = "https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa"
       NEXT_PUBLIC_WEBSITE_BASE_URL                      = "https://${var.dns_domain_name}"
       NEXT_PUBLIC_WEBSITE_NAME                          = "DevPortal"
