@@ -131,7 +131,6 @@ variable "vpc" {
 
 variable "webinar_video_api" {
   type = object({
-    ingest_url          = string
     base_url            = string
     interval_in_seconds = number
     enabled             = bool
