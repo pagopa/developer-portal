@@ -1,29 +1,6 @@
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
-
-interface OTWindow extends Window {
-  // eslint-disable-next-line functional/no-return-void
-  OptanonWrapper: () => void;
-  OneTrust: {
-    // eslint-disable-next-line functional/no-return-void
-    OnConsentChanged: (callback: () => void) => void;
-    // eslint-disable-next-line functional/no-return-void
-    ToggleInfoDisplay: () => void;
-  };
-}
-
-const targCookiesGroup = 'C0002'; // Target cookies (Mixpanel)
-
-// Reading cookie instead of checking window.OneTrust.OptanonActiveGroups
-// because it will NEVER be instantiated at page load when we first check
-const hasConsent = () => {
-  const OTCookieValue: string =
-    document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('OptanonConsent=')) || '';
-  const checkValue = `${targCookiesGroup}%3A1`;
-  return OTCookieValue.indexOf(checkValue) > -1;
-};
+import { hasConsent, OTWindow } from './ConsentCheck';
 
 type MixpanelConfig = {
   token?: string;
@@ -51,8 +28,8 @@ const MixpanelInit = (config: MixpanelConfig) => {
       });
     };
 
-    // eslint-disable-next-line functional/immutable-data
     const otWindow = window as unknown as OTWindow;
+    // eslint-disable-next-line functional/immutable-data
     otWindow.OptanonWrapper = function () {
       otWindow.OneTrust.OnConsentChanged(() => {
         if (hasConsent()) {

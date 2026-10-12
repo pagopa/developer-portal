@@ -61,7 +61,7 @@ function registerAuthStatusForMixpanel(status: boolean) {
   try {
     mixpanel.register({ Authenticated: status });
   } catch {
-    // Mixpanel is not initalized yet
+    // Mixpanel is not initalized
   }
 }
 
