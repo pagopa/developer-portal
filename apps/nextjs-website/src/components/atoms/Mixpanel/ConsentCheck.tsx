@@ -1,3 +1,5 @@
+import { isProduction } from '@/config';
+
 export interface OTWindow extends Window {
   // eslint-disable-next-line functional/no-return-void
   OptanonWrapper: () => void;
@@ -14,6 +16,9 @@ const targCookiesGroup = 'C0002'; // Target cookies (Mixpanel)
 // Reading cookie instead of checking window.OneTrust.OptanonActiveGroups
 // because it will NEVER be instantiated at page load when we first check
 export const hasConsent = () => {
+  // Assume consent on testing platforms (DEV, UAT)
+  if (!isProduction) return true;
+
   const OTCookieValue: string =
     document.cookie
       .split('; ')
