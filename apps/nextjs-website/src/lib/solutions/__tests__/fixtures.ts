@@ -53,6 +53,8 @@ export const strapiSolutions = {
           slug: 'webinar-title',
           description: 'Webinar Description',
           playerSrc: 'https://example.com/player',
+          startDatetime: fixedDateIsoString,
+          endDatetime: fixedDateIsoString,
           isVisibleInList: true,
           publishedAt: fixedDateIsoString,
           updatedAt: fixedDateIsoString,
@@ -173,6 +175,8 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
       slug: 'webinar-title',
       description: 'Webinar Description',
       playerSrc: 'https://example.com/player',
+      startDateTime: fixedDateIsoString,
+      endDateTime: fixedDateIsoString,
       relatedLinks: {
         title: 'Related Links',
         links: [

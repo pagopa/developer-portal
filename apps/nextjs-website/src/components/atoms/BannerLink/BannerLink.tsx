@@ -36,7 +36,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
         backgroundColor: backgroundColor,
         direction: 'column',
         display: 'flex',
-        justifyContent: { xs: 'center', md: contentJustification },
+        justifyContent: { xs: 'center', lg: contentJustification },
         maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
         width: '100%',
@@ -47,7 +47,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
           display: 'flex',
           justifyContent: 'center',
           maxWidth: '100%',
-          padding: { xs: '0px 32px', md: '0px 130px' },
+          padding: { xs: '0px 32px', md: '0px 64px' },
           textAlign: 'center',
         }}
       >

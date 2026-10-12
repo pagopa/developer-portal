@@ -111,6 +111,8 @@ export const strapiWebinarsWithMissingData: StrapiWebinars = {
         mime: '',
         size: 0,
       },
+      startDatetime: '2024-01-10T10:00:00.000Z',
+      endDatetime: '2024-01-10T12:00:00.000Z',
       webinarSpeakers: [],
       updatedAt: '2024-01-02T00:00:00.000Z',
       webinarCategory: {
