@@ -1,3 +1,4 @@
+'use client';
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { hasConsent, OTWindow } from './ConsentCheck';
