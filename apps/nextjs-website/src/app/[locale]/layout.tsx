@@ -107,6 +107,7 @@ export default async function RootLayout({
 
   // Check if param locale is valid.
   if (!SUPPORTED_LOCALES.some(({ langCode }) => langCode === locale)) {
+    console.error('Unsupported or invalid locale ', locale);
     notFound();
   }
 
