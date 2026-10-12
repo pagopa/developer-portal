@@ -458,6 +458,7 @@ def get_static_metadata() -> List[StaticMetadata]:
             )
         )
 
+    static_metadata = dedupe_static_metadata(static_metadata)
     LOGGER.info(f"Found {len(static_metadata)} static URLs.")
     return static_metadata
 
@@ -503,7 +504,6 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_metadata = dedupe_static_metadata(static_metadata)
     static_docs = []
     for item in tqdm.tqdm(
         static_metadata, total=len(static_metadata), desc="Getting static documents"
