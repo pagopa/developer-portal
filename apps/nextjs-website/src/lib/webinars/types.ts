@@ -22,8 +22,8 @@ export type Webinar = {
   readonly playerCoverImageUrl?: string;
   readonly videoOnDemandStartAt?: number;
   readonly speakers?: readonly Speaker[];
-  readonly startDateTime?: string;
-  readonly endDateTime?: string;
+  readonly startDateTime: string;
+  readonly endDateTime: string;
   readonly title: string;
   readonly slug: string;
   readonly relatedResources?: {

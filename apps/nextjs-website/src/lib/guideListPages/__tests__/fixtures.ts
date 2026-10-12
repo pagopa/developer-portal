@@ -187,6 +187,12 @@ export const strapiGuideListPagesData = {
             {
               title: 'SACI',
               slug: 'saci',
+              product: {
+                name: 'PagoPA',
+                shortName: 'pagoPA',
+                slug: 'pago-pa',
+                isVisible: true,
+              },
               listItems: [
                 { text: 'Genera un codice IUV' },
                 {
@@ -221,6 +227,12 @@ export const strapiGuideListPagesData = {
             {
               title: 'SANP',
               slug: 'sanp',
+              product: {
+                name: 'PagoPA',
+                shortName: 'pagoPA',
+                isVisible: true,
+                slug: 'pago-pa',
+              },
               listItems: [
                 { text: 'Conosci, usa e gestisci il prodotto pagoPA' },
                 {
@@ -264,6 +276,12 @@ export const strapiGuideListPagesData = {
             {
               title: 'Guida tecnica sugli avvisi di pagamento pagoPA',
               slug: 'avviso-pagamento',
+              product: {
+                slug: 'app-io',
+                name: 'App IO',
+                shortName: 'App IO',
+                isVisible: true,
+              },
               listItems: [
                 { text: 'Scopri come si crea un avviso di pagamento' },
                 { text: 'Usa i modelli grafici per la creazione di un avviso' },
@@ -389,7 +407,7 @@ export const guideListPagesProps = [
               'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png',
             link: {
               label: 'guideListPage.cardSection.linkLabel',
-              href: '/it/pago-pa/guides/avviso-pagamento',
+              href: '/it/app-io/guides/avviso-pagamento',
               translate: true,
             },
           },
