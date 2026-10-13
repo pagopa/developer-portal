@@ -21,7 +21,7 @@ const MixpanelInit = (config: MixpanelConfig) => {
       if (!config || !config.enableMixpanel || !config.token) return;
 
       mixpanel.init(config.token, {
-        // ...(config.apiHost && { api_host: config.apiHost }),
+        ...(config.apiHost && { api_host: 'https://api-eu.mixpanel.com' }), // config.apiHost
         ...(config.cookieDomain && {
           cookie_domain: config.cookieDomain,
         }), // allow across-subdomain
