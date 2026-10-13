@@ -45,7 +45,7 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 module "opennext" {
   source  = "pagopa-dx/aws-open-next/aws"
-  version = "0.0.1"
+  version = "~> 2.1ß"
 
   custom_domain = {
     domain_name         = var.dns_domain_name
