@@ -44,10 +44,8 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 
 module "opennext" {
-  #source  = "pagopa-dx/aws-open-next/aws"
-  #version = "~> 0.0"
-  source = "git::https://github.com/pagopa/dx.git//infra/modules/aws_open_next?ref=update-module-aws-opennext-cf-cache-behaviour"
-
+  source  = "pagopa-dx/aws-open-next/aws"
+  version = "~> 0.0"
 
   custom_domain = {
     domain_name         = var.dns_domain_name
