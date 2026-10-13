@@ -25,6 +25,8 @@ cdn_custom_headers = [
 
 dns_domain_name = "uat.developer.pagopa.it"
 
+next_public_mixpanel_api_host = "https://mixpanel.com/"
+
 use_custom_certificate = true
 
 cms_app_image_tag = "04390d3837042b0817c3fd847cee1c0a85e283f2"
