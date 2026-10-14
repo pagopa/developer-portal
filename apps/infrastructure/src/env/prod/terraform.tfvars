@@ -20,8 +20,6 @@ cdn_custom_headers = [
 
 dns_domain_name = "developer.pagopa.it"
 
-next_public_mixpanel_api_host = "https://mixpanel.com/"
-
 dns_delegate_records = {
   dev = [
     "ns-584.awsdns-09.net",
