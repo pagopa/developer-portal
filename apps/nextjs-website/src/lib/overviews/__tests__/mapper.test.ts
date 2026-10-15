@@ -127,6 +127,9 @@ describe('mapOverviewsProps', () => {
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
     expect(result[0].postIntegration?.guides?.[0].title).toBe('Document 1');
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error while processing post-integration guide with title "Guide 1": associated product is missing, unpublished, or has no slug. Skipping...'
+    );
   });
 
   it('should log an error and skip guides with missing product slug', () => {
@@ -138,5 +141,8 @@ describe('mapOverviewsProps', () => {
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
     expect(result[0].postIntegration?.guides?.[0].title).toBe('Document 1');
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error while processing post-integration guide with title "Guide 1": associated product is missing, unpublished, or has no slug. Skipping...'
+    );
   });
 });

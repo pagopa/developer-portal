@@ -11,7 +11,12 @@ const makeStrapiGuideListPopulate = () =>
         ...productRelationsPopulate,
       },
       guidesByCategory: {
-        populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],
+        populate: [
+          'guides.mobileImage',
+          'guides.image',
+          'guides.listItems',
+          'guides.product',
+        ],
       },
       bannerLinks: {
         populate: ['icon'],

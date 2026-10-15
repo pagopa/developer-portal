@@ -16,6 +16,7 @@ export type StrapiBaseGuide = {
   readonly slug: string;
   readonly image: StrapiMedia;
   readonly mobileImage: StrapiMedia;
+  readonly product?: StrapiBaseProductWithRelations;
   readonly listItems: ReadonlyArray<{
     readonly text: string;
   }>;

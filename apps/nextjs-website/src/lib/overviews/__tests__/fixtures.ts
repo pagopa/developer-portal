@@ -172,6 +172,12 @@ export const strapiOverviews = {
             listItems: [{ text: 'Guide item 1' }, { text: 'Guide item 2' }],
             image: mediaJpeg(),
             mobileImage: mediaJpeg(),
+            product: {
+              slug: 'other-product',
+              name: 'Other Product',
+              shortName: 'OtherProd',
+              isVisible: true,
+            },
           },
         ],
         serviceModels: [
@@ -397,7 +403,7 @@ export const overviewPageProps: OverviewPageProps = {
         mobileImagePath: 'https://example.com/example.jpg',
         link: {
           label: 'shared.goToGuide',
-          href: 'guides/guide-1',
+          href: '/it/other-product/guides/guide-1',
           translate: true,
         },
       },
