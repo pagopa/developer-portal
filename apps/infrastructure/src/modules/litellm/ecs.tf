@@ -207,11 +207,8 @@ locals {
 
   proxy_config_fetch_cmd = "python -c \"import os, boto3; boto3.client('s3', region_name=os.environ['AWS_REGION']).download_file(os.environ['LITELLM_PROXY_CONFIG_S3_BUCKET'], os.environ['LITELLM_PROXY_CONFIG_S3_KEY'], os.environ['CONFIG_FILE_PATH'])\""
 
-  # Gateway always needs --workers wired in (no NUM_WORKERS env var support
-  # in the image entrypoint). When proxy_config is enabled we also have to
-  # pull the config from S3 first, so the command goes through `sh -c`;
-  # otherwise we keep the image's ENTRYPOINT and only override `command`.
-  gateway_uvicorn_args = "--host 0.0.0.0 --port 4000 --workers ${var.gateway_num_workers}"
+  # Disabled while the gateway uses the image's default ENTRYPOINT and CMD.
+  # gateway_uvicorn_args = "--host 0.0.0.0 --port 4000 --workers ${var.gateway_num_workers}"
 
   gateway_pool_env = var.gateway_connection_pool_enabled ? [
     { name = "LITELLM_PGBOUNCER_ENABLED", value = "true" },
@@ -259,18 +256,19 @@ locals {
 
   backend_uvicorn_args = "--host 0.0.0.0 --port 4001"
 
-  gateway_launch_cmd = "case \"$USE_DDTRACE\" in [Tt][Rr][Uu][Ee]) export DD_TRACE_OPENAI_ENABLED=\"False\"; exec ddtrace-run python -m gateway.launch ${local.gateway_uvicorn_args};; *) exec python -m gateway.launch ${local.gateway_uvicorn_args};; esac"
+  # gateway_launch_cmd = "case \"$USE_DDTRACE\" in [Tt][Rr][Uu][Ee]) export DD_TRACE_OPENAI_ENABLED=\"False\"; exec ddtrace-run python -m gateway.launch ${local.gateway_uvicorn_args};; *) exec python -m gateway.launch ${local.gateway_uvicorn_args};; esac"
   backend_launch_cmd = "case \"$USE_DDTRACE\" in [Tt][Rr][Uu][Ee]) export DD_TRACE_OPENAI_ENABLED=\"False\"; exec ddtrace-run uvicorn backend.main:app ${local.backend_uvicorn_args};; *) exec uvicorn backend.main:app ${local.backend_uvicorn_args};; esac"
 
-  gateway_proxy_overrides = local.proxy_config_enabled ? {
-    entryPoint = ["sh", "-c"]
-    command = [
-      "${local.proxy_config_fetch_cmd} && ${local.gateway_launch_cmd}"
-    ]
-    } : {
-    entryPoint = ["sh", "-c"]
-    command    = [local.gateway_launch_cmd]
-  }
+  # gateway_proxy_overrides = local.proxy_config_enabled ? {
+  #   entryPoint = ["sh", "-c"]
+  #   command = [
+  #     "${local.proxy_config_fetch_cmd} && ${local.gateway_launch_cmd}"
+  #   ]
+  #   } : {
+  #   entryPoint = ["sh", "-c"]
+  #   command    = [local.gateway_launch_cmd]
+  # }
+  gateway_proxy_overrides = {}
 
   backend_proxy_overrides = local.proxy_config_enabled ? {
     entryPoint = ["sh", "-c"]
@@ -354,6 +352,11 @@ resource "aws_ecs_task_definition" "gateway" {
   #   set       set   set  -> metering on
   #   set       any-missing -> plan fails here
   lifecycle {
+    precondition {
+      condition     = !local.proxy_config_enabled
+      error_message = "proxy_config requires the gateway S3 download startup override, which is currently disabled to use the image's default entrypoint. Leave proxy_config empty when using the default entrypoint."
+    }
+
     precondition {
       condition = var.billing_metrics_endpoint == "" || (
         var.billing_metrics_client_cert_pem != "" && var.billing_metrics_client_key_pem != ""

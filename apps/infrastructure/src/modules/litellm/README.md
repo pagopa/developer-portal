@@ -521,6 +521,13 @@ top — set org-wide tags there, per-deployment tags via the `tags` input.
 
 ## Image pulls
 
+The gateway currently uses the image's default `ENTRYPOINT` and `CMD`; its
+custom launcher is commented out in `ecs.tf`. Consequently,
+`gateway_num_workers` is not passed to the launcher, and gateway worker count
+is determined by the image defaults. Non-empty `proxy_config` is rejected
+at plan time because its S3 download requires the disabled startup override.
+Backend and sidecar startup commands are unchanged.
+
 The defaults pull from `ghcr.io/berriai/litellm-<component>:v1.86.0-dev`,
 which is anonymous-readable. There are four images: `litellm-gateway`,
 `litellm-backend`, `litellm-ui`, and `litellm-migrations` (slim image used
