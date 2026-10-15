@@ -232,6 +232,7 @@ variable "create_devops_agent" {
 variable "next_public_mixpanel_api_host" {
   type        = string
   description = "Mixpanel API host for the OpenNext server"
+  default     = "https://api-eu.mixpanel.com"
 }
 
 variable "website_is_standalone" {
