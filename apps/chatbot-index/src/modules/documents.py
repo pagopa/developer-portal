@@ -36,6 +36,7 @@ RELEASE_NOTES_FOLDER_FILEPATH = f"{SETTINGS.language_code}/release-notes-dirName
 PRODUCTS_S3_FILEPATH = f"{SETTINGS.language_code}/synced-products-response.json"
 APIS_DATA_S3_FILEPATH = f"{SETTINGS.language_code}/synced-apis-data-response.json"
 EXTRACTOR_FOLDER = "extractor"
+CHROME_DRIVER_PATH = "/opt/chrome-driver/chromedriver-linux64/chromedriver"
 
 
 class StaticMetadata(BaseModel):
@@ -47,6 +48,20 @@ class StaticMetadata(BaseModel):
 class DynamicMetadata(BaseModel):
     url: str
     lastmod: str
+
+
+def _get_chrome_service() -> Service:
+    if os.path.isfile(CHROME_DRIVER_PATH):
+        return Service(
+            executable_path=CHROME_DRIVER_PATH,
+            service_log_path="/tmp/chromedriver.log",
+        )
+
+    LOGGER.warning(
+        "ChromeDriver was not found at %s; falling back to Selenium Manager",
+        CHROME_DRIVER_PATH,
+    )
+    return Service()
 
 
 def read_file_from_s3(
@@ -560,16 +575,11 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     chrome_options.add_argument("--log-path=/tmp")
     chrome_options.binary_location = "/opt/chrome/chrome-linux64/chrome"
 
-    service = Service(
-        executable_path="/opt/chrome-driver/chromedriver-linux64/chromedriver",
-        service_log_path="/tmp/chromedriver.log",
-    )
-
     dynamic_docs = []
     discarded_docs = 0
     driver = webdriver.Chrome(
         options=chrome_options,
-        service=service,
+        service=_get_chrome_service(),
     )
 
     for item in tqdm.tqdm(

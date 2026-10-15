@@ -54,6 +54,31 @@ def _import_without_aws():
 LAMBDA, DOCUMENTS, VECTOR_INDEX, STRUCTURED = _import_without_aws()
 
 
+def test_chrome_service_uses_installed_driver() -> None:
+    with (
+        mock.patch.object(DOCUMENTS.os.path, "isfile", return_value=True),
+        mock.patch.object(DOCUMENTS, "Service") as service,
+    ):
+        result = DOCUMENTS._get_chrome_service()
+
+    service.assert_called_once_with(
+        executable_path=DOCUMENTS.CHROME_DRIVER_PATH,
+        service_log_path="/tmp/chromedriver.log",
+    )
+    assert result is service.return_value
+
+
+def test_chrome_service_falls_back_to_selenium_manager() -> None:
+    with (
+        mock.patch.object(DOCUMENTS.os.path, "isfile", return_value=False),
+        mock.patch.object(DOCUMENTS, "Service") as service,
+    ):
+        result = DOCUMENTS._get_chrome_service()
+
+    service.assert_called_once_with()
+    assert result is service.return_value
+
+
 def _client_error(code: str) -> ClientError:
     return ClientError({"Error": {"Code": code, "Message": code}}, "GetObject")
 
