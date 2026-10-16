@@ -57,6 +57,9 @@ export const webinarHeartbeatIntervalInSeconds =
     process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS || '60'
   ) || 60;
 
+export const mixpanelToken = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+export const mixpanelApiHost = process.env.NEXT_PUBLIC_MIXPANEL_API_HOST;
+
 export const amplifyConfig = {
   Auth: {
     region: process.env.NEXT_PUBLIC_COGNITO_REGION,
