@@ -21,6 +21,9 @@ from redisvl.schema import IndexSchema
 from src.modules.logger import get_logger
 from src.modules.documents import (
     StaticMetadata,
+    get_folders_list,
+    get_one_metadata_from_s3,
+    DOCS_PARENT_FOLDER,
     get_documents,
     get_dynamic_metadata,
     get_api_docs,
@@ -28,6 +31,7 @@ from src.modules.documents import (
     get_dynamic_docs,
     get_structured_docs,
 )
+from src.modules.docs_folders import split_ref_docs_by_folder
 from src.modules.models import get_llm, get_embed_model
 from src.modules.settings import SETTINGS
 
@@ -50,6 +54,21 @@ LlamaIndexSettings.node_parser = SentenceSplitter(
     chunk_size=SETTINGS.chunk_size,
     chunk_overlap=SETTINGS.chunk_overlap,
 )
+
+
+class DocumentsRefreshError(RuntimeError):
+    """Raised when some documents could not be updated or deleted in the vector index."""
+
+
+def raise_refresh_errors(errors: List[DocumentsRefreshError]) -> None:
+    """Raises a single DocumentsRefreshError summarizing the given errors, if any.
+
+    Args:
+        errors (List[DocumentsRefreshError]): The errors collected during a refresh.
+    """
+
+    if errors:
+        raise DocumentsRefreshError("; ".join(str(error) for error in errors))
 
 
 def get_redis_schema(index_id: str | None = None) -> IndexSchema:
@@ -140,6 +159,10 @@ def build_index_redis(
         index_store=REDIS_INDEX_STORE,
     )
     storage_context.docstore.add_documents(nodes)
+    # The updates compare these hashes: without them, the first update of each document
+    # would insert its nodes again next to the existing ones
+    for doc in documents:
+        storage_context.docstore.set_document_hash(doc.id_, doc.hash)
 
     LOGGER.info(f"Creating vector index: {index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)
@@ -230,57 +253,75 @@ class LlamaVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
+        failed_doc_ids = []
         with index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
             for i, doc in enumerate(documents):
-
-                nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
-                existing_doc_hash = index.storage_context.docstore.get_document_hash(
-                    doc.id_
-                )
-
-                if existing_doc_hash is None:
-                    refreshed_documents[i] = True
-                    with index._callback_manager.as_trace("insert_nodes"):
-                        index._insert(nodes)
-                        index.storage_context.index_store.add_index_struct(
-                            index._index_struct
-                        )
-                        index.storage_context.docstore.set_document_hash(
-                            doc.id_, doc.hash
-                        )
-                        index.storage_context.docstore.add_documents(
-                            nodes,
-                            allow_update=True,
-                        )
-                    LOGGER.info(f"Added to vector index document ID: {doc.id_}")
-
-                elif existing_doc_hash != doc.hash:
-                    refreshed_documents[i] = True
-                    with index._callback_manager.as_trace("update_ref_doc"):
-                        self._delete_docs(index, [doc.id_], update=True)
-                        with index._callback_manager.as_trace("insert_nodes"):
-                            index._insert(nodes)
-                            index.storage_context.index_store.add_index_struct(
-                                index._index_struct
-                            )
-                            index.storage_context.docstore.set_document_hash(
-                                doc.id_, doc.hash
-                            )
-                            index.storage_context.docstore.add_documents(
-                                nodes,
-                                allow_update=True,
-                            )
-                        LOGGER.info(f"Updated vector index with document ID: {doc.id_}")
-
-                elif existing_doc_hash == doc.hash:
-                    LOGGER.info(
-                        f"Document ID: {doc.id_} with hash {doc.hash} already exists in vector index. Skipping."
-                    )
+                try:
+                    refreshed_documents[i] = self._update_doc(index, doc)
+                except Exception:
+                    LOGGER.exception(f"Error updating vector index document ID: {doc.id_}")
+                    failed_doc_ids.append(doc.id_)
 
             LOGGER.info(
                 f"Updated vector index successfully with {sum(refreshed_documents)} documents."
+            )
+
+        if failed_doc_ids:
+            raise DocumentsRefreshError(
+                f"Failed to update {len(failed_doc_ids)} of {len(documents)} documents: {failed_doc_ids}"
+            )
+
+    def _update_doc(self, index: VectorStoreIndex, doc: Document) -> bool:
+        """
+        Adds or updates a single document in the index when its hash changed.
+
+        Args:
+            index (VectorStoreIndex): The vector store index instance.
+            doc (Document): The Document object to add or update.
+        Returns:
+            bool: True if the document was added or updated, False if it was unchanged.
+        """
+
+        nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
+        existing_doc_hash = index.storage_context.docstore.get_document_hash(doc.id_)
+
+        if existing_doc_hash == doc.hash:
+            LOGGER.info(
+                f"Document ID: {doc.id_} with hash {doc.hash} already exists in vector index. Skipping."
+            )
+            return False
+
+        if existing_doc_hash is None:
+            self._insert_doc_nodes(index, doc, nodes)
+            LOGGER.info(f"Added to vector index document ID: {doc.id_}")
+        else:
+            with index._callback_manager.as_trace("update_ref_doc"):
+                self._delete_docs(index, [doc.id_], update=True)
+                self._insert_doc_nodes(index, doc, nodes)
+            LOGGER.info(f"Updated vector index with document ID: {doc.id_}")
+        return True
+
+    def _insert_doc_nodes(
+        self, index: VectorStoreIndex, doc: Document, nodes: List
+    ) -> None:
+        """
+        Inserts the nodes of a document in the index and stores the document hash.
+
+        Args:
+            index (VectorStoreIndex): The vector store index instance.
+            doc (Document): The Document object the nodes belong to.
+            nodes (List): The nodes of the document.
+        """
+
+        with index._callback_manager.as_trace("insert_nodes"):
+            index._insert(nodes)
+            index.storage_context.index_store.add_index_struct(index._index_struct)
+            index.storage_context.docstore.set_document_hash(doc.id_, doc.hash)
+            index.storage_context.docstore.add_documents(
+                nodes,
+                allow_update=True,
             )
 
     def _delete_docs(
@@ -298,16 +339,27 @@ class LlamaVectorIndex:
             update (bool): Flag indicating if this deletion is part of an update operation.
         """
 
+        failed_doc_ids = []
         for doc_id in documents_id:
-            index.delete_ref_doc(doc_id, delete_from_docstore=True)
+            try:
+                index.delete_ref_doc(doc_id, delete_from_docstore=True)
 
-            ref_doc_info = index.storage_context.docstore.get_ref_doc_info(doc_id)
-            if ref_doc_info:
-                for node_id in ref_doc_info.node_ids:
-                    index.storage_context.docstore.delete_document(node_id)
+                ref_doc_info = index.storage_context.docstore.get_ref_doc_info(doc_id)
+                if ref_doc_info:
+                    for node_id in ref_doc_info.node_ids:
+                        index.storage_context.docstore.delete_document(node_id)
+            except Exception:
+                LOGGER.exception(f"Error deleting vector index document ID: {doc_id}")
+                failed_doc_ids.append(doc_id)
+                continue
 
             if not update:
                 LOGGER.info(f"Deleted from vector index document ID: {doc_id}")
+
+        if failed_doc_ids:
+            raise DocumentsRefreshError(
+                f"Failed to delete {len(failed_doc_ids)} of {len(documents_id)} documents: {failed_doc_ids}"
+            )
 
         if not update:
             LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
@@ -335,16 +387,18 @@ class LlamaVectorIndex:
             if doc_id not in api_doc_ids:
                 api_docs_to_remove.append(doc_id)
 
+        errors = []
         if api_docs:
             try:
                 self._update_docs(index, api_docs)
-            except Exception as e:
-                LOGGER.error(f"Error updating API Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
         if api_docs_to_remove:
             try:
                 self._delete_docs(index, api_docs_to_remove)
-            except Exception as e:
-                LOGGER.error(f"Error deleting API Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
+        raise_refresh_errors(errors)
 
     def refresh_index_static_docs(
         self,
@@ -366,16 +420,67 @@ class LlamaVectorIndex:
         docs_to_update = get_static_docs(static_docs_to_update)
 
         LOGGER.info("Refreshing vector index with static docs...")
+        errors = []
         if docs_to_update:
             try:
                 self._update_docs(index, docs_to_update)
-            except Exception as e:
-                LOGGER.error(f"Error updating Static Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
         if static_docs_ids_to_delete:
             try:
                 self._delete_docs(index, static_docs_ids_to_delete)
-            except Exception as e:
-                LOGGER.error(f"Error deleting Static Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
+        raise_refresh_errors(errors)
+
+    def refresh_index_static_folders(self, index: VectorStoreIndex) -> None:
+        """
+        Aligns the static documents of the vector index with the S3 folders lists: adds the
+        documents of the listed folders that are not in the index yet and removes the documents
+        that are not inside any listed folder (e.g. guide versions that are no longer main).
+
+        Args:
+            index (VectorStoreIndex): The vector store index instance.
+        Returns:
+            None
+        """
+
+        folders = get_folders_list()
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+        # dirNames can contain slashes, so they are matched against the known folders
+        ref_folders, orphan_doc_ids = split_ref_docs_by_folder(
+            ref_doc_ids, folders, DOCS_PARENT_FOLDER
+        )
+
+        static_docs_to_add = []
+
+        for folder in folders:
+            if folder in ref_folders:
+                LOGGER.info(
+                    f"Folder '{folder}' is referenced in the vector index. Skipping."
+                )
+            else:
+                LOGGER.info(
+                    f"Folder '{folder}' is not referenced in the vector index. Getting relative metadata to add to the vector index."
+                )
+                metadata = get_one_metadata_from_s3(folder, folders)
+                for m in metadata:
+                    static_docs_to_add.append(
+                        StaticMetadata(
+                            url=SETTINGS.website_url + m.get("path"),
+                            s3_file_path=m.get("contentS3Path"),
+                            title=m.get("title"),
+                        )
+                    )
+
+        for doc_id in orphan_doc_ids:
+            LOGGER.info(
+                f"Document '{doc_id}' is in the vector index but not in any S3 folder of the folders list. Adding to removal list."
+            )
+
+        if static_docs_to_add or orphan_doc_ids:
+            self.refresh_index_static_docs(index, static_docs_to_add, orphan_doc_ids)
 
     def refresh_index_dynamic_docs(
         self, index: VectorStoreIndex, static_metadata: List[StaticMetadata]
@@ -423,17 +528,19 @@ class LlamaVectorIndex:
             if doc_id not in dynamic_doc_ids:
                 dynamic_doc_ids_to_remove.append(doc_id)
 
+        errors = []
         if dynamic_docs_to_update:
+            dynamic_docs_to_update = get_dynamic_docs(dynamic_docs_to_update)
             try:
-                dynamic_docs_to_update = get_dynamic_docs(dynamic_docs_to_update)
                 self._update_docs(index, dynamic_docs_to_update)
-            except Exception as e:
-                LOGGER.error(f"Error updating Dynamic Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
         if dynamic_doc_ids_to_remove:
             try:
                 self._delete_docs(index, dynamic_doc_ids_to_remove)
-            except Exception as e:
-                LOGGER.error(f"Error deleting Dynamic Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
+        raise_refresh_errors(errors)
 
     def refresh_index_structured_docs(
         self,
@@ -462,16 +569,18 @@ class LlamaVectorIndex:
             if website_folder in ref_doc_id and ref_doc_id not in doc_ids:
                 structured_doc_ids_to_remove.append(ref_doc_id)
 
+        errors = []
         if structured_docs_to_update:
             try:
                 self._update_docs(index, structured_docs_to_update)
-            except Exception as e:
-                LOGGER.error(f"Error updating Structured Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
         if structured_doc_ids_to_remove:
             try:
                 self._delete_docs(index, structured_doc_ids_to_remove)
-            except Exception as e:
-                LOGGER.error(f"Error deleting Structured Documents: {e}")
+            except DocumentsRefreshError as e:
+                errors.append(e)
+        raise_refresh_errors(errors)
 
     def remove_docs_in_folder(self, index: VectorStoreIndex, folder_name: str) -> None:
         """
@@ -489,7 +598,4 @@ class LlamaVectorIndex:
                 doc_ids_to_remove.append(doc_id)
 
         if doc_ids_to_remove:
-            try:
-                self._delete_docs(index, doc_ids_to_remove)
-            except Exception as e:
-                LOGGER.error(f"Error deleting documents in folder {folder_name}: {e}")
+            self._delete_docs(index, doc_ids_to_remove)
