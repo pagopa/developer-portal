@@ -55,4 +55,4 @@ SELECT
 FROM cumulative_engagement
 GROUP BY webinarid, userid
 -- Only keep webinars where total viewing reached the configured threshold
-HAVING MAX(running_watch_minutes) >= (<MIN_WATCH_PERCENTAGE> / 100.0 * MAX(duration));
+HAVING MAX(running_watch_minutes) >= (<MIN_WATCH_PERCENTAGE> * MAX(duration));
