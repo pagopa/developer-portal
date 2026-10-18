@@ -46,13 +46,13 @@ SELECT
   MAX(duration) AS webinar_duration_minutes,
   ROUND((MAX(running_watch_minutes) / MAX(duration)) * 100, 1) AS watch_percentage,
   
-  -- 1. Date & time when the user crossed the 80% mark (Certificate Completion Date)
-  MIN(CASE WHEN running_watch_minutes >= (0.80 * duration) THEN curr_time END) AS reached_80_percent_at,
+  -- 1. Date & time when the user crossed the configured threshold (Certificate Completion Date)
+  MIN(CASE WHEN running_watch_minutes >= (<MIN_WATCH_PERCENTAGE> * duration) THEN curr_time END) AS reached_80_percent_at,
   
   -- 2. Date & time of the user's very last recorded heartbeat
   MAX(curr_time) AS last_viewed_at
 
 FROM cumulative_engagement
 GROUP BY webinarid, userid
--- Only keep webinars where total viewing reached at least 80%
-HAVING MAX(running_watch_minutes) >= (0.80 * MAX(duration));
+-- Only keep webinars where total viewing reached the configured threshold
+HAVING MAX(running_watch_minutes) >= (<MIN_WATCH_PERCENTAGE> / 100.0 * MAX(duration));
