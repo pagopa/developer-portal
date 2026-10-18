@@ -38,5 +38,5 @@ SELECT
   webinar_duration_minutes,
   ROUND((total_watch_minutes / webinar_duration_minutes) * 100, 1) AS watch_percentage
 FROM calculated_engagement
--- Filter for users who hit or exceed the 80% mark
-WHERE total_watch_minutes >= (0.80 * webinar_duration_minutes);
+-- Filter for users who hit or exceed the configured watch percentage
+WHERE total_watch_minutes >= (<MIN_WATCH_PERCENTAGE>  * webinar_duration_minutes);

@@ -8,6 +8,7 @@ ATHENA_OUTPUT_LOCATION = os.environ["ATHENA_OUTPUT_LOCATION"]
 ATHENA_WORKGROUP = os.environ.get("ATHENA_WORKGROUP", "primary")
 POLL_INTERVAL_SECONDS = float(os.environ.get("POLL_INTERVAL_SECONDS", "0.2"))
 MAX_WAIT_SECONDS = int(os.environ.get("MAX_WAIT_SECONDS", "60"))
+MIN_WATCH_PERCENTAGE = float(os.environ.get("MIN_WATCH_PERCENTAGE", "0.8"))
 
 SQL_FILE = os.path.join(os.path.dirname(__file__), "athena", "search-certificates-by-user.sql")
 
@@ -15,7 +16,9 @@ SQL_FILE = os.path.join(os.path.dirname(__file__), "athena", "search-certificate
 def _load_query(user_id: str) -> str:
     with open(SQL_FILE, "r") as f:
         sql = f.read()
-    return sql.replace("<USER_ID>", user_id.replace("'", "''"))
+    return sql.replace("<MIN_WATCH_PERCENTAGE>", str(MIN_WATCH_PERCENTAGE)).replace(
+        "<USER_ID>", user_id.replace("'", "''")
+    )
 
 
 def _run_query(athena_client, query: str) -> str:
