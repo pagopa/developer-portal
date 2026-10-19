@@ -15,6 +15,8 @@ export type SiteHeaderProps = {
   shouldShowLinkToWebinars: boolean;
 };
 
+const { SITE_HEADER_HEIGHT } = browserEnv.config;
+
 const SiteHeader = (
   {
     locale,
@@ -37,7 +39,7 @@ const SiteHeader = (
       sx={{
         position: 'fixed',
         top: 0,
-        height: browserEnv.config.SITE_HEADER_HEIGHT,
+        height: SITE_HEADER_HEIGHT,
         zIndex: 100,
         width: '100vw',
       }}
@@ -47,7 +49,7 @@ const SiteHeader = (
         sx={{
           px: 3,
           backgroundColor: palette.common.white,
-          minHeight: browserEnv.config.SITE_HEADER_HEIGHT,
+          minHeight: SITE_HEADER_HEIGHT,
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'

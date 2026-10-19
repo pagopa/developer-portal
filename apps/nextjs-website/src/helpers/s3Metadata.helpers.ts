@@ -21,9 +21,16 @@ const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry configuration - configurable via environment variables
-const RETRY_ATTEMPTS = buildEnv.config.CDN_RETRY_ATTEMPTS;
-const INITIAL_RETRY_DELAY_MS = buildEnv.config.CDN_RETRY_DELAY_MS;
-const TIMEOUT_LIMIT = buildEnv.config.TIMEOUT_LIMIT;
+const {
+  CDN_RETRY_ATTEMPTS,
+  CDN_RETRY_DELAY_MS,
+  TIMEOUT_LIMIT,
+  staticContentsUrl,
+  S3_PATH_TO_GITBOOK_DOCS,
+  S3_METADATA_JSON_PATH,
+  S3_SOAP_API_METADATA_JSON_PATH,
+  s3DocsPath,
+} = buildEnv.config;
 
 async function withRetries<T>(
   operation: () => Promise<T>,
@@ -34,7 +41,7 @@ async function withRetries<T>(
   let lastError: Error | null = null;
 
   // eslint-disable-next-line functional/no-loop-statements
-  for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
+  for (let attempt = 1; attempt <= CDN_RETRY_ATTEMPTS; attempt++) {
     // eslint-disable-next-line functional/no-try-statements
     try {
       const result = await operation();
@@ -62,13 +69,13 @@ async function withRetries<T>(
       lastError = error instanceof Error ? error : new Error(String(error));
       // eslint-disable-next-line no-console
       console.error(
-        `Error during ${operationName} (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
+        `Error during ${operationName} (attempt ${attempt}/${CDN_RETRY_ATTEMPTS}):`,
         error
       );
 
       // If this isn't the last attempt, wait before retrying
-      if (attempt < RETRY_ATTEMPTS) {
-        const delayMs = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
+      if (attempt < CDN_RETRY_ATTEMPTS) {
+        const delayMs = CDN_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
         // eslint-disable-next-line no-console
         console.log(`Retrying in ${delayMs}ms...`);
         await delay(delayMs);
@@ -78,7 +85,7 @@ async function withRetries<T>(
 
   // eslint-disable-next-line no-console
   console.error(
-    `Failed to complete ${operationName} after ${RETRY_ATTEMPTS} attempts:`,
+    `Failed to complete ${operationName} after ${CDN_RETRY_ATTEMPTS} attempts:`,
     lastError
   );
   return fallbackValue;
@@ -91,7 +98,7 @@ export async function downloadFileAsText(
   // Create the request promise
   const requestPromise = withRetries(
     async () => {
-      const url = `${buildEnv.config.staticContentsUrl}/${path}`;
+      const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
         signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
@@ -119,14 +126,14 @@ export async function downloadFileAsText(
 }
 
 async function fetchFromCDN(path: string, config?: RequestInit) {
-  if (!buildEnv.config.staticContentsUrl) {
+  if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
       'STATIC_CONTENTS_URL is not defined in the environment variables.'
     );
   }
 
-  const url = `${buildEnv.config.staticContentsUrl}/${path}`;
+  const url = `${staticContentsUrl}/${path}`;
   const response = await fetch(url, {
     // Add timeout and other fetch options to prevent hanging
     signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
@@ -186,11 +193,6 @@ export async function fetchMetadataFromCDN<T>(
   return await requestPromise;
 }
 
-const S3_PATH_TO_GITBOOK_DOCS = buildEnv.config.S3_PATH_TO_GITBOOK_DOCS;
-const S3_METADATA_JSON_PATH = buildEnv.config.S3_METADATA_JSON_PATH;
-const S3_SOAP_API_METADATA_JSON_PATH =
-  buildEnv.config.S3_SOAP_API_METADATA_JSON_PATH;
-
 export const getGuidesMetadata = async (locale: string, dirName: string) => {
   const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);
   const metadata = await fetchMetadataFromCDN<JsonMetadata>(fetchFromCdnPath);
@@ -201,8 +203,8 @@ export const getGuidesMetadata = async (locale: string, dirName: string) => {
 const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
 const buildDirMetadataPath = (locale: string, dirName: string) => {
-  const docsBase = buildEnv.config.s3DocsPath
-    ? removeTrailingSlash(buildEnv.config.s3DocsPath)
+  const docsBase = s3DocsPath
+    ? removeTrailingSlash(s3DocsPath)
     : removeTrailingSlash(S3_PATH_TO_GITBOOK_DOCS);
   return docsBase
     ? `${locale}/${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
@@ -320,7 +322,7 @@ export const getMarkdownContentDict = async (
   const resolvedContentPairs = await Promise.all(
     markdownParts.map(async ({ dirName, pathToFile }) => {
       const key = `${dirName}/${pathToFile}`;
-      const pathToMarkdownFile = `${locale}/${buildEnv.config.s3DocsPath}/${dirName}/${pathToFile}`;
+      const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
       const content = (await downloadFileAsText(pathToMarkdownFile)) || '';
       return [key, content] as const;
     })

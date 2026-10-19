@@ -2,7 +2,6 @@ import * as E from 'fp-ts/lib/Either';
 
 export const browserSettings = (env: typeof publicEnv) => {
   const CHATBOT_HOST = env.NEXT_PUBLIC_CHATBOT_HOST;
-  const region = env.NEXT_PUBLIC_COGNITO_REGION || '';
   const cookieDomainScript = env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
   const useNewCookie = env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
   const cookieScriptUrl = env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
@@ -140,7 +139,6 @@ export const browserSettings = (env: typeof publicEnv) => {
   const docsAssetsPath = '/gitbook/docs';
   return {
     CHATBOT_HOST,
-    region,
     cookieDomainScript,
     useNewCookie,
     cookieScriptUrl,

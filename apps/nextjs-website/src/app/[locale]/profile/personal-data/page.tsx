@@ -17,6 +17,8 @@ import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormW
 import { browserEnv } from '@/browserConfig';
 import { SUPPORTED_LOCALES } from '@/locales';
 
+const { companyRoles, defaultLocale } = browserEnv.config;
+
 const PersonalData = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -25,7 +27,7 @@ const PersonalData = () => {
 
   const companyRolesValues = useMemo(
     () =>
-      browserEnv.config.companyRoles.map((role) => ({
+      companyRoles.map((role) => ({
         title: t(`auth.signUp.companyRoles.${role}`),
         value: role,
       })),
@@ -87,7 +89,7 @@ const PersonalData = () => {
         title: t('profile.personalData.fields.commsPreferredLanguage'),
         value:
           user?.attributes['custom:preferred_language'] ||
-          browserEnv.config.defaultLocale.split('-')[0],
+          defaultLocale.split('-')[0],
         editable: true,
         type: 'select',
         values: preferredLanguageValues,

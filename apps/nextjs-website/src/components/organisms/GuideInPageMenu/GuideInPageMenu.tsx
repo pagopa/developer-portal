@@ -10,6 +10,9 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import { browserEnv } from '@/browserConfig';
 
+const { headingLevelsToShowInMenu, PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } =
+  browserEnv.config;
+
 type GuideInPageMenuProps = {
   assetsPrefix: string;
   pagePath: string;
@@ -36,13 +39,10 @@ const GuideInPageMenu = ({
   const nodes = parseInPageMenu(inPageMenu, {
     assetsPrefix,
     pagePath,
-    headingLevelsToShowInMenu: browserEnv.config.headingLevelsToShowInMenu,
+    headingLevelsToShowInMenu: headingLevelsToShowInMenu,
   });
-  const productHeaderHeight = hasProductHeader
-    ? browserEnv.config.PRODUCT_HEADER_HEIGHT
-    : 0;
-  const headerOffset =
-    productHeaderHeight + browserEnv.config.SITE_HEADER_HEIGHT;
+  const productHeaderHeight = hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0;
+  const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
 
   useEffect(() => {
     // eslint-disable-next-line functional/immutable-data
@@ -80,7 +80,7 @@ const GuideInPageMenu = ({
       for (const headingElement of headingElements) {
         const { top } = headingElement.getBoundingClientRect();
 
-        if (top <= browserEnv.config.SITE_HEADER_HEIGHT + productHeaderHeight) {
+        if (top <= SITE_HEADER_HEIGHT + productHeaderHeight) {
           activeId = headingElement.id;
           continue;
         }

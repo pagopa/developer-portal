@@ -20,6 +20,8 @@ import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
 import { GuidesTranslationDisclaimer } from '@/components/atoms/GuidesTranslationDisclaimer/GuidesTranslationDisclaimer';
 
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
+
 export type GitBookTemplateProps = {
   body: string;
   contentMarginTop?: number;
@@ -250,10 +252,8 @@ const GitBookTemplate = ({
                 position: 'sticky',
                 maxWidth: '378px',
                 top:
-                  browserEnv.config.SITE_HEADER_HEIGHT +
-                  (hasProductHeader
-                    ? browserEnv.config.PRODUCT_HEADER_HEIGHT
-                    : 0),
+                  SITE_HEADER_HEIGHT +
+                  (hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0),
               }}
             >
               <GuideInPageMenu

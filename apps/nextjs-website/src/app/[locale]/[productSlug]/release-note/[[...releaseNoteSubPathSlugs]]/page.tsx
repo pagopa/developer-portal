@@ -34,6 +34,8 @@ type ReleaseNotePageStaticParams = {
 };
 export const dynamic = 'force-dynamic';
 
+const { baseUrl } = browserEnv.config;
+
 export async function generateMetadata({
   params,
 }: {
@@ -115,7 +117,7 @@ const ReleaseNotePage = async ({
 
   const breadcrumbsItems: BreadcrumbItem[] = breadcrumbs.map((breadcrumb) => ({
     name: breadcrumb.name,
-    item: [browserEnv.config.baseUrl, breadcrumb.path].join(''),
+    item: [baseUrl, breadcrumb.path].join(''),
   }));
 
   const structuredData = generateStructuredDataScripts({
@@ -123,7 +125,7 @@ const ReleaseNotePage = async ({
       productToBreadcrumb(locale, product),
       {
         name: title,
-        item: `${browserEnv.config.baseUrl}/${locale}/${product.slug}/release-note`,
+        item: `${baseUrl}/${locale}/${product.slug}/release-note`,
       },
       ...breadcrumbsItems,
     ],

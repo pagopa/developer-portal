@@ -25,10 +25,9 @@ import {
 } from 'schema-dts';
 import yaml from 'js-yaml';
 
-export const homeBreadCrumb = {
-  name: browserEnv.config.websiteName,
-  item: browserEnv.config.baseUrl,
-};
+const { websiteName, baseUrl, organizationInfo } = browserEnv.config;
+
+export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 
 export function productToBreadcrumb(locale: string, product?: Product) {
   const item = breadcrumbItemByProduct(locale, product, ['overview']);
@@ -44,19 +43,17 @@ export function breadcrumbItemByProduct(
   paths?: readonly string[]
 ) {
   return product?.slug && paths
-    ? [browserEnv.config.baseUrl, locale, product.slug, ...paths].join('/')
+    ? [baseUrl, locale, product.slug, ...paths].join('/')
     : undefined;
 }
 
 export function getItemFromPaths(locale: string, paths?: readonly string[]) {
-  return paths
-    ? [browserEnv.config.baseUrl, locale, ...paths].join('/')
-    : undefined;
+  return paths ? [baseUrl, locale, ...paths].join('/') : undefined;
 }
 
 export const organization: Organization = {
   '@type': 'Organization',
-  ...browserEnv.config.organizationInfo,
+  ...organizationInfo,
 };
 
 export const organizationWithContext: WithContext<Organization> = {
@@ -66,8 +63,8 @@ export const organizationWithContext: WithContext<Organization> = {
 
 export const website: WebSite = {
   '@type': 'WebSite',
-  name: `${browserEnv.config.websiteName} ${browserEnv.config.organizationInfo.name}`,
-  url: browserEnv.config.baseUrl,
+  name: `${websiteName} ${organizationInfo.name}`,
+  url: baseUrl,
 };
 
 export const websiteWithContext: WithContext<WebSite> = {
@@ -208,7 +205,7 @@ export function convertWebinarToStructuredDataEvent(
     organizer: organization,
     location: {
       '@type': 'VirtualLocation',
-      url: `${browserEnv.config.baseUrl}/webinars/${webinar.slug}`,
+      url: `${baseUrl}/webinars/${webinar.slug}`,
     },
     performers: webinar.speakers?.map((speaker) => ({
       '@type': 'Person',
@@ -238,7 +235,7 @@ export function convertApiToStructuredDataSoftwareApplication(
     api &&
     makeSoftwareApplication({
       name: api.specUrlsName,
-      url: `${browserEnv.config.baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
+      url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
     })
   );
 }

@@ -14,6 +14,8 @@ type ProductHeaderProps = {
   path: string;
 };
 
+const { SITE_HEADER_HEIGHT } = browserEnv.config;
+
 const ProductHeader: FC<ProductHeaderProps> = ({ locale, product, path }) => {
   const { palette } = useTheme();
   const t = useTranslations();
@@ -31,8 +33,8 @@ const ProductHeader: FC<ProductHeaderProps> = ({ locale, product, path }) => {
       sx={{
         position: 'fixed',
         top: {
-          xs: scrollUp ? browserEnv.config.SITE_HEADER_HEIGHT : 0,
-          md: browserEnv.config.SITE_HEADER_HEIGHT,
+          xs: scrollUp ? SITE_HEADER_HEIGHT : 0,
+          md: SITE_HEADER_HEIGHT,
         },
         zIndex: { xs: scrollUp ? 90 : 250, md: 90 },
         transition: 'top 0.5s linear',

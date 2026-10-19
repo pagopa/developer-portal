@@ -6,13 +6,13 @@ import { Box, useTheme } from '@mui/material';
 import { browserEnv } from '@/browserConfig';
 import 'rapidoc';
 
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
+
 type ApiViewerProps = {
   specURL: string;
 };
 
-const scrollOffset =
-  browserEnv.config.SITE_HEADER_HEIGHT +
-  browserEnv.config.PRODUCT_HEADER_HEIGHT;
+const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
 const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   const { palette } = useTheme();

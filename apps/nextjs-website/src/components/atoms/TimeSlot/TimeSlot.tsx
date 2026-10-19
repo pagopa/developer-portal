@@ -1,6 +1,9 @@
 import { browserEnv } from '@/browserConfig';
 import { useFormatter } from 'next-intl';
 
+const { timeSlotDateOptions, longDateOptions, timeSlotTimeOptions } =
+  browserEnv.config;
+
 function isSameDay(start: Date, end: Date): boolean {
   return (
     start.getFullYear() === end.getFullYear() &&
@@ -20,7 +23,7 @@ const TimeSlot = ({ start, end }: TimeSlotProps) => {
   const endDate = end ? new Date(end) : undefined;
 
   const formattedDateTime = (date: Date) =>
-    format.dateTime(date, browserEnv.config.timeSlotDateOptions);
+    format.dateTime(date, timeSlotDateOptions);
 
   const conditionallyFormattedEndDate = (
     start?: Date,
@@ -28,10 +31,10 @@ const TimeSlot = ({ start, end }: TimeSlotProps) => {
   ): string | undefined => {
     if (!end) return;
 
-    if (!start) return format.dateTime(end, browserEnv.config.longDateOptions);
+    if (!start) return format.dateTime(end, longDateOptions);
 
     return isSameDay(start, end)
-      ? format.dateTime(end, browserEnv.config.timeSlotTimeOptions)
+      ? format.dateTime(end, timeSlotTimeOptions)
       : formattedDateTime(end);
   };
 

@@ -57,6 +57,8 @@ const parseVttTime = (time: string): number | undefined => {
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 const PLAYBACK_RATES = [0.5, 1, 1.25, 1.5, 2];
 
+const { amazonIvsVersion } = browserEnv.config;
+
 const VideoJsPlayer = (props: PlayerProps) => {
   const t = useTranslations('webinar');
   const resolvedStartAt = (() => {
@@ -84,8 +86,8 @@ const VideoJsPlayer = (props: PlayerProps) => {
 
   useEffect(() => {
     registerIVSTech(videojs, {
-      wasmBinary: `https://player.live-video.net/${browserEnv.config.amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
-      wasmWorker: `https://player.live-video.net/${browserEnv.config.amazonIvsVersion}/amazon-ivs-wasmworker.min.js`,
+      wasmBinary: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
+      wasmWorker: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.js`,
     });
     registerIVSQualityPlugin(videojs);
 

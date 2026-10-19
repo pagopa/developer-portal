@@ -4,6 +4,9 @@ import { browserEnv } from '@/browserConfig';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
 
+const { isWebinarHeartbeatEnabled, webinarHeartbeatIntervalInSeconds } =
+  browserEnv.config;
+
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
 const POLLING_WEBINAR_VIDEO_INTERVAL_MS = 60 * 1000; // every 60 seconds
@@ -182,12 +185,7 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (
-      !browserEnv.config.isWebinarHeartbeatEnabled ||
-      !webinar ||
-      !isVideoPlaying
-    )
-      return;
+    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {
@@ -195,7 +193,7 @@ export const useWebinar = () => {
       if (
         !!lastHeartbeatSentTime.current &&
         (now.getTime() - lastHeartbeatSentTime.current?.getTime()) / 1000 <
-          browserEnv.config.webinarHeartbeatIntervalInSeconds
+          webinarHeartbeatIntervalInSeconds
       ) {
         return;
       }
@@ -223,7 +221,7 @@ export const useWebinar = () => {
     // Then set up interval for subsequent calls
     const heartbeatIntervalId = setInterval(() => {
       sendHeartbeat();
-    }, browserEnv.config.webinarHeartbeatIntervalInSeconds * 1000);
+    }, webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
   }, [webinar, isVideoPlaying, webinarState, user]);

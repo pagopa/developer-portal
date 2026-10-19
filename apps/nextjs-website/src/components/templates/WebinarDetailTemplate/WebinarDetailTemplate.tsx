@@ -25,6 +25,9 @@ import ConfirmationModal from '@/components/atoms/ConfirmationModal/Confirmation
 import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 
+const { isWebinarHeartbeatEnabled, snackbarAutoHideDurationMs } =
+  browserEnv.config;
+
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
 };
@@ -126,7 +129,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
-        {browserEnv.config.isWebinarHeartbeatEnabled && (
+        {isWebinarHeartbeatEnabled && (
           <ConfirmationModal
             title={t('subscriptionPopup.title')}
             text={
@@ -223,7 +226,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         isSubscribed &&
         ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
           <EContainer>
-            {browserEnv.config.isWebinarHeartbeatEnabled && (
+            {isWebinarHeartbeatEnabled && (
               <LiveWebinarWarningBanner
                 onEnableConsent={() => {
                   if (!user) return null;
@@ -258,7 +261,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           ></WebinarPlayerSection>
         )}
 
-      {browserEnv.config.isWebinarHeartbeatEnabled && (
+      {isWebinarHeartbeatEnabled && (
         <EContainer containerSx={{ marginTop: '64px' }}>
           <CertificateBanner
             imagePath={'/images/certificato-di-partecipazione-webinar.png'}
@@ -304,7 +307,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       {relatedLinks}
       <Snackbar
         open={!!error}
-        autoHideDuration={browserEnv.config.snackbarAutoHideDurationMs}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>

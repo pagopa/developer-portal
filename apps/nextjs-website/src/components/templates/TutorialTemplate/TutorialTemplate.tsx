@@ -16,6 +16,8 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { browserEnv } from '@/browserConfig';
 import { useParams } from 'next/navigation';
 
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
+
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly parts?: ReadonlyArray<Part>;
@@ -125,16 +127,13 @@ const TutorialTemplate = ({
             <Box
               sx={{
                 maxHeight: `calc(100vh - ${
-                  browserEnv.config.SITE_HEADER_HEIGHT +
-                  browserEnv.config.PRODUCT_HEADER_HEIGHT
+                  SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
                 }px)`,
                 maxWidth: '378px',
                 overflowY: 'auto',
                 paddingY: '42px',
                 position: 'sticky',
-                top:
-                  browserEnv.config.SITE_HEADER_HEIGHT +
-                  browserEnv.config.PRODUCT_HEADER_HEIGHT,
+                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
               }}
             >
               <PartRendererMenu parts={parts ?? []} />

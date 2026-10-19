@@ -15,6 +15,8 @@ type PartRendererMenuProps = {
   readonly parts: readonly Part[];
 };
 
+const { headingLevelsToShowInMenu } = browserEnv.config;
+
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   const { palette } = useTheme();
   const t = useTranslations();
@@ -48,8 +50,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
 
           return matches.map((match) => {
             const level = match[1].length;
-            if (!includes(browserEnv.config.headingLevelsToShowInMenu, level))
-              return null;
+            if (!includes(headingLevelsToShowInMenu, level)) return null;
 
             const title = match[2]
               .trim()
@@ -87,10 +88,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         case 'ckEditor':
           return part.menuItems
             .filter((menuItem) =>
-              includes(
-                browserEnv.config.headingLevelsToShowInMenu,
-                menuItem.level
-              )
+              includes(headingLevelsToShowInMenu, menuItem.level)
             )
             .map((menuItem) => (
               <Heading
@@ -104,9 +102,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         case 'typography':
           if (
             !includes(
-              browserEnv.config.headingLevelsToShowInMenu.map(
-                (level) => `h${level}`
-              ),
+              headingLevelsToShowInMenu.map((level) => `h${level}`),
               part?.variant
             )
           )

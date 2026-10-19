@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, useTheme } from '@mui/material';
 import { browserEnv } from '@/browserConfig';
 
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
+
 export type CkEditorMenuItem = {
   title: string;
   href: string;
@@ -16,9 +18,7 @@ export type CkEditorPartProps = {
 
 const CkEditorPart = ({ content }: CkEditorPartProps) => {
   const { palette, typography } = useTheme();
-  const scrollOffset =
-    browserEnv.config.SITE_HEADER_HEIGHT +
-    browserEnv.config.PRODUCT_HEADER_HEIGHT;
+  const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
   const ckEditorStyles = {
     '&': {

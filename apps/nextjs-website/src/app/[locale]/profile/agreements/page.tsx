@@ -18,6 +18,9 @@ import { browserEnv } from '@/browserConfig';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 import { useParams } from 'next/navigation';
 
+const { isWebinarHeartbeatEnabled, snackbarAutoHideDurationMs } =
+  browserEnv.config;
+
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
   message: string;
@@ -188,7 +191,7 @@ const Agreements = () => {
           unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
         ></AgreementItem>
         <Box sx={{ marginY: '32px' }} />
-        {browserEnv.config.isWebinarHeartbeatEnabled && (
+        {isWebinarHeartbeatEnabled && (
           <AgreementItem
             title={t('profile.agreements.webinar.title')}
             description={t('profile.agreements.webinar.description')}
@@ -235,7 +238,7 @@ const Agreements = () => {
       </Stack>
       <Snackbar
         open={!!info}
-        autoHideDuration={browserEnv.config.snackbarAutoHideDurationMs}
+        autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setInfo(null)}
       >
         <Alert severity={info?.isError ? 'error' : 'success'}>

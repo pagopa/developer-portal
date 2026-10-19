@@ -26,6 +26,8 @@ import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 import { browserEnv } from '@/browserConfig';
 
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
+
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
@@ -45,23 +47,19 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
   const topOffsetXs =
-    scrollUp || !menuProps.hasProductHeader
-      ? browserEnv.config.SITE_HEADER_HEIGHT
-      : 0;
+    scrollUp || !menuProps.hasProductHeader ? SITE_HEADER_HEIGHT : 0;
 
   const productHeaderHeight = menuProps.hasProductHeader
-    ? browserEnv.config.PRODUCT_HEADER_HEIGHT
+    ? PRODUCT_HEADER_HEIGHT
     : 0;
 
-  const height = `calc(100vh - ${
-    browserEnv.config.SITE_HEADER_HEIGHT + productHeaderHeight
-  }px)`;
+  const height = `calc(100vh - ${SITE_HEADER_HEIGHT + productHeaderHeight}px)`;
 
   const topStyle = menuProps.hasHeader
     ? {
         xs: topOffsetXs + 62,
         sm: topOffsetXs + 75,
-        md: browserEnv.config.SITE_HEADER_HEIGHT + productHeaderHeight,
+        md: SITE_HEADER_HEIGHT + productHeaderHeight,
       }
     : {
         xs: topOffsetXs,

@@ -2,6 +2,8 @@ import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 import { browserEnv } from '@/browserConfig';
 
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
+
 export type ContentHeadingProps = {
   level: number;
   id?: string;
@@ -46,9 +48,7 @@ const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 const asLineHeight = (level: number) =>
   level === 1 || level === 2 ? '2.625rem' : '1.5rem';
 
-const scrollOffset =
-  browserEnv.config.SITE_HEADER_HEIGHT +
-  browserEnv.config.PRODUCT_HEADER_HEIGHT;
+const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
 const ContentHeading = ({
   level,

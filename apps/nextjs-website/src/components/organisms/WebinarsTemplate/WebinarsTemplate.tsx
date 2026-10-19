@@ -19,6 +19,9 @@ import { browserEnv } from '@/browserConfig';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
+const { baseUrl, isWebinarHeartbeatEnabled, SITE_HEADER_HEIGHT } =
+  browserEnv.config;
+
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
 type WebinarsTemplateProps = {
@@ -40,7 +43,7 @@ const WebinarsTemplateContent = ({
   const webinarsListPageSEO = {
     metaTitle: t('webinars.title'),
     metaDescription: t('webinars.subtitle'),
-    canonicalURL: `${browserEnv.config.baseUrl}/${locale}/webinars`,
+    canonicalURL: `${baseUrl}/${locale}/webinars`,
   };
 
   const structuredData = generateStructuredDataScripts({
@@ -95,7 +98,7 @@ const WebinarsTemplateContent = ({
       {futureWebinars && (
         <FutureWebinarsShowcase webinars={[...futureWebinars]} />
       )}
-      {browserEnv.config.isWebinarHeartbeatEnabled && (
+      {isWebinarHeartbeatEnabled && (
         <EContainer containerSx={{ marginY: '64px' }}>
           <CertificateBanner
             imagePath={'/images/certificato-di-partecipazione-webinar.png'}
@@ -119,7 +122,7 @@ const WebinarsTemplate = (props: WebinarsTemplateProps) => {
   return (
     <Box
       sx={{
-        marginTop: `${browserEnv.config.SITE_HEADER_HEIGHT}px`,
+        marginTop: `${SITE_HEADER_HEIGHT}px`,
       }}
     >
       <Suspense fallback={<Spinner />}>

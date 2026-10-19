@@ -22,7 +22,7 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
   const format = useFormatter();
 
   const formatDate = (date: string) =>
-    format.dateTime(new Date(date), browserEnv.config.chatbotHeaderDateOptions);
+    format.dateTime(new Date(date), chatbotHeaderDateOptions);
 
   const uniqueDates = Array.from(
     new Set(sessionsList.map((session) => formatDate(session.createdAt)))
@@ -42,6 +42,8 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
 
 export default ChatbotHistoryList;
 
+const { chatbotHeaderDateOptions } = browserEnv.config;
+
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],
   sessionsList: readonly Session[],
@@ -53,7 +55,7 @@ function dateDividerSessionsItemsInterpolation(
       (session: Session) =>
         format.dateTime(
           new Date(session.createdAt),
-          browserEnv.config.chatbotHeaderDateOptions
+          chatbotHeaderDateOptions
         ) === date
     );
     return sessions.map((session: Session) => session);
@@ -72,7 +74,7 @@ function dateDividerSessionsItemsInterpolation(
           {capitalize(
             format.dateTime(
               new Date(sameMonthItems[0].createdAt),
-              browserEnv.config.chatbotHeaderDateOptions
+              chatbotHeaderDateOptions
             )
           )}
         </Typography>

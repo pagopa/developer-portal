@@ -25,6 +25,18 @@ import Error from './error';
 import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
 
+const {
+  matomoScriptSrc,
+  cookieCategory,
+  baseUrl,
+  isProduction,
+  useNewCookie,
+  cookieDomainScript,
+  cookieScriptUrl,
+  isChatbotActive,
+  SITE_HEADER_HEIGHT,
+} = browserEnv.config;
+
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `
@@ -33,7 +45,7 @@ const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   (function() {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src='` +
-  browserEnv.config.matomoScriptSrc +
+  matomoScriptSrc +
   `'; s.parentNode.insertBefore(g,s);
   })();
 `;
@@ -56,12 +68,12 @@ const MATOMO_TAG_MANAGER_SCRIPT =
   }
 
   function consentSet() {
-    if (OnetrustActiveGroups.includes('${browserEnv.config.cookieCategory}')) {
+    if (OnetrustActiveGroups.includes('${cookieCategory}')) {
       _mtm.push({ event: 'consent_given' });
         _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src='` +
-  browserEnv.config.matomoScriptSrc +
+  matomoScriptSrc +
   `'; s.parentNode.insertBefore(g,s);
     } else {
       _mtm.push({ event: 'consent_withdrawn' });
@@ -80,7 +92,7 @@ const titilliumWeb = Titillium_Web({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(browserEnv.config.baseUrl),
+  metadataBase: new URL(baseUrl),
 };
 
 export default async function RootLayout({
@@ -116,12 +128,12 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={titilliumWeb.variable}>
       <head>
-        {browserEnv.config.isProduction && (
+        {isProduction && (
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
-              __html: browserEnv.config.useNewCookie
+              __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
@@ -137,18 +149,16 @@ export default async function RootLayout({
         >
           <BodyWrapper>
             <CookieBannerScript
-              cookieDomainScript={browserEnv.config.cookieDomainScript}
+              cookieDomainScript={cookieDomainScript}
               cookieScript={
-                browserEnv.config.useNewCookie
-                  ? browserEnv.config.cookieScriptUrl
+                useNewCookie
+                  ? cookieScriptUrl
                   : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
               }
             />
             <AuthProvider>
               <QualtricsIntercept />
-              <ChatbotProvider
-                isChatbotVisible={browserEnv.config.isChatbotActive}
-              >
+              <ChatbotProvider isChatbotVisible={isChatbotActive}>
                 <SiteHeader
                   locale={locale}
                   products={products}
@@ -157,11 +167,7 @@ export default async function RootLayout({
                 />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
-                    <Box
-                      sx={{
-                        marginTop: `${browserEnv.config.SITE_HEADER_HEIGHT}px`,
-                      }}
-                    >
+                    <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
                       {children}
                     </Box>
                   </main>

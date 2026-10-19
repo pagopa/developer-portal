@@ -3,6 +3,8 @@ import type { SEO } from '@/lib/seo/types';
 import { Metadata, ResolvedMetadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/locales';
 
+const { websiteName, defaultOgTagImage } = browserEnv.config;
+
 type MakeMetadataParams = {
   readonly parent?: ResolvedMetadata;
   readonly title?: string;
@@ -22,10 +24,9 @@ export const makeMetadata: MakeMetadataFunction = ({
   image: imageParam,
   langCode,
 }) => {
-  const previousTitle =
-    parent?.title?.absolute || browserEnv.config.websiteName;
+  const previousTitle = parent?.title?.absolute || websiteName;
   const metadataTitle = title ? `${title} | ${previousTitle}` : previousTitle;
-  const image = imageParam || browserEnv.config.defaultOgTagImage;
+  const image = imageParam || defaultOgTagImage;
   const openGraph = getOpenGraphMetadata(
     metadataTitle,
     description,

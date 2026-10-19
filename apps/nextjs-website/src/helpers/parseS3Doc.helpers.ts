@@ -233,15 +233,16 @@ export const parseS3GuidePage = async (props: {
     return undefined;
   }
 
+  const { staticContentsUrl, s3DocsPath } = buildEnv.config;
   const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
-  const assetsPrefix = `${buildEnv.config.staticContentsUrl}/${locale}/${buildEnv.config.s3DocsPath}/${guidePageMetadata.dirName}`;
+  const assetsPrefix = `${staticContentsUrl}/${locale}/${s3DocsPath}/${guidePageMetadata.dirName}`;
   const source = {
     pathPrefix: version.main
       ? baseGuidePath
       : `${baseGuidePath}/${version.version}`,
     version,
     assetsPrefix,
-    dirPath: `${locale}/${buildEnv.config.s3DocsPath}/${guidePageMetadata.dirName}`,
+    dirPath: `${locale}/${s3DocsPath}/${guidePageMetadata.dirName}`,
     spaceId: guidePageMetadata.dirName,
   };
 
