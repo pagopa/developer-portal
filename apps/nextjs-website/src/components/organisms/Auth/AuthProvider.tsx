@@ -5,32 +5,35 @@
 
 import { Amplify, Auth, Hub } from 'aws-amplify';
 
-import {
-  amplifyConfig,
-  authCookieValidityInDays,
-  baseUrl,
-  loggedInCookieName,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { CognitoUser } from '@aws-amplify/auth';
 
-Amplify.configure(amplifyConfig);
+Amplify.configure(browserEnv.config.amplifyConfig);
 
 function getAuthCookieAttributes(): string {
-  const domain = baseUrl.replace(/^https?:\/\//, '').split(':')[0];
+  const domain = browserEnv.config.baseUrl
+    .replace(/^https?:\/\//, '')
+    .split(':')[0];
   const secure = window.location.protocol === 'https:' ? '; Secure' : '';
   return `path=/; domain=${domain}; SameSite=Lax${secure}`;
 }
 
 function setLoggedInCookie(): void {
   const expires = new Date();
-  expires.setDate(expires.getDate() + authCookieValidityInDays);
-  document.cookie = `${loggedInCookieName}=true; ${getAuthCookieAttributes()}; expires=${expires.toUTCString()}`;
+  expires.setDate(
+    expires.getDate() + browserEnv.config.authCookieValidityInDays
+  );
+  document.cookie = `${
+    browserEnv.config.loggedInCookieName
+  }=true; ${getAuthCookieAttributes()}; expires=${expires.toUTCString()}`;
 }
 
 function deleteLoggedInCookie(): void {
-  document.cookie = `${loggedInCookieName}=; ${getAuthCookieAttributes()}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  document.cookie = `${
+    browserEnv.config.loggedInCookieName
+  }=; ${getAuthCookieAttributes()}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 }
 
 async function resolveFirstLogin(): Promise<void> {

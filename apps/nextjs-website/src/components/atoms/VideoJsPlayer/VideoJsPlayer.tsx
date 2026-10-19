@@ -10,7 +10,7 @@ import {
 import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
 import { Box } from '@mui/material';
-import { amazonIvsVersion } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import '@/styles/videojs-custom.css';
 import { useTranslations } from 'next-intl';
 import { Chapter } from '@/lib/webinars/types';
@@ -84,8 +84,8 @@ const VideoJsPlayer = (props: PlayerProps) => {
 
   useEffect(() => {
     registerIVSTech(videojs, {
-      wasmBinary: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
-      wasmWorker: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.js`,
+      wasmBinary: `https://player.live-video.net/${browserEnv.config.amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
+      wasmWorker: `https://player.live-video.net/${browserEnv.config.amazonIvsVersion}/amazon-ivs-wasmworker.min.js`,
     });
     registerIVSQualityPlugin(videojs);
 

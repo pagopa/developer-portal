@@ -1,6 +1,6 @@
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
-import { baseUrl, organizationInfo, websiteName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import type { Media } from '@/lib/media/types';
 import { Product } from '@/lib/products/types';
 import type { SEO } from '@/lib/seo/types';
@@ -25,7 +25,10 @@ import {
 } from 'schema-dts';
 import yaml from 'js-yaml';
 
-export const homeBreadCrumb = { name: websiteName, item: baseUrl };
+export const homeBreadCrumb = {
+  name: browserEnv.config.websiteName,
+  item: browserEnv.config.baseUrl,
+};
 
 export function productToBreadcrumb(locale: string, product?: Product) {
   const item = breadcrumbItemByProduct(locale, product, ['overview']);
@@ -41,17 +44,19 @@ export function breadcrumbItemByProduct(
   paths?: readonly string[]
 ) {
   return product?.slug && paths
-    ? [baseUrl, locale, product.slug, ...paths].join('/')
+    ? [browserEnv.config.baseUrl, locale, product.slug, ...paths].join('/')
     : undefined;
 }
 
 export function getItemFromPaths(locale: string, paths?: readonly string[]) {
-  return paths ? [baseUrl, locale, ...paths].join('/') : undefined;
+  return paths
+    ? [browserEnv.config.baseUrl, locale, ...paths].join('/')
+    : undefined;
 }
 
 export const organization: Organization = {
   '@type': 'Organization',
-  ...organizationInfo,
+  ...browserEnv.config.organizationInfo,
 };
 
 export const organizationWithContext: WithContext<Organization> = {
@@ -61,8 +66,8 @@ export const organizationWithContext: WithContext<Organization> = {
 
 export const website: WebSite = {
   '@type': 'WebSite',
-  name: `${websiteName} ${organizationInfo.name}`,
-  url: baseUrl,
+  name: `${browserEnv.config.websiteName} ${browserEnv.config.organizationInfo.name}`,
+  url: browserEnv.config.baseUrl,
 };
 
 export const websiteWithContext: WithContext<WebSite> = {
@@ -203,7 +208,7 @@ export function convertWebinarToStructuredDataEvent(
     organizer: organization,
     location: {
       '@type': 'VirtualLocation',
-      url: `${baseUrl}/webinars/${webinar.slug}`,
+      url: `${browserEnv.config.baseUrl}/webinars/${webinar.slug}`,
     },
     performers: webinar.speakers?.map((speaker) => ({
       '@type': 'Person',
@@ -233,7 +238,7 @@ export function convertApiToStructuredDataSoftwareApplication(
     api &&
     makeSoftwareApplication({
       name: api.specUrlsName,
-      url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
+      url: `${browserEnv.config.baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
     })
   );
 }

@@ -24,7 +24,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import type { BreadcrumbSegment } from '@/lib/paths/types';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import PageNotFound from '@/app/[locale]/not-found';
 
 type ReleaseNotePageStaticParams = {
@@ -115,7 +115,7 @@ const ReleaseNotePage = async ({
 
   const breadcrumbsItems: BreadcrumbItem[] = breadcrumbs.map((breadcrumb) => ({
     name: breadcrumb.name,
-    item: [baseUrl, breadcrumb.path].join(''),
+    item: [browserEnv.config.baseUrl, breadcrumb.path].join(''),
   }));
 
   const structuredData = generateStructuredDataScripts({
@@ -123,7 +123,7 @@ const ReleaseNotePage = async ({
       productToBreadcrumb(locale, product),
       {
         name: title,
-        item: `${baseUrl}/${locale}/${product.slug}/release-note`,
+        item: `${browserEnv.config.baseUrl}/${locale}/${product.slug}/release-note`,
       },
       ...breadcrumbsItems,
     ],

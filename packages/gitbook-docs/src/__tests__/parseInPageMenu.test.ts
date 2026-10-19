@@ -5,6 +5,7 @@ const config = {
   assetsPrefix: '/assets/prefix',
   linkPrefix: '/link/prefix',
   pagePath: '/path/to/page',
+  headingLevelsToShowInMenu: [2, 3],
   isPageIndex: false,
 };
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Link as MuiLink, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import { profileMenuItems } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Link from 'next/link';
 
 type DesktopProfileMenuProps = {
@@ -54,7 +54,7 @@ const DesktopProfileMenu = ({
             {userFullName}
           </Typography>
         </Box>
-        {profileMenuItems.map(
+        {browserEnv.config.profileMenuItems.map(
           ({ label, href }: { label: string; href: string }, index: number) => {
             const isCurrent = currentPathname.startsWith(`/${locale}${href}`);
 

@@ -10,7 +10,7 @@ import type { BreadcrumbSegment } from '@/lib/paths/types';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { Box } from '@mui/material';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useParams } from 'next/navigation';
 
 export type ProductLayoutProps = {
@@ -44,8 +44,11 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       sx={{
         marginTop: product
           ? {
-              xs: `${SITE_HEADER_HEIGHT + 40}px`,
-              md: `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`,
+              xs: `${browserEnv.config.SITE_HEADER_HEIGHT + 40}px`,
+              md: `${
+                browserEnv.config.SITE_HEADER_HEIGHT +
+                browserEnv.config.PRODUCT_HEADER_HEIGHT
+              }px`,
             }
           : 0,
       }}

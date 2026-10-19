@@ -14,7 +14,7 @@ import ConfirmationModal from '@/components/atoms/ConfirmationModal/Confirmation
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/ProfileDataCard';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
-import { companyRoles, defaultLocale } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 const PersonalData = () => {
@@ -25,7 +25,7 @@ const PersonalData = () => {
 
   const companyRolesValues = useMemo(
     () =>
-      companyRoles.map((role) => ({
+      browserEnv.config.companyRoles.map((role) => ({
         title: t(`auth.signUp.companyRoles.${role}`),
         value: role,
       })),
@@ -87,7 +87,7 @@ const PersonalData = () => {
         title: t('profile.personalData.fields.commsPreferredLanguage'),
         value:
           user?.attributes['custom:preferred_language'] ||
-          defaultLocale.split('-')[0],
+          browserEnv.config.defaultLocale.split('-')[0],
         editable: true,
         type: 'select',
         values: preferredLanguageValues,

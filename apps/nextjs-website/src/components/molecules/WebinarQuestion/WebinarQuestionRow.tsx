@@ -14,7 +14,7 @@ import DOMPurify from 'dompurify';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 import { useTranslations } from 'next-intl';
-import { defaultLocale, timeOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;
@@ -85,8 +85,8 @@ export default function WebinarQuestionRow({
         <Typography fontStyle={'italic'} fontSize={14}>
           {!isHidden
             ? question.id.createdAt.toLocaleTimeString(
-                defaultLocale,
-                timeOptions
+                browserEnv.config.defaultLocale,
+                browserEnv.config.timeOptions
               )
             : ''}
         </Typography>

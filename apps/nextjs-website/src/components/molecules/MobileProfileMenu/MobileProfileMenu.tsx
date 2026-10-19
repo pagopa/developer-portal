@@ -1,5 +1,5 @@
 'use client';
-import { profileMenuItems } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -52,23 +52,25 @@ const MobileProfileMenu = ({
 
   const items = (
     <MenuList sx={{ flexDirection: 'column', gap: 2, width: 1 }}>
-      {profileMenuItems.map(({ label, href }, index: number) => (
-        <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
-          <MuiLink
-            component={Link}
-            href={`/${locale}${href}`}
-            sx={{
-              alignSelf: 'stretch',
-              textDecoration: 'none',
-              color: palette.text.primary,
-              py: 1,
-              pl: 6,
-            }}
-          >
-            {t(label)}
-          </MuiLink>
-        </MenuItem>
-      ))}
+      {browserEnv.config.profileMenuItems.map(
+        ({ label, href }, index: number) => (
+          <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
+            <MuiLink
+              component={Link}
+              href={`/${locale}${href}`}
+              sx={{
+                alignSelf: 'stretch',
+                textDecoration: 'none',
+                color: palette.text.primary,
+                py: 1,
+                pl: 6,
+              }}
+            >
+              {t(label)}
+            </MuiLink>
+          </MenuItem>
+        )
+      )}
     </MenuList>
   );
 

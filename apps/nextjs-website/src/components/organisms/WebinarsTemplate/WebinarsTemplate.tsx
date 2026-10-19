@@ -9,13 +9,13 @@ import {
   getPastWebinarsFrom,
 } from '@/helpers/webinars.helpers';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
-import { baseUrl, isWebinarHeartbeatEnabled } from '@/config';
+
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 import type { Tag } from '@/lib/tags/types';
-import { SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 
@@ -40,7 +40,7 @@ const WebinarsTemplateContent = ({
   const webinarsListPageSEO = {
     metaTitle: t('webinars.title'),
     metaDescription: t('webinars.subtitle'),
-    canonicalURL: `${baseUrl}/${locale}/webinars`,
+    canonicalURL: `${browserEnv.config.baseUrl}/${locale}/webinars`,
   };
 
   const structuredData = generateStructuredDataScripts({
@@ -95,7 +95,7 @@ const WebinarsTemplateContent = ({
       {futureWebinars && (
         <FutureWebinarsShowcase webinars={[...futureWebinars]} />
       )}
-      {isWebinarHeartbeatEnabled && (
+      {browserEnv.config.isWebinarHeartbeatEnabled && (
         <EContainer containerSx={{ marginY: '64px' }}>
           <CertificateBanner
             imagePath={'/images/certificato-di-partecipazione-webinar.png'}
@@ -119,7 +119,7 @@ const WebinarsTemplate = (props: WebinarsTemplateProps) => {
   return (
     <Box
       sx={{
-        marginTop: `${SITE_HEADER_HEIGHT}px`,
+        marginTop: `${browserEnv.config.SITE_HEADER_HEIGHT}px`,
       }}
     >
       <Suspense fallback={<Spinner />}>

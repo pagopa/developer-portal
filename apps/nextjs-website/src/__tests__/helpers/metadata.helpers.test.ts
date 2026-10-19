@@ -1,6 +1,6 @@
 import { ResolvedMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { baseUrl, websiteName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 const parent = {
   title: {
@@ -146,12 +146,12 @@ it('should return the correct metadata when image is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: `${baseUrl}/images/dev-portal-home.jpg`,
+      images: `${browserEnv.config.baseUrl}/images/dev-portal-home.jpg`,
     },
     twitter: {
       title: 'Title | Parent title',
       description: 'Description',
-      images: `${baseUrl}/images/dev-portal-home.jpg`,
+      images: `${browserEnv.config.baseUrl}/images/dev-portal-home.jpg`,
       card: 'summary',
       site: '@pagopa',
       creator: '@pagopa',
@@ -168,18 +168,18 @@ it('should return the correct metadata when parent is missing', () => {
   });
 
   expect(metadataWithoutParent).toEqual({
-    title: `Title | ${websiteName}`,
+    title: `Title | ${browserEnv.config.websiteName}`,
     description: 'Description',
     url: 'Url',
     openGraph: {
-      title: `Title | ${websiteName}`,
+      title: `Title | ${browserEnv.config.websiteName}`,
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
       images: 'Image',
     },
     twitter: {
-      title: `Title | ${websiteName}`,
+      title: `Title | ${browserEnv.config.websiteName}`,
       description: 'Description',
       images: 'Image',
       card: 'summary',

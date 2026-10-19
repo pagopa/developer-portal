@@ -7,20 +7,25 @@ import dotenv from 'dotenv';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { makeS3Client, putS3File } from '../helpers/s3Bucket.helper';
 import { StrapiApiData, StrapiProduct } from '../helpers/strapiTypes';
-import { baseUrl } from 'nextjs-website/src/config';
+import { makeBuildConfig } from 'nextjs-website/src/buildConfig';
+import * as E from 'fp-ts/lib/Either';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 dotenv.config();
 
-const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
-const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
-const S3_PRODUCTS_METADATA_JSON_PATH =
-  process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
-const S3_APIS_DATA_METADATA_JSON_PATH =
-  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
-  'synced-apis-data-response.json';
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const LOCALE = process.env.LOCALE;
+const config = E.getOrElseW((error: string) => {
+  // eslint-disable-next-line functional/no-throw-statements
+  throw new Error(error);
+})(makeBuildConfig(process.env));
+
+const {
+  SITEMAP_URL,
+  S3_SITEMAP_PATH,
+  S3_PRODUCTS_METADATA_JSON_PATH,
+  S3_APIS_DATA_METADATA_JSON_PATH,
+  bucketName,
+  LOCALE,
+} = config;
 
 const s3Client = makeS3Client();
 async function main() {
@@ -68,11 +73,11 @@ async function main() {
     { data: strapiApisData, path: S3_APIS_DATA_METADATA_JSON_PATH },
   ];
   for (const { data, path } of metadataJsons) {
-    await putS3File(data, path, `${S3_BUCKET_NAME}`, s3Client);
+    await putS3File(data, path, `${bucketName}`, s3Client);
   }
   const putSitemapToS3Result = await s3Client.send(
     new PutObjectCommand({
-      Bucket: `${S3_BUCKET_NAME}`,
+      Bucket: `${bucketName}`,
       Key: S3_SITEMAP_PATH,
       Body: siteMap,
     })

@@ -4,7 +4,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import WebinarDetailTemplate from '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate';
@@ -33,7 +33,7 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: webinar.title,
-    url: `${baseUrl}/${locale}/webinars/${webinar.slug}`,
+    url: `${browserEnv.config.baseUrl}/${locale}/webinars/${webinar.slug}`,
     langCode: locale,
     image: webinar.imagePath,
   });

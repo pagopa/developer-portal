@@ -3,14 +3,16 @@
 'use client';
 import { ElementType, FC, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import 'rapidoc';
 
 type ApiViewerProps = {
   specURL: string;
 };
 
-const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
+const scrollOffset =
+  browserEnv.config.SITE_HEADER_HEIGHT +
+  browserEnv.config.PRODUCT_HEADER_HEIGHT;
 
 const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   const { palette } = useTheme();

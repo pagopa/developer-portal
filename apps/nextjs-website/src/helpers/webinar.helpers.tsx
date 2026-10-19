@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Webinar } from '@/lib/webinars/types';
-import {
-  isWebinarHeartbeatEnabled,
-  webinarHeartbeatIntervalInSeconds,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
 
@@ -185,7 +182,12 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
+    if (
+      !browserEnv.config.isWebinarHeartbeatEnabled ||
+      !webinar ||
+      !isVideoPlaying
+    )
+      return;
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {
@@ -193,7 +195,7 @@ export const useWebinar = () => {
       if (
         !!lastHeartbeatSentTime.current &&
         (now.getTime() - lastHeartbeatSentTime.current?.getTime()) / 1000 <
-          webinarHeartbeatIntervalInSeconds
+          browserEnv.config.webinarHeartbeatIntervalInSeconds
       ) {
         return;
       }
@@ -221,7 +223,7 @@ export const useWebinar = () => {
     // Then set up interval for subsequent calls
     const heartbeatIntervalId = setInterval(() => {
       sendHeartbeat();
-    }, webinarHeartbeatIntervalInSeconds * 1000);
+    }, browserEnv.config.webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
   }, [webinar, isVideoPlaying, webinarState, user]);

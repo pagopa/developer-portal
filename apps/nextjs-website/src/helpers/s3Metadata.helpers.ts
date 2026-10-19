@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { s3DocsPath, staticContentsUrl } from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -21,12 +21,9 @@ const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry configuration - configurable via environment variables
-const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
-const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || '1000',
-  10
-);
-const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
+const RETRY_ATTEMPTS = buildEnv.config.CDN_RETRY_ATTEMPTS;
+const INITIAL_RETRY_DELAY_MS = buildEnv.config.CDN_RETRY_DELAY_MS;
+const TIMEOUT_LIMIT = buildEnv.config.TIMEOUT_LIMIT;
 
 async function withRetries<T>(
   operation: () => Promise<T>,
@@ -94,7 +91,7 @@ export async function downloadFileAsText(
   // Create the request promise
   const requestPromise = withRetries(
     async () => {
-      const url = `${staticContentsUrl}/${path}`;
+      const url = `${buildEnv.config.staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
         signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
@@ -122,14 +119,14 @@ export async function downloadFileAsText(
 }
 
 async function fetchFromCDN(path: string, config?: RequestInit) {
-  if (!staticContentsUrl) {
+  if (!buildEnv.config.staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
       'STATIC_CONTENTS_URL is not defined in the environment variables.'
     );
   }
 
-  const url = `${staticContentsUrl}/${path}`;
+  const url = `${buildEnv.config.staticContentsUrl}/${path}`;
   const response = await fetch(url, {
     // Add timeout and other fetch options to prevent hanging
     signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
@@ -189,13 +186,10 @@ export async function fetchMetadataFromCDN<T>(
   return await requestPromise;
 }
 
-const S3_PATH_TO_GITBOOK_DOCS =
-  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const S3_METADATA_JSON_PATH =
-  process.env.S3_METADATA_JSON_PATH || 'metadata.json';
+const S3_PATH_TO_GITBOOK_DOCS = buildEnv.config.S3_PATH_TO_GITBOOK_DOCS;
+const S3_METADATA_JSON_PATH = buildEnv.config.S3_METADATA_JSON_PATH;
 const S3_SOAP_API_METADATA_JSON_PATH =
-  process.env.S3_SOAP_API_METADATA_JSON_PATH ||
-  'soap-api/soap-api-metadata.json';
+  buildEnv.config.S3_SOAP_API_METADATA_JSON_PATH;
 
 export const getGuidesMetadata = async (locale: string, dirName: string) => {
   const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);
@@ -207,8 +201,8 @@ export const getGuidesMetadata = async (locale: string, dirName: string) => {
 const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
 const buildDirMetadataPath = (locale: string, dirName: string) => {
-  const docsBase = s3DocsPath
-    ? removeTrailingSlash(s3DocsPath)
+  const docsBase = buildEnv.config.s3DocsPath
+    ? removeTrailingSlash(buildEnv.config.s3DocsPath)
     : removeTrailingSlash(S3_PATH_TO_GITBOOK_DOCS);
   return docsBase
     ? `${locale}/${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
@@ -326,7 +320,7 @@ export const getMarkdownContentDict = async (
   const resolvedContentPairs = await Promise.all(
     markdownParts.map(async ({ dirName, pathToFile }) => {
       const key = `${dirName}/${pathToFile}`;
-      const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
+      const pathToMarkdownFile = `${locale}/${buildEnv.config.s3DocsPath}/${dirName}/${pathToFile}`;
       const content = (await downloadFileAsText(pathToMarkdownFile)) || '';
       return [key, content] as const;
     })

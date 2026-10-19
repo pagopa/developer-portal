@@ -8,7 +8,7 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
@@ -33,9 +33,16 @@ const GuideInPageMenu = ({
   const { fragment, setFragmentFromScroll } = useFragment();
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
-  const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
-  const productHeaderHeight = hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0;
-  const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
+  const nodes = parseInPageMenu(inPageMenu, {
+    assetsPrefix,
+    pagePath,
+    headingLevelsToShowInMenu: browserEnv.config.headingLevelsToShowInMenu,
+  });
+  const productHeaderHeight = hasProductHeader
+    ? browserEnv.config.PRODUCT_HEADER_HEIGHT
+    : 0;
+  const headerOffset =
+    productHeaderHeight + browserEnv.config.SITE_HEADER_HEIGHT;
 
   useEffect(() => {
     // eslint-disable-next-line functional/immutable-data
@@ -73,7 +80,7 @@ const GuideInPageMenu = ({
       for (const headingElement of headingElements) {
         const { top } = headingElement.getBoundingClientRect();
 
-        if (top <= SITE_HEADER_HEIGHT + productHeaderHeight) {
+        if (top <= browserEnv.config.SITE_HEADER_HEIGHT + productHeaderHeight) {
           activeId = headingElement.id;
           continue;
         }

@@ -1,10 +1,5 @@
-import {
-  bucketName,
-  credentials,
-  staticContentsUrl,
-  region,
-  s3DocsPath,
-} from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
+import { browserEnv } from '@/browserConfig';
 import { Product } from '@/lib/products/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import type { SEO } from '@/lib/seo/types';
@@ -47,7 +42,11 @@ export type GuideDefinition = {
   };
 };
 
-const env = makeParseS3DocsEnv(bucketName, region, credentials);
+const env = makeParseS3DocsEnv(
+  buildEnv.config.bucketName,
+  browserEnv.config.region,
+  buildEnv.config.credentials
+);
 
 const parseDocOrThrow = async <T>(
   docs: readonly DocSource<T>[],
@@ -73,8 +72,8 @@ export const makeTutorials = async (props: {
       product: product,
       source: {
         pathPrefix: `/${product.slug}/tutorials`,
-        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
-        dirPath: `${s3DocsPath}/${dirName}`,
+        assetsPrefix: `${buildEnv.config.staticContentsUrl}/${buildEnv.config.s3DocsPath}/${dirName}`,
+        dirPath: `${buildEnv.config.s3DocsPath}/${dirName}`,
         spaceId: dirName,
       },
       bannerLinks: bannerLinks,
@@ -106,7 +105,7 @@ export const makeGuide = (props: {
         guidePaths.some((path) => path === version) || main === true
     )
     .flatMap(({ main = false, version, dirName }) => {
-      const dirPath = `${props.locale}/${s3DocsPath}/${dirName}`;
+      const dirPath = `${props.locale}/${buildEnv.config.s3DocsPath}/${dirName}`;
       const item = {
         product: product,
         guide: {
@@ -126,7 +125,7 @@ export const makeGuide = (props: {
         source: {
           pathPrefix: `${guidePath}/${version}`,
           version,
-          assetsPrefix: `${staticContentsUrl}/${dirPath}`,
+          assetsPrefix: `${buildEnv.config.staticContentsUrl}/${dirPath}`,
           dirPath: dirPath,
           spaceId: dirName,
         },
@@ -145,12 +144,12 @@ export const makeSolution = (
   locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const dirPath = `${locale}/${s3DocsPath}/${solution.dirName}`;
+  const dirPath = `${locale}/${buildEnv.config.s3DocsPath}/${solution.dirName}`;
   const doc = {
     ...solution,
     source: {
       pathPrefix: `${locale}/solutions/${solution.slug}/details`,
-      assetsPrefix: `${staticContentsUrl}/${dirPath}`,
+      assetsPrefix: `${buildEnv.config.staticContentsUrl}/${dirPath}`,
       dirPath: dirPath,
       spaceId: solution.dirName,
     },
@@ -164,12 +163,12 @@ export const makeReleaseNote = (
   locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const dirPath = `${locale}/${s3DocsPath}/${releaseNote.dirName}`;
+  const dirPath = `${locale}/${buildEnv.config.s3DocsPath}/${releaseNote.dirName}`;
   const doc = {
     ...releaseNote,
     source: {
       pathPrefix: `/${locale}/${releaseNote.product.slug}/release-note`,
-      assetsPrefix: `${staticContentsUrl}/${dirPath}`,
+      assetsPrefix: `${buildEnv.config.staticContentsUrl}/${dirPath}`,
       dirPath: dirPath,
       spaceId: releaseNote.dirName,
     },

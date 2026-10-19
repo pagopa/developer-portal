@@ -6,7 +6,7 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import type { BreadcrumbSegment } from '@/lib/paths/types';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { useState, useEffect, useCallback } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
@@ -250,8 +250,10 @@ const GitBookTemplate = ({
                 position: 'sticky',
                 maxWidth: '378px',
                 top:
-                  SITE_HEADER_HEIGHT +
-                  (hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0),
+                  browserEnv.config.SITE_HEADER_HEIGHT +
+                  (hasProductHeader
+                    ? browserEnv.config.PRODUCT_HEADER_HEIGHT
+                    : 0),
               }}
             >
               <GuideInPageMenu

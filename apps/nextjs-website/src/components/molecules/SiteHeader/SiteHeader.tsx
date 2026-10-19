@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import React, { ForwardedRef, forwardRef, useMemo } from 'react';
 import MobileSiteHeader from '../MobileSiteHeader/MobileSiteHeader';
 import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopSiteHeader';
-import { SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 export type SiteHeaderProps = {
   locale: string;
@@ -37,7 +37,7 @@ const SiteHeader = (
       sx={{
         position: 'fixed',
         top: 0,
-        height: SITE_HEADER_HEIGHT,
+        height: browserEnv.config.SITE_HEADER_HEIGHT,
         zIndex: 100,
         width: '100vw',
       }}
@@ -47,7 +47,7 @@ const SiteHeader = (
         sx={{
           px: 3,
           backgroundColor: palette.common.white,
-          minHeight: SITE_HEADER_HEIGHT,
+          minHeight: browserEnv.config.SITE_HEADER_HEIGHT,
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'

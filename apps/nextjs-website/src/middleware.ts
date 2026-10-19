@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { baseUrl, defaultLocale, loggedInCookieName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 const guestPath = '/auth/';
@@ -9,10 +9,12 @@ const guestPath = '/auth/';
 // maintaining backwards compatibility with legacy indexed URLs and CMS' resources URLs
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const defaultLangCode = defaultLocale.split('-')[0];
+  const defaultLangCode = browserEnv.config.defaultLocale.split('-')[0];
 
   if (pathname.includes(guestPath)) {
-    const isLoggedIn = request.cookies.get(loggedInCookieName);
+    const isLoggedIn = request.cookies.get(
+      browserEnv.config.loggedInCookieName
+    );
 
     if (isLoggedIn?.value === 'true') {
       const locale = SUPPORTED_LOCALES.find((loc) =>
@@ -21,8 +23,10 @@ export function middleware(request: NextRequest) {
       const response = NextResponse.redirect(
         new URL(`/${locale ?? defaultLangCode}`, request.url)
       );
-      const domain = baseUrl.replace(/^https?:\/\//, '').split(':')[0];
-      response.cookies.set(loggedInCookieName, 'false', {
+      const domain = browserEnv.config.baseUrl
+        .replace(/^https?:\/\//, '')
+        .split(':')[0];
+      response.cookies.set(browserEnv.config.loggedInCookieName, 'false', {
         domain,
         path: '/',
         maxAge: 0,

@@ -10,10 +10,7 @@ import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import {
-  snackbarAutoHideDurationMs,
-  isWebinarHeartbeatEnabled,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
@@ -129,7 +126,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
-        {isWebinarHeartbeatEnabled && (
+        {browserEnv.config.isWebinarHeartbeatEnabled && (
           <ConfirmationModal
             title={t('subscriptionPopup.title')}
             text={
@@ -226,7 +223,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         isSubscribed &&
         ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
           <EContainer>
-            {isWebinarHeartbeatEnabled && (
+            {browserEnv.config.isWebinarHeartbeatEnabled && (
               <LiveWebinarWarningBanner
                 onEnableConsent={() => {
                   if (!user) return null;
@@ -261,7 +258,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           ></WebinarPlayerSection>
         )}
 
-      {isWebinarHeartbeatEnabled && (
+      {browserEnv.config.isWebinarHeartbeatEnabled && (
         <EContainer containerSx={{ marginTop: '64px' }}>
           <CertificateBanner
             imagePath={'/images/certificato-di-partecipazione-webinar.png'}
@@ -307,7 +304,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       {relatedLinks}
       <Snackbar
         open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
+        autoHideDuration={browserEnv.config.snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>

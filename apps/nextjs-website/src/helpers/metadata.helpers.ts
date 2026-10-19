@@ -1,4 +1,4 @@
-import { defaultOgTagImage, websiteName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import type { SEO } from '@/lib/seo/types';
 import { Metadata, ResolvedMetadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/locales';
@@ -22,9 +22,10 @@ export const makeMetadata: MakeMetadataFunction = ({
   image: imageParam,
   langCode,
 }) => {
-  const previousTitle = parent?.title?.absolute || websiteName;
+  const previousTitle =
+    parent?.title?.absolute || browserEnv.config.websiteName;
   const metadataTitle = title ? `${title} | ${previousTitle}` : previousTitle;
-  const image = imageParam || defaultOgTagImage;
+  const image = imageParam || browserEnv.config.defaultOgTagImage;
   const openGraph = getOpenGraphMetadata(
     metadataTitle,
     description,

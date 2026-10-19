@@ -13,7 +13,7 @@ import type { Part } from '@/lib/parts/types';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useParams } from 'next/navigation';
 
 type TutorialPageTemplateProps = {
@@ -125,13 +125,16 @@ const TutorialTemplate = ({
             <Box
               sx={{
                 maxHeight: `calc(100vh - ${
-                  SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+                  browserEnv.config.SITE_HEADER_HEIGHT +
+                  browserEnv.config.PRODUCT_HEADER_HEIGHT
                 }px)`,
                 maxWidth: '378px',
                 overflowY: 'auto',
                 paddingY: '42px',
                 position: 'sticky',
-                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
+                top:
+                  browserEnv.config.SITE_HEADER_HEIGHT +
+                  browserEnv.config.PRODUCT_HEADER_HEIGHT,
               }}
             >
               <PartRendererMenu parts={parts ?? []} />

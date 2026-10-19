@@ -5,7 +5,7 @@ import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
 import React from 'react';
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
-import { headingLevelsToShowInMenu } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { includes } from 'lodash';
 
 type BlocksRendererClientMenuProps = {
@@ -28,7 +28,8 @@ const BlocksRendererClientMenu = ({
         image: () => null,
         paragraph: () => null,
         heading: ({ children, level }) => {
-          if (!includes(headingLevelsToShowInMenu, level)) return null;
+          if (!includes(browserEnv.config.headingLevelsToShowInMenu, level))
+            return null;
           return (
             <Heading level={level} id={computeId('blockRenderer', children)}>
               {children}

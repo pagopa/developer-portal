@@ -1,14 +1,4 @@
-import {
-  baseUrl,
-  cookieCategory,
-  cookieDomainScript,
-  cookieScriptUrl,
-  isChatbotActive,
-  isProduction,
-  matomoScriptSrc,
-  SITE_HEADER_HEIGHT,
-  useNewCookie,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -43,7 +33,7 @@ const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   (function() {
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src='` +
-  matomoScriptSrc +
+  browserEnv.config.matomoScriptSrc +
   `'; s.parentNode.insertBefore(g,s);
   })();
 `;
@@ -66,12 +56,12 @@ const MATOMO_TAG_MANAGER_SCRIPT =
   }
 
   function consentSet() {
-    if (OnetrustActiveGroups.includes('${cookieCategory}')) {
+    if (OnetrustActiveGroups.includes('${browserEnv.config.cookieCategory}')) {
       _mtm.push({ event: 'consent_given' });
         _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.async=true; g.src='` +
-  matomoScriptSrc +
+  browserEnv.config.matomoScriptSrc +
   `'; s.parentNode.insertBefore(g,s);
     } else {
       _mtm.push({ event: 'consent_withdrawn' });
@@ -90,7 +80,7 @@ const titilliumWeb = Titillium_Web({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL(browserEnv.config.baseUrl),
 };
 
 export default async function RootLayout({
@@ -126,12 +116,12 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={titilliumWeb.variable}>
       <head>
-        {isProduction && (
+        {browserEnv.config.isProduction && (
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
-              __html: useNewCookie
+              __html: browserEnv.config.useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
@@ -147,16 +137,18 @@ export default async function RootLayout({
         >
           <BodyWrapper>
             <CookieBannerScript
-              cookieDomainScript={cookieDomainScript}
+              cookieDomainScript={browserEnv.config.cookieDomainScript}
               cookieScript={
-                useNewCookie
-                  ? cookieScriptUrl
+                browserEnv.config.useNewCookie
+                  ? browserEnv.config.cookieScriptUrl
                   : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
               }
             />
             <AuthProvider>
               <QualtricsIntercept />
-              <ChatbotProvider isChatbotVisible={isChatbotActive}>
+              <ChatbotProvider
+                isChatbotVisible={browserEnv.config.isChatbotActive}
+              >
                 <SiteHeader
                   locale={locale}
                   products={products}
@@ -165,7 +157,11 @@ export default async function RootLayout({
                 />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
-                    <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
+                    <Box
+                      sx={{
+                        marginTop: `${browserEnv.config.SITE_HEADER_HEIGHT}px`,
+                      }}
+                    >
                       {children}
                     </Box>
                   </main>

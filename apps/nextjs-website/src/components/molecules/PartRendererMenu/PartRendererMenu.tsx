@@ -9,7 +9,7 @@ import { generateIdFromString } from '@/helpers/anchor.helpers';
 import { useTranslations } from 'next-intl';
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { includes, some } from 'lodash';
-import { headingLevelsToShowInMenu } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
@@ -48,7 +48,8 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
 
           return matches.map((match) => {
             const level = match[1].length;
-            if (!includes(headingLevelsToShowInMenu, level)) return null;
+            if (!includes(browserEnv.config.headingLevelsToShowInMenu, level))
+              return null;
 
             const title = match[2]
               .trim()
@@ -86,7 +87,10 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         case 'ckEditor':
           return part.menuItems
             .filter((menuItem) =>
-              includes(headingLevelsToShowInMenu, menuItem.level)
+              includes(
+                browserEnv.config.headingLevelsToShowInMenu,
+                menuItem.level
+              )
             )
             .map((menuItem) => (
               <Heading
@@ -100,7 +104,9 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         case 'typography':
           if (
             !includes(
-              headingLevelsToShowInMenu.map((level) => `h${level}`),
+              browserEnv.config.headingLevelsToShowInMenu.map(
+                (level) => `h${level}`
+              ),
               part?.variant
             )
           )

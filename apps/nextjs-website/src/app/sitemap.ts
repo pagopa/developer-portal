@@ -4,7 +4,7 @@ import type { MetadataRoute } from 'next';
 import { getReleaseNotes, getWebinars } from '@/lib/api';
 import { GuidesRepository } from '@/lib/guides';
 import { SolutionRepository } from '@/lib/solutions';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import {
   getGuidesMetadataByDirNames,
   getReleaseNotesMetadataByDirNames,
@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allLocalesSitemaps = await Promise.all(
     SUPPORTED_LOCALES.map(async (locale) => {
       const localeCode = locale.langCode;
-      const localizedUrlPrefix = `${baseUrl}/${localeCode}`;
+      const localizedUrlPrefix = `${browserEnv.config.baseUrl}/${localeCode}`;
 
       // --------------------------------------------------------------------------------
       // 1. Fetch Global / Static Pages
@@ -180,7 +180,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           ? guide.path
           : `/${localeCode}${guide.path}`;
         return {
-          url: `${baseUrl}${guidePath}`,
+          url: `${browserEnv.config.baseUrl}${guidePath}`,
           lastModified: new Date(guide.lastModified || Date.now()),
           changeFrequency: 'weekly' as const,
           priority: 0.6,
@@ -213,7 +213,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             ? solution.path
             : `/${localeCode}${solution.path}`;
           return {
-            url: `${baseUrl}${solutionPath}`,
+            url: `${browserEnv.config.baseUrl}${solutionPath}`,
             lastModified: new Date(solution.lastModified || Date.now()),
             changeFrequency: 'weekly' as const,
             priority: 0.6,
@@ -264,7 +264,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             ? releaseNote.path
             : `/${localeCode}${releaseNote.path}`;
           return {
-            url: `${baseUrl}${notePath}`,
+            url: `${browserEnv.config.baseUrl}${notePath}`,
             lastModified: new Date(releaseNote.lastModified || Date.now()),
             changeFrequency: 'weekly' as const,
             priority: 0.6,
