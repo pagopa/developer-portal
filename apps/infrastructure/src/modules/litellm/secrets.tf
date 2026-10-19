@@ -6,9 +6,7 @@ resource "random_password" "master_key" {
   min_numeric = 4
 }
 
-# Master DB password — used once to bootstrap the IAM-authed application
-# user (see rds.tf header). Runtime services authenticate via IAM tokens
-# and never read this secret.
+# Reuse the existing password for the managed Aurora connection URL.
 resource "random_password" "db_master_password" {
   count       = var.create_database ? 1 : 0
   length      = 32
@@ -21,7 +19,7 @@ resource "random_password" "db_master_password" {
 # LITELLM_MASTER_KEY — must begin with `sk-` per the proxy's validator.
 resource "aws_secretsmanager_secret" "master_key" {
   name                    = "${local.name}-master-key"
-  description             = "LITELLM_MASTER_KEY for gateway + backend."
+  description             = "LITELLM_MASTER_KEY for LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
@@ -35,41 +33,37 @@ resource "aws_secretsmanager_secret_version" "master_key" {
 }
 
 # LITELLM_LICENSE — only created when the operator supplies one. The
-# task-execution role gets GetSecretValue via iam.tf, and gateway + backend
-# pick the env var up through shared_secrets in ecs.tf.
+# task-execution role gets GetSecretValue via iam.tf.
 resource "aws_secretsmanager_secret" "license" {
-  count = var.litellm_license == "" ? 0 : 1
+  count = nonsensitive(var.litellm_license != "") ? 1 : 0
 
   name                    = "${local.name}-license"
-  description             = "LITELLM_LICENSE for gateway + backend."
+  description             = "LITELLM_LICENSE for LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "license" {
-  count = var.litellm_license == "" ? 0 : 1
+  count = nonsensitive(var.litellm_license != "") ? 1 : 0
 
   secret_id     = aws_secretsmanager_secret.license[0].id
   secret_string = var.litellm_license
 }
 
-# UI_PASSWORD — backend-only. Same pattern as license: only created when
-# the operator supplies one. The execution role gets GetSecretValue via
-# iam.tf, and the backend task picks the env var up through
-# backend_managed_secrets in ecs.tf.
+# UI_PASSWORD is optional; otherwise LiteLLM uses its master key for UI login.
 resource "aws_secretsmanager_secret" "ui_password" {
-  count = var.ui_password == "" ? 0 : 1
+  count = nonsensitive(var.ui_password != "") ? 1 : 0
 
   name                    = "${local.name}-ui-password"
-  description             = "UI_PASSWORD for the backend (UI admin login)."
+  description             = "UI_PASSWORD for LiteLLM admin login."
   recovery_window_in_days = 0
 
   tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "ui_password" {
-  count = var.ui_password == "" ? 0 : 1
+  count = nonsensitive(var.ui_password != "") ? 1 : 0
 
   secret_id     = aws_secretsmanager_secret.ui_password[0].id
   secret_string = var.ui_password
@@ -77,13 +71,12 @@ resource "aws_secretsmanager_secret_version" "ui_password" {
 
 # Billing-metrics mTLS material — only created when metering is enabled
 # (billing_metrics_endpoint non-empty) and the operator supplied the PEM.
-# The task-execution role gets GetSecretValue via iam.tf, and gateway +
-# backend pick the env vars up through shared_secrets in ecs.tf.
+# The task-execution role gets GetSecretValue via iam.tf.
 resource "aws_secretsmanager_secret" "billing_metrics_client_cert" {
   count = local.billing_metrics_client_cert_enabled ? 1 : 0
 
   name                    = "${local.name}-billing-metrics-client-cert"
-  description             = "LITELLM_BILLING_METRICS_CLIENT_CERT for gateway + backend."
+  description             = "LITELLM_BILLING_METRICS_CLIENT_CERT for LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
@@ -100,7 +93,7 @@ resource "aws_secretsmanager_secret" "billing_metrics_client_key" {
   count = local.billing_metrics_client_key_enabled ? 1 : 0
 
   name                    = "${local.name}-billing-metrics-client-key"
-  description             = "LITELLM_BILLING_METRICS_CLIENT_KEY for gateway + backend."
+  description             = "LITELLM_BILLING_METRICS_CLIENT_KEY for LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
@@ -117,7 +110,7 @@ resource "aws_secretsmanager_secret" "billing_metrics_ca_cert" {
   count = local.billing_metrics_ca_cert_enabled ? 1 : 0
 
   name                    = "${local.name}-billing-metrics-ca-cert"
-  description             = "LITELLM_BILLING_METRICS_CA_CERT for gateway + backend."
+  description             = "LITELLM_BILLING_METRICS_CA_CERT for LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
@@ -133,7 +126,7 @@ resource "aws_secretsmanager_secret_version" "billing_metrics_ca_cert" {
 resource "aws_secretsmanager_secret" "db_master_password" {
   count                   = var.create_database ? 1 : 0
   name                    = "${local.name}-db-master-password"
-  description             = "Aurora master-user password - bootstrap only. Runtime auth is IAM-token."
+  description             = "Aurora master-user credentials used by LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
@@ -155,20 +148,27 @@ resource "aws_secretsmanager_secret_version" "db_master_password" {
 # Secrets Manager and reach the containers as ECS `secrets` rather than as
 # plain-text env in the task definition.
 resource "aws_secretsmanager_secret" "database_url" {
-  count = local.byo_database ? 1 : 0
+  count = local.manage_database_url ? 1 : 0
 
   name                    = "${local.name}-database-url"
-  description             = "DATABASE_URL for an existing Postgres, used when create_database = false."
+  description             = "Password-based PostgreSQL DATABASE_URL for LiteLLM."
   recovery_window_in_days = 0
 
   tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "database_url" {
-  count = local.byo_database ? 1 : 0
+  count = local.manage_database_url ? 1 : 0
 
-  secret_id     = aws_secretsmanager_secret.database_url[0].id
-  secret_string = var.database_url
+  secret_id = aws_secretsmanager_secret.database_url[0].id
+  secret_string = var.create_database ? format(
+    "postgresql://%s:%s@%s:%s/%s?sslmode=require",
+    urlencode(var.db_master_username),
+    urlencode(random_password.db_master_password[0].result),
+    aws_rds_cluster.this[0].endpoint,
+    aws_rds_cluster.this[0].port,
+    urlencode(var.db_name),
+  ) : var.database_url
 }
 
 resource "aws_secretsmanager_secret" "redis_url" {

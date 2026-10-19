@@ -1,21 +1,4 @@
-# One-command deploy of the LiteLLM AWS stack.
-#
-#   cd terraform/litellm/aws/examples/default
-#   cp terraform.tfvars.example terraform.tfvars   # edit it
-#   terraform init
-#   terraform apply
-#
-# This root just wires the provider (see providers.tf) to the module. The
-# module itself (../../) declares no provider, so it can also be consumed
-# from your own config with count/for_each/aliased or assume-role providers:
-#
-#   module "litellm" {
-#     source  = "github.com/BerriAI/litellm//terraform/litellm/aws?ref=<tag>"
-#     ...
-#   }
-#
-# Knobs not surfaced as variables here (per-component sizing, autoscaling,
-# RDS/Redis tuning) can be set directly on this block — see ../../variables.tf.
+# Deploy the all-in-one LiteLLM image with ACM and Route53 TLS setup.
 module "litellm" {
   source = "../../"
 
@@ -29,10 +12,12 @@ module "litellm" {
   private_subnet_ids                 = var.private_subnet_ids
   additional_task_security_group_ids = var.additional_task_security_group_ids
 
-  create_database = var.create_database
-  database_url    = var.database_url
-  create_redis    = var.create_redis
-  redis_url       = var.redis_url
+  create_database         = var.create_database
+  database_url            = var.database_url
+  database_url_secret_arn = var.database_url_secret_arn
+  create_redis            = var.create_redis
+  redis_url               = var.redis_url
+  gateway_image           = var.gateway_image
 
   litellm_master_key = var.litellm_master_key
   litellm_license    = var.litellm_license
@@ -49,7 +34,4 @@ module "litellm" {
   backend_extra_env     = var.backend_extra_env
   gateway_extra_secrets = var.gateway_extra_secrets
   backend_extra_secrets = var.backend_extra_secrets
-
-  gateway_metrics_port         = var.gateway_metrics_port
-  gateway_metrics_scrape_cidrs = var.gateway_metrics_scrape_cidrs
 }

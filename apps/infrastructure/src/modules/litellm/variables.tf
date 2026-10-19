@@ -52,7 +52,7 @@ variable "litellm_license" {
     LiteLLM enterprise license string. When set, the stack creates a
     `<tenant>-litellm-<env>-license` Secrets Manager entry, grants the
     task-execution role GetSecretValue on it, and exposes its value to
-    gateway + backend as `LITELLM_LICENSE`. Leave empty for OSS-only deploys.
+    LiteLLM as `LITELLM_LICENSE`. Leave empty for OSS-only deploys.
   EOT
   type        = string
   default     = ""
@@ -64,7 +64,7 @@ variable "ui_password" {
     UI admin password. When set, the stack creates a
     `<tenant>-litellm-<env>-ui-password` Secrets Manager entry, grants the
     task-execution role GetSecretValue on it, and exposes its value to the
-    backend as `UI_PASSWORD`. Pair with `backend_extra_env.UI_USERNAME` to
+    proxy as `UI_PASSWORD`. Pair with `gateway_extra_env.UI_USERNAME` to
     set the matching username. Leave empty to skip — the proxy then falls
     back to the LITELLM_MASTER_KEY for UI login.
   EOT
@@ -133,145 +133,43 @@ variable "azs" {
   default     = []
 }
 
-# ---------- Component images ----------
-#
-# Defaults pin the four componentized images at the same release tag on
-# GHCR. Override on a per-component basis in tfvars when bumping; bump them
-# together when bumping the LiteLLM release.
+# ---------- All-in-one service ----------
 
 variable "gateway_image" {
-  description = "Container image for the gateway (data plane, port 4000). Tag must match a tag actually published to GHCR — the split images use the `v`-prefixed semver convention."
+  description = "All-in-one LiteLLM image serving the API and admin UI on port 4000."
   type        = string
-  default     = "ghcr.io/berriai/litellm-gateway:v1.106.0"
-}
-
-variable "backend_image" {
-  description = "Container image for the backend (management API, port 4001)."
-  type        = string
-  default     = "ghcr.io/berriai/litellm-backend:v1.106.0"
-}
-
-variable "ui_image" {
-  description = "Container image for the UI (nginx static export, port 3000)."
-  type        = string
-  default     = "ghcr.io/berriai/litellm-ui:v1.106.0"
-}
-
-variable "migrations_image" {
-  description = <<-EOT
-    Container image for the one-off prisma migration task. Built from
-    `migrations/Dockerfile` — slim image whose ENTRYPOINT runs
-    `python3 /app/run.py` (assembles DATABASE_URL from DATABASE_* env vars
-    via DatabaseURLSettings, then runs `prisma migrate deploy`). Should track
-    the same release tag as gateway/backend/ui.
-  EOT
-  type        = string
-  default     = "ghcr.io/berriai/litellm-migrations:v1.106.0"
+  default     = "docker.litellm.ai/berriai/litellm:main-stable"
 }
 
 # ---------- Service sizing ----------
 
 variable "gateway_cpu" {
-  description = "Fargate CPU units for the gateway task (1024 = 1 vCPU)."
+  description = "Fargate CPU units for the all-in-one task (1024 = 1 vCPU)."
   type        = number
   default     = 1024
 }
 
 variable "gateway_memory" {
-  description = "Fargate memory (MiB) for the gateway task."
+  description = "Fargate memory (MiB) for the all-in-one task."
   type        = number
   default     = 4096
 }
 
 variable "gateway_desired_count" {
-  description = "Desired number of gateway tasks."
+  description = "Initial desired number of all-in-one tasks. Autoscaling owns subsequent changes."
   type        = number
   default     = 2
 }
 
 variable "gateway_num_workers" {
-  description = "uvicorn worker processes per gateway task (passed as --workers). Size relative to gateway_cpu — uvicorn recommends ~(2 × vCPU) + 1 for CPU-bound work."
+  description = "Worker processes per LiteLLM task (passed as --num_workers)."
   type        = number
   default     = 1
 
   validation {
-    condition     = var.gateway_num_workers >= 1
-    error_message = "gateway_num_workers must be >= 1."
+    condition     = var.gateway_num_workers >= 1 && floor(var.gateway_num_workers) == var.gateway_num_workers
+    error_message = "gateway_num_workers must be a positive integer."
   }
-}
-
-variable "gateway_connection_pool_enabled" {
-  description = <<-EOT
-    Run an in-container PgBouncer (transaction mode, loopback) in each gateway
-    task, shared by every uvicorn worker. Without it each of the
-    `gateway_num_workers` workers opens its own Prisma pool straight to
-    Postgres, so a task's footprint against the database connection ceiling is
-    workers x connection_limit and grows with every task. Sets
-    LITELLM_PGBOUNCER_ENABLED / LITELLM_PGBOUNCER_MAX_DB_CONNECTIONS /
-    LITELLM_PGBOUNCER_MAX_CLIENT_CONN on the gateway container only. Works with
-    the module-created Aurora too: the pooler mints the IAM token itself and
-    renews it before it expires.
-  EOT
-  type        = bool
-  default     = false
-}
-
-variable "gateway_pool_max_db_connections" {
-  description = "Upstream Postgres connections one gateway task may hold when gateway_connection_pool_enabled is set, regardless of gateway_num_workers. 20 suits 4 workers; a 5000-connection database then fits roughly 200 tasks."
-  type        = number
-  default     = 20
-
-  validation {
-    condition     = var.gateway_pool_max_db_connections >= 1
-    error_message = "gateway_pool_max_db_connections must be >= 1."
-  }
-}
-
-variable "gateway_pool_max_client_conn" {
-  description = "Client connections the in-container PgBouncer accepts from the gateway workers when gateway_connection_pool_enabled is set."
-  type        = number
-  default     = 1000
-
-  validation {
-    condition     = var.gateway_pool_max_client_conn >= 1
-    error_message = "gateway_pool_max_client_conn must be >= 1."
-  }
-}
-
-variable "backend_cpu" {
-  description = "Fargate CPU units for the backend task (1024 = 1 vCPU)."
-  type        = number
-  default     = 1024
-}
-
-variable "backend_memory" {
-  description = "Fargate memory (MiB) for the backend task. The proxy_server import chain alone needs >1 GiB; 4 GiB matches gateway."
-  type        = number
-  default     = 4096
-}
-
-variable "backend_desired_count" {
-  description = "Desired number of backend tasks."
-  type        = number
-  default     = 1
-}
-
-variable "ui_cpu" {
-  description = "Fargate CPU units for the UI task."
-  type        = number
-  default     = 256
-}
-
-variable "ui_memory" {
-  description = "Fargate memory (MiB) for the UI task."
-  type        = number
-  default     = 512
-}
-
-variable "ui_desired_count" {
-  description = "Desired number of UI tasks."
-  type        = number
-  default     = 1
 }
 
 # ---------- Autoscaling ----------
@@ -351,61 +249,13 @@ variable "gateway_tokens_metric" {
   default = null
 }
 
-variable "backend_autoscaling_enabled" {
-  description = "Toggle Application Auto Scaling target-tracking on the backend service."
-  type        = bool
-  default     = true
-}
-
-variable "backend_min_capacity" {
-  description = "Minimum backend task count under autoscaling."
-  type        = number
-  default     = 1
-}
-
-variable "backend_max_capacity" {
-  description = "Maximum backend task count under autoscaling."
-  type        = number
-  default     = 4
-}
-
-variable "backend_cpu_target" {
-  description = "Target average CPU utilization (%) for the backend autoscaling policy."
-  type        = number
-  default     = 70
-}
-
-variable "ui_autoscaling_enabled" {
-  description = "Toggle Application Auto Scaling target-tracking on the UI service. Off by default — UI is a static nginx export and one task is usually enough."
-  type        = bool
-  default     = false
-}
-
-variable "ui_min_capacity" {
-  description = "Minimum UI task count under autoscaling."
-  type        = number
-  default     = 1
-}
-
-variable "ui_max_capacity" {
-  description = "Maximum UI task count under autoscaling."
-  type        = number
-  default     = 3
-}
-
-variable "ui_cpu_target" {
-  description = "Target average CPU utilization (%) for the UI autoscaling policy."
-  type        = number
-  default     = 80
-}
-
 # ---------- RDS ----------
 
 variable "create_database" {
   description = <<-EOT
     Create the Aurora Postgres cluster (default). Set false to skip it and
-    either point the stack at an existing database via `database_url`, or
-    run without a database at all when `database_url` is also empty. The
+    either use an existing database via database_url or database_url_secret_arn,
+    or run without a database when both are empty. The
     DB-less mode drops key management, spend tracking, and the admin UI's
     persistence: the proxy then serves traffic authenticated by
     LITELLM_MASTER_KEY only.
@@ -420,13 +270,23 @@ variable "database_url" {
     `postgresql://user:pass@host:5432/litellm`. Only read when
     `create_database = false`. Stored in a
     `<tenant>-litellm-<env>-database-url` Secrets Manager entry and injected
-    into gateway, backend, and the migration task as DATABASE_URL, so the
-    value never lands in a task definition. The schema migration still runs
-    against it on every apply.
+    into LiteLLM as DATABASE_URL, so the value never lands in a task definition.
+    Mutually exclusive with database_url_secret_arn.
   EOT
   type        = string
   default     = ""
   sensitive   = true
+}
+
+variable "database_url_secret_arn" {
+  description = "Existing Secrets Manager ARN holding a complete PostgreSQL DATABASE_URL (optionally with an ECS JSON-key suffix). Set create_database = false and leave database_url empty. Terraform does not read or manage its value."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.database_url_secret_arn == "" || can(regex("^arn:[^:]+:secretsmanager:[^:]+:[0-9]{12}:secret:.+", var.database_url_secret_arn))
+    error_message = "database_url_secret_arn must be a Secrets Manager secret ARN, optionally with an ECS JSON-key suffix."
+  }
 }
 
 variable "db_instance_class" {
@@ -448,15 +308,9 @@ variable "db_name" {
 }
 
 variable "db_master_username" {
-  description = "Aurora master (superuser) username — used only to bootstrap the IAM-authed application user."
+  description = "Aurora master username used for the managed password-based DATABASE_URL."
   type        = string
   default     = "postgres"
-}
-
-variable "db_username" {
-  description = "IAM-authed Postgres user the proxy connects as. Must be CREATEd in the cluster and granted the rds_iam role — see terraform/litellm/aws/README.md."
-  type        = string
-  default     = "litellm_app"
 }
 
 # ---------- Redis ----------
@@ -568,7 +422,7 @@ variable "gateway_extra_env" {
 }
 
 variable "backend_extra_env" {
-  description = "Additional plain-text env vars for the backend container."
+  description = "Compatibility input merged into the all-in-one container. gateway_extra_env wins on collisions."
   type        = map(string)
   default     = {}
 }
@@ -593,7 +447,7 @@ variable "gateway_extra_secrets" {
 }
 
 variable "backend_extra_secrets" {
-  description = "Same shape as gateway_extra_secrets, but layered onto the backend container."
+  description = "Compatibility input merged into the all-in-one container. gateway_extra_secrets wins on collisions."
   type        = map(string)
   default     = {}
 }
@@ -602,8 +456,8 @@ variable "proxy_config" {
   description = <<-EOT
     LiteLLM proxy config (the contents of config.yaml). Mirrors the helm
     chart's `gateway.config.proxy_config` value. Uploaded to S3 under
-    `config/litellm-config.yaml` in the stack's bucket; gateway and backend
-    container entrypoints download it to /tmp/litellm-config.yaml at task
+    `config/litellm-config.yaml` in the stack's bucket; the LiteLLM
+    container downloads it to /tmp/litellm-config.yaml at task
     start (CONFIG_FILE_PATH is set automatically). The S3 object's etag is
     wired into the task definition, so editing this value produces a new
     task-def revision and a rolling redeploy.
@@ -634,46 +488,8 @@ variable "proxy_config" {
   default     = {}
 }
 
-# ---------- Prometheus metrics sidecar ----------
-
-variable "gateway_metrics_port" {
-  description = <<-EOT
-    Serve Prometheus /metrics from a `metrics` sidecar container in the
-    gateway task on this port (1-65535, not 4000), so a scrape never runs on
-    an inference worker. The sidecar runs the gateway image with
-    `python -m litellm.proxy.prometheus_metrics_server` and aggregates the
-    workers' PROMETHEUS_MULTIPROC_DIR samples over a task volume. Null (the
-    default) leaves /metrics on the gateway port only. The sidecar port has
-    no virtual-key auth and is not routed through the ALB; open it to your
-    scrapers with gateway_metrics_scrape_cidrs. Needs gateway_image v1.101.0
-    or newer.
-  EOT
-  type        = number
-  default     = null
-
-  validation {
-    condition     = var.gateway_metrics_port == null || (var.gateway_metrics_port >= 1 && var.gateway_metrics_port <= 65535 && var.gateway_metrics_port != 4000)
-    error_message = "gateway_metrics_port must be between 1 and 65535 and must not be 4000 (the gateway port)."
-  }
-}
-
-variable "gateway_metrics_scrape_cidrs" {
-  description = <<-EOT
-    CIDR blocks allowed to reach gateway_metrics_port on the gateway tasks
-    (your Prometheus or collector subnets). Empty by default, so only the
-    ALB can reach the tasks. Ignored when gateway_metrics_port is null.
-  EOT
-  type        = list(string)
-  default     = []
-
-  validation {
-    condition     = alltrue([for c in var.gateway_metrics_scrape_cidrs : can(cidrnetmask(c))])
-    error_message = "gateway_metrics_scrape_cidrs must contain valid IPv4 CIDR blocks."
-  }
-}
-
 variable "log_retention_days" {
-  description = "CloudWatch log retention for the three services."
+  description = "CloudWatch log retention for the LiteLLM service."
   type        = number
   default     = 30
 }
@@ -684,8 +500,8 @@ variable "log_retention_days" {
 #
 # OTel v2 is opt-in and gated entirely on otel_endpoint, matching the GCP
 # stack. Leave otel_endpoint = "" and nothing OTel-related lands in the
-# container env. Set it and the gateway and backend gain LITELLM_OTEL_V2=true
-# plus the OTEL_* block (per-component OTEL_SERVICE_NAME, exporter, endpoint,
+# container env. Set it and LiteLLM gains LITELLM_OTEL_V2=true
+# plus the OTEL_* block (OTEL_SERVICE_NAME, exporter, endpoint,
 # environment name, capture-content), with OTEL_HEADERS sourced from
 # otel_headers_secret_arn when provided.
 
@@ -757,7 +573,7 @@ variable "otel_headers_secret_arn" {
 #
 # License-gated request metering. Opt-in and gated entirely on
 # billing_metrics_endpoint: leave it empty (the default) and nothing
-# metering-related lands in the container env. Set it and gateway + backend
+# metering-related lands in the container env. Set it and LiteLLM
 # export billable-request counts over OTLP/HTTP, authenticating to the
 # collector with an mTLS client cert. The proxy accepts the cert, key, and CA
 # as either a file path or literal PEM content, so on Fargate they are
@@ -781,7 +597,7 @@ variable "billing_metrics_client_cert_pem" {
     When billing_metrics_endpoint is set, the stack stores this in a
     `<tenant>-litellm-<env>-billing-metrics-client-cert` Secrets Manager
     entry, grants the task-execution role GetSecretValue on it, and exposes
-    it to gateway + backend as LITELLM_BILLING_METRICS_CLIENT_CERT. Required
+    it to LiteLLM as LITELLM_BILLING_METRICS_CLIENT_CERT. Required
     whenever metering is enabled.
   EOT
   type        = string
@@ -813,74 +629,4 @@ variable "billing_metrics_ca_cert_pem" {
   type        = string
   default     = ""
   sensitive   = true
-}
-
-# ---------- Collector sidecar ----------
-#
-# Opt-in offload of spend tracking from the gateway's uvicorn workers to a
-# `python -m litellm.proxy.collector` sidecar in the same Fargate task (helm's
-# `gateway.collector`). Fargate awsvpc tasks share one network namespace,
-# so the sidecar listens on loopback TCP. Disabled (the default) adds nothing
-# to the task definition.
-
-variable "collector_enabled" {
-  description = "Run the collector sidecar next to the gateway container and have the gateway ship spend events to it (sets LITELLM_COLLECTOR_ENABLED=true on both). Autoscaling still targets the whole task's CPU/memory, sidecar included."
-  type        = bool
-  default     = false
-}
-
-variable "collector_port" {
-  description = "Loopback TCP port the sidecar listens on (LITELLM_COLLECTOR_ADDRESS=tcp://127.0.0.1:<port>)."
-  type        = number
-  default     = 4010
-
-  validation {
-    condition     = var.collector_port >= 1024 && var.collector_port <= 65535 && var.collector_port != 4000
-    error_message = "collector_port must be in 1024-65535 and not 4000."
-  }
-}
-
-variable "collector_cpu" {
-  description = "CPU units reserved for the sidecar container, carved out of gateway_cpu. Matches helm's collector.resources.requests.cpu (500m)."
-  type        = number
-  default     = 512
-}
-
-variable "collector_memory" {
-  description = "Hard memory limit (MiB) for the sidecar container, carved out of gateway_memory. Matches helm's collector.resources.limits.memory (2Gi)."
-  type        = number
-  default     = 2048
-}
-
-variable "collector_buffer_size" {
-  description = "Per-worker in-memory queue of spend events waiting to be shipped to the sidecar (LITELLM_COLLECTOR_BUFFER_SIZE)."
-  type        = number
-  default     = 1000
-
-  validation {
-    condition     = var.collector_buffer_size >= 1
-    error_message = "collector_buffer_size must be >= 1."
-  }
-}
-
-variable "collector_on_unavailable" {
-  description = "What the gateway does with spend events when the sidecar is unreachable or the buffer is full (LITELLM_COLLECTOR_ON_UNAVAILABLE): `fallback` runs the pipeline in-process, `drop` discards them."
-  type        = string
-  default     = "fallback"
-
-  validation {
-    condition     = contains(["fallback", "drop"], var.collector_on_unavailable)
-    error_message = "collector_on_unavailable must be one of: fallback, drop."
-  }
-}
-
-variable "collector_drain_timeout_seconds" {
-  description = "Seconds a gateway worker waits on shutdown for its buffered spend events to reach the sidecar (LITELLM_COLLECTOR_DRAIN_TIMEOUT_SECONDS)."
-  type        = number
-  default     = 10
-
-  validation {
-    condition     = var.collector_drain_timeout_seconds > 0
-    error_message = "collector_drain_timeout_seconds must be > 0."
-  }
 }

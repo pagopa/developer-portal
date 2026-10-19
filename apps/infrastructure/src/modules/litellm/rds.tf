@@ -1,22 +1,4 @@
-# Aurora Postgres cluster with one writer + one reader instance, IAM
-# database authentication enabled. Skipped entirely when
-# create_database = false, in which case the stack either talks to the
-# database named by var.database_url or runs without one.
-#
-# Important: enabling IAM auth on the cluster does not by itself grant any
-# Postgres user the ability to log in with an IAM token. After the first
-# apply, connect as the master user (password lives in Secrets Manager —
-# see `master_user_secret_arn` in outputs) and run, once:
-#
-#   CREATE USER {var.db_username};
-#   GRANT rds_iam TO {var.db_username};
-#   GRANT ALL PRIVILEGES ON DATABASE {var.db_name} TO {var.db_username};
-#   GRANT ALL ON SCHEMA public TO {var.db_username};
-#
-# After that, the gateway/backend/migration tasks (which authenticate as
-# `{var.db_username}` via IAM-signed tokens) can connect. The master user
-# itself is a superuser and Postgres refuses to grant `rds_iam` to
-# superusers — keep it for break-glass only.
+# Aurora credentials are assembled into a DATABASE_URL secret in secrets.tf.
 
 resource "aws_db_subnet_group" "this" {
   count      = var.create_database ? 1 : 0
@@ -48,7 +30,7 @@ resource "aws_rds_cluster" "this" {
   vpc_security_group_ids          = [aws_security_group.rds[0].id]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.this[0].name
 
-  iam_database_authentication_enabled = true
+  iam_database_authentication_enabled = false
   storage_encrypted                   = true
   apply_immediately                   = true
 

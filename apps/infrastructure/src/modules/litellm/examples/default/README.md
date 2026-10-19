@@ -39,16 +39,16 @@
 | <a name="input_additional_task_security_group_ids"></a> [additional\_task\_security\_group\_ids](#input\_additional\_task\_security\_group\_ids) | Extra security groups for the tasks, e.g. one an existing database already allows. | `list(string)` | `[]` | no |
 | <a name="input_allow_plaintext_alb"></a> [allow\_plaintext\_alb](#input\_allow\_plaintext\_alb) | Opt into HTTP-only ALB (trial/dev only). | `bool` | `false` | no |
 | <a name="input_azs"></a> [azs](#input\_azs) | Availability zones for the subnets the module creates. At least 2 (RDS + ALB). Unused when vpc\_id is set. | `list(string)` | `[]` | no |
-| <a name="input_backend_extra_env"></a> [backend\_extra\_env](#input\_backend\_extra\_env) | Plain-text env vars layered onto the backend. | `map(string)` | `{}` | no |
-| <a name="input_backend_extra_secrets"></a> [backend\_extra\_secrets](#input\_backend\_extra\_secrets) | Backend env vars sourced from Secrets Manager (name → ARN). | `map(string)` | `{}` | no |
+| <a name="input_backend_extra_env"></a> [backend\_extra\_env](#input\_backend\_extra\_env) | Compatibility env vars merged into LiteLLM. gateway\_extra\_env wins on collisions. | `map(string)` | `{}` | no |
+| <a name="input_backend_extra_secrets"></a> [backend\_extra\_secrets](#input\_backend\_extra\_secrets) | Compatibility secrets merged into LiteLLM. gateway\_extra\_secrets wins on collisions. | `map(string)` | `{}` | no |
 | <a name="input_create_database"></a> [create\_database](#input\_create\_database) | Create the Aurora Postgres cluster. False → use database\_url, or run DB-less. | `bool` | `true` | no |
 | <a name="input_create_redis"></a> [create\_redis](#input\_create\_redis) | Create the ElastiCache Redis group. False → use redis\_url, or run without Redis. | `bool` | `true` | no |
 | <a name="input_database_url"></a> [database\_url](#input\_database\_url) | Postgres connection string for an existing database. Read only when create\_database = false. | `string` | `""` | no |
+| <a name="input_database_url_secret_arn"></a> [database\_url\_secret\_arn](#input\_database\_url\_secret\_arn) | Existing Secrets Manager reference holding DATABASE\_URL. Set create\_database = false and leave database\_url empty. | `string` | `""` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment suffix (stage, prod, dev). | `string` | n/a | yes |
-| <a name="input_gateway_extra_env"></a> [gateway\_extra\_env](#input\_gateway\_extra\_env) | Plain-text env vars layered onto the gateway. | `map(string)` | `{}` | no |
-| <a name="input_gateway_extra_secrets"></a> [gateway\_extra\_secrets](#input\_gateway\_extra\_secrets) | Gateway env vars sourced from Secrets Manager (name → ARN). | `map(string)` | `{}` | no |
-| <a name="input_gateway_metrics_port"></a> [gateway\_metrics\_port](#input\_gateway\_metrics\_port) | Port for the Prometheus metrics sidecar in the gateway task. Null keeps /metrics on the gateway port only. | `number` | `null` | no |
-| <a name="input_gateway_metrics_scrape_cidrs"></a> [gateway\_metrics\_scrape\_cidrs](#input\_gateway\_metrics\_scrape\_cidrs) | CIDRs allowed to scrape gateway\_metrics\_port. | `list(string)` | `[]` | no |
+| <a name="input_gateway_extra_env"></a> [gateway\_extra\_env](#input\_gateway\_extra\_env) | Plain-text env vars layered onto the all-in-one LiteLLM container. | `map(string)` | `{}` | no |
+| <a name="input_gateway_extra_secrets"></a> [gateway\_extra\_secrets](#input\_gateway\_extra\_secrets) | LiteLLM env vars sourced from Secrets Manager (name to ARN). | `map(string)` | `{}` | no |
+| <a name="input_gateway_image"></a> [gateway\_image](#input\_gateway\_image) | All-in-one LiteLLM image serving the API and UI on port 4000. | `string` | `"docker.litellm.ai/berriai/litellm:main-stable"` | no |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | Public Route53 hosted zone for litellm.<zone-name> and its ACM DNS validation records. | `string` | `"Z02428843GXDP0RBGX2EQ"` | no |
 | <a name="input_litellm_license"></a> [litellm\_license](#input\_litellm\_license) | LiteLLM enterprise license. Empty → OSS-only. | `string` | `""` | no |
 | <a name="input_litellm_master_key"></a> [litellm\_master\_key](#input\_litellm\_master\_key) | Pre-existing LITELLM\_MASTER\_KEY (sk-…). Empty → auto-generated. | `string` | `""` | no |
@@ -72,12 +72,11 @@
 | <a name="output_alb_url"></a> [alb\_url](#output\_alb\_url) | Proxy URL. Dashboard at /, API at /v1/*. |
 | <a name="output_aurora_reader_endpoint"></a> [aurora\_reader\_endpoint](#output\_aurora\_reader\_endpoint) | Aurora reader endpoint. |
 | <a name="output_aurora_writer_endpoint"></a> [aurora\_writer\_endpoint](#output\_aurora\_writer\_endpoint) | Aurora writer endpoint. |
-| <a name="output_db_bootstrap_sql"></a> [db\_bootstrap\_sql](#output\_db\_bootstrap\_sql) | Run once as the master DB user to create the IAM-authed app user. |
-| <a name="output_db_master_password_secret_arn"></a> [db\_master\_password\_secret\_arn](#output\_db\_master\_password\_secret\_arn) | Secrets Manager ARN holding the Aurora master credentials (bootstrap-only). |
+| <a name="output_database_url_secret_arn"></a> [database\_url\_secret\_arn](#output\_database\_url\_secret\_arn) | Secrets Manager reference injected into LiteLLM as DATABASE\_URL. |
+| <a name="output_db_master_password_secret_arn"></a> [db\_master\_password\_secret\_arn](#output\_db\_master\_password\_secret\_arn) | Secrets Manager ARN holding the Aurora credentials as JSON. |
 | <a name="output_ecs_cluster"></a> [ecs\_cluster](#output\_ecs\_cluster) | ECS cluster name. |
 | <a name="output_litellm_url"></a> [litellm\_url](#output\_litellm\_url) | HTTPS URL for the managed LiteLLM domain, or null when using an existing certificate or HTTP-only mode. |
 | <a name="output_master_key_secret_arn"></a> [master\_key\_secret\_arn](#output\_master\_key\_secret\_arn) | Secrets Manager ARN holding LITELLM\_MASTER\_KEY. |
-| <a name="output_migration_run_command"></a> [migration\_run\_command](#output\_migration\_run\_command) | Break-glass command to re-run the one-off prisma migration task. |
 | <a name="output_redis_endpoint"></a> [redis\_endpoint](#output\_redis\_endpoint) | ElastiCache Redis primary endpoint (TLS). |
 | <a name="output_s3_bucket"></a> [s3\_bucket](#output\_s3\_bucket) | S3 bucket name. |
 | <a name="output_task_security_group_id"></a> [task\_security\_group\_id](#output\_task\_security\_group\_id) | Tasks security group. Allow this inbound on an existing database or Redis. |

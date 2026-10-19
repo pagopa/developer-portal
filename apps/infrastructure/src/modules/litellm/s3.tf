@@ -3,7 +3,7 @@
 #   - Request log archival (S3_REQUEST_LOGS_BUCKET_NAME)
 #   - /v1/files endpoint passthrough storage
 #
-# The bucket name + region are exposed to gateway + backend as S3_BUCKET_NAME
+# The bucket name + region are exposed to LiteLLM as S3_BUCKET_NAME
 # / S3_REGION_NAME so proxy_config can reference them via
 # `os.environ/S3_BUCKET_NAME`. The task role is scoped to this bucket only.
 
@@ -83,16 +83,16 @@ resource "aws_iam_role_policy_attachment" "task_s3_access" {
   policy_arn = aws_iam_policy.s3_access.arn
 }
 
-# proxy_config is uploaded as an S3 object so the gateway and backend
-# containers can fetch it at startup instead of carrying the YAML inline
+# proxy_config is uploaded as an S3 object so the LiteLLM
+# container can fetch it at startup instead of carrying the YAML inline
 # as a base64 env var. ECS Fargate has no native S3 volume type, so
 # "mount" here is: container entrypoint runs a boto3 download_file into
-# /tmp/litellm-config.yaml before exec'ing uvicorn. The task role already
+# /tmp/litellm-config.yaml before running the image's entrypoint. The task role already
 # has s3:GetObject on this bucket via aws_iam_policy.s3_access.
 #
 # etag flows into the task definition (see locals.proxy_config_env in
 # ecs.tf) so a config edit produces a new task-def revision and ECS rolls
-# both services automatically.
+# the service automatically.
 resource "aws_s3_object" "proxy_config" {
   count = length(keys(var.proxy_config)) > 0 ? 1 : 0
 

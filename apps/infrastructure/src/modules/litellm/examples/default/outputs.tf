@@ -49,18 +49,13 @@ output "master_key_secret_arn" {
 }
 
 output "db_master_password_secret_arn" {
-  description = "Secrets Manager ARN holding the Aurora master credentials (bootstrap-only)."
+  description = "Secrets Manager ARN holding the Aurora credentials as JSON."
   value       = module.litellm.db_master_password_secret_arn
 }
 
-output "db_bootstrap_sql" {
-  description = "Run once as the master DB user to create the IAM-authed app user."
-  value       = module.litellm.db_bootstrap_sql
-}
-
-output "migration_run_command" {
-  description = "Break-glass command to re-run the one-off prisma migration task."
-  value       = module.litellm.migration_run_command
+output "database_url_secret_arn" {
+  description = "Secrets Manager reference injected into LiteLLM as DATABASE_URL."
+  value       = module.litellm.database_url_secret_arn
 }
 output "acm_certificate_arn" {
   description = "Validated ACM certificate ARN used by the ALB, or empty in HTTP-only mode."

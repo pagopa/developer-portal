@@ -145,26 +145,15 @@ resource "aws_security_group" "alb" {
 
 resource "aws_security_group" "tasks" {
   name        = "${local.name}-tasks"
-  description = "ECS tasks (gateway/backend/ui)."
+  description = "LiteLLM ECS tasks."
   vpc_id      = local.vpc_id
 
   ingress {
     description     = "ALB to tasks"
-    from_port       = 0
-    to_port         = 65535
+    from_port       = 4000
+    to_port         = 4000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
-  }
-
-  dynamic "ingress" {
-    for_each = local.metrics_enabled && length(var.gateway_metrics_scrape_cidrs) > 0 ? [1] : []
-    content {
-      description = "Prometheus scrapers to the gateway metrics sidecar"
-      from_port   = var.gateway_metrics_port
-      to_port     = var.gateway_metrics_port
-      protocol    = "tcp"
-      cidr_blocks = var.gateway_metrics_scrape_cidrs
-    }
   }
 
   egress {

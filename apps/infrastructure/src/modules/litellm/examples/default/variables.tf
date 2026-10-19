@@ -1,5 +1,5 @@
 # Curated surface for the one-command deploy path. The module (../../)
-# exposes far more knobs (per-component CPU/memory, autoscaling, RDS/Redis
+# exposes far more knobs (task CPU/memory, autoscaling, RDS/Redis
 # sizing, …). To tune those, set them directly on the `module "litellm"`
 # block in main.tf, or call the module from your own root config. Full
 # per-variable docs live in ../../variables.tf — the module is the source
@@ -66,6 +66,18 @@ variable "database_url" {
   type        = string
   default     = ""
   sensitive   = true
+}
+
+variable "database_url_secret_arn" {
+  description = "Existing Secrets Manager reference holding DATABASE_URL. Set create_database = false and leave database_url empty."
+  type        = string
+  default     = ""
+}
+
+variable "gateway_image" {
+  description = "All-in-one LiteLLM image serving the API and UI on port 4000."
+  type        = string
+  default     = "docker.litellm.ai/berriai/litellm:main-stable"
 }
 
 variable "create_redis" {
@@ -142,37 +154,25 @@ variable "proxy_config" {
 }
 
 variable "gateway_extra_env" {
-  description = "Plain-text env vars layered onto the gateway."
+  description = "Plain-text env vars layered onto the all-in-one LiteLLM container."
   type        = map(string)
   default     = {}
 }
 
 variable "backend_extra_env" {
-  description = "Plain-text env vars layered onto the backend."
+  description = "Compatibility env vars merged into LiteLLM. gateway_extra_env wins on collisions."
   type        = map(string)
   default     = {}
 }
 
 variable "gateway_extra_secrets" {
-  description = "Gateway env vars sourced from Secrets Manager (name → ARN)."
+  description = "LiteLLM env vars sourced from Secrets Manager (name to ARN)."
   type        = map(string)
   default     = {}
 }
 
 variable "backend_extra_secrets" {
-  description = "Backend env vars sourced from Secrets Manager (name → ARN)."
+  description = "Compatibility secrets merged into LiteLLM. gateway_extra_secrets wins on collisions."
   type        = map(string)
   default     = {}
-}
-
-variable "gateway_metrics_port" {
-  description = "Port for the Prometheus metrics sidecar in the gateway task. Null keeps /metrics on the gateway port only."
-  type        = number
-  default     = null
-}
-
-variable "gateway_metrics_scrape_cidrs" {
-  description = "CIDRs allowed to scrape gateway_metrics_port."
-  type        = list(string)
-  default     = []
 }
