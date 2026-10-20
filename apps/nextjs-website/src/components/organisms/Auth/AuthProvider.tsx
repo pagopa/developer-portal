@@ -60,7 +60,10 @@ function registerAuthStatusForMixpanel(status: boolean) {
   // eslint-disable-next-line functional/no-try-statements
   try {
     mixpanel.register({ Authenticated: status });
-    console.log("Registered user's auth status: ", status ? 'Authenticated' : "Not Authenticated");
+    console.log(
+      "Registered user's auth status: ",
+      status ? 'Authenticated' : 'Not Authenticated'
+    );
   } catch {
     // Mixpanel is not initalized
     console.log(
