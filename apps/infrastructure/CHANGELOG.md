@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.2.0
+
+### Minor Changes
+
+- 8c59763: Update the development CMS deployment to use a newer application image.
+
 ## 14.1.0
 
 ### Minor Changes
