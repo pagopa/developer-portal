@@ -30,7 +30,7 @@
 | <a name="module_dynamodb_webinar_subscriptions"></a> [dynamodb\_webinar\_subscriptions](#module\_dynamodb\_webinar\_subscriptions) | git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git | 715399dbe24f6443820bf5de80f6100b35d56355 |
 | <a name="module_dynamodb_write_capacity_utilization_alarm"></a> [dynamodb\_write\_capacity\_utilization\_alarm](#module\_dynamodb\_write\_capacity\_utilization\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_dynamodb_write_throttle_events_webinar_questions_alarm"></a> [dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm](#module\_dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
-| <a name="module_opennext"></a> [opennext](#module\_opennext) | git::https://github.com/pagopa/dx.git//infra/modules/aws_open_next | update-module-aws-opennext-cf-cache-behaviour |
+| <a name="module_opennext"></a> [opennext](#module\_opennext) | pagopa-dx/aws-open-next/aws | ~> 2.1 |
 | <a name="module_ses_bounce_rate_alarm"></a> [ses\_bounce\_rate\_alarm](#module\_ses\_bounce\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_daily_sending_quota_alarm"></a> [ses\_daily\_sending\_quota\_alarm](#module\_ses\_daily\_sending\_quota\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_reputation_complaint_rate_alarm"></a> [ses\_reputation\_complaint\_rate\_alarm](#module\_ses\_reputation\_complaint\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
@@ -64,6 +64,7 @@
 | [aws_s3_bucket_versioning.website_standalone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_object.error_404_page](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_ssm_parameter.cookie_domain_script](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.mixpanel_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.strapi_api_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_integer.website_bucket_random_integer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
@@ -86,6 +87,7 @@
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
 | <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |
+| <a name="input_next_public_mixpanel_api_host"></a> [next\_public\_mixpanel\_api\_host](#input\_next\_public\_mixpanel\_api\_host) | Mixpanel API host for the OpenNext server | `string` | n/a | yes |
 | <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
 | <a name="input_webinar_video_api"></a> [webinar\_video\_api](#input\_webinar\_video\_api) | Configuration for the webinar heartbeat check, including target URL, execution interval in seconds, and whether the heartbeat is enabled. | <pre>object({<br/>    ingest_url          = string<br/>    base_url            = string<br/>    interval_in_seconds = number<br/>    enabled             = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
