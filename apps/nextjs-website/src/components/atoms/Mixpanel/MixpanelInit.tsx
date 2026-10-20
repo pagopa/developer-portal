@@ -6,7 +6,6 @@ import { hasConsent, OTWindow } from './ConsentCheck';
 type MixpanelConfig = {
   token?: string;
   apiHost?: string;
-  cookieDomain?: string;
   enableMixpanel: boolean;
 };
 
@@ -21,10 +20,7 @@ const MixpanelInit = (config: MixpanelConfig) => {
       if (!config || !config.enableMixpanel || !config.token) return;
 
       mixpanel.init(config.token, {
-        ...(config.apiHost && { api_host: 'https://api-eu.mixpanel.com' }), // config.apiHost
-        ...(config.cookieDomain && {
-          cookie_domain: config.cookieDomain,
-        }), // allow across-subdomain
+        api_host: config.apiHost ?? 'https://api-eu.mixpanel.com', // Fallback to default EU servers
         cookie_expiration: 0, // session cookie
         ip: true,
         persistence: 'cookie',
