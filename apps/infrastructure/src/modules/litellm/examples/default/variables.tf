@@ -20,6 +20,12 @@ variable "env" {
   type        = string
 }
 
+variable "gateway_scheduled_scaling_enabled" {
+  description = "Stop gateway tasks daily at 19:00 and restart at least one at 08:00, following Europe/Rome local time."
+  type        = bool
+  default     = true
+}
+
 variable "azs" {
   description = "Availability zones for the subnets the module creates. At least 2 (RDS + ALB). Unused when vpc_id is set."
   type        = list(string)

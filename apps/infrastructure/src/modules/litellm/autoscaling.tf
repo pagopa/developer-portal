@@ -6,6 +6,41 @@ resource "aws_appautoscaling_target" "gateway" {
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = var.gateway_min_capacity
   max_capacity       = var.gateway_max_capacity
+
+  lifecycle {
+    # Scheduled actions own these bounds after the target is registered.
+    ignore_changes = [min_capacity, max_capacity]
+  }
+}
+
+resource "aws_appautoscaling_scheduled_action" "gateway_stop" {
+  count              = var.gateway_autoscaling_enabled && var.gateway_scheduled_scaling_enabled ? 1 : 0
+  name               = "${local.name}-gateway-stop"
+  service_namespace  = aws_appautoscaling_target.gateway[0].service_namespace
+  resource_id        = aws_appautoscaling_target.gateway[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.gateway[0].scalable_dimension
+  schedule           = "cron(0 19 * * ? *)"
+  timezone           = "Europe/Rome"
+
+  scalable_target_action {
+    min_capacity = 0
+    max_capacity = 0
+  }
+}
+
+resource "aws_appautoscaling_scheduled_action" "gateway_start" {
+  count              = var.gateway_autoscaling_enabled && var.gateway_scheduled_scaling_enabled ? 1 : 0
+  name               = "${local.name}-gateway-start"
+  service_namespace  = aws_appautoscaling_target.gateway[0].service_namespace
+  resource_id        = aws_appautoscaling_target.gateway[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.gateway[0].scalable_dimension
+  schedule           = "cron(0 8 * * ? *)"
+  timezone           = "Europe/Rome"
+
+  scalable_target_action {
+    min_capacity = 1
+    max_capacity = var.gateway_max_capacity
+  }
 }
 
 resource "aws_appautoscaling_policy" "gateway_cpu" {

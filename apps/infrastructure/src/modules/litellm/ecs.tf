@@ -133,6 +133,11 @@ resource "aws_ecs_task_definition" "gateway" {
 
   lifecycle {
     precondition {
+      condition     = !var.gateway_scheduled_scaling_enabled || (var.gateway_autoscaling_enabled && var.gateway_max_capacity >= 1)
+      error_message = "Scheduled scaling requires gateway_autoscaling_enabled = true and gateway_max_capacity >= 1."
+    }
+
+    precondition {
       condition     = !var.create_database || (var.database_url_secret_arn == "" && nonsensitive(var.database_url == ""))
       error_message = "Set create_database = false when supplying database_url or database_url_secret_arn."
     }

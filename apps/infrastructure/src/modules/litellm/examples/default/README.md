@@ -49,6 +49,7 @@
 | <a name="input_gateway_extra_env"></a> [gateway\_extra\_env](#input\_gateway\_extra\_env) | Plain-text env vars layered onto the all-in-one LiteLLM container. | `map(string)` | `{}` | no |
 | <a name="input_gateway_extra_secrets"></a> [gateway\_extra\_secrets](#input\_gateway\_extra\_secrets) | LiteLLM env vars sourced from Secrets Manager (name to ARN). | `map(string)` | `{}` | no |
 | <a name="input_gateway_image"></a> [gateway\_image](#input\_gateway\_image) | All-in-one LiteLLM image serving the API and UI on port 4000. | `string` | `"docker.litellm.ai/berriai/litellm:main-stable"` | no |
+| <a name="input_gateway_scheduled_scaling_enabled"></a> [gateway\_scheduled\_scaling\_enabled](#input\_gateway\_scheduled\_scaling\_enabled) | Stop gateway tasks daily at 19:00 and restart at least one at 08:00, following Europe/Rome local time. | `bool` | `true` | no |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | Public Route53 hosted zone for litellm.<zone-name> and its ACM DNS validation records. | `string` | `"Z02428843GXDP0RBGX2EQ"` | no |
 | <a name="input_litellm_license"></a> [litellm\_license](#input\_litellm\_license) | LiteLLM enterprise license. Empty → OSS-only. | `string` | `""` | no |
 | <a name="input_litellm_master_key"></a> [litellm\_master\_key](#input\_litellm\_master\_key) | Pre-existing LITELLM\_MASTER\_KEY (sk-…). Empty → auto-generated. | `string` | `""` | no |

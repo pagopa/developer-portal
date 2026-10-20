@@ -5,6 +5,9 @@ env    = "dev"
 
 gateway_image = "docker.litellm.ai/berriai/litellm:main-stable"
 
+# Daily shutdown/startup in Italian local time (CET/CEST), including weekends.
+gateway_scheduled_scaling_enabled = true
+
 # Existing networking (private subnets need NAT for the public image registry).
 # vpc_id             = "vpc-0123456789abcdef0"
 # public_subnet_ids  = ["subnet-public-a", "subnet-public-b"]

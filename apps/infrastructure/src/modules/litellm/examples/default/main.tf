@@ -19,6 +19,8 @@ module "litellm" {
   redis_url               = var.redis_url
   gateway_image           = var.gateway_image
 
+  gateway_scheduled_scaling_enabled = var.gateway_scheduled_scaling_enabled
+
   litellm_master_key = var.litellm_master_key
   litellm_license    = var.litellm_license
   ui_password        = var.ui_password

@@ -12,6 +12,34 @@ inputs for the single service, its sizing, workers, and autoscaling. One
 service does not mean one replica: `gateway_desired_count` defaults to two
 and autoscaling remains enabled. Each task contains exactly one container.
 
+## Daily gateway schedule
+
+`examples/default` enables `gateway_scheduled_scaling_enabled` by default.
+Other module callers must explicitly enable it. The schedule runs every day,
+including weekends, in `Europe/Rome`, automatically following CET/CEST:
+
+- At **19:00**, Application Auto Scaling sets both minimum and maximum task
+  capacity to **0**, stopping the gateway and preventing target-tracking
+  policies from restarting it overnight.
+- At **08:00**, the minimum becomes **1** and the maximum returns to
+  `gateway_max_capacity`. One task starts from zero; normal daytime autoscaling
+  can subsequently add more tasks.
+
+Requires `gateway_autoscaling_enabled=true` and `gateway_max_capacity>=1`.
+Scheduled actions begin at the next matching time, not immediately when
+Terraform creates them. Startup takes additional time for the task to become
+healthy. The application is unavailable overnight; ALB, Aurora, Redis, and
+networking remain running and billable.
+
+Terraform ignores subsequent changes to the scaling target's minimum and
+maximum so an apply cannot overwrite the active scheduled limits. The
+`gateway_min_capacity` and `gateway_max_capacity` inputs initialize the target;
+with scheduling enabled, updates to `gateway_max_capacity` take effect at the
+next 08:00 action. This lifecycle rule also applies when scheduling is disabled.
+Disabling the schedule deletes the actions but does not reset the current
+limits: restore the target's limits explicitly before disabling it if needed,
+especially when its current maximum is zero.
+
 ## Database and Redis
 
 By default the module creates private Aurora PostgreSQL (one writer and one

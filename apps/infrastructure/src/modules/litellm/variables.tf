@@ -184,6 +184,12 @@ variable "gateway_autoscaling_enabled" {
   default     = true
 }
 
+variable "gateway_scheduled_scaling_enabled" {
+  description = "Stop gateway tasks daily at 19:00 and restore a minimum of one task at 08:00 in Europe/Rome (including daylight saving). Requires gateway_autoscaling_enabled."
+  type        = bool
+  default     = false
+}
+
 variable "gateway_min_capacity" {
   description = "Minimum gateway task count under autoscaling."
   type        = number
