@@ -11,7 +11,7 @@ export interface OTWindow extends Window {
   };
 }
 
-const targCookiesGroup = 'C0002'; // Target cookies (Mixpanel)
+const targCookiesGroup = 'C0002'; // Target cookies (Performance Cookies)
 
 // Reading cookie instead of checking window.OneTrust.OptanonActiveGroups
 // because it will NEVER be instantiated at page load when we first check
