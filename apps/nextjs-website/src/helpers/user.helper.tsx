@@ -1,4 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
+'use client';
 import type { DevPortalUser } from '@/lib/auth/user/types';
 import {
   getUserWebinarCertificates,
