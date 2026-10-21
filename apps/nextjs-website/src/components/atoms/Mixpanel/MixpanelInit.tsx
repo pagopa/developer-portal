@@ -43,9 +43,9 @@ const MixpanelInit = (config: MixpanelConfig) => {
       });
     };
 
-    // if (hasConsent()) {
-    initMixpanel();
-    // }
+    if (hasConsent()) {
+      initMixpanel();
+    }
   }, [config]);
 
   return null;
