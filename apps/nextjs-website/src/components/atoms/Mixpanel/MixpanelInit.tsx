@@ -9,13 +9,13 @@ type MixpanelConfig = {
   enableMixpanel: boolean;
 };
 
-const mixpanelOptOut = () => {
+const disableMixpanel = () => {
   try {
     mixpanel.disable();
   } catch {
     // Mixpanel is not initalized
   }
-}
+};
 
 const MixpanelInit = (config: MixpanelConfig) => {
   useEffect(() => {
@@ -48,7 +48,9 @@ const MixpanelInit = (config: MixpanelConfig) => {
         if (hasConsent()) {
           initMixpanel();
         } else {
-          mixpanelOptOut();
+          // Disable Mixpanel immediately when user rejects Performance Cookies
+          // Mixpanel will simply not be initialized starting from next session
+          disableMixpanel();
         }
       });
     };
