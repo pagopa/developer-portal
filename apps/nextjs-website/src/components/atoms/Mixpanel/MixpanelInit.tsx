@@ -9,6 +9,14 @@ type MixpanelConfig = {
   enableMixpanel: boolean;
 };
 
+const mixpanelOptOut = () => {
+  try {
+    mixpanel.disable();
+  } catch {
+    // Mixpanel is not initalized
+  }
+}
+
 const MixpanelInit = (config: MixpanelConfig) => {
   useEffect(() => {
     const initMixpanel = () => {
@@ -39,6 +47,8 @@ const MixpanelInit = (config: MixpanelConfig) => {
       otWindow.OneTrust.OnConsentChanged(() => {
         if (hasConsent()) {
           initMixpanel();
+        } else {
+          mixpanelOptOut();
         }
       });
     };
