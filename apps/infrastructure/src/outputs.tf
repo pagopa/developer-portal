@@ -1,3 +1,14 @@
+output "backup" {
+  description = "Production AWS Backup resources; null in environments without the backup module."
+  value = var.environment == "prod" ? {
+    plan_arn                = module.backup[0].backup_plan_arn
+    role_arn                = module.backup[0].backup_role_arn
+    vault_arn               = module.backup[0].backup_vault_arn
+    vault_name              = module.backup[0].backup_vault_name
+    notifications_topic_arn = module.backup[0].notifications_topic_arn
+  } : null
+}
+
 output "terraform_backend_bucket_name" {
   value = module.identity.terraform_backend_bucket_name
 }
