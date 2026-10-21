@@ -167,7 +167,8 @@ const useUserState = () => {
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
-//
+// Single source of truth for current user and respective webinar data
+// Prevents each useUser() call from triggering a separate fetch to /certificate
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const value = useUserState();
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
