@@ -18,6 +18,7 @@
 |------|--------|---------|
 | <a name="module_active_campaign"></a> [active\_campaign](#module\_active\_campaign) | ./modules/active_campaign | n/a |
 | <a name="module_auth"></a> [auth](#module\_auth) | ./modules/auth | n/a |
+| <a name="module_backup"></a> [backup](#module\_backup) | ./modules/backup | n/a |
 | <a name="module_chatbot"></a> [chatbot](#module\_chatbot) | ./modules/chatbot | n/a |
 | <a name="module_cicd"></a> [cicd](#module\_cicd) | ./modules/cicd | n/a |
 | <a name="module_cms"></a> [cms](#module\_cms) | ./modules/cms | n/a |
@@ -71,6 +72,7 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_backup"></a> [backup](#output\_backup) | Production AWS Backup resources; null in environments without the backup module. |
 | <a name="output_iam_role_deploy_standalone_website_arn"></a> [iam\_role\_deploy\_standalone\_website\_arn](#output\_iam\_role\_deploy\_standalone\_website\_arn) | n/a |
 | <a name="output_name_servers_records"></a> [name\_servers\_records](#output\_name\_servers\_records) | n/a |
 | <a name="output_standalone_server"></a> [standalone\_server](#output\_standalone\_server) | n/a |
