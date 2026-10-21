@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.4.7
+
+### Patch Changes
+
+- dda0a45: remove an always true condition on CaseHistoryPageTemplate component
+
 ## 17.4.6
 
 ### Patch Changes
