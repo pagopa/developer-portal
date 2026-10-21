@@ -31,6 +31,7 @@ const useUserState = () => {
   const [webinarCertificates, setCertificates] = useState<
     ReadonlyArray<string>
   >([]);
+  const [webinarDataLoading, setWebinarDataLoading] = useState<boolean>(true);
 
   const signOutUser = useCallback(async (user?: DevPortalUser | null) => {
     await Auth.signOut();
@@ -64,6 +65,7 @@ const useUserState = () => {
       setLoading(false);
       setAligned(true);
       setUser(null);
+      setWebinarDataLoading(false);
       return null;
     });
 
@@ -71,17 +73,20 @@ const useUserState = () => {
       return;
     }
 
-    const subscriptions = await getUserWebinarSubscriptions(
-      user.username
-    ).catch(() => []);
-
-    const certificates = await getUserWebinarCertificates().catch(() => []);
-
+    // Resolve auth state ASAP without having to wait for webinar data to be fetched
     setLoading(false);
     setAligned(true);
     setUser(user);
+    setWebinarDataLoading(true);
+
+    // Load webinar data afterwards, webinarDataLoading is used to verify loading state
+    const [subscriptions, certificates] = await Promise.all([
+      getUserWebinarSubscriptions(user.username).catch(() => []),
+      getUserWebinarCertificates().catch(() => []),
+    ]);
     setSubscriptions(subscriptions);
     setCertificates(certificates);
+    setWebinarDataLoading(false);
   }, []);
 
   const setUserAttributes = async (
@@ -122,6 +127,7 @@ const useUserState = () => {
       setUser(null);
       setSubscriptions([]);
       setCertificates([]);
+      setWebinarDataLoading(false);
     }
   }, [authStatus, fetchUserAndWebinarData]);
 
@@ -157,6 +163,7 @@ const useUserState = () => {
     user,
     webinarSubscriptions,
     webinarCertificates,
+    webinarDataLoading,
     loading: isLoaded,
     setUserAttributes,
     aligned,
