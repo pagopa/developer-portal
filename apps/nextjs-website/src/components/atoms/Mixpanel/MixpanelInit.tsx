@@ -10,6 +10,7 @@ type MixpanelConfig = {
 };
 
 const disableMixpanel = () => {
+  // eslint-disable-next-line functional/no-try-statements
   try {
     mixpanel.disable();
   } catch {

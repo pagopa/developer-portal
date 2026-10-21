@@ -1,5 +1,3 @@
-import { isProduction } from '@/config';
-
 export interface OTWindow extends Window {
   // eslint-disable-next-line functional/no-return-void
   OptanonWrapper: () => void;
