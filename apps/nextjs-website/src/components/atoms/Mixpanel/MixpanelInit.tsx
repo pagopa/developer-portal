@@ -15,7 +15,7 @@ const disableMixpanel = () => {
   } catch {
     // Mixpanel is not initalized
   }
-}
+};
 
 const MixpanelInit = (config: MixpanelConfig) => {
   useEffect(() => {
