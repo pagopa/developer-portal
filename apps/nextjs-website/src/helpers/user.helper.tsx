@@ -7,9 +7,19 @@ import {
 import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
-import { useCallback, useState, useEffect } from 'react';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useState,
+  useEffect,
+  PropsWithChildren,
+  useContext,
+} from 'react';
 
-export const useUser = () => {
+type UserContextValue = ReturnType<typeof useUserState>;
+
+const useUserState = () => {
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const [isLoaded, setLoading] = useState<boolean>(true);
   const [aligned, setAligned] = useState<boolean>(false);
@@ -153,4 +163,21 @@ export const useUser = () => {
     isUserLoggedIn,
     userFullName,
   };
+};
+
+const UserContext = createContext<UserContextValue | undefined>(undefined);
+
+//
+export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
+  const value = useUserState();
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
 };
