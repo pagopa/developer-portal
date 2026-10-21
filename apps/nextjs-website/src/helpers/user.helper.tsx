@@ -1,4 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
+'use client';
 import type { DevPortalUser } from '@/lib/auth/user/types';
 import {
   getUserWebinarCertificates,
@@ -7,9 +8,19 @@ import {
 import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
-import { useCallback, useState, useEffect } from 'react';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useState,
+  useEffect,
+  PropsWithChildren,
+  useContext,
+} from 'react';
 
-export const useUser = () => {
+type UserContextValue = ReturnType<typeof useUserState>;
+
+const useUserState = () => {
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const [isLoaded, setLoading] = useState<boolean>(true);
   const [aligned, setAligned] = useState<boolean>(false);
@@ -20,6 +31,7 @@ export const useUser = () => {
   const [webinarCertificates, setCertificates] = useState<
     ReadonlyArray<string>
   >([]);
+  const [webinarDataLoading, setWebinarDataLoading] = useState<boolean>(true);
 
   const signOutUser = useCallback(async (user?: DevPortalUser | null) => {
     await Auth.signOut();
@@ -53,6 +65,7 @@ export const useUser = () => {
       setLoading(false);
       setAligned(true);
       setUser(null);
+      setWebinarDataLoading(false);
       return null;
     });
 
@@ -60,17 +73,20 @@ export const useUser = () => {
       return;
     }
 
-    const subscriptions = await getUserWebinarSubscriptions(
-      user.username
-    ).catch(() => []);
-
-    const certificates = await getUserWebinarCertificates().catch(() => []);
-
+    // Resolve auth state ASAP without having to wait for webinar data to be fetched
     setLoading(false);
     setAligned(true);
     setUser(user);
+    setWebinarDataLoading(true);
+
+    // Load webinar data afterwards, webinarDataLoading is used to verify loading state
+    const [subscriptions, certificates] = await Promise.all([
+      getUserWebinarSubscriptions(user.username).catch(() => []),
+      getUserWebinarCertificates().catch(() => []),
+    ]);
     setSubscriptions(subscriptions);
     setCertificates(certificates);
+    setWebinarDataLoading(false);
   }, []);
 
   const setUserAttributes = async (
@@ -111,6 +127,7 @@ export const useUser = () => {
       setUser(null);
       setSubscriptions([]);
       setCertificates([]);
+      setWebinarDataLoading(false);
     }
   }, [authStatus, fetchUserAndWebinarData]);
 
@@ -146,6 +163,7 @@ export const useUser = () => {
     user,
     webinarSubscriptions,
     webinarCertificates,
+    webinarDataLoading,
     loading: isLoaded,
     setUserAttributes,
     aligned,
@@ -153,4 +171,22 @@ export const useUser = () => {
     isUserLoggedIn,
     userFullName,
   };
+};
+
+const UserContext = createContext<UserContextValue | undefined>(undefined);
+
+// Single source of truth for current user and respective webinar data
+// Prevents each useUser() call from triggering a separate fetch to /certificate
+export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
+  const value = useUserState();
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
 };
