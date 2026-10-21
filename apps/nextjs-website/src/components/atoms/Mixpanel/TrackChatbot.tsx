@@ -9,10 +9,8 @@ export const trackChatbotClick = () => {
         ? 'Yes, stop tracking'
         : 'No, tracking event'
     );
-    if (!mixpanel.has_opted_out_tracking()) {
-      mixpanel.track('chatbot_opened');
-      console.log('Chatbot click tracked');
-    }
+    mixpanel.track('chatbot_opened');
+    console.log('Chatbot click tracked');
   } catch {
     // Mixpanel is not initialized
     console.log('Unable to track chatbot click. Mixpanle not initialized');
