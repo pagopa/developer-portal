@@ -11,7 +11,6 @@ const CookieBannerScript = ({
   cookieScript,
 }: CookieBannerScriptProps) => {
   return (
-    isProduction && (
       <>
         <Script
           src={cookieScript}
@@ -28,7 +27,6 @@ const CookieBannerScript = ({
           }}
         />
       </>
-    )
   );
 };
 

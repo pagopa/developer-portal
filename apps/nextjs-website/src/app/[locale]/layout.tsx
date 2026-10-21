@@ -158,7 +158,7 @@ export default async function RootLayout({
               }
             />
             <MixpanelInit
-              enableMixpanel={isProduction}
+              enableMixpanel={true}
               token={mixpanelToken}
               apiHost={mixpanelApiHost}
             />

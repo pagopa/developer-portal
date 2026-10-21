@@ -20,6 +20,11 @@ const disableMixpanel = () => {
 const MixpanelInit = (config: MixpanelConfig) => {
   useEffect(() => {
     const initMixpanel = () => {
+      console.log(
+        'Initializing Mixpanel with config: ',
+        JSON.stringify(config)
+      );
+
       if (!config || !config.enableMixpanel || !config.token) return;
 
       mixpanel.init(config.token, {
@@ -30,7 +35,10 @@ const MixpanelInit = (config: MixpanelConfig) => {
         secure_cookie: true,
         batch_requests: false,
         track_pageview: 'full-url', // Consider any URL change (including query params and hash) as a page change
+        debug: true,
       });
+
+      console.log('Mixpanel tracking initialized');
     };
 
     const otWindow = window as unknown as OTWindow;
