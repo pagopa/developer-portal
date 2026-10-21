@@ -4,7 +4,7 @@ import type { MetadataRoute } from 'next';
 import { getReleaseNotes, getWebinars } from '@/lib/api';
 import { GuidesRepository } from '@/lib/guides';
 import { SolutionRepository } from '@/lib/solutions';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import {
   getGuidesMetadataByDirNames,
   getReleaseNotesMetadataByDirNames,
@@ -47,6 +47,8 @@ async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
     return null;
   }
 }
+
+const { baseUrl } = browserEnv.config;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allLocalesSitemaps = await Promise.all(

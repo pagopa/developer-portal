@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
-import { SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
 import { SUPPORTED_LOCALES } from '@/locales';
 
@@ -178,7 +178,7 @@ const MobileSiteHeader = ({
         sx={{
           display: isOpen ? 'block' : 'none',
           backgroundColor: 'white',
-          top: SITE_HEADER_HEIGHT,
+          top: browserEnv.config.SITE_HEADER_HEIGHT,
           left: 0,
           padding: '16px 44px 8px 44px',
           position: 'fixed',

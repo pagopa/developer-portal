@@ -1,3 +1,4 @@
+import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-throw-statements */
@@ -26,8 +27,8 @@ async function fetchFromStrapiResponse(url: string) {
   // get first segment of the url to log what we are fetching
   const collectionSegment = url.split('/')[1];
   console.log(`Fetching ${collectionSegment} from Strapi...`);
-  const strapiEndpoint = process.env.STRAPI_ENDPOINT;
-  const strapiApiToken = process.env.STRAPI_API_TOKEN;
+  const strapiEndpoint = buildSettings(process.env).STRAPI_ENDPOINT;
+  const strapiApiToken = buildSettings(process.env).STRAPI_API_TOKEN;
 
   if (!strapiEndpoint || !strapiApiToken) {
     console.error('Missing Strapi configuration in environment variables');

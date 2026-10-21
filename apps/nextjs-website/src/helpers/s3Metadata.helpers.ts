@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { s3DocsPath, staticContentsUrl } from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -21,12 +21,16 @@ const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry configuration - configurable via environment variables
-const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
-const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || '1000',
-  10
-);
-const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
+const {
+  CDN_RETRY_ATTEMPTS,
+  CDN_RETRY_DELAY_MS,
+  TIMEOUT_LIMIT,
+  staticContentsUrl,
+  S3_PATH_TO_GITBOOK_DOCS,
+  S3_METADATA_JSON_PATH,
+  S3_SOAP_API_METADATA_JSON_PATH,
+  s3DocsPath,
+} = buildEnv.config;
 
 async function withRetries<T>(
   operation: () => Promise<T>,
@@ -37,7 +41,7 @@ async function withRetries<T>(
   let lastError: Error | null = null;
 
   // eslint-disable-next-line functional/no-loop-statements
-  for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
+  for (let attempt = 1; attempt <= CDN_RETRY_ATTEMPTS; attempt++) {
     // eslint-disable-next-line functional/no-try-statements
     try {
       const result = await operation();
@@ -65,13 +69,13 @@ async function withRetries<T>(
       lastError = error instanceof Error ? error : new Error(String(error));
       // eslint-disable-next-line no-console
       console.error(
-        `Error during ${operationName} (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
+        `Error during ${operationName} (attempt ${attempt}/${CDN_RETRY_ATTEMPTS}):`,
         error
       );
 
       // If this isn't the last attempt, wait before retrying
-      if (attempt < RETRY_ATTEMPTS) {
-        const delayMs = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
+      if (attempt < CDN_RETRY_ATTEMPTS) {
+        const delayMs = CDN_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
         // eslint-disable-next-line no-console
         console.log(`Retrying in ${delayMs}ms...`);
         await delay(delayMs);
@@ -81,7 +85,7 @@ async function withRetries<T>(
 
   // eslint-disable-next-line no-console
   console.error(
-    `Failed to complete ${operationName} after ${RETRY_ATTEMPTS} attempts:`,
+    `Failed to complete ${operationName} after ${CDN_RETRY_ATTEMPTS} attempts:`,
     lastError
   );
   return fallbackValue;
@@ -188,14 +192,6 @@ export async function fetchMetadataFromCDN<T>(
 
   return await requestPromise;
 }
-
-const S3_PATH_TO_GITBOOK_DOCS =
-  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const S3_METADATA_JSON_PATH =
-  process.env.S3_METADATA_JSON_PATH || 'metadata.json';
-const S3_SOAP_API_METADATA_JSON_PATH =
-  process.env.S3_SOAP_API_METADATA_JSON_PATH ||
-  'soap-api/soap-api-metadata.json';
 
 export const getGuidesMetadata = async (locale: string, dirName: string) => {
   const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);

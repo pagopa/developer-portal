@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Webinar } from '@/lib/webinars/types';
-import {
-  isWebinarHeartbeatEnabled,
-  webinarHeartbeatIntervalInSeconds,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
+
+const { isWebinarHeartbeatEnabled, webinarHeartbeatIntervalInSeconds } =
+  browserEnv.config;
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;

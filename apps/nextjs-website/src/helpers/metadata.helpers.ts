@@ -1,7 +1,9 @@
-import { defaultOgTagImage, websiteName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import type { SEO } from '@/lib/seo/types';
 import { Metadata, ResolvedMetadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/locales';
+
+const { websiteName, defaultOgTagImage } = browserEnv.config;
 
 type MakeMetadataParams = {
   readonly parent?: ResolvedMetadata;

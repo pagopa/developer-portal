@@ -24,7 +24,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import type { BreadcrumbSegment } from '@/lib/paths/types';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import PageNotFound from '@/app/[locale]/not-found';
 
 type ReleaseNotePageStaticParams = {
@@ -33,6 +33,8 @@ type ReleaseNotePageStaticParams = {
   releaseNoteSubPathSlugs: string[];
 };
 export const dynamic = 'force-dynamic';
+
+const { baseUrl } = browserEnv.config;
 
 export async function generateMetadata({
   params,

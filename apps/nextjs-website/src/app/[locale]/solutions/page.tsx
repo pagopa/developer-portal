@@ -4,7 +4,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 export async function generateMetadata(props: {
@@ -13,7 +13,7 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   return makeMetadata({
     title: 'Soluzioni',
-    url: `${baseUrl}/${locale}/solutions`,
+    url: `${browserEnv.config.baseUrl}/${locale}/solutions`,
     langCode: locale,
   });
 }

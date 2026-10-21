@@ -2,7 +2,7 @@ import ChatbotHistoryNavigationMenu, {
   SessionNavigationData,
 } from '@/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu';
 import ChatbotHistoryMessages from '@/components/molecules/ChatbotHistoryMessages/ChatbotHistoryMessages';
-import { longDateOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Query } from '@/lib/chatbot/queries';
 import { Delete } from '@mui/icons-material';
 import {
@@ -54,7 +54,10 @@ const ChatbotHistoryDetailLayout = ({
   }
 
   const firstQuery = queries[0];
-  const date = format.dateTime(new Date(firstQuery.queriedAt), longDateOptions);
+  const date = format.dateTime(
+    new Date(firstQuery.queriedAt),
+    browserEnv.config.longDateOptions
+  );
 
   return (
     <Stack direction='column' spacing={2}>

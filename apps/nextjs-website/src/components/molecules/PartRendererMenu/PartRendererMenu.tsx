@@ -9,11 +9,13 @@ import { generateIdFromString } from '@/helpers/anchor.helpers';
 import { useTranslations } from 'next-intl';
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { includes, some } from 'lodash';
-import { headingLevelsToShowInMenu } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
 };
+
+const { headingLevelsToShowInMenu } = browserEnv.config;
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
   const { palette } = useTheme();

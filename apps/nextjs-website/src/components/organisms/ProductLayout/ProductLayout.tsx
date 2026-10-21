@@ -10,8 +10,10 @@ import type { BreadcrumbSegment } from '@/lib/paths/types';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { Box } from '@mui/material';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useParams } from 'next/navigation';
+
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
 export type ProductLayoutProps = {
   readonly product?: Product;

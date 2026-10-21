@@ -1,10 +1,4 @@
-import {
-  bucketName,
-  credentials,
-  staticContentsUrl,
-  region,
-  s3DocsPath,
-} from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
 import { Product } from '@/lib/products/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import type { SEO } from '@/lib/seo/types';
@@ -47,7 +41,10 @@ export type GuideDefinition = {
   };
 };
 
-const env = makeParseS3DocsEnv(bucketName, region, credentials);
+const { bucketName, S3_REGION, credentials, staticContentsUrl, s3DocsPath } =
+  buildEnv.config;
+
+const env = makeParseS3DocsEnv(bucketName, S3_REGION, credentials);
 
 const parseDocOrThrow = async <T>(
   docs: readonly DocSource<T>[],

@@ -6,13 +6,15 @@ import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import { useScrollUp } from './useScrollUp';
-import { SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 type ProductHeaderProps = {
   locale: string;
   product: Product;
   path: string;
 };
+
+const { SITE_HEADER_HEIGHT } = browserEnv.config;
 
 const ProductHeader: FC<ProductHeaderProps> = ({ locale, product, path }) => {
   const { palette } = useTheme();
@@ -30,7 +32,10 @@ const ProductHeader: FC<ProductHeaderProps> = ({ locale, product, path }) => {
     <Box
       sx={{
         position: 'fixed',
-        top: { xs: scrollUp ? SITE_HEADER_HEIGHT : 0, md: SITE_HEADER_HEIGHT },
+        top: {
+          xs: scrollUp ? SITE_HEADER_HEIGHT : 0,
+          md: SITE_HEADER_HEIGHT,
+        },
         zIndex: { xs: scrollUp ? 90 : 250, md: 90 },
         transition: 'top 0.5s linear',
         width: '100vw',

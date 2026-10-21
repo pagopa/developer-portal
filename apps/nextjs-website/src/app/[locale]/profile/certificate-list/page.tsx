@@ -1,6 +1,6 @@
 import React from 'react';
 import CertificatesList from '@/components/organisms/CertificatesList/CertificatesList';
-import { isWebinarHeartbeatEnabled } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { getVisibleInListWebinars } from '@/lib/api';
 
 const CertificateListPage = async (props: {

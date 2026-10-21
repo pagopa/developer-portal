@@ -1,3 +1,4 @@
+import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-let */
@@ -14,26 +15,12 @@ import {
 import { Readable } from 'stream';
 import { MetadataItem } from '../metadataItem';
 
-type S3Credentials = {
-  readonly accessKeyId: string;
-  readonly secretAccessKey: string;
-  readonly sessionToken?: string;
-};
-
 export function makeS3Client(): S3Client {
-  const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
-  const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
-  const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-
-  const region = process.env.NEXT_PUBLIC_COGNITO_REGION;
-  const credentials: S3Credentials | undefined =
-    !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
-      ? {
-          accessKeyId: S3_ACCESS_KEY_ID,
-          secretAccessKey: S3_SECRET_ACCESS_KEY,
-          sessionToken: process.env.S3_SESSION_TOKEN,
-        }
-      : undefined;
+  const {
+    credentials,
+    bucketName: S3_BUCKET_NAME,
+    S3_REGION: region,
+  } = buildSettings(process.env);
 
   // Check if required environment variables are set
   if (!S3_BUCKET_NAME) {

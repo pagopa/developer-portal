@@ -4,7 +4,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { resetResendEmailAfterMs } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 enum LoaderPhase {
   LOADING = 'loading',
@@ -54,7 +54,7 @@ const ResendEmail = ({
 
     setTimeout(() => {
       setLoader(undefined);
-    }, resetResendEmailAfterMs);
+    }, browserEnv.config.resetResendEmailAfterMs);
   }, [email, isLoginCTA, resendCode, setSubmitting]);
 
   const buildLoader = () => {

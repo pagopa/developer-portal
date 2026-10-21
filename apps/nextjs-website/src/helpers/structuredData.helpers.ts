@@ -1,6 +1,6 @@
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
-import { baseUrl, organizationInfo, websiteName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import type { Media } from '@/lib/media/types';
 import { Product } from '@/lib/products/types';
 import type { SEO } from '@/lib/seo/types';
@@ -24,6 +24,8 @@ import {
   Thing,
 } from 'schema-dts';
 import yaml from 'js-yaml';
+
+const { websiteName, baseUrl, organizationInfo } = browserEnv.config;
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 

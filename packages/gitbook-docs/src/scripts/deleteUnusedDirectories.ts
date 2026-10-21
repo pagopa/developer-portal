@@ -1,3 +1,4 @@
+import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-expression-statements */
@@ -27,15 +28,14 @@ import {
   getSolutionsQueryString,
 } from '../helpers/strapiQuery';
 
-const S3_PATH_TO_GITBOOK_DOCS =
-  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_DIRNAMES_JSON_PATH =
-  process.env.S3_DIRNAMES_JSON_PATH || 'dirNames.json';
-const LOCALE = process.env.LOCALE;
-
 // Load environment variables
 dotenv.config();
+
+const settings = buildSettings(process.env);
+const S3_PATH_TO_GITBOOK_DOCS = settings.S3_PATH_TO_GITBOOK_DOCS;
+const S3_BUCKET_NAME = settings.bucketName;
+const S3_DIRNAMES_JSON_PATH = settings.S3_DIRNAMES_JSON_PATH;
+const LOCALE = settings.OPTIONAL_LOCALE;
 
 let s3Client: S3Client | undefined;
 

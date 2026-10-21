@@ -6,7 +6,7 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
-import { staticContentsUrl, s3DocsPath } from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
 import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
 import { Guide } from '@/lib/guides/types';
 import { Product } from '@/lib/products/types';
@@ -233,6 +233,7 @@ export const parseS3GuidePage = async (props: {
     return undefined;
   }
 
+  const { staticContentsUrl, s3DocsPath } = buildEnv.config;
   const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
   const assetsPrefix = `${staticContentsUrl}/${locale}/${s3DocsPath}/${guidePageMetadata.dirName}`;
   const source = {

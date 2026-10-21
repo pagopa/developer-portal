@@ -14,7 +14,9 @@ import DOMPurify from 'dompurify';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 import { useTranslations } from 'next-intl';
-import { defaultLocale, timeOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
+
+const { defaultLocale, timeOptions } = browserEnv.config;
 
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;

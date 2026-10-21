@@ -1,14 +1,4 @@
-import {
-  baseUrl,
-  cookieCategory,
-  cookieDomainScript,
-  cookieScriptUrl,
-  isChatbotActive,
-  isProduction,
-  matomoScriptSrc,
-  SITE_HEADER_HEIGHT,
-  useNewCookie,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -34,6 +24,18 @@ import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
 import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
+
+const {
+  matomoScriptSrc,
+  cookieCategory,
+  baseUrl,
+  isProduction,
+  useNewCookie,
+  cookieDomainScript,
+  cookieScriptUrl,
+  isChatbotActive,
+  SITE_HEADER_HEIGHT,
+} = browserEnv.config;
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =

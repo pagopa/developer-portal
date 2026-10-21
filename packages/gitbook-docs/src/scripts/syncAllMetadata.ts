@@ -1,3 +1,4 @@
+import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-expression-statements */
@@ -53,40 +54,32 @@ import { compact } from 'lodash';
 dotenv.config();
 
 // Configuration
-const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_PATH_TO_GITBOOK_DOCS =
-  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH ||
-  '../../url-parsing-metadata.json';
-const METADATA_TYPE = (process.env.METADATA_TYPE || 'all').toLowerCase();
-const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
+const settings = buildSettings(process.env);
+const S3_BUCKET_NAME = settings.bucketName;
+const S3_PATH_TO_GITBOOK_DOCS = settings.S3_PATH_TO_GITBOOK_DOCS;
+const URL_PARSING_METADATA_JSON_PATH = settings.URL_PARSING_METADATA_JSON_PATH;
+const METADATA_TYPE = settings.METADATA_TYPE;
+const GENERATE_URL_METADATA = settings.GENERATE_URL_METADATA;
 
-const GENERATE_METADATA = process.env.GENERATE_METADATA !== 'false';
-const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
+const GENERATE_METADATA = settings.GENERATE_METADATA;
+const SAVE_STRAPI_RESPONSES = settings.SAVE_STRAPI_RESPONSES;
 
 // Optional filter to sync only specific directories
 // Format: comma-separated list of dirNames (e.g., "dir1,dir2,dir3")
 // When provided, only guides/solutions/release-notes with matching dirNames will be synced
-const DIR_NAMES_FILTER = process.env.DIR_NAMES_FILTER
-  ? process.env.DIR_NAMES_FILTER.split(',').map((name) => name.trim())
-  : undefined;
+const DIR_NAMES_FILTER = settings.DIR_NAMES_FILTER;
 const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH =
-  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH ||
-  'main-guide-versions-dirNames.json';
+  settings.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH;
 const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
-  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH ||
-  'main-guide-versions-dirNames-to-remove.json';
+  settings.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH;
 
 // S3 paths for metadata files
-const S3_DIRNAME_METADATA_JSON_PATH =
-  process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
+const S3_DIRNAME_METADATA_JSON_PATH = settings.S3_DIRNAME_METADATA_JSON_PATH;
 const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
-  process.env.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json';
+  settings.S3_SOLUTIONS_DIRNAMES_JSON_PATH;
 const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
-  process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
-  'release-notes-dirNames.json';
-const LOCALE = process.env.LOCALE;
+  settings.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH;
+const LOCALE = settings.OPTIONAL_LOCALE;
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 

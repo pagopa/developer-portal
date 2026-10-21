@@ -8,7 +8,7 @@ import Spinner from '@/components/atoms/Spinner/Spinner';
 import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
-import { isProduction } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import AccountAlreadyConfirmed from '@/components/organisms/Auth/AccountAlreadyConfirmed';
 
@@ -40,7 +40,7 @@ const ConfirmationContent = () => {
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
-          if (!isProduction) {
+          if (!browserEnv.config.isProduction) {
             console.warn(error);
           }
           switch (error.code) {

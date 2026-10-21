@@ -1,3 +1,4 @@
+import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-expression-statements */
@@ -13,9 +14,8 @@ import {
 import path from 'path';
 import fs from 'fs';
 
-const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH ||
-  '../../url-parsing-metadata.json';
+const settings = buildSettings(process.env);
+const URL_PARSING_METADATA_JSON_PATH = settings.URL_PARSING_METADATA_JSON_PATH;
 
 const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
 

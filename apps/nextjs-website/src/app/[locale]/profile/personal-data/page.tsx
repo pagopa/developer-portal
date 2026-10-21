@@ -14,8 +14,10 @@ import ConfirmationModal from '@/components/atoms/ConfirmationModal/Confirmation
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/ProfileDataCard';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
-import { companyRoles, defaultLocale } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { SUPPORTED_LOCALES } from '@/locales';
+
+const { companyRoles, defaultLocale } = browserEnv.config;
 
 const PersonalData = () => {
   const t = useTranslations();
