@@ -6,6 +6,7 @@ import {
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
+  qualtricsFeatureFlag,
   SITE_HEADER_HEIGHT,
   useNewCookie,
 } from '@/config';
@@ -157,7 +158,7 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <UserProvider>
-                <QualtricsIntercept />
+                {qualtricsFeatureFlag === 'true' && <QualtricsIntercept />}
                 <ChatbotProvider isChatbotVisible={isChatbotActive}>
                   <SiteHeader
                     locale={locale}
