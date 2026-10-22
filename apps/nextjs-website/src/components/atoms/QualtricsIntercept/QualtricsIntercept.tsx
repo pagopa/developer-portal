@@ -1,9 +1,14 @@
 'use client';
+import { qualtricsFeatureFlag } from '@/config';
 import { useUser } from '@/helpers/user.helper';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 const QualtricsIntercept = () => {
+  if (qualtricsFeatureFlag !== 'true') {
+    return null;
+  }
+
   const { user, webinarCertificates } = useUser();
   const pathname = usePathname();
 
