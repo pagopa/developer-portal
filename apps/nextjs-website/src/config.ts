@@ -199,3 +199,5 @@ export const authCookieValidityInDays = parseInt(
 );
 
 export const loggedInCookieName = 'isLoggedIn';
+
+export const qualtricsFeatureFlag = process.env.NEXT_PUBLIC_FF_QUALTRICS;
