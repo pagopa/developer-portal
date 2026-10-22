@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.4.8
+
+### Patch Changes
+
+- 4842ede: Add feature flag for webinar certificates and analytics
+
 ## 17.4.7
 
 ### Patch Changes
