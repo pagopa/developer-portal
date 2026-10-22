@@ -14,10 +14,7 @@ import {
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
-import {
-  isWebinarHeartbeatEnabled,
-  snackbarAutoHideDurationMs,
-} from '@/config';
+import { isWebinarsEnabled, snackbarAutoHideDurationMs } from '@/config';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 import { useParams } from 'next/navigation';
 
@@ -191,7 +188,7 @@ const Agreements = () => {
           unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
         ></AgreementItem>
         <Box sx={{ marginY: '32px' }} />
-        {isWebinarHeartbeatEnabled && (
+        {isWebinarsEnabled && (
           <AgreementItem
             title={t('profile.agreements.webinar.title')}
             description={t('profile.agreements.webinar.description')}
