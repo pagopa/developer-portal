@@ -228,6 +228,12 @@
       "body": "To receive the participation certificate at the end of the webinar, you must provide consent to attendance monitoring <strong>within the first 5 minutes of the start</strong>.<br></br>Monitoring is used exclusively to verify that the webinar is actually being followed.",
       "cta_enable": "Enable monitoring",
       "cta_given": "You have given your consent"
+    },
+    "feedbackDialog": {
+      "title": "Did you find the webinar interesting?",
+      "description": "Share your feedback about your experience.",
+      "close": "Close",
+      "submit": "Share feedback"
     }
   },
   "webinars": {
