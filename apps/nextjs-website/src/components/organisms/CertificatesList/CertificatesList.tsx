@@ -9,6 +9,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import React from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { Webinar } from '@/lib/webinars/types';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 export type CertificatesListProps = {
   webinars: readonly Webinar[];
@@ -56,7 +57,16 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  const { userFullName, webinarCertificates, webinarSubscriptions } = useUser();
+  const {
+    userFullName,
+    webinarCertificates,
+    webinarSubscriptions,
+    webinarDataLoading,
+  } = useUser();
+
+  if (webinarDataLoading) {
+    return <Spinner />;
+  }
 
   const certificateDatesBySlug = new Map(
     webinarSubscriptions
