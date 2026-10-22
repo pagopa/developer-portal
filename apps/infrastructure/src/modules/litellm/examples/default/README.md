@@ -1,6 +1,3 @@
-# default
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -35,6 +32,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_env"></a> [env](#input\_env) | Environment suffix (stage, prod, dev). | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | AWS region to deploy into. | `string` | n/a | yes |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant slug — prefix for every resource (<tenant>-litellm-<env>). | `string` | n/a | yes |
 | <a name="input_acm_certificate_arn"></a> [acm\_certificate\_arn](#input\_acm\_certificate\_arn) | Existing ACM cert ARN for the ALB HTTPS listener. Empty creates a DNS-validated certificate unless allow\_plaintext\_alb is true. | `string` | `""` | no |
 | <a name="input_additional_task_security_group_ids"></a> [additional\_task\_security\_group\_ids](#input\_additional\_task\_security\_group\_ids) | Extra security groups for the tasks, e.g. one an existing database already allows. | `list(string)` | `[]` | no |
 | <a name="input_allow_plaintext_alb"></a> [allow\_plaintext\_alb](#input\_allow\_plaintext\_alb) | Opt into HTTP-only ALB (trial/dev only). | `bool` | `false` | no |
@@ -45,10 +45,9 @@
 | <a name="input_create_redis"></a> [create\_redis](#input\_create\_redis) | Create the ElastiCache Redis group. False → use redis\_url, or run without Redis. | `bool` | `true` | no |
 | <a name="input_database_url"></a> [database\_url](#input\_database\_url) | Postgres connection string for an existing database. Read only when create\_database = false. | `string` | `""` | no |
 | <a name="input_database_url_secret_arn"></a> [database\_url\_secret\_arn](#input\_database\_url\_secret\_arn) | Existing Secrets Manager reference holding DATABASE\_URL. Set create\_database = false and leave database\_url empty. | `string` | `""` | no |
-| <a name="input_env"></a> [env](#input\_env) | Environment suffix (stage, prod, dev). | `string` | n/a | yes |
 | <a name="input_gateway_extra_env"></a> [gateway\_extra\_env](#input\_gateway\_extra\_env) | Plain-text env vars layered onto the all-in-one LiteLLM container. | `map(string)` | `{}` | no |
 | <a name="input_gateway_extra_secrets"></a> [gateway\_extra\_secrets](#input\_gateway\_extra\_secrets) | LiteLLM env vars sourced from Secrets Manager (name to ARN). | `map(string)` | `{}` | no |
-| <a name="input_gateway_image"></a> [gateway\_image](#input\_gateway\_image) | All-in-one LiteLLM image serving the API and UI on port 4000. | `string` | `"docker.litellm.ai/berriai/litellm:main-stable"` | no |
+| <a name="input_gateway_image"></a> [gateway\_image](#input\_gateway\_image) | All-in-one LiteLLM image serving the API and UI on port 4000. | `string` | `"ghcr.io/berriai/litellm:v1.106.2@sha256:7294b90f868c5c38c99b83021c7ba46f9b439e95f8e32964c925c7d2563a03f7"` | no |
 | <a name="input_gateway_scheduled_scaling_enabled"></a> [gateway\_scheduled\_scaling\_enabled](#input\_gateway\_scheduled\_scaling\_enabled) | Stop gateway tasks daily at 19:00 and restart at least one at 08:00, following Europe/Rome local time. | `bool` | `true` | no |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | Public Route53 hosted zone for litellm.<zone-name> and its ACM DNS validation records. | `string` | `"Z02428843GXDP0RBGX2EQ"` | no |
 | <a name="input_litellm_license"></a> [litellm\_license](#input\_litellm\_license) | LiteLLM enterprise license. Empty → OSS-only. | `string` | `""` | no |
@@ -57,10 +56,8 @@
 | <a name="input_proxy_config"></a> [proxy\_config](#input\_proxy\_config) | LiteLLM proxy config (contents of config.yaml). Empty → defaults. | `any` | `{}` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Existing public subnets for the ALB (≥ 2 AZs). Required with vpc\_id. | `list(string)` | `[]` | no |
 | <a name="input_redis_url"></a> [redis\_url](#input\_redis\_url) | Connection string for an existing Redis. Read only when create\_redis = false. | `string` | `""` | no |
-| <a name="input_region"></a> [region](#input\_region) | AWS region to deploy into. | `string` | n/a | yes |
 | <a name="input_s3_force_destroy"></a> [s3\_force\_destroy](#input\_s3\_force\_destroy) | Allow destroy of a non-empty S3 bucket (ephemeral/CI only). | `bool` | `false` | no |
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Skip the Aurora final snapshot on destroy (ephemeral/CI only). | `bool` | `false` | no |
-| <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant slug — prefix for every resource (<tenant>-litellm-<env>). | `string` | n/a | yes |
 | <a name="input_ui_password"></a> [ui\_password](#input\_ui\_password) | UI admin password. Empty → falls back to LITELLM\_MASTER\_KEY. | `string` | `""` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Existing VPC to deploy into. Empty → module creates its own networking. | `string` | `""` | no |
 
@@ -82,4 +79,3 @@
 | <a name="output_s3_bucket"></a> [s3\_bucket](#output\_s3\_bucket) | S3 bucket name. |
 | <a name="output_task_security_group_id"></a> [task\_security\_group\_id](#output\_task\_security\_group\_id) | Tasks security group. Allow this inbound on an existing database or Redis. |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC the stack runs in, whether module-created or supplied. |
-<!-- END_TF_DOCS -->

@@ -19,7 +19,7 @@ resource "aws_appautoscaling_scheduled_action" "gateway_stop" {
   service_namespace  = aws_appautoscaling_target.gateway[0].service_namespace
   resource_id        = aws_appautoscaling_target.gateway[0].resource_id
   scalable_dimension = aws_appautoscaling_target.gateway[0].scalable_dimension
-  schedule           = "cron(0 19 * * ? *)"
+  schedule           = "cron(0 22 * * ? *)"
   timezone           = "Europe/Rome"
 
   scalable_target_action {
