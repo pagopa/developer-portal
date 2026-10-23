@@ -108,6 +108,18 @@ variable "next_public_feedback_form_enabled" {
   default     = false
 }
 
+variable "next_public_ff_qualtrics" {
+  type        = bool
+  description = "Defines if the Qualtrics feature should be enabled"
+  default     = false
+}
+
+variable "next_public_ff_webinars" {
+  type        = bool
+  description = "Defines if the webinars feature should be enabled"
+  default     = false
+}
+
 variable "next_public_mixpanel_api_host" {
   type        = string
   description = "Mixpanel API host for the OpenNext server"
