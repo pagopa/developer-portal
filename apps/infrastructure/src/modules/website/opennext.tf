@@ -69,6 +69,8 @@ module "opennext" {
       NEXT_PUBLIC_COGNITO_USER_POOL_ID                  = var.cognito_user_pool_id
       NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID       = var.cognito_user_pool_client_id
       NEXT_PUBLIC_ENVIRONMENT                           = var.environment
+      NEXT_PUBLIC_FF_QUALTRICS                          = tostring(var.next_public_ff_qualtrics)
+      NEXT_PUBLIC_FF_WEBINARS                           = tostring(var.next_public_ff_webinars)
       NEXT_PUBLIC_I18N_ACTIVE_LANGUAGES                 = "false"
       NEXT_PUBLIC_MIXPANEL_API_HOST                     = var.next_public_mixpanel_api_host
       NEXT_PUBLIC_MIXPANEL_TOKEN                        = aws_ssm_parameter.mixpanel_token.value

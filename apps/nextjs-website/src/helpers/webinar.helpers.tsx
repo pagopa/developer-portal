@@ -3,6 +3,7 @@ import type { Webinar } from '@/lib/webinars/types';
 import {
   isWebinarHeartbeatEnabled,
   webinarHeartbeatIntervalInSeconds,
+  isWebinarsEnabled,
 } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
@@ -185,7 +186,13 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
+    if (
+      !isWebinarsEnabled ||
+      !isWebinarHeartbeatEnabled ||
+      !webinar ||
+      !isVideoPlaying
+    )
+      return;
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {
