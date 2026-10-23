@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.5.1
+
+### Patch Changes
+
+- 9ce34b7: Update webinar certificates to use the new API response and completion date
+
 ## 17.5.0
 
 ### Minor Changes

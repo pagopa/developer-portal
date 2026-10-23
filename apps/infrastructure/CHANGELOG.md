@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.2.2
+
+### Patch Changes
+
+- 65d1dfd: Extend Langfuse database backups to 35 days in production and 7 days in other environments.
+
 ## 14.2.1
 
 ### Patch Changes
