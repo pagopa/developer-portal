@@ -22,8 +22,8 @@ const handleDownload = async (
   subtitle: string,
   certification: string,
   attended: string,
-  createdOn?: string,
-  createdAt?: string
+  createdOn: string,
+  createdAt: string
 ) => {
   const [{ pdf }, { default: CertificateTemplate }] = await Promise.all([
     import('@react-pdf/renderer'),
@@ -57,29 +57,33 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  const {
-    userFullName,
-    webinarCertificates,
-    webinarSubscriptions,
-    webinarDataLoading,
-  } = useUser();
+  const { userFullName, webinarCertificates, webinarDataLoading } = useUser();
 
   if (webinarDataLoading) {
     return <Spinner />;
   }
 
-  const certificateDatesBySlug = new Map(
-    webinarSubscriptions
-      ?.filter((webinar) => webinar.certificateCreatedAt && webinar.webinarId)
-      .map((webinar) => [webinar.webinarId, webinar.certificateCreatedAt]) ?? []
-  );
-
   const filteredWebinars = webinars.filter((webinar) =>
-    webinarCertificates.includes(webinar.slug)
+    webinarCertificates.some(
+      (certificate) => certificate.webinarid === webinar.slug
+    )
   );
 
   const cardsToShow = filteredWebinars.map((webinar) => {
-    const certificateCreatedAt = certificateDatesBySlug.get(webinar.slug);
+    const certificate = webinarCertificates.find(
+      (certificate) => certificate.webinarid === webinar.slug
+    );
+
+    const certificateCreatedAt = certificate?.reached_80_percent_at;
+
+    const formattedCertificateDate = certificateCreatedAt
+      ? new Date(
+          certificateCreatedAt.replace(' UTC', 'Z').replace(' ', 'T')
+        ).toLocaleString(locale, {
+          dateStyle: 'long',
+          timeStyle: 'short',
+        })
+      : '';
 
     return {
       title: webinar.title,
@@ -95,15 +99,8 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
           t('profile.certificateList.certificate.subtitle'),
           t('profile.certificateList.certificate.certification'),
           t('profile.certificateList.certificate.attended'),
-          certificateCreatedAt
-            ? new Date(certificateCreatedAt).toLocaleString(locale, {
-                dateStyle: 'long',
-                timeStyle: 'short',
-              })
-            : undefined,
-          certificateCreatedAt
-            ? t('profile.certificateList.certificate.createdAt')
-            : undefined
+          formattedCertificateDate,
+          t('profile.certificateList.certificate.createdAt')
         ),
       image: (
         <Box

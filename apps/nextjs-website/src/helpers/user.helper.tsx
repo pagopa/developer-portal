@@ -17,6 +17,7 @@ import {
   PropsWithChildren,
   useContext,
 } from 'react';
+import type { CertificateResponse } from '@/lib/webinars/webinarCertificates';
 
 type UserContextValue = ReturnType<typeof useUserState>;
 
@@ -28,9 +29,9 @@ const useUserState = () => {
   const [webinarSubscriptions, setSubscriptions] = useState<
     readonly WebinarSubscription[]
   >([]);
-  const [webinarCertificates, setCertificates] = useState<
-    ReadonlyArray<string>
-  >([]);
+  const [webinarCertificates, setCertificates] = useState<CertificateResponse>(
+    []
+  );
   const [webinarDataLoading, setWebinarDataLoading] = useState<boolean>(true);
 
   const signOutUser = useCallback(async (user?: DevPortalUser | null) => {
