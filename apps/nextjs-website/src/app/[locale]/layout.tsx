@@ -6,6 +6,8 @@ import {
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
+  mixpanelApiHost,
+  mixpanelToken,
   qualtricsFeatureFlag,
   SITE_HEADER_HEIGHT,
   useNewCookie,
@@ -35,6 +37,7 @@ import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
 import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
+import MixpanelInit from '@/components/atoms/Mixpanel/MixpanelInit';
 import { UserProvider } from '@/helpers/user.helper';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
@@ -155,6 +158,11 @@ export default async function RootLayout({
                   ? cookieScriptUrl
                   : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
               }
+            />
+            <MixpanelInit
+              enableMixpanel={isProduction}
+              token={mixpanelToken}
+              apiHost={mixpanelApiHost}
             />
             <AuthProvider>
               <UserProvider>
