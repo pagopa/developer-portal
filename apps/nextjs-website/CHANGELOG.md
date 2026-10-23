@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.5.0
+
+### Minor Changes
+
+- 82c04db: Add Mixpanel tracking
+
 ## 17.4.8
 
 ### Patch Changes
