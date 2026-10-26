@@ -153,9 +153,11 @@ module "website" {
     region          = var.aws_region
   }
 
-  next_cms_interlan_alb_dns_name = module.cms.internal_load_balancer.dns_name
-
+  next_cms_interlan_alb_dns_name    = module.cms.internal_load_balancer.dns_name
   next_public_feedback_form_enabled = true
+  next_public_ff_qualtrics          = var.environment == "dev"
+  next_public_ff_webinars           = var.environment == "dev"
+  next_public_mixpanel_api_host     = var.next_public_mixpanel_api_host
 
   vpc = {
     id              = module.cms.vpc.id

@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -31,7 +30,7 @@
 | <a name="module_dynamodb_webinar_subscriptions"></a> [dynamodb\_webinar\_subscriptions](#module\_dynamodb\_webinar\_subscriptions) | git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git | 715399dbe24f6443820bf5de80f6100b35d56355 |
 | <a name="module_dynamodb_write_capacity_utilization_alarm"></a> [dynamodb\_write\_capacity\_utilization\_alarm](#module\_dynamodb\_write\_capacity\_utilization\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_dynamodb_write_throttle_events_webinar_questions_alarm"></a> [dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm](#module\_dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
-| <a name="module_opennext"></a> [opennext](#module\_opennext) | pagopa-dx/aws-open-next/aws | ~> 0.0 |
+| <a name="module_opennext"></a> [opennext](#module\_opennext) | pagopa-dx/aws-open-next/aws | ~> 2.1 |
 | <a name="module_ses_bounce_rate_alarm"></a> [ses\_bounce\_rate\_alarm](#module\_ses\_bounce\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_daily_sending_quota_alarm"></a> [ses\_daily\_sending\_quota\_alarm](#module\_ses\_daily\_sending\_quota\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_reputation_complaint_rate_alarm"></a> [ses\_reputation\_complaint\_rate\_alarm](#module\_ses\_reputation\_complaint\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
@@ -65,6 +64,7 @@
 | [aws_s3_bucket_versioning.website_standalone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_object.error_404_page](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_ssm_parameter.cookie_domain_script](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.mixpanel_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.strapi_api_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_integer.website_bucket_random_integer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
@@ -76,30 +76,33 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alerting_topic_arn"></a> [alerting\_topic\_arn](#input\_alerting\_topic\_arn) | ARN of the shared SNS topic used for CloudWatch alarm notifications | `string` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br/>    {<br/>      header   = string<br/>      override = bool<br/>      value    = string<br/>    }<br/>  ))</pre> | `[]` | no |
 | <a name="input_cognito_authenticated_host_user_role_id"></a> [cognito\_authenticated\_host\_user\_role\_id](#input\_cognito\_authenticated\_host\_user\_role\_id) | The ID of the IAM role for authenticated host users from the auth module | `string` | n/a | yes |
 | <a name="input_cognito_authenticated_user_role_id"></a> [cognito\_authenticated\_user\_role\_id](#input\_cognito\_authenticated\_user\_role\_id) | The ID of the IAM role for authenticated users from the auth module | `string` | n/a | yes |
 | <a name="input_cognito_identity_pool_id"></a> [cognito\_identity\_pool\_id](#input\_cognito\_identity\_pool\_id) | The ID of the Cognito Identity Pool from the auth module | `string` | n/a | yes |
 | <a name="input_cognito_user_pool_client_id"></a> [cognito\_user\_pool\_client\_id](#input\_cognito\_user\_pool\_client\_id) | The ID of the Cognito User Pool Client from the auth module | `string` | n/a | yes |
 | <a name="input_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#input\_cognito\_user\_pool\_id) | The ID of the Cognito User Pool from the auth module | `string` | n/a | yes |
-| <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
-| <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>    region          = string<br/>  })</pre> | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
-| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |
-| <a name="input_next_public_feedback_form_enabled"></a> [next\_public\_feedback\_form\_enabled](#input\_next\_public\_feedback\_form\_enabled) | Defines if the feedback form should be enabled | `bool` | `false` | no |
-| <a name="input_next_public_soap_api_page_active"></a> [next\_public\_soap\_api\_page\_active](#input\_next\_public\_soap\_api\_page\_active) | Defines if the SOAP API page should be active | `bool` | `false` | no |
+| <a name="input_next_public_mixpanel_api_host"></a> [next\_public\_mixpanel\_api\_host](#input\_next\_public\_mixpanel\_api\_host) | Mixpanel API host for the OpenNext server | `string` | n/a | yes |
 | <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
+| <a name="input_webinar_video_api"></a> [webinar\_video\_api](#input\_webinar\_video\_api) | Configuration for the webinar heartbeat check, including target URL, execution interval in seconds, and whether the heartbeat is enabled. | <pre>object({<br/>    ingest_url          = string<br/>    base_url            = string<br/>    interval_in_seconds = number<br/>    enabled             = bool<br/>  })</pre> | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
+| <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br/>    {<br/>      header   = string<br/>      override = bool<br/>      value    = string<br/>    }<br/>  ))</pre> | `[]` | no |
+| <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
+| <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
+| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
+| <a name="input_next_public_feedback_form_enabled"></a> [next\_public\_feedback\_form\_enabled](#input\_next\_public\_feedback\_form\_enabled) | Defines if the feedback form should be enabled | `bool` | `false` | no |
+| <a name="input_next_public_ff_qualtrics"></a> [next\_public\_ff\_qualtrics](#input\_next\_public\_ff\_qualtrics) | Defines if the Qualtrics feature should be enabled | `bool` | `false` | no |
+| <a name="input_next_public_ff_webinars"></a> [next\_public\_ff\_webinars](#input\_next\_public\_ff\_webinars) | Defines if the webinars feature should be enabled | `bool` | `false` | no |
+| <a name="input_next_public_soap_api_page_active"></a> [next\_public\_soap\_api\_page\_active](#input\_next\_public\_soap\_api\_page\_active) | Defines if the SOAP API page should be active | `bool` | `false` | no |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_use_custom_certificate"></a> [use\_custom\_certificate](#input\_use\_custom\_certificate) | Enable CDN https support with a custom certificate instead using the default one | `bool` | `true` | no |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC. | <pre>object({<br/>    id              = string<br/>    private_subnets = list(string)<br/>  })</pre> | `null` | no |
-| <a name="input_webinar_video_api"></a> [webinar\_video\_api](#input\_webinar\_video\_api) | Configuration for the webinar heartbeat check, including target URL, execution interval in seconds, and whether the heartbeat is enabled. | <pre>object({<br/>    ingest_url          = string<br/>    base_url            = string<br/>    interval_in_seconds = number<br/>    enabled             = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_website_is_standalone"></a> [website\_is\_standalone](#input\_website\_is\_standalone) | If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront) | `bool` | `false` | no |
 
 ## Outputs
@@ -113,4 +116,3 @@
 | <a name="output_standalone_server"></a> [standalone\_server](#output\_standalone\_server) | n/a |
 | <a name="output_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#output\_webinar\_subscriptions\_ddb) | n/a |
 | <a name="output_website_standalone_bucket"></a> [website\_standalone\_bucket](#output\_website\_standalone\_bucket) | n/a |
-<!-- END_TF_DOCS -->
