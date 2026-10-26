@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.5.2
+
+### Patch Changes
+
+- e7a13c8: Update the text on the certificates page
+
 ## 17.5.1
 
 ### Patch Changes
