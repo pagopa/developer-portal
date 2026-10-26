@@ -1,11 +1,16 @@
 output "backup" {
-  description = "Production AWS Backup resources; null in environments without the backup module."
+  description = "Production AWS Backup resources by region; null in environments without the backup module."
   value = var.environment == "prod" ? {
-    plan_arn                = module.backup[0].backup_plan_arn
-    role_arn                = module.backup[0].backup_role_arn
-    vault_arn               = module.backup[0].backup_vault_arn
-    vault_name              = module.backup[0].backup_vault_name
-    notifications_topic_arn = module.backup[0].notifications_topic_arn
+    for region, backup in {
+      "eu-south-1"   = module.backup_eu_south_1[0]
+      "eu-central-1" = module.backup_eu_central_1[0]
+      } : region => {
+      plan_arn                = backup.backup_plan_arn
+      role_arn                = backup.backup_role_arn
+      vault_arn               = backup.backup_vault_arn
+      vault_name              = backup.backup_vault_name
+      notifications_topic_arn = backup.notifications_topic_arn
+    }
   } : null
 }
 

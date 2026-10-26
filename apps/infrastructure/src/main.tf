@@ -81,16 +81,6 @@ data "http" "docs_redirect_cf_function_code" {
 }
 
 # Init IaC resources ##########################################################
-module "backup" {
-  count  = var.environment == "prod" ? 1 : 0
-  source = "./modules/backup"
-
-  providers = {
-    aws = aws.eu-south-1
-  }
-
-  environment = var.environment
-}
 
 module "identity" {
   source            = "./identity"
@@ -372,4 +362,30 @@ module "dos68k_chatbotapi" {
   redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
 
   enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
+}
+
+################################################################################
+# AWS Backup (production only)
+################################################################################
+
+module "backup_eu_south_1" {
+  source = "./modules/backup"
+
+  providers = {
+    aws = aws.eu-south-1
+  }
+
+  environment = var.environment
+  region      = "eu-south-1"
+}
+
+module "backup_eu_central_1" {
+  source = "./modules/backup"
+
+  providers = {
+    aws = aws.eu-central-1
+  }
+
+  environment = var.environment
+  region      = "eu-central-1"
 }

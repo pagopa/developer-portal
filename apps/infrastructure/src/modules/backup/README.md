@@ -1,12 +1,14 @@
 # Production backups
 
 Implements DEV-4564 using PagoPA's `terraform-aws-backup` module, pinned to
-v1.3.4. The root configuration instantiates this module only for `prod`, with
-the `eu-south-1` provider. It creates no AWS Backup resources in `dev` or `uat`
-and does not change existing service-native backups.
+v1.3.4. The root configuration instantiates this module only for `prod`, once
+per region (`eu-south-1` and `eu-central-1`), because AWS Backup vaults, plans
+and selections are regional. It creates no AWS Backup resources in `dev` or
+`uat` and does not change existing service-native backups.
 
-Resource names use `devportal-<environment>` and the service role uses
-`devportal-<environment>-backup`. The upstream module appends resource-specific
+Resource names use `devportal-<environment>-<region>` and the service role uses
+`devportal-<environment>-backup-<region>`, so regional instances do not collide
+(IAM roles are global). The upstream module appends resource-specific
 suffixes to the vault, plan, and selection names. Resource tags are inherited
 from the AWS provider's `default_tags`; recovery points explicitly receive the
 same default tags. No separate tags input is required.
@@ -19,9 +21,12 @@ same default tags. No separate tags input is required.
   transition, continuous backup, or cross-region copy.
 - The vault uses the upstream module's customer-managed KMS key with automatic
   key rotation and governance-mode Vault Lock.
-- Resource selection matches the case-sensitive tag `Backup=True` in
-  `eu-south-1`. This module does not tag or enroll resources itself; resource
-  enrollment is handled by the related resource-specific Jira cards.
+- Resource selection matches the case-sensitive tag `Backup=True` in the
+  region of the instance. This module does not tag or enroll resources itself;
+  resource enrollment is handled by the related resource-specific Jira cards.
+  The production video recordings bucket (`devportal-p-recordings-*`,
+  `eu-central-1`) is tagged `Backup=True` and versioned in the
+  `video_streaming` module.
 - Failed and expired jobs publish to the upstream module's SNS topic. Subscribe
   an operational consumer to `notifications_topic_arn` separately; creation of
   the topic alone does not deliver alerts to people.
@@ -50,20 +55,22 @@ applying:
 ```
 
 After applying, verify that the vault and plan are visible in AWS Backup in
-`eu-south-1`, inspect the `Backup=True` selection and service role, and confirm
-successful scheduled jobs after resource enrollment. A plan with no matching
-tagged resources does not protect any data.
+`eu-south-1` and `eu-central-1`, inspect the `Backup=True` selection and service
+role, and confirm successful scheduled jobs after resource enrollment. A plan
+with no matching tagged resources does not protect any data.
 
-The service role has `AWSBackupServiceRolePolicyForBackup`, not restore
-permissions. Restores require a separately authorized role. Before enrolling
-S3 buckets, configure the additional S3 backup permissions and prerequisites;
-this module does not enable S3 backup. Resources in other regions require
-separate regional plans. The policy does not provide cross-region disaster
-recovery.
+The service role has `AWSBackupServiceRolePolicyForBackup` and
+`AWSBackupServiceRolePolicyForS3Backup`, not restore permissions. Restores
+require a separately authorized role (for S3, `AWSBackupServiceRolePolicyForS3Restore`).
+S3 buckets must have versioning enabled, and S3 recovery points cannot
+transition to cold storage (the warm-only policy is compatible). Resources in
+other regions require an additional regional instance. The policy does not
+provide cross-region disaster recovery.
 
 The upstream release requires its SNS topic to be enabled because its output
-unconditionally references the topic. It names that topic `backup-vault-events`;
-check for an existing independently managed topic with that name before apply.
+unconditionally references the topic. It names that topic `backup-vault-events`
+in each region; check for an existing independently managed topic with that
+name before apply.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -91,6 +98,7 @@ check for an existing independently managed topic with that name before apply.
 |------|------|
 | [aws_iam_role.backup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.backup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.backup_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_default_tags.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
 | [aws_iam_policy_document.backup_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
@@ -100,6 +108,7 @@ check for an existing independently managed topic with that name before apply.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment used to name backup resources. | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | AWS region of the provider passed to this module; used to keep names unique across regional instances. | `string` | n/a | yes |
 
 ## Outputs
 

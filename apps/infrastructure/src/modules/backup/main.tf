@@ -3,7 +3,7 @@ data "aws_default_tags" "current" {}
 module "backup" {
   source = "git::https://github.com/pagopa/terraform-aws-backup.git?ref=c818dbe3e237ab6ddbd87e02419f3bf7a54a7896" # v1.3.4
 
-  name                         = "devportal-${var.environment}"
+  name                         = "devportal-${var.environment}-${var.region}"
   iam_role_arn                 = aws_iam_role.backup.arn
   enable_vault_lock_governance = true
 
@@ -33,5 +33,8 @@ module "backup" {
     "BACKUP_JOB_EXPIRED",
   ]
 
-  depends_on = [aws_iam_role_policy_attachment.backup]
+  depends_on = [
+    aws_iam_role_policy_attachment.backup,
+    aws_iam_role_policy_attachment.backup_s3,
+  ]
 }
