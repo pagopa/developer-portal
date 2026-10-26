@@ -1,5 +1,18 @@
 # infrastructure
 
+## 14.2.2
+
+### Patch Changes
+
+- 65d1dfd: Extend Langfuse database backups to 35 days in production and 7 days in other environments.
+
+## 14.2.1
+
+### Patch Changes
+
+- f651807: Enable point-in-time recovery for webinar DynamoDB tables.
+- 6ddf6bc: Add Qualtrics and webinars feature-flag configuration to the website deployment, enabled in the dev environment.
+
 ## 14.2.0
 
 ### Minor Changes
