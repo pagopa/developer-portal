@@ -375,7 +375,7 @@ module "backup_eu_south_1" {
     aws = aws.eu-south-1
   }
 
-  environment = var.environment
+  environment = local.env_short[var.environment]
   region      = "eu-south-1"
 }
 
@@ -386,6 +386,6 @@ module "backup_eu_central_1" {
     aws = aws.eu-central-1
   }
 
-  environment = var.environment
+  environment = local.env_short[var.environment]
   region      = "eu-central-1"
 }
