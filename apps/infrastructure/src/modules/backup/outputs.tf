@@ -1,5 +1,5 @@
 output "backup_plan_arn" {
-  description = "ARN of the production backup plan."
+  description = "ARN of the backup plan."
   value       = module.backup.backup_plan_arn
 }
 
@@ -9,12 +9,12 @@ output "backup_role_arn" {
 }
 
 output "backup_vault_arn" {
-  description = "ARN of the encrypted production backup vault."
+  description = "ARN of the encrypted backup vault."
   value       = module.backup.backup_vault_arn
 }
 
 output "backup_vault_name" {
-  description = "Name of the production backup vault."
+  description = "Name of the backup vault."
   value       = module.backup.backup_vault_id
 }
 

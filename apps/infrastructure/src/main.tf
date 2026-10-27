@@ -369,6 +369,7 @@ module "dos68k_chatbotapi" {
 ##################
 
 module "backup_eu_south_1" {
+  count  = var.enable_backup ? 1 : 0
   source = "./modules/backup"
 
   providers = {
@@ -380,6 +381,7 @@ module "backup_eu_south_1" {
 }
 
 module "backup_eu_central_1" {
+  count  = var.enable_backup ? 1 : 0
   source = "./modules/backup"
 
   providers = {
@@ -388,4 +390,14 @@ module "backup_eu_central_1" {
 
   environment = local.env_short[var.environment]
   region      = "eu-central-1"
+}
+
+moved {
+  from = module.backup_eu_south_1
+  to   = module.backup_eu_south_1[0]
+}
+
+moved {
+  from = module.backup_eu_central_1
+  to   = module.backup_eu_central_1[0]
 }

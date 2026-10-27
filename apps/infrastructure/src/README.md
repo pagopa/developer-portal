@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -61,6 +62,7 @@
 | <a name="input_docs_redirect_is_enabled"></a> [docs\_redirect\_is\_enabled](#input\_docs\_redirect\_is\_enabled) | Defines if Docs redirect should be enabled | `bool` | `false` | no |
 | <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the dos68k Chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "2.1.0",<br/>  "memory": 2048<br/>}</pre> | no |
 | <a name="input_ecs_chatbotapi_enable_scheduled_scaling"></a> [ecs\_chatbotapi\_enable\_scheduled\_scaling](#input\_ecs\_chatbotapi\_enable\_scheduled\_scaling) | Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET) | `bool` | `false` | no |
+| <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Create AWS Backup resources in eu-south-1 and eu-central-1. | `bool` | `false` | no |
 | <a name="input_github_cms_repository"></a> [github\_cms\_repository](#input\_github\_cms\_repository) | The repository where the CMS workflows will run | `string` | `"pagopa/developer-portal-cms"` | no |
 | <a name="input_next_public_mixpanel_api_host"></a> [next\_public\_mixpanel\_api\_host](#input\_next\_public\_mixpanel\_api\_host) | Mixpanel API host for the OpenNext server | `string` | `"https://api-eu.mixpanel.com"` | no |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
@@ -73,10 +75,11 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_backup"></a> [backup](#output\_backup) | Production AWS Backup resources by region; null in environments without the backup module. |
+| <a name="output_backup"></a> [backup](#output\_backup) | AWS Backup resources by region; null when enable\_backup is false. |
 | <a name="output_iam_role_deploy_standalone_website_arn"></a> [iam\_role\_deploy\_standalone\_website\_arn](#output\_iam\_role\_deploy\_standalone\_website\_arn) | n/a |
 | <a name="output_name_servers_records"></a> [name\_servers\_records](#output\_name\_servers\_records) | n/a |
 | <a name="output_standalone_server"></a> [standalone\_server](#output\_standalone\_server) | n/a |
 | <a name="output_terraform_backend_bucket_name"></a> [terraform\_backend\_bucket\_name](#output\_terraform\_backend\_bucket\_name) | n/a |
 | <a name="output_terraform_lock_dynamodb_table"></a> [terraform\_lock\_dynamodb\_table](#output\_terraform\_lock\_dynamodb\_table) | n/a |
 | <a name="output_video_streaming"></a> [video\_streaming](#output\_video\_streaming) | Outputs from the video streaming module. |
+<!-- END_TF_DOCS -->

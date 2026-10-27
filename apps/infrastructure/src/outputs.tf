@@ -34,11 +34,11 @@ output "video_streaming" {
 }
 
 output "backup" {
-  description = "Production AWS Backup resources by region; null in environments without the backup module."
-  value = var.environment == "prod" ? {
+  description = "AWS Backup resources by region; null when enable_backup is false."
+  value = var.enable_backup ? {
     for region, backup in {
-      "eu-south-1"   = module.backup_eu_south_1
-      "eu-central-1" = module.backup_eu_central_1
+      "eu-south-1"   = module.backup_eu_south_1[0]
+      "eu-central-1" = module.backup_eu_central_1[0]
       } : region => {
       plan_arn                = backup.backup_plan_arn
       role_arn                = backup.backup_role_arn
