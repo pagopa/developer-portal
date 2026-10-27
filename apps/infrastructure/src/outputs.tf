@@ -1,19 +1,3 @@
-output "backup" {
-  description = "Production AWS Backup resources by region; null in environments without the backup module."
-  value = var.environment == "prod" ? {
-    for region, backup in {
-      "eu-south-1"   = module.backup_eu_south_1[0]
-      "eu-central-1" = module.backup_eu_central_1[0]
-      } : region => {
-      plan_arn                = backup.backup_plan_arn
-      role_arn                = backup.backup_role_arn
-      vault_arn               = backup.backup_vault_arn
-      vault_name              = backup.backup_vault_name
-      notifications_topic_arn = backup.notifications_topic_arn
-    }
-  } : null
-}
-
 output "terraform_backend_bucket_name" {
   value = module.identity.terraform_backend_bucket_name
 }
@@ -47,4 +31,20 @@ output "video_streaming" {
   }
 
   description = "Outputs from the video streaming module."
+}
+
+output "backup" {
+  description = "Production AWS Backup resources by region; null in environments without the backup module."
+  value = var.environment == "prod" ? {
+    for region, backup in {
+      "eu-south-1"   = module.backup_eu_south_1
+      "eu-central-1" = module.backup_eu_central_1
+      } : region => {
+      plan_arn                = backup.backup_plan_arn
+      role_arn                = backup.backup_role_arn
+      vault_arn               = backup.backup_vault_arn
+      vault_name              = backup.backup_vault_name
+      notifications_topic_arn = backup.notifications_topic_arn
+    }
+  } : null
 }

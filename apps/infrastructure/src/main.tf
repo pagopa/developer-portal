@@ -364,9 +364,9 @@ module "dos68k_chatbotapi" {
   enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
 }
 
-################################################################################
-# AWS Backup (production only)
-################################################################################
+##################
+### AWS Backup ###
+##################
 
 module "backup_eu_south_1" {
   source = "./modules/backup"
