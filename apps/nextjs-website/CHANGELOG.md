@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.5.3
+
+### Patch Changes
+
+- 2a6c39c: Fix unlisted webinar certificates visibility
+
 ## 17.5.2
 
 ### Patch Changes
