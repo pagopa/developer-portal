@@ -230,3 +230,143 @@ segments are accepted. A full 37 GiB conversion has also completed: 84,015,992
 events converted, 3,654 actions rejected, and 1,146,067 unplayed media rows skipped.
 Completion of the local conversion does not validate ingestion of the full
 history; review the run's summaries and rejection reasons before import.
+
+## Uploading a completed export to Mixpanel
+
+`upload.py` sends the parts listed in one final `manifest.json`, in manifest
+order, one request at a time. It requires Python >=3.12,<3.14 on Linux/WSL and
+only the standard library. It does not rerun conversion or change the payloads,
+timestamps or stable event identifiers. Copy `upload.py` to the machine holding
+the export; the converter modules are not required to upload it.
+
+The supplied export contains 84,015,992 events in 42,584 files, approximately
+97.1 GB uncompressed. Only manifest-listed event parts are sent, never
+`issues.ndjson`, partial files or `staging.sqlite`. A completed conversion with
+reported rejections is accepted; review `report.json` to understand which source
+actions were excluded. Parts can contain events from multiple Matomo sites.
+
+### Host and credentials
+
+The [official API overview](https://docs.mixpanel.com/reference/overview) lists
+these ingestion hosts. Choose the one matching the destination project's data
+residency, including when testing on a different project:
+
+| Residency | `MIXPANEL_API_HOST` |
+| --- | --- |
+| EU (uploader default, matching the portal configuration) | `https://api-eu.mixpanel.com` |
+| Standard | `https://api.mixpanel.com` |
+| India | `https://api-in.mixpanel.com` |
+
+The [Import API](https://docs.mixpanel.com/reference/import-events#authentication)
+supports either authentication method below. Variables are read from the process
+environment; `.env` files are not loaded automatically. `.env.default` lists the
+supported variable names. Do not commit credentials or put them in command-line
+arguments.
+
+- **Project token:** set `MIXPANEL_PROJECT_TOKEN`. It becomes the HTTP Basic Auth
+  username with an empty password. Leave the service account variables and
+  `MIXPANEL_PROJECT_ID` unset or empty; token authentication omits `project_id`.
+- **Service account:** set `MIXPANEL_SERVICE_ACCOUNT_USERNAME`,
+  `MIXPANEL_SERVICE_ACCOUNT_SECRET` and `MIXPANEL_PROJECT_ID`. Leave the token
+  unset or empty. The account needs Owner or Admin access for import. Its username
+  and secret become HTTP Basic Auth credentials; `project_id` is a query parameter.
+
+For example, a token can be entered without placing it in shell history:
+
+```bash
+export MIXPANEL_API_HOST=https://api-eu.mixpanel.com
+read -r -s -p 'Mixpanel project token: ' MIXPANEL_PROJECT_TOKEN
+export MIXPANEL_PROJECT_TOKEN
+```
+
+### Local validation, upload and resume
+
+Validate the first two parts without credentials, network requests or upload
+state writes. Use the nested manifest produced for a specific SQL dump:
+
+```bash
+python3 scripts/matomo-to-mixpanel/upload.py \
+  scripts/matomo-to-mixpanel/output/sql-YOUR-RUN/files/matomo.sql/manifest.json \
+  --dry-run --max-files 2
+```
+
+Omit `--max-files` to validate every part locally; this reads the entire export.
+Validation checks the manifest, SHA-256, byte size, event count, JSON and required
+event fields. `--dry-run` is independent of upload state and cannot use `--resume`.
+
+**The following commands make real requests.** With credentials configured, a
+limited initial upload is:
+
+```bash
+python3 scripts/matomo-to-mixpanel/upload.py /path/to/manifest.json --max-files 2
+```
+
+Then continue the same destination, skipping the confirmed parts:
+
+```bash
+python3 scripts/matomo-to-mixpanel/upload.py /path/to/manifest.json --resume
+```
+
+`--max-files` limits pending files per invocation, not total files in the export.
+Without a limit, the uploader processes all pending files. Progress is printed
+approximately every five seconds between requests and at completion: confirmed
+files/events, percentage, event rate and estimated full-export remaining time.
+The rate and estimate use work completed in the current process.
+
+By default, checkpoints are stored in `upload-state.sqlite3` beside the manifest.
+Use `--state-file /path/to/upload-laim.sqlite3` or a separate production state
+file when uploading the same export to different destinations. Repeat the chosen
+path with `--resume`. The state records the manifest hash, host and project
+identity, per-file checksums, attempt counts and outcomes. Token identity is
+hashed; credentials and authorization headers are not saved. A service account
+secret can rotate without changing the target identity. Changing a project token,
+authentication method or host requires a separate state file.
+
+Every complete confirmation is committed immediately in a small SQLite
+transaction. Existing state requires `--resume`; a changed manifest or destination
+is rejected. A lock prevents simultaneous uploads using the same state. The
+uploader also respects the converter's lock. Keep the state and lock files in
+place, and do not edit the manifest or parts between attempts. Data and default
+checkpoints under `output/` are ignored by Git.
+
+### Requests and failures
+
+Requests use `/import?strict=1`, `application/x-ndjson` and gzip. Limits apply
+before compression: at most 2,000 events and 10 MB per request. Each part is
+validated and sent unchanged; only one part and its compressed representation
+are held at a time, in addition to the manifest/checkpoint metadata.
+
+- `--timeout 60` controls each HTTP operation's timeout in seconds.
+- `--max-retries 5` allows up to five retries after the first attempt. Network
+  errors and HTTP 408, 429, 500, 502, 503 and 504 use exponential backoff, starting
+  at two seconds and capped at 60 seconds, plus 1–5 seconds of jitter. A longer
+  valid `Retry-After` is respected.
+- A file is confirmed only after HTTP 200 with an `OK` response and an imported
+  count matching the manifest. Invalid or inconsistent responses stop the run.
+- Other HTTP errors stop without automatic retry. In particular, HTTP 400 may
+  have accepted some records. Its reported count and failed-record references
+  are saved with status `partial` or `failed`; the part is never marked confirmed.
+  Inspect the state before attempting to resume after a data-validation error.
+  Validation failures require investigation rather than repeated retries of
+  unchanged invalid data. Raw response messages and event payloads are not logged.
+
+Ctrl+C returns exit code 130; other failures return 1. Previously confirmed files
+remain saved. On `--resume`, only unconfirmed parts are considered again. If a
+request was accepted remotely just before an interruption or failed checkpoint,
+its outcome can be unknown and that unconfirmed part may be sent again. Stable
+`event`, `time`, `distinct_id` and `$insert_id` values support Mixpanel's
+[report deduplication](https://docs.mixpanel.com/reference/event-deduplication);
+raw exports can still contain duplicates. The uploader does not promise exactly
+one network delivery per event.
+
+### Offline tests
+
+```bash
+python3 -m unittest discover -s scripts/matomo-to-mixpanel -p 'test_*.py' -v
+```
+
+`test_upload.py` uses synthetic manifests and mocked HTTP responses. Tests cover
+authentication, request headers, compression, retries, partial acceptance,
+interruption before checkpoint, confirmed-file skipping, changed inputs/targets,
+locks and validation without credentials. No actual uploads are needed to run
+the suite.
