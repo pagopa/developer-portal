@@ -123,7 +123,7 @@ No modules.
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | A name for the project to prefix resources. | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | The ID of the existing Route 53 hosted zone for the custom domain. | `string` | `null` | no |
 | <a name="input_strapi_api_url"></a> [strapi\_api\_url](#input\_strapi\_api\_url) | The URL of the Strapi API. | `string` | n/a | yes |
-| <a name="input_webinar_metrics_channel_key"></a> [webinar\_metrics\_channel\_key](#input\_webinar\_metrics\_channel\_key) | The key from ivs\_channels to use for the webinar metrics Lambda. If null, IVS\_CHANNEL\_ARN is not set and the Lambda uses its default. | `string` | `null` | no |
+
 | <a name="input_webinar_metrics_stage_name"></a> [webinar\_metrics\_stage\_name](#input\_webinar\_metrics\_stage\_name) | The api webinar metrics stage name. | `string` | `"v1"` | no |
 
 ## Outputs
