@@ -171,7 +171,7 @@ module "website" {
     ingest_url          = "${module.video_streaming.video_api_base_url}/ingest"
     base_url            = module.video_streaming.video_api_base_url
     interval_in_seconds = 60
-    enabled             = var.environment == "prod" ? false : true
+    enabled             = true
   }
 
 }
