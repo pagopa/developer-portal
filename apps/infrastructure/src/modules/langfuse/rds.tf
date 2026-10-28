@@ -20,7 +20,7 @@ resource "aws_rds_cluster" "langfuse_aurora_cluster" {
   kms_key_id          = aws_kms_key.postgres.arn
   deletion_protection = !var.force_delete
 
-  backup_retention_period         = 5
+  backup_retention_period         = var.environment == "prod" ? 35 : 7
   preferred_backup_window         = "07:00-09:00"
   vpc_security_group_ids          = [aws_security_group.langfuse_db.id]
   db_subnet_group_name            = aws_db_subnet_group.postgres_subnet_grp.name

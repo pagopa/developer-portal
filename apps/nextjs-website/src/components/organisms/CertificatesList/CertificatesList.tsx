@@ -9,8 +9,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import React from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { Webinar } from '@/lib/webinars/types';
-import { pdf } from '@react-pdf/renderer';
-import CertificateTemplate from '@/components/templates/CertificateTemplate/CertificateTemplate';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 export type CertificatesListProps = {
   webinars: readonly Webinar[];
@@ -19,13 +18,18 @@ export type CertificatesListProps = {
 const handleDownload = async (
   userName: string,
   webinarName: string,
-  createdOn: string,
   title: string,
   subtitle: string,
-  createdAt: string,
   certification: string,
-  attended: string
+  attended: string,
+  createdOn: string,
+  createdAt: string
 ) => {
+  const [{ pdf }, { default: CertificateTemplate }] = await Promise.all([
+    import('@react-pdf/renderer'),
+    import('@/components/templates/CertificateTemplate/CertificateTemplate'),
+  ]);
+
   const blob = await pdf(
     <CertificateTemplate
       userName={userName}
@@ -53,20 +57,34 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  const { userFullName, webinarSubscriptions } = useUser();
+  const { userFullName, webinarCertificates, webinarDataLoading } = useUser();
 
-  const certificateDatesBySlug = new Map(
-    webinarSubscriptions
-      ?.filter((webinar) => webinar.certificateCreatedAt && webinar.webinarId)
-      .map((webinar) => [webinar.webinarId, webinar.certificateCreatedAt]) ?? []
-  );
+  if (webinarDataLoading) {
+    return <Spinner />;
+  }
 
   const filteredWebinars = webinars.filter((webinar) =>
-    certificateDatesBySlug.has(webinar.slug)
+    webinarCertificates.some(
+      (certificate) => certificate.webinarid === webinar.slug
+    )
   );
 
   const cardsToShow = filteredWebinars.map((webinar) => {
-    const certificateCreatedAt = certificateDatesBySlug.get(webinar.slug);
+    const certificate = webinarCertificates.find(
+      (certificate) => certificate.webinarid === webinar.slug
+    );
+
+    const certificateCreatedAt = certificate?.reached_80_percent_at;
+
+    const formattedCertificateDate = certificateCreatedAt
+      ? new Date(
+          certificateCreatedAt.replace(' UTC', 'Z').replace(' ', 'T')
+        ).toLocaleString(locale, {
+          dateStyle: 'long',
+          timeStyle: 'short',
+        })
+      : '';
+
     return {
       title: webinar.title,
       text: '',
@@ -77,15 +95,12 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
         handleDownload(
           userFullName,
           webinar.title,
-          new Date(certificateCreatedAt || '').toLocaleString(locale, {
-            dateStyle: 'long',
-            timeStyle: 'short',
-          }),
           t('profile.certificateList.certificate.title'),
           t('profile.certificateList.certificate.subtitle'),
-          t('profile.certificateList.certificate.createdAt'),
           t('profile.certificateList.certificate.certification'),
-          t('profile.certificateList.certificate.attended')
+          t('profile.certificateList.certificate.attended'),
+          formattedCertificateDate,
+          t('profile.certificateList.certificate.createdAt')
         ),
       image: (
         <Box

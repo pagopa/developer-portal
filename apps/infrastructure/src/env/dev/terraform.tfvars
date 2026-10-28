@@ -1,5 +1,6 @@
 aws_region        = "eu-south-1"
 environment       = "dev"
+enable_backup     = true
 github_repository = "pagopa/developer-portal"
 
 tags = {
@@ -26,7 +27,7 @@ dns_domain_name = "dev.developer.pagopa.it"
 
 use_custom_certificate = true
 
-cms_app_image_tag = "5e7659d8d91e439e564192b7c1c7a03806d31fb3"
+cms_app_image_tag = "3f372ac3228baf17d12afcf6e4959e13191f5ca3"
 
 # CMS Strapi DNS
 dns_domain_name_cms = {

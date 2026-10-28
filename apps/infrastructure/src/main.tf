@@ -81,6 +81,7 @@ data "http" "docs_redirect_cf_function_code" {
 }
 
 # Init IaC resources ##########################################################
+
 module "identity" {
   source            = "./identity"
   github_repository = var.github_repository
@@ -153,9 +154,11 @@ module "website" {
     region          = var.aws_region
   }
 
-  next_cms_interlan_alb_dns_name = module.cms.internal_load_balancer.dns_name
-
+  next_cms_interlan_alb_dns_name    = module.cms.internal_load_balancer.dns_name
   next_public_feedback_form_enabled = true
+  next_public_ff_qualtrics          = var.environment == "dev"
+  next_public_ff_webinars           = var.environment == "dev"
+  next_public_mixpanel_api_host     = var.next_public_mixpanel_api_host
 
   vpc = {
     id              = module.cms.vpc.id
@@ -167,7 +170,7 @@ module "website" {
   webinar_video_api = {
     base_url            = module.video_streaming.video_api_base_url
     interval_in_seconds = 60
-    enabled             = var.environment == "prod" ? false : true
+    enabled             = true
   }
 
 }
@@ -358,4 +361,42 @@ module "dos68k_chatbotapi" {
   redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
 
   enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
+}
+
+##################
+### AWS Backup ###
+##################
+
+module "backup_eu_south_1" {
+  count  = var.enable_backup ? 1 : 0
+  source = "./modules/backup"
+
+  providers = {
+    aws = aws.eu-south-1
+  }
+
+  environment = local.env_short[var.environment]
+  region      = "eu-south-1"
+}
+
+module "backup_eu_central_1" {
+  count  = var.enable_backup ? 1 : 0
+  source = "./modules/backup"
+
+  providers = {
+    aws = aws.eu-central-1
+  }
+
+  environment = local.env_short[var.environment]
+  region      = "eu-central-1"
+}
+
+moved {
+  from = module.backup_eu_south_1
+  to   = module.backup_eu_south_1[0]
+}
+
+moved {
+  from = module.backup_eu_central_1
+  to   = module.backup_eu_central_1[0]
 }
