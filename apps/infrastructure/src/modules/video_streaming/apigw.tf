@@ -36,14 +36,29 @@ resource "aws_api_gateway_deployment" "webinar_metrics" {
   provider    = aws.eu-south-1
   rest_api_id = aws_api_gateway_rest_api.webinar_metrics.id
 
-  depends_on = [aws_api_gateway_integration.metrics_lambda]
+  depends_on = [
+    aws_api_gateway_resource.metrics,
+    aws_api_gateway_method.metrics_post,
+    aws_api_gateway_integration.metrics_lambda,
+  ]
 
   triggers = {
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.metrics.id,
-      aws_api_gateway_method.metrics_post.id,
-      aws_api_gateway_integration.metrics_lambda.id,
-    ]))
+    redeployment = sha1(jsonencode({
+      resource = {
+        path_part = aws_api_gateway_resource.metrics.path_part
+      }
+      method = {
+        http_method      = aws_api_gateway_method.metrics_post.http_method
+        authorization    = aws_api_gateway_method.metrics_post.authorization
+        api_key_required = aws_api_gateway_method.metrics_post.api_key_required
+      }
+      integration = {
+        http_method             = aws_api_gateway_integration.metrics_lambda.http_method
+        integration_http_method = aws_api_gateway_integration.metrics_lambda.integration_http_method
+        type                    = aws_api_gateway_integration.metrics_lambda.type
+        uri                     = aws_api_gateway_integration.metrics_lambda.uri
+      }
+    }))
   }
 
   lifecycle {
