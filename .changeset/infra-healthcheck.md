@@ -2,4 +2,4 @@
 "infrastructure": patch
 ---
 
-Ensures continuous monitoring for better service reliability.
+Redeploy the webinar metrics API when its resource, method, or integration configuration changes.
