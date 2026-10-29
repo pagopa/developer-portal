@@ -45,6 +45,8 @@ resource "aws_api_gateway_deployment" "webinar_metrics" {
   triggers = {
     redeployment = sha1(jsonencode({
       resource = {
+        id        = aws_api_gateway_resource.metrics.id
+        parent_id = aws_api_gateway_resource.metrics.parent_id
         path_part = aws_api_gateway_resource.metrics.path_part
       }
       method = {
