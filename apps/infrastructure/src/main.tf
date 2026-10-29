@@ -309,10 +309,7 @@ module "video_streaming" {
   environment        = var.environment
   alerting_email     = module.core.alerting_email
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
-  # Right now only one channel is supported for metrics, so we can directly reference it here. 
-  # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.
-  webinar_metrics_channel_key = "channell-01"
-  github_repository           = var.github_repository
+  github_repository  = var.github_repository
 
   cognito_user_pool_endpoint  = module.auth.cognito_user_pool.endpoint
   cognito_user_pool_client_id = module.auth.cognito_user_pool.client_id
