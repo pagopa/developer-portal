@@ -69,6 +69,8 @@ module "opennext" {
       NEXT_PUBLIC_COGNITO_USER_POOL_ID                  = var.cognito_user_pool_id
       NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID       = var.cognito_user_pool_client_id
       NEXT_PUBLIC_ENVIRONMENT                           = var.environment
+      NEXT_PUBLIC_FF_QUALTRICS                          = tostring(var.next_public_ff_qualtrics)
+      NEXT_PUBLIC_FF_WEBINARS                           = tostring(var.next_public_ff_webinars)
       NEXT_PUBLIC_I18N_ACTIVE_LANGUAGES                 = "false"
       NEXT_PUBLIC_MIXPANEL_API_HOST                     = var.next_public_mixpanel_api_host
       NEXT_PUBLIC_MIXPANEL_TOKEN                        = aws_ssm_parameter.mixpanel_token.value
@@ -91,7 +93,6 @@ module "opennext" {
       STATIC_CONTENTS_URL                               = format("https://static-contents.%s", var.dns_domain_name)
       S3_SOAP_API_METADATA_JSON_PATH                    = "soap-api/soap-api-metadata.json"
       ALLOW_CRAWLER                                     = var.environment == "prod" ? "true" : "false"
-      NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL                 = var.webinar_video_api.ingest_url
       NEXT_PUBLIC_VIDEO_API_BASE_URL                    = var.webinar_video_api.base_url
       NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS = tostring(var.webinar_video_api.interval_in_seconds)
       NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED             = var.webinar_video_api.enabled ? "true" : "false"

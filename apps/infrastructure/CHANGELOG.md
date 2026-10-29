@@ -1,5 +1,26 @@
 # infrastructure
 
+## 14.3.0
+
+### Minor Changes
+
+- 6581832: Add regional AWS Backup plans and vaults in `eu-south-1` and `eu-central-1`, with daily snapshots, 35-day retention, governance-mode Vault Lock, and SNS notifications for failed or expired jobs. Select resources tagged `Backup=True` and grant the backup role S3 backup permissions. Enable versioning and the backup-selection tag for the production video recordings bucket, and expose backup plan, vault, role, and notification topic details in Terraform outputs.
+- d1d9745: Remove the unused webinar heartbeat ingest URL from the website infrastructure configuration.
+- b20dba1: Enable the webinar heartbeat in production.
+
+## 14.2.2
+
+### Patch Changes
+
+- 65d1dfd: Extend Langfuse database backups to 35 days in production and 7 days in other environments.
+
+## 14.2.1
+
+### Patch Changes
+
+- f651807: Enable point-in-time recovery for webinar DynamoDB tables.
+- 6ddf6bc: Add Qualtrics and webinars feature-flag configuration to the website deployment, enabled in the dev environment.
+
 ## 14.2.0
 
 ### Minor Changes

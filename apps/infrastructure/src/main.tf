@@ -81,6 +81,7 @@ data "http" "docs_redirect_cf_function_code" {
 }
 
 # Init IaC resources ##########################################################
+
 module "identity" {
   source            = "./identity"
   github_repository = var.github_repository
@@ -155,6 +156,8 @@ module "website" {
 
   next_cms_interlan_alb_dns_name    = module.cms.internal_load_balancer.dns_name
   next_public_feedback_form_enabled = true
+  next_public_ff_qualtrics          = var.environment == "dev"
+  next_public_ff_webinars           = var.environment == "dev"
   next_public_mixpanel_api_host     = var.next_public_mixpanel_api_host
 
   vpc = {
@@ -165,10 +168,9 @@ module "website" {
   next_public_soap_api_page_active = true
 
   webinar_video_api = {
-    ingest_url          = "${module.video_streaming.video_api_base_url}/ingest"
     base_url            = module.video_streaming.video_api_base_url
     interval_in_seconds = 60
-    enabled             = var.environment == "prod" ? false : true
+    enabled             = true
   }
 
 }
@@ -307,10 +309,7 @@ module "video_streaming" {
   environment        = var.environment
   alerting_email     = module.core.alerting_email
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
-  # Right now only one channel is supported for metrics, so we can directly reference it here. 
-  # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.
-  webinar_metrics_channel_key = "channell-01"
-  github_repository           = var.github_repository
+  github_repository  = var.github_repository
 
   cognito_user_pool_endpoint  = module.auth.cognito_user_pool.endpoint
   cognito_user_pool_client_id = module.auth.cognito_user_pool.client_id
@@ -359,4 +358,42 @@ module "dos68k_chatbotapi" {
   redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
 
   enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
+}
+
+##################
+### AWS Backup ###
+##################
+
+module "backup_eu_south_1" {
+  count  = var.enable_backup ? 1 : 0
+  source = "./modules/backup"
+
+  providers = {
+    aws = aws.eu-south-1
+  }
+
+  environment = local.env_short[var.environment]
+  region      = "eu-south-1"
+}
+
+module "backup_eu_central_1" {
+  count  = var.enable_backup ? 1 : 0
+  source = "./modules/backup"
+
+  providers = {
+    aws = aws.eu-central-1
+  }
+
+  environment = local.env_short[var.environment]
+  region      = "eu-central-1"
+}
+
+moved {
+  from = module.backup_eu_south_1
+  to   = module.backup_eu_south_1[0]
+}
+
+moved {
+  from = module.backup_eu_central_1
+  to   = module.backup_eu_central_1[0]
 }
