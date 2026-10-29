@@ -18,6 +18,7 @@ module "cms_rds" {
   deletion_protection         = true
   manage_master_user_password = false
   backup_retention_period     = var.environment == "prod" ? 35 : 7
+  cluster_tags                = var.environment == "prod" ? { Backup = "True" } : {}
 
   serverlessv2_scaling_configuration = var.rds_scaling_configuration
 
