@@ -1,5 +1,58 @@
 # nextjs-website
 
+## 17.5.3
+
+### Patch Changes
+
+- 2a6c39c: Fix unlisted webinar certificates visibility
+
+## 17.5.2
+
+### Patch Changes
+
+- e7a13c8: Update the text on the certificates page
+
+## 17.5.1
+
+### Patch Changes
+
+- 9ce34b7: Update webinar certificates to use the new API response and completion date
+
+## 17.5.0
+
+### Minor Changes
+
+- 82c04db: Add Mixpanel tracking
+
+## 17.4.8
+
+### Patch Changes
+
+- 4842ede: Add feature flag for webinar certificates and analytics
+
+## 17.4.7
+
+### Patch Changes
+
+- dda0a45: remove an always true condition on CaseHistoryPageTemplate component
+
+## 17.4.6
+
+### Patch Changes
+
+- 8b725bf: Make webinar dates mandatory
+- 8b725bf: - Update Cognito custom parameter and add webinar monitoring consent
+  - Add PDF download and webinar certificate functionality
+  - Add LiveWebinarWarningBanner and its Storybook story
+  - Add CertificateBanner and its Storybook story
+  - Show webinar monitoring components only when the feature flag is enabled
+  - Add consent popup when subscribing to a webinar
+  - Add parameters to the heartbeat API call
+  - Add webinar certificate list page, shown only when the feature flag is enabled
+- 7711e9c: Fix post-integration guide links
+- 3924ad8: Fix BannerLink padding
+- 6defc45: make certificate date optional and address 502 error
+
 ## 17.4.5
 
 ### Patch Changes

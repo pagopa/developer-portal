@@ -1,5 +1,52 @@
 # infrastructure
 
+## 14.3.0
+
+### Minor Changes
+
+- 6581832: Add regional AWS Backup plans and vaults in `eu-south-1` and `eu-central-1`, with daily snapshots, 35-day retention, governance-mode Vault Lock, and SNS notifications for failed or expired jobs. Select resources tagged `Backup=True` and grant the backup role S3 backup permissions. Enable versioning and the backup-selection tag for the production video recordings bucket, and expose backup plan, vault, role, and notification topic details in Terraform outputs.
+- d1d9745: Remove the unused webinar heartbeat ingest URL from the website infrastructure configuration.
+- b20dba1: Enable the webinar heartbeat in production.
+
+## 14.2.2
+
+### Patch Changes
+
+- 65d1dfd: Extend Langfuse database backups to 35 days in production and 7 days in other environments.
+
+## 14.2.1
+
+### Patch Changes
+
+- f651807: Enable point-in-time recovery for webinar DynamoDB tables.
+- 6ddf6bc: Add Qualtrics and webinars feature-flag configuration to the website deployment, enabled in the dev environment.
+
+## 14.2.0
+
+### Minor Changes
+
+- 8c59763: Update the development CMS deployment to use a newer application image.
+
+## 14.1.0
+
+### Minor Changes
+
+- 52b3f4a: Update the default Mixpanel API endpoint to the EU host for infrastructure deployments.
+- 9e9dc60: Update the website deployment to use the DX OpenNext module with the CloudFront cache behavior changes.
+- a8c14b4: Configure the OpenNext deployment with the Mixpanel API host and project token.
+
+### Patch Changes
+
+- 662c6ba: Protect the CMS database from deletion and extend automated backup retention.
+- 8b725bf: - Update Cognito custom parameter and add webinar monitoring consent
+  - Add PDF download and webinar certificate functionality
+  - Add LiveWebinarWarningBanner and its Storybook story
+  - Add CertificateBanner and its Storybook story
+  - Show webinar monitoring components only when the feature flag is enabled
+  - Add consent popup when subscribing to a webinar
+  - Add parameters to the heartbeat API call
+  - Add webinar certificate list page, shown only when the feature flag is enabled
+
 ## 14.0.0
 
 ### Major Changes

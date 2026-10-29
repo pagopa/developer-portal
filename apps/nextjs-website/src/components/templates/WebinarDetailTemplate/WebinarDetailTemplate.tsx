@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 import {
   snackbarAutoHideDurationMs,
   isWebinarHeartbeatEnabled,
+  isWebinarsEnabled,
 } from '@/config';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
@@ -55,7 +56,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     user?.attributes['custom:webinar_accepted'] === 'true';
 
   useEffect(() => {
-    if (!user) return;
+    if (!isWebinarsEnabled || !isWebinarHeartbeatEnabled || !user) return;
     const rememberOption = getCookie('consent_monitoring_remember_choice');
     if (
       isSubscribed &&
@@ -129,7 +130,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
-        {isWebinarHeartbeatEnabled && (
+        {isWebinarsEnabled && isWebinarHeartbeatEnabled && (
           <ConfirmationModal
             title={t('subscriptionPopup.title')}
             text={
@@ -221,30 +222,30 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           )}
         </SummaryInformation>
       </Box>
-      {!hasAcceptedWebinarMonitoringSubscription &&
+      {isWebinarsEnabled &&
+        isWebinarHeartbeatEnabled &&
+        !hasAcceptedWebinarMonitoringSubscription &&
         user &&
         isSubscribed &&
         ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
           <EContainer>
-            {isWebinarHeartbeatEnabled && (
-              <LiveWebinarWarningBanner
-                onEnableConsent={() => {
-                  if (!user) return null;
-                  setUserAttributes(
-                    {
-                      ...user.attributes,
-                      'custom:webinar_accepted': 'true',
-                    },
-                    () => null,
-                    () => {
-                      setError(t('genericSubscriptionError'));
-                      return null;
-                    }
-                  );
-                  return null;
-                }}
-              />
-            )}
+            <LiveWebinarWarningBanner
+              onEnableConsent={() => {
+                if (!user) return null;
+                setUserAttributes(
+                  {
+                    ...user.attributes,
+                    'custom:webinar_accepted': 'true',
+                  },
+                  () => null,
+                  () => {
+                    setError(t('genericSubscriptionError'));
+                    return null;
+                  }
+                );
+                return null;
+              }}
+            />
           </EContainer>
         )}
       {user &&
@@ -261,7 +262,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           ></WebinarPlayerSection>
         )}
 
-      {isWebinarHeartbeatEnabled && (
+      {isWebinarsEnabled && (
         <EContainer containerSx={{ marginTop: '64px' }}>
           <CertificateBanner
             imagePath={'/images/certificato-di-partecipazione-webinar.png'}

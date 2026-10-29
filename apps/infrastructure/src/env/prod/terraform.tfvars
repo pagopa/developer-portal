@@ -1,5 +1,6 @@
 aws_region        = "eu-south-1"
 environment       = "prod"
+enable_backup     = true
 github_repository = "pagopa/developer-portal"
 
 tags = {

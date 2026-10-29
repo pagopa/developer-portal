@@ -5,6 +5,14 @@ The following tools are required to setup and manage a new environment.
 1. [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) installed.
 2. [tfenv](https://github.com/tfutils/tfenv) to mange terraform versions.
 
+## AWS Backup
+
+Set `enable_backup` in `src/env/<environment>/terraform.tfvars` to control all
+AWS Backup resources in `eu-south-1` and `eu-central-1`. It defaults to `false`;
+dev enables it for testing, prod enables it for production, and UAT disables it.
+See the [backup module](src/modules/backup/README.md) for the policy and deployment
+details. Service-native database backups are unaffected.
+
 ## How set up a new environment
 
 Make sure you don't have a `*.tfstate` file within the `apps/infrastructure/.terraform` folder. If you have any, delete them.

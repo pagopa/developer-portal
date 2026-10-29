@@ -52,10 +52,14 @@ export const chatMaxHistoryMessages =
 export const headingLevelsToShowInMenu = [2, 3];
 export const isWebinarHeartbeatEnabled =
   process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED === 'true';
+export const isWebinarsEnabled = process.env.NEXT_PUBLIC_FF_WEBINARS === 'true';
 export const webinarHeartbeatIntervalInSeconds =
   parseInt(
     process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS || '60'
   ) || 60;
+
+export const mixpanelToken = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+export const mixpanelApiHost = process.env.NEXT_PUBLIC_MIXPANEL_API_HOST;
 
 export const amplifyConfig = {
   Auth: {
@@ -82,7 +86,7 @@ export const profileMenuItems: readonly {
   ? [
       ...defaultItems,
       { label: 'chatbot.title', href: '/profile/chatbot-history' },
-      ...(isWebinarHeartbeatEnabled
+      ...(isWebinarsEnabled
         ? [
             {
               label: 'certificateList.title',
@@ -198,3 +202,5 @@ export const authCookieValidityInDays = parseInt(
 );
 
 export const loggedInCookieName = 'isLoggedIn';
+
+export const qualtricsFeatureFlag = process.env.NEXT_PUBLIC_FF_QUALTRICS;

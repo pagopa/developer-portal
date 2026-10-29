@@ -12,6 +12,21 @@ resource "aws_ssm_parameter" "cookie_domain_script" {
   }
 }
 
+resource "aws_ssm_parameter" "mixpanel_token" {
+  name        = "NEXT_PUBLIC_MIXPANEL_TOKEN"
+  description = "Mixpanel project token for OpenNext"
+  type        = "SecureString"
+  value       = "PLACEHOLDER"
+  tags        = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      insecure_value,
+      value
+    ]
+  }
+}
+
 resource "aws_ssm_parameter" "strapi_api_token" {
   name = "STRAPI_API_TOKEN"
 
@@ -29,10 +44,8 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 
 module "opennext" {
-  #source  = "pagopa-dx/aws-open-next/aws"
-  #version = "~> 0.0"
-  source = "git::https://github.com/pagopa/dx.git//infra/modules/aws_open_next?ref=update-module-aws-opennext-cf-cache-behaviour"
-
+  source  = "pagopa-dx/aws-open-next/aws"
+  version = "~> 2.1"
 
   custom_domain = {
     domain_name         = var.dns_domain_name
@@ -56,7 +69,11 @@ module "opennext" {
       NEXT_PUBLIC_COGNITO_USER_POOL_ID                  = var.cognito_user_pool_id
       NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID       = var.cognito_user_pool_client_id
       NEXT_PUBLIC_ENVIRONMENT                           = var.environment
+      NEXT_PUBLIC_FF_QUALTRICS                          = tostring(var.next_public_ff_qualtrics)
+      NEXT_PUBLIC_FF_WEBINARS                           = tostring(var.next_public_ff_webinars)
       NEXT_PUBLIC_I18N_ACTIVE_LANGUAGES                 = "false"
+      NEXT_PUBLIC_MIXPANEL_API_HOST                     = var.next_public_mixpanel_api_host
+      NEXT_PUBLIC_MIXPANEL_TOKEN                        = aws_ssm_parameter.mixpanel_token.value
       NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS             = "https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa"
       NEXT_PUBLIC_WEBSITE_BASE_URL                      = "https://${var.dns_domain_name}"
       NEXT_PUBLIC_WEBSITE_NAME                          = "DevPortal"
@@ -76,7 +93,6 @@ module "opennext" {
       STATIC_CONTENTS_URL                               = format("https://static-contents.%s", var.dns_domain_name)
       S3_SOAP_API_METADATA_JSON_PATH                    = "soap-api/soap-api-metadata.json"
       ALLOW_CRAWLER                                     = var.environment == "prod" ? "true" : "false"
-      NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL                 = var.webinar_video_api.ingest_url
       NEXT_PUBLIC_VIDEO_API_BASE_URL                    = var.webinar_video_api.base_url
       NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS = tostring(var.webinar_video_api.interval_in_seconds)
       NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED             = var.webinar_video_api.enabled ? "true" : "false"
