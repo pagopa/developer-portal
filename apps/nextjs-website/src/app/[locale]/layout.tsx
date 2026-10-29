@@ -37,6 +37,7 @@ import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
 import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
+import { SUPPORTED_LOCALES } from '@/locales';
 import MixpanelInit from '@/components/atoms/Mixpanel/MixpanelInit';
 import { UserProvider } from '@/helpers/user.helper';
 
@@ -108,15 +109,12 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const products = [
-    ...(await getProducts(locale)).filter((product) => product.isVisible),
-  ];
-  const shouldShowLinkToSolutions = await getSolutionListPage(locale)
-    .then((data) => data.solutions.length > 0)
-    .catch(() => false);
-  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale)
-    .then((webinars) => webinars.length > 0)
-    .catch(() => false);
+
+  // Check if param locale is valid.
+  if (!SUPPORTED_LOCALES.some(({ langCode }) => langCode === locale)) {
+    console.error('Unsupported or invalid locale ', locale);
+    notFound();
+  }
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
@@ -125,8 +123,32 @@ export default async function RootLayout({
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;
   } catch {
+    console.error('Failed to fetch i18n messages');
     notFound();
   }
+
+  // catch getProducts, getSolutionListPage and getVisibleInListWebinars for errors
+  // If so then throws not found error
+  const products = await getProducts(locale)
+    .then((data) => data.filter((product) => product.isVisible))
+    .catch(() => {
+      console.error('Failed to fetch products data');
+      notFound();
+    });
+
+  const shouldShowLinkToSolutions = await getSolutionListPage(locale)
+    .then((data) => data.solutions.length > 0)
+    .catch(() => {
+      console.error('Failed to fetch Solutions List Page');
+      notFound();
+    });
+
+  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale)
+    .then((webinars) => webinars.length > 0)
+    .catch(() => {
+      console.error('Failed to fetch Webinars');
+      notFound();
+    });
 
   return (
     <html lang={locale} className={titilliumWeb.variable}>
