@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.5.4
+
+### Patch Changes
+
+- ab0b670: Move sessionStorage check in UserCancellationSnackbar to a useEffect to prevent 500 error on page request from browser
+
 ## 17.5.3
 
 ### Patch Changes
