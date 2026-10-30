@@ -37,7 +37,8 @@ const MobileProfileMenu = ({
   const { canUseWebinarFeatures } = useUser();
 
   const visibleMenuItems = profileMenuItems.filter(
-    ({ href }) => href !== '/profile/certificate-list' || canUseWebinarFeatures
+    ({ href }) =>
+      !href.includes('/profile/certificate-list') || canUseWebinarFeatures
   );
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 

@@ -159,7 +159,7 @@ const useUserState = () => {
   const isInternalUser =
     email.endsWith('@pagopa.it') || email.endsWith('@dgsspa.com');
 
-  const canUseWebinarFeatures = isWebinarsEnabled && isInternalUser;
+  const canUseWebinarFeatures = isWebinarsEnabled || isInternalUser;
 
   const userFullName =
     (user &&

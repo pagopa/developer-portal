@@ -24,7 +24,8 @@ const DesktopProfileMenu = ({
   const { canUseWebinarFeatures } = useUser();
 
   const visibleMenuItems = profileMenuItems.filter(
-    ({ href }) => href !== '/profile/certificate-list' || canUseWebinarFeatures
+    ({ href }) =>
+      !href.includes('/profile/certificate-list') || canUseWebinarFeatures
   );
 
   return (
