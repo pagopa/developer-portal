@@ -27,9 +27,12 @@ resource "aws_rds_cluster" "langfuse_aurora_cluster" {
   enabled_cloudwatch_logs_exports = ["postgresql"]
   skip_final_snapshot             = true
   enable_http_endpoint            = true
-  tags = {
-    Name = "langfuse_postgres_cluster"
-  }
+  tags = merge(
+    {
+      Name = "langfuse_postgres_cluster"
+    },
+    var.environment == "prod" ? { Backup = "True" } : {}
+  )
 
   serverlessv2_scaling_configuration {
     max_capacity             = var.database_max_capacity
