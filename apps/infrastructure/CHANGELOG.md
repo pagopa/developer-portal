@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.4.0
+
+### Minor Changes
+
+- 1848b7f: Add the `Backup=True` tag to the production CMS and Langfuse Aurora clusters to support backup management.
+
 ## 14.3.1
 
 ### Patch Changes

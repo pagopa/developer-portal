@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.5.5
+
+### Patch Changes
+
+- ffb7e6d: Restrict webinar certificates and heartbeat to internal users
+
 ## 17.5.4
 
 ### Patch Changes
