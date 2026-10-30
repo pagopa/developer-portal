@@ -14,7 +14,7 @@ import {
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
-import { isWebinarsEnabled, snackbarAutoHideDurationMs } from '@/config';
+import { snackbarAutoHideDurationMs } from '@/config';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 import { useParams } from 'next/navigation';
 
@@ -28,7 +28,7 @@ type SubscribeField = 'mailinglist' | 'survey' | 'webinar';
 
 const Agreements = () => {
   const t = useTranslations();
-  const { user, loading, setUserAttributes } = useUser();
+  const { user, loading, setUserAttributes, canUseWebinarFeatures } = useUser();
   const locale = useParams<{ locale: string }>().locale;
 
   const { palette } = useTheme();
@@ -188,7 +188,7 @@ const Agreements = () => {
           unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
         ></AgreementItem>
         <Box sx={{ marginY: '32px' }} />
-        {isWebinarsEnabled && (
+        {canUseWebinarFeatures && (
           <AgreementItem
             title={t('profile.agreements.webinar.title')}
             description={t('profile.agreements.webinar.description')}

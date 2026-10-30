@@ -18,6 +18,7 @@ import {
   useContext,
 } from 'react';
 import type { CertificateResponse } from '@/lib/webinars/webinarCertificates';
+import { isWebinarsEnabled } from '@/config';
 
 type UserContextValue = ReturnType<typeof useUserState>;
 
@@ -153,6 +154,13 @@ const useUserState = () => {
     return () => cancel();
   }, [signOutUser]);
 
+  const email = user?.attributes?.email?.toLowerCase() ?? '';
+
+  const isInternalUser =
+    email.endsWith('@pagopa.it') || email.endsWith('@dgsspa.com');
+
+  const canUseWebinarFeatures = isWebinarsEnabled || isInternalUser;
+
   const userFullName =
     (user &&
       [user.attributes['given_name'], user.attributes['family_name']].join(
@@ -171,6 +179,7 @@ const useUserState = () => {
     reloadUser,
     isUserLoggedIn,
     userFullName,
+    canUseWebinarFeatures,
   };
 };
 
