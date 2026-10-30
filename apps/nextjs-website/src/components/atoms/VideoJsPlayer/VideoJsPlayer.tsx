@@ -28,6 +28,8 @@ interface PlayerProps {
   webvttContent?: string;
   // eslint-disable-next-line functional/no-return-void
   setIsVideoPlaying?: (isPlaying: boolean) => void;
+  // eslint-disable-next-line functional/no-return-void
+  onVideoEnded?: () => void;
 }
 
 const HOURS_PART_INDEX = 0;
@@ -242,15 +244,20 @@ const VideoJsPlayer = (props: PlayerProps) => {
   }, [props.reloadToken, props.src, resolvedStartAt]);
 
   const setIsVideoPlaying = props.setIsVideoPlaying;
+  const onVideoEnded = props.onVideoEnded;
+
   useEffect(() => {
     const player = playerRef.current;
-    if (!player || !setIsVideoPlaying) {
+    if (!player) {
       return;
     }
 
     const onPlay = () => setIsVideoPlaying?.(true);
     const onPause = () => setIsVideoPlaying?.(false);
-    const onEnded = () => setIsVideoPlaying?.(false);
+    const onEnded = () => {
+      setIsVideoPlaying?.(false);
+      onVideoEnded?.();
+    };
 
     player.on('play', onPlay);
     player.on('pause', onPause);
@@ -261,7 +268,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       player.off('pause', onPause);
       player.off('ended', onEnded);
     };
-  }, [setIsVideoPlaying]);
+  }, [setIsVideoPlaying, onVideoEnded]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
