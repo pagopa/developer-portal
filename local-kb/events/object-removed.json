@@ -1,0 +1,21 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "eu-south-1",
+      "eventTime": "2026-10-06T00:00:00.000Z",
+      "eventName": "ObjectRemoved:Delete",
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "bucket": {
+          "name": "devportal-local-website-static-content",
+          "arn": "arn:aws:s3:::devportal-local-website-static-content"
+        },
+        "object": {
+          "key": "it/devportal-docs/docs/app-io/modelli-servizi/v1.0/ambiente-e-animali/animali-domestici.md"
+        }
+      }
+    }
+  ]
+}
