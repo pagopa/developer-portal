@@ -21,6 +21,7 @@ import {
   useMediaQuery,
   Theme,
 } from '@mui/material';
+import { useUser } from '@/helpers/user.helper';
 
 type MobileProfileMenuProps = {
   locale: string;
@@ -33,6 +34,11 @@ const MobileProfileMenu = ({
 }: MobileProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
+  const { canUseWebinarFeatures } = useUser();
+
+  const visibleMenuItems = profileMenuItems.filter(
+    ({ href }) => href !== '/profile/certificate-list' || canUseWebinarFeatures
+  );
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const [open, setOpen] = useState(false);
@@ -52,7 +58,7 @@ const MobileProfileMenu = ({
 
   const items = (
     <MenuList sx={{ flexDirection: 'column', gap: 2, width: 1 }}>
-      {profileMenuItems.map(({ label, href }, index: number) => (
+      {visibleMenuItems.map(({ label, href }, index: number) => (
         <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
           <MuiLink
             component={Link}

@@ -10,6 +10,7 @@ import React from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { Webinar } from '@/lib/webinars/types';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { notFound } from 'next/navigation';
 
 export type CertificatesListProps = {
   webinars: readonly Webinar[];
@@ -57,7 +58,21 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
-  const { userFullName, webinarCertificates, webinarDataLoading } = useUser();
+  const {
+    userFullName,
+    webinarCertificates,
+    webinarDataLoading,
+    canUseWebinarFeatures,
+    loading,
+  } = useUser();
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (!canUseWebinarFeatures) {
+    notFound();
+  }
 
   if (webinarDataLoading) {
     return <Spinner />;
