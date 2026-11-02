@@ -498,7 +498,7 @@ class LlamaVectorIndex:
         dynamic_ref_doc_ids = [
             doc_id
             for doc_id in ref_doc_ids
-            if "/api/" not in doc_id and ".md" not in doc_id
+            if "/api/" not in doc_id and ".md" not in doc_id and doc_id.startswith("http")
         ]
 
         dynamic_metadata = get_dynamic_metadata(static_metadata)
