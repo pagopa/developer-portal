@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.5.0
+
+### Minor Changes
+
+- 7390d8a: Tag the production CMS and website static-content S3 buckets for backups, and enable versioning on the website bucket.
+
 ## 14.4.0
 
 ### Minor Changes
