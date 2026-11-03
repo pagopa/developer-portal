@@ -29,7 +29,7 @@ export const buildSettings = (env: Record<string, string | undefined>) => {
     env.S3_SOAP_API_METADATA_JSON_PATH || 'soap-api/soap-api-metadata.json';
   const S3_PATH_TO_GITBOOK_DOCS =
     env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-  const S3_REGION = env.NEXT_PUBLIC_COGNITO_REGION;
+  const S3_REGION = env.NEXT_PUBLIC_COGNITO_REGION || '';
   const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
   return {
     s3DocsPath,

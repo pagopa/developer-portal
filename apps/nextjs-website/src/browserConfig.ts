@@ -1,8 +1,12 @@
 import * as E from 'fp-ts/lib/Either';
 
+const secrets = process.env.secrets ? JSON.parse(process.env.secrets) : {};
+
 export const browserSettings = (env: typeof publicEnv) => {
   const CHATBOT_HOST = env.NEXT_PUBLIC_CHATBOT_HOST;
-  const cookieDomainScript = env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+  const cookieDomainScript =
+    secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
+    process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
   const useNewCookie = env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
   const cookieScriptUrl = env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
   const cookieCategory = env.NEXT_PUBLIC_COOKIE_CATEGORY;
@@ -25,9 +29,13 @@ export const browserSettings = (env: typeof publicEnv) => {
     60;
   const amplifyConfig = {
     Auth: {
-      region: env.NEXT_PUBLIC_COGNITO_REGION,
-      userPoolId: env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
-      userPoolWebClientId: env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
+      region: process.env.NEXT_PUBLIC_COGNITO_REGION,
+      userPoolId:
+        secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID ||
+        process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+      userPoolWebClientId:
+        secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID ||
+        process.env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
     },
     authenticationFlowType: 'CUSTOM_AUTH',
   };
@@ -226,8 +234,10 @@ export const publicEnv = {
 
   NEXT_PUBLIC_COGNITO_REGION: process.env.NEXT_PUBLIC_COGNITO_REGION,
   NEXT_PUBLIC_COGNITO_USER_POOL_ID:
+    secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID ||
     process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
+    secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID ||
     process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
   NEXT_PUBLIC_VIDEO_API_BASE_URL: process.env.NEXT_PUBLIC_VIDEO_API_BASE_URL,
 };
