@@ -1,5 +1,47 @@
 # nextjs-website
 
+## 17.5.5
+
+### Patch Changes
+
+- ffb7e6d: Restrict webinar certificates and heartbeat to internal users
+
+## 17.5.4
+
+### Patch Changes
+
+- ab0b670: Move sessionStorage check in UserCancellationSnackbar to a useEffect to prevent 500 error on page request from browser
+
+## 17.5.3
+
+### Patch Changes
+
+- 2a6c39c: Fix unlisted webinar certificates visibility
+
+## 17.5.2
+
+### Patch Changes
+
+- e7a13c8: Update the text on the certificates page
+
+## 17.5.1
+
+### Patch Changes
+
+- 9ce34b7: Update webinar certificates to use the new API response and completion date
+
+## 17.5.0
+
+### Minor Changes
+
+- 82c04db: Add Mixpanel tracking
+
+## 17.4.8
+
+### Patch Changes
+
+- 4842ede: Add feature flag for webinar certificates and analytics
+
 ## 17.4.7
 
 ### Patch Changes

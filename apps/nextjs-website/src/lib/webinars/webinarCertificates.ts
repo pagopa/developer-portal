@@ -6,8 +6,17 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { BrowserEnv } from '@/browserEnv';
 
-const CertificateResponse = t.array(t.string);
-type CertificateResponse = t.TypeOf<typeof CertificateResponse>;
+const CertificateResponse = t.array(
+  t.type({
+    webinarid: t.string,
+    minutes_spent_watching: t.string,
+    webinar_duration_minutes: t.string,
+    watch_percentage: t.string,
+    reached_80_percent_at: t.string,
+    last_viewed_at: t.string,
+  })
+);
+export type CertificateResponse = t.TypeOf<typeof CertificateResponse>;
 
 export const listUserWebinarCertificates = () =>
   pipe(

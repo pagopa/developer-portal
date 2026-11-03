@@ -13,10 +13,10 @@ Font.register({
 export type CertificateTemplateProps = {
   userName: string;
   webinarName: string;
-  createdOn?: string;
+  createdOn: string;
   title: string;
   subtitle: string;
-  createdAt?: string;
+  createdAt: string;
   certification: string;
   attended: string;
 };
@@ -81,20 +81,17 @@ const CertificateTemplate = ({
               >
                 {subtitle}
               </Text>
-              {createdAt && createdOn && (
-                <Text
-                  style={{
-                    paddingTop: '-48px',
-                    fontFamily: 'Titillium Sans Pro',
-                    fontWeight: 400,
-                    fontSize: '11px',
-                    color: palette.text.primary,
-                  }}
-                >
-                  {createdAt} {createdOn}
-                </Text>
-              )}
-
+              <Text
+                style={{
+                  paddingTop: '-48px',
+                  fontFamily: 'Titillium Sans Pro',
+                  fontWeight: 400,
+                  fontSize: '11px',
+                  color: palette.text.primary,
+                }}
+              >
+                {createdAt} {createdOn}
+              </Text>
               <View
                 style={{
                   paddingTop: '24px',
