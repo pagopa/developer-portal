@@ -1,4 +1,3 @@
-import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-expression-statements */
@@ -7,7 +6,8 @@ import { buildSettings } from 'nextjs-website/src/buildConfig';
 import path from 'path';
 import * as fs from 'fs';
 
-export const DOCUMENTATION_PATH = buildSettings(process.env).DOCUMENTATION_PATH;
+export const DOCUMENTATION_PATH =
+  process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
 export type UrlParsingMetadata = {
   dirName: string;
   spaceId: string;

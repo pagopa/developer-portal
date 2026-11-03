@@ -5,23 +5,19 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-let */
 
-import { makeBuildConfig } from 'nextjs-website/src/buildConfig';
-import * as E from 'fp-ts/lib/Either';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { makeS3Client } from '../helpers/s3Bucket.helper';
 import dotenv from 'dotenv';
+import { browserEnv } from 'nextjs-website/src/browserConfig';
 
 // Load environment variables
 dotenv.config();
 
-const config = E.getOrElseW((error: string) => {
-  // eslint-disable-next-line functional/no-throw-statements
-  throw new Error(error);
-})(makeBuildConfig(process.env));
+const { baseUrl } = browserEnv.config;
 
-const S3_BUCKET_NAME = config.bucketName;
-const SITEMAP_URL = config.SITEMAP_URL;
-const S3_SITEMAP_PATH = config.S3_SITEMAP_PATH;
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
+const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
 
 let s3Client: S3Client | undefined;
 

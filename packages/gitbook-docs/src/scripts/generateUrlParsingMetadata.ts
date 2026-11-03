@@ -1,4 +1,3 @@
-import { buildSettings } from 'nextjs-website/src/buildConfig';
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-loop-statements */
 /* eslint-disable functional/no-expression-statements */
@@ -20,9 +19,10 @@ import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 // Load environment variables from .env file
 dotenv.config();
 
-const settings = buildSettings(process.env);
-const URL_PARSING_METADATA_JSON_PATH = settings.URL_PARSING_METADATA_JSON_PATH;
-const LOCALE = settings.OPTIONAL_LOCALE;
+const URL_PARSING_METADATA_JSON_PATH =
+  process.env.URL_PARSING_METADATA_JSON_PATH ||
+  '../../url-parsing-metadata.json';
+const LOCALE = process.env.LOCALE;
 
 export type UrlParsingItem = {
   dirName: string;
