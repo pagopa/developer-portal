@@ -2,23 +2,17 @@ import * as E from 'fp-ts/lib/Either';
 import type { StrapiConfig } from './lib/strapi/strapiConfig';
 
 export const buildSettings = (env: Record<string, string | undefined>) => {
-  const process = { env };
-  const secrets = process.env.secrets ? JSON.parse(process.env.secrets) : {};
-  const s3DocsPath =
-    secrets.S3_PATH_TO_GITBOOK_DOCS || process.env.S3_PATH_TO_GITBOOK_DOCS;
+  const s3DocsPath = env.S3_PATH_TO_GITBOOK_DOCS;
   const credentials =
-    (secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID) &&
-    (secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY)
+    env.S3_ACCESS_KEY_ID && env.S3_SECRET_ACCESS_KEY
       ? {
-          accessKeyId: secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID,
-          secretAccessKey:
-            secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY,
-          sessionToken:
-            secrets.S3_SESSION_TOKEN || process.env.S3_SESSION_TOKEN,
+          accessKeyId: env.S3_ACCESS_KEY_ID,
+          secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+          sessionToken: env.S3_SESSION_TOKEN,
         }
       : undefined;
-  const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
-  const staticContentsUrl = process.env.STATIC_CONTENTS_URL;
+  const bucketName = env.S3_BUCKET_NAME || '';
+  const staticContentsUrl = env.STATIC_CONTENTS_URL;
   const baseUrl =
     env.NEXT_PUBLIC_WEBSITE_BASE_URL || 'https://developer.pagopa.it';
   const CDN_RETRY_ATTEMPTS = parseInt(env.CDN_RETRY_ATTEMPTS || '3', 10);
@@ -30,7 +24,7 @@ export const buildSettings = (env: Record<string, string | undefined>) => {
   const S3_PATH_TO_GITBOOK_DOCS =
     env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
   const S3_REGION = env.NEXT_PUBLIC_COGNITO_REGION || '';
-  const allowCrawler = process.env.ALLOW_CRAWLER === 'true';
+  const allowCrawler = env.ALLOW_CRAWLER === 'true';
   return {
     s3DocsPath,
     credentials,

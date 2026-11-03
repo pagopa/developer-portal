@@ -6,7 +6,7 @@ export const browserSettings = (env: typeof publicEnv) => {
   const CHATBOT_HOST = env.NEXT_PUBLIC_CHATBOT_HOST;
   const cookieDomainScript =
     secrets.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT ||
-    process.env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
+    env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
   const useNewCookie = env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
   const cookieScriptUrl = env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
   const cookieCategory = env.NEXT_PUBLIC_COOKIE_CATEGORY;
@@ -29,13 +29,13 @@ export const browserSettings = (env: typeof publicEnv) => {
     60;
   const amplifyConfig = {
     Auth: {
-      region: process.env.NEXT_PUBLIC_COGNITO_REGION,
+      region: env.NEXT_PUBLIC_COGNITO_REGION,
       userPoolId:
         secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID ||
-        process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+        env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
       userPoolWebClientId:
         secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID ||
-        process.env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
+        env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
     },
     authenticationFlowType: 'CUSTOM_AUTH',
   };
