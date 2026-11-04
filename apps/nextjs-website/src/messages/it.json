@@ -228,6 +228,12 @@
       "body": "Per ricevere l'attestato di partecipazione al termine del webinar, è necessario fornire il consenso al monitoraggio della visione <strong>entro i primi 5 minuti dall'inizio</strong>.<br></br>Il monitoraggio serve esclusivamente a verificare che il webinar venga effettivamente seguito.",
       "cta_enable": "Abilita il monitoraggio",
       "cta_given": "Hai dato il consenso"
+    },
+    "feedbackDialog": {
+      "title": "Il webinar è stato interessante?",
+      "description": "Lasciaci un feedback sulla tua esperienza.",
+      "close": "Chiudi",
+      "submit": "Condividi feedback"
     }
   },
   "webinars": {
