@@ -6,6 +6,8 @@ resource "random_integer" "website_bucket_random_integer" {
 # Standalone static content
 resource "aws_s3_bucket" "website_standalone" {
   bucket = "devportal-${var.environment_information.env_short}-website-static-content"
+
+  tags = var.environment == "prod" ? { Backup = "True" } : {}
 }
 
 resource "aws_s3_bucket_public_access_block" "website_standalone" {
@@ -19,7 +21,7 @@ resource "aws_s3_bucket_public_access_block" "website_standalone" {
 resource "aws_s3_bucket_versioning" "website_standalone" {
   bucket = aws_s3_bucket.website_standalone.id
   versioning_configuration {
-    status = "Suspended"
+    status = var.environment == "prod" ? "Enabled" : "Suspended"
   }
 }
 

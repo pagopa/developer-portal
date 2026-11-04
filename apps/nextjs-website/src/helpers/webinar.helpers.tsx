@@ -3,7 +3,6 @@ import type { Webinar } from '@/lib/webinars/types';
 import {
   isWebinarHeartbeatEnabled,
   webinarHeartbeatIntervalInSeconds,
-  isWebinarsEnabled,
 } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
@@ -35,7 +34,7 @@ export const useWebinar = () => {
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
   const lastHeartbeatSentTime = useRef<Date | null>(null);
   const videoStartedAt = useRef<string | null>(null);
-  const { user } = useUser();
+  const { user, canUseWebinarFeatures } = useUser();
 
   const setIsVideoPlaying = useCallback((isPlaying: boolean) => {
     if (isPlaying) {
@@ -187,7 +186,7 @@ export const useWebinar = () => {
 
   useEffect(() => {
     if (
-      !isWebinarsEnabled ||
+      !canUseWebinarFeatures ||
       !isWebinarHeartbeatEnabled ||
       !webinar ||
       !isVideoPlaying
@@ -231,7 +230,7 @@ export const useWebinar = () => {
     }, webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
-  }, [webinar, isVideoPlaying, webinarState, user]);
+  }, [webinar, isVideoPlaying, webinarState, user, canUseWebinarFeatures]);
 
   return {
     webinarState,
