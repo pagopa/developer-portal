@@ -1,8 +1,14 @@
-# Matomo SQL to Mixpanel converter
+# Matomo to Mixpanel converter
 
-DEV-4553 converts an uncompressed Matomo MySQL dump to NDJSON for the Mixpanel
-[Import API](https://docs.mixpanel.com/reference/import-events). It accepts only
-SQL dumps; JSON exports are intentionally not supported.
+The converter reads uncompressed Matomo MySQL dumps or Matomo visit/action JSON
+and writes NDJSON for the Mixpanel [Import API](https://docs.mixpanel.com/reference/import-events).
+SQL input retains its existing event-family mapping and recovery support. The
+restored JSON reader exports pageviews by default; `--all-events` retains every
+supported JSON action type using the same event mapping and IDs.
+
+**The Developer Portal scope is Matomo site 8 (`developer.pagopa.it`). Always pass
+`--site-id 8` for this migration.** The original SQL dump contains data from nine
+sites; omitting this filter includes other websites and test environments.
 
 Python >=3.12,<3.14 on Linux/WSL and the system `Europe/Rome` timezone database are required.
 No third-party Python packages or platform credentials are needed.
@@ -10,14 +16,16 @@ No third-party Python packages or platform credentials are needed.
 From the repository root:
 
 ```bash
-python3 scripts/matomo-to-mixpanel/main.py
-python3 scripts/matomo-to-mixpanel/main.py /path/to/matomo.sql
+python3 scripts/matomo-to-mixpanel/main.py /path/to/matomo.sql --site-id 8
+python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 --site-id 8
 python3 -m unittest discover -s scripts/matomo-to-mixpanel -p 'test_*.py' -v
 ```
 
 Place one or more uncompressed `.sql` files in `scripts/matomo-to-mixpanel/input/`
 and run `main.py`. It discovers SQL dumps recursively and writes a new timestamped
-directory in `output/`. Both directories ignore data in Git.
+directory in `output/`. Both directories ignore data in Git. Mixed directories
+prefer SQL and do not process JSON alongside it. Pass a JSON month directory
+explicitly, such as `input/10`, when converting the daily JSON files.
 
 ## SQL input through main.py
 
@@ -43,10 +51,11 @@ The source files are split by responsibility:
 
 - `main.py`: command-line entry point and shared event mapping/validation.
 - `from_sql.py`: SQL parsing, table joins, page durations and readable summaries.
+- `from_json.py`: restored visit/action JSON reading, event selection and bounded output parts.
 - `sql_pipeline.py`: conversion phases, numbered output parts and recovery checkpoints.
 - `sql_storage.py`: compact SQLite storage, bounded lookup caching and disk-space checks.
 
-Run only `main.py`; keep all four source files together when copying the tool to
+Run `main.py`; keep the converter source files together when copying the tool to
 a Linux server. No application build, npm package release or cloud deployment is
 required. The `test_*.py` files contain synthetic validation data and are not needed
 to run the converter.
@@ -230,3 +239,146 @@ segments are accepted. A full 37 GiB conversion has also completed: 84,015,992
 events converted, 3,654 actions rejected, and 1,146,067 unplayed media rows skipped.
 Completion of the local conversion does not validate ingestion of the full
 history; review the run's summaries and rejection reasons before import.
+
+## Visit/action JSON through main.py
+
+The previous JSON reading path is restored alongside SQL input. It accepts a
+single JSON file or a directory of daily visit arrays containing `actionDetails`.
+Daily aggregate reports and API error objects cannot produce individual events
+and are rejected. Windows `:Zone.Identifier` sidecar files are ignored.
+
+For a count-only run on the Developer Portal's complete October data:
+
+```bash
+python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
+  --site-id 8 --from-date 2026-10-01 --to-date 2026-10-31 \
+  --count-only --output-dir scripts/matomo-to-mixpanel/output/october-site8-count
+```
+
+To generate the actual export, omit `--count-only` and choose a new directory:
+
+```bash
+python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
+  --site-id 8 --from-date 2026-10-01 --to-date 2026-10-31 \
+  --output-dir scripts/matomo-to-mixpanel/output/october-site8-pageviews
+```
+
+These commands retain only pageviews. To prepare all supported event types from
+the same site, use the explicit JSON-only option `--all-events`:
+
+```bash
+python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
+  --site-id 8 --all-events --from-date 2026-10-01 --to-date 2026-10-31 \
+  --output-dir scripts/matomo-to-mixpanel/output/october-site8-all-events
+```
+
+This includes pageviews, downloads, outbound links, custom events, crashes, media
+interactions and site searches. Unsupported types and invalid actions are
+reported as rejections; optional malformed metadata remains a warning. Existing
+IDs, mappings and validation rules are unchanged. `--all-events` is also supported
+with `--count-only`. SQL already considers all supported event types and rejects
+this JSON-only option. JSON conversion and its tests do not require the uploader.
+
+Only events belonging to the selected site and **actual event dates** are
+retained. JSON dates are inclusive Europe/Rome dates, including the October DST
+transition; a visit beginning before the selected period can still contribute
+events inside it. This differs from the SQL visit-start-date selection described
+above. SQL-only flags (`--resume`, `--table-prefix`, `--include-unplayed-media`)
+are rejected for JSON input.
+
+The reader processes one JSON file at a time, with a 64 MiB per-file limit.
+It checks source fingerprints and detects duplicate/conflicting event IDs across
+files. Events are packed across daily files into numbered parts containing
+at most 2,000 events and 8 MiB by default. `--part-events` and `--part-mib` adjust
+these limits. The in-memory duplicate index grows with the selected event count.
+The standard disk-space checks and output lock also apply.
+
+Each run writes `report.json`, `summary.txt` and redacted `issues.ndjson`.
+Export runs also write event parts and a compatible `manifest.json`, published
+only after all input files complete. Count-only runs write no event parts or
+upload manifest. Invalid visits or rejected actions produce
+`completed_with_errors` and exit code 1; accepted events remain reported and are
+included in the manifest. `events_by_type` counts retained unique events;
+`date_filtered_actions` counts valid actions outside the selected dates. The
+pageview-specific date counters and first/last timestamps remain available, while
+`first_event` and `last_event` cover every selected event family.
+Fatal errors leave no upload manifest. JSON runs use a new output directory and
+do not support resume; restart a failed JSON conversion in a new directory.
+
+The supplied site-8 JSON files contain 41,522 pageviews in August 2026, 56,730 in
+September and 62,553 in October, with no duplicate pageview IDs across the three
+months. October produces 32 parts and 67,440,504 bytes of event payload.
+With `--all-events`, the same October JSON contains 68,707 valid unique events:
+62,553 pageviews, 4,014 outbound links, 1,204 downloads, 510 custom events, 418
+crashes and 8 media interactions, in 35 parts and 73,334,279 payload bytes.
+Another 46 crash actions fail the existing
+timestamp/visit-bound validation and are reported as rejections; the run therefore
+finishes with `completed_with_errors`. Do not relax timestamp validation to include
+them. These exports and dry-run checks are entirely local; the historical import
+remains pending the team's decision.
+
+## Developer Portal scope and historical counts
+
+The SQL `site` table has ten configured sites; nine have visits in the converted
+history. The provided daily JSON exports contain only site 8, `developer.pagopa.it`.
+The Developer Portal counts from the completed SQL export are:
+
+| Site-8 SQL scope | Accepted pageviews |
+| --- | --- |
+| Entire SQL history, ending 2026-10-07 | 1,250,834 |
+| Inclusive event dates from 2024-11-04 (reference date 2026-11-04) | 1,220,644 |
+| September 2026 | 56,727 |
+| Partial October, through 2026-10-07 | 14,259 |
+
+Replacing the partial SQL October with the complete site-8 October JSON gives
+1,299,128 historical pageviews before applying a date cutoff, or 1,268,938 from
+2024-11-04. The prepared export below applies this replacement. Do not add the
+entire JSON October to the entire SQL history: October 1-7 overlaps.
+
+For comparison, including all supported event types with the same October
+replacement gives:
+
+| Site-8 scope through 2026-10-31 | All accepted event types | Pageviews only |
+| --- | --- | --- |
+| Entire history | 1,651,240 | 1,299,128 |
+| Inclusive event dates from 2024-11-04 | 1,616,259 | 1,268,938 |
+
+The all-event totals exclude SQL source rejections and media skipped by the
+original conversion, plus the 46 rejected crash actions in the complete October
+JSON. The prepared export below contains the entire-history selection.
+
+The date cutoff is explicit and must be refreshed for the actual import date.
+The default SQL/JSON readers remain usable for other sites when a different site
+selection is deliberately supplied.
+
+September's JSON has three more pageviews than the accepted SQL export. Those
+three action IDs occur in the original SQL rejection log as `Unsupported SQL
+action type`; the API JSON identifies them as pageviews and the shared JSON
+mapping validates them. August's accepted pageview totals match exactly. The
+prepared history retains SQL data through September and replaces October only.
+
+## Prepared Developer Portal history
+
+The combined local export is `output/site8-history-through-2026-10/`. It contains
+all available accepted event types for site 8, from 2024-09-17 through 2026-10-31:
+1,651,240 events, including 1,299,128 pageviews, in 826 compact parts totaling
+2,021,655,657 uncompressed bytes. The original event payloads and stable IDs are
+preserved. Partial SQL October (15,672 events) was replaced by the complete
+October JSON (68,707 accepted events); no duplicate IDs remain.
+
+The two-year cutoff has **not** been applied to these files. The reference counts
+from 2024-11-04 remain 1,616,259 events and 1,268,938 pageviews. Refresh the cutoff
+for the eventual import date before preparing the selected import subset. The historical import remains paused; preparation makes no HTTP
+requests.
+
+The export's main `manifest.json` records part names, event counts, sizes and
+SHA-256 checksums for compatible importers. Local artifact validation has already
+checked every part; an importer is not required to generate SQL or JSON exports.
+
+`report.json` contains event-type/month totals, replacement counts and source
+manifest hashes; `summary.txt` provides a readable summary. `validation.json`
+records the full independent verification. `provenance/` retains earlier reports,
+source rejections, preparation/validation methods and prior upload-test state.
+Archived manifests describe superseded source parts and must not be uploaded or
+used to resume the new export. The original SQL dump and all daily JSON inputs
+remain in `input/`.
