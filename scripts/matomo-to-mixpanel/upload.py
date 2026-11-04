@@ -104,7 +104,8 @@ class Manifest:
             raise ValueError("Manifest total does not match its part event counts")
         return cls(path, hashlib.sha256(raw).hexdigest(), data["status"], tuple(parts), total)
 
-    def read_part(self, part: Part) -> bytes:
+    def read_part(self, part: Part, *, events: list[dict[str, Any]] | None = None) -> bytes:
+        """Validate a bounded part, optionally returning its decoded events too."""
         path = self.path.parent / part.name
         if path.is_symlink():
             raise ValueError(f"Symbolic links are not supported: {part.name}")
@@ -133,6 +134,8 @@ class Manifest:
             except (ValueError, UnicodeError):
                 # JSON parser excerpts can contain source data; keep them out of logs.
                 raise ValueError(f"Invalid event in {part.name}, line {index}") from None
+            if events is not None:
+                events.append(event)
         return payload
 
 

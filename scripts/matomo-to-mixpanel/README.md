@@ -382,6 +382,158 @@ source rejections, preparation/validation methods and prior upload-test state.
 Archived manifests describe superseded source parts and must not be uploaded or
 used to resume the new export. The original SQL dump and all daily JSON inputs
 remain in `input/`.
+
+## Reducing an existing export to pageviews (DEV-4641)
+
+`filter_pageviews.py` reads a completed converter manifest and keeps events
+whose name is exactly `Page Viewed`, optionally restricted by site and event date.
+It does not reread SQL or recalculate page
+durations. Searches, custom events and other actions are excluded even if they
+carry a URL or pageview ID. It uses only the Python standard library and makes
+no network requests. Keep `upload.py`, `sql_pipeline.py` and `sql_storage.py`
+beside it: the filter reuses their validation, atomic JSON writes and disk checks.
+
+First count the pageviews and their exact payload size before allocating space
+for another export. From the repository root, use the manifest inside the
+prepared site-8 export directory:
+
+```bash
+python3 scripts/matomo-to-mixpanel/filter_pageviews.py \
+  scripts/matomo-to-mixpanel/output/site8-history-through-2026-10/manifest.json \
+  --site-id 8 \
+  --count-only \
+  --output-dir scripts/matomo-to-mixpanel/output/pageviews-count
+```
+
+Count-only mode writes `report.json`, `summary.txt`, a small
+`filter-state.sqlite3` checkpoint database and `.conversion.lock`. It does not
+write event parts or an upload manifest. The report contains:
+
+- Source and processed event/file counts, and the source manifest SHA-256.
+- Pageviews retained, events excluded, excluded counts by event type, and the
+  percentage reduction: `excluded_events / processed_events * 100`.
+- Exact retained payload bytes and the expected number of nonempty output parts.
+- The original conversion status, including `completed_with_errors` when applicable.
+
+`processed_events = kept_events + excluded_events`. These counts refer only to
+the accepted events in the original manifest. Previously rejected actions and
+intentionally skipped unplayed media are not counted again. An incomplete report
+describes only processed parts; use a `completed` report to communicate final totals.
+The retained payload size excludes filesystem allocation and report/checkpoint overhead.
+
+After checking available space against `kept_bytes`, generate the reduced export
+in a **different, new directory**:
+
+```bash
+python3 scripts/matomo-to-mixpanel/filter_pageviews.py \
+  scripts/matomo-to-mixpanel/output/site8-history-through-2026-10/manifest.json \
+  --site-id 8 \
+  --output-dir scripts/matomo-to-mixpanel/output/pageviews-export
+```
+
+The filter validates each source part's checksum, size, event count and required
+event fields. By default, it processes one part at a time, keeping the original bytes, line
+endings, order and properties of each retained event, including timestamps,
+`distinct_id`, `$insert_id`, page durations and performance fields. It writes one
+filtered part for each nonempty source part; numbering gaps are intentional.
+Each part remains within the original count/size limits. The original export is
+preserved, including all non-pageview events, for any subsequent archival decision.
+
+`--site-id 8` excludes pageviews from the other Matomo sites. Missing site metadata
+on a pageview is an error when site selection is requested. `--from-date` and
+`--to-date` select inclusive Europe/Rome event dates. Filtered-out pageviews are
+included under `Page Viewed` in `excluded_by_type`, separately from retained
+`kept_events`; `filtered_pageviews` gives their total. Omit these options only
+when an all-site/all-date export is intended.
+
+`manifest.json` is published only after every source part completes. It includes
+new counts, sizes and SHA-256 checksums and preserves the source conversion status.
+An export with no pageviews has an empty manifest and no event parts. Validate
+the completed filtered export locally using the existing uploader:
+
+```bash
+python3 scripts/matomo-to-mixpanel/upload.py \
+  scripts/matomo-to-mixpanel/output/pageviews-export/manifest.json --dry-run
+```
+
+Any subsequent real upload must use its own upload state: the original export's
+upload checkpoint cannot be reused with the filtered manifest. Generating the
+filtered export does not initiate an upload.
+
+### Filtering progress, disk space and recovery
+
+Progress is printed approximately every five seconds with processed events,
+retained/excluded counts, processing rate and estimated remaining time. Use
+`--workers 4` to validate/filter parts with four local processes (1-8, default 1).
+Source order and checkpoints remain sequential. Each worker reads one bounded
+source part, and at most twice the worker count of pending results is retained;
+increasing workers increases memory and CPU use. The worker count can change on
+resume without changing the result. The sequential default uses one part at a time.
+Use `--max-files N` to process at most N pending source parts for an initial check.
+Such a run is reported as `incomplete` and has no upload manifest until resumed
+to completion. Omit `--output-dir` for a new timestamped directory under `output/`.
+The source and destination directories must be separate, without either nesting
+inside the other.
+
+Every complete source part is checkpointed using SQLite WAL with full synchronous
+writes. Keep the checkpoint database and any SQLite companion files together
+until the run finishes. To resume, repeat the original manifest, mode and output
+directory, adding `--resume`:
+
+```bash
+python3 scripts/matomo-to-mixpanel/filter_pageviews.py \
+  scripts/matomo-to-mixpanel/output/site8-history-through-2026-10/manifest.json \
+  --site-id 8 \
+  --count-only \
+  --output-dir scripts/matomo-to-mixpanel/output/pageviews-count --resume
+```
+
+Existing output requires `--resume`. Count-only and export runs have separate
+checkpoints and cannot change modes, site or dates when resuming. Checkpoints
+created before site/date selection support require a new output directory.
+The manifest path/hash and
+previously processed source files' identity, size and modification metadata are
+checked. Previously written output parts are verified against their size/checksum.
+Do not edit, move or replace source files during a run or between attempts.
+Completed checkpoints are retained; only uncommitted generated event parts are
+removed during recovery. Locks prevent simultaneous use of the same output and
+exclude an active converter from the source directory. Do not upload incomplete
+output or reuse this directory for unrelated files.
+
+The existing disk checks reserve 2 GiB on the output filesystem and on `/mnt/c`
+under WSL. Use `--min-free-gib` or `--host-volume` as for conversion. Check the host
+volume as well as WSL's virtual free space before writing a full reduced export.
+Ctrl+C returns 130; validation, read or write failures return 1. Both preserve
+committed checkpoints for recovery.
+
+### Original all-site baseline
+
+A completed all-site count-only run validated all 42,584 parts of the supplied export,
+covering visits from 2024-09-17 through 2026-10-07 across all exported sites:
+
+**The following table includes other websites. It is not the Developer Portal
+volume and must not be used as the site-8 migration estimate.**
+
+| Metric | Result |
+| --- | --- |
+| Original accepted events | 84,015,992 |
+| Pageviews retained | 42,745,382 |
+| Events excluded | 41,270,610 |
+| Event-count reduction | 49.12% |
+| Retained payload | 50,259,534,096 bytes (50.26 GB / 46.81 GiB) |
+| Expected nonempty output parts | 37,581 |
+
+Excluded events comprise 21,854,780 custom events, 10,499,844 outbound link
+clicks, 8,854,690 media interactions, 61,003 downloads, 273 crashes and 20 searches.
+The original conversion's 3,654 rejected actions and 1,146,067 skipped unplayed
+media rows are already outside the accepted-event total above.
+
+This run generated counts and checkpoints only. It did not materialize a second
+full export or upload events. A separate two-part sample of 4,000 real source
+events produced 2,377 pageviews and passed the uploader's local dry-run validation.
+The full reduced export needs at least the retained payload size plus the disk
+reserve and filesystem/report overhead on both the output and any WSL host volume.
+
 ## Uploading a completed export to Mixpanel
 
 `upload.py` sends the parts listed in one final `manifest.json`, in manifest

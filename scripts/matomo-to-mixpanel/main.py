@@ -249,6 +249,14 @@ def convert_action(
     return {"event": EVENT_NAMES[kind], "properties": properties}
 
 
+def matches_pageview(
+    event: dict[str, Any], site_id: int | None = None,
+    start: date | None = None, end: date | None = None,
+) -> bool:
+    """Select pageviews by Matomo site and inclusive Rome event dates."""
+    return event.get("event") == "Page Viewed" and matches_event(event, site_id, start, end)
+
+
 def matches_event(
     event: dict[str, Any], site_id: int | None = None,
     start: date | None = None, end: date | None = None,
