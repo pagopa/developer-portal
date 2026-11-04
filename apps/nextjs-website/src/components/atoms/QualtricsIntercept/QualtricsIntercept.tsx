@@ -33,7 +33,7 @@ const QualtricsIntercept = () => {
       // The pathname dependency currently means that the script gets removed at every page change
       script.remove();
     };
-  }, [user, pathname]);
+  }, [user, pathname, webinarCertificates]);
 
   return <div id='ZN_1dbDHeb2VGg54EI' />;
 };

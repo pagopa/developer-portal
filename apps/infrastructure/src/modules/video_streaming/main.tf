@@ -6,6 +6,19 @@ resource "random_id" "suffix" {
 
 resource "aws_s3_bucket" "ivs_recordings" {
   bucket = "${var.project_name}-recordings-${random_id.suffix.hex}"
+
+  # Enrolls the bucket in the production AWS Backup plan (DEV-4564).
+  tags = var.environment == "prod" ? { Backup = "True" } : {}
+}
+
+# AWS Backup for S3 requires versioning; enabled only where the bucket is backed up.
+resource "aws_s3_bucket_versioning" "ivs_recordings" {
+  count  = var.environment == "prod" ? 1 : 0
+  bucket = aws_s3_bucket.ivs_recordings.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "ivs_recordings_pac" {

@@ -18,6 +18,8 @@ module "s3_bucket_cms" {
     enabled = true
   }
 
+  tags = var.environment == "prod" ? { Backup = "True" } : {}
+
   attach_policy = true
   policy        = data.aws_iam_policy_document.s3_iam_policy_cms.json
 }

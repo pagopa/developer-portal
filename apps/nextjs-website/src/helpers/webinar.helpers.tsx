@@ -34,7 +34,7 @@ export const useWebinar = () => {
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
   const lastHeartbeatSentTime = useRef<Date | null>(null);
   const videoStartedAt = useRef<string | null>(null);
-  const { user } = useUser();
+  const { user, canUseWebinarFeatures } = useUser();
 
   const setIsVideoPlaying = useCallback((isPlaying: boolean) => {
     if (isPlaying) {
@@ -185,7 +185,13 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
+    if (
+      !canUseWebinarFeatures ||
+      !isWebinarHeartbeatEnabled ||
+      !webinar ||
+      !isVideoPlaying
+    )
+      return;
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {
@@ -224,7 +230,7 @@ export const useWebinar = () => {
     }, webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
-  }, [webinar, isVideoPlaying, webinarState, user]);
+  }, [webinar, isVideoPlaying, webinarState, user, canUseWebinarFeatures]);
 
   return {
     webinarState,

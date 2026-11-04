@@ -14,6 +14,7 @@ import { Query } from '@/lib/chatbot/queries';
 import { useTranslations } from 'next-intl';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helpers';
 import { getChatbotHealthz } from '@/lib/chatbotApi';
+import { trackChatbotClick } from '@/components/atoms/Mixpanel/TrackChatbot';
 
 type ChatbotLayoutProps = {
   queries: Query[];
@@ -51,7 +52,10 @@ const ChatbotLayout = ({
   );
 
   const handleClick = () => {
-    if (!open) getChatbotHealthz();
+    if (!open) {
+      trackChatbotClick();
+      getChatbotHealthz();
+    }
     setAnchorEl(ref.current);
     return null;
   };

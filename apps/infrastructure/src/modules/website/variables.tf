@@ -108,6 +108,18 @@ variable "next_public_feedback_form_enabled" {
   default     = false
 }
 
+variable "next_public_ff_qualtrics" {
+  type        = bool
+  description = "Defines if the Qualtrics feature should be enabled"
+  default     = false
+}
+
+variable "next_public_ff_webinars" {
+  type        = bool
+  description = "Defines if the webinars feature should be enabled"
+  default     = false
+}
+
 variable "next_public_mixpanel_api_host" {
   type        = string
   description = "Mixpanel API host for the OpenNext server"
@@ -136,7 +148,6 @@ variable "vpc" {
 
 variable "webinar_video_api" {
   type = object({
-    ingest_url          = string
     base_url            = string
     interval_in_seconds = number
     enabled             = bool
