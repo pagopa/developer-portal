@@ -9,6 +9,12 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "enable_backup" {
+  type        = bool
+  description = "Create AWS Backup resources in eu-south-1 and eu-central-1."
+  default     = false
+}
+
 variable "github_repository" {
   type        = string
   description = "The repository where the IaC workflows will run"

@@ -22,6 +22,7 @@ export const browserSettings = (env: typeof publicEnv) => {
     parseInt(`${env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
   // Array that defines the header level for which to show component in the in-page menu
   const headingLevelsToShowInMenu = [2, 3];
+  const isWebinarsEnabled = process.env.NEXT_PUBLIC_FF_WEBINARS === 'true';
   const isWebinarHeartbeatEnabled =
     env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED === 'true';
   const webinarHeartbeatIntervalInSeconds =
@@ -50,14 +51,10 @@ export const browserSettings = (env: typeof publicEnv) => {
     ? [
         ...defaultItems,
         { label: 'chatbot.title', href: '/profile/chatbot-history' },
-        ...(isWebinarHeartbeatEnabled
-          ? [
-              {
-                label: 'certificateList.title',
-                href: '/profile/certificate-list',
-              },
-            ]
-          : []),
+        {
+          label: 'certificateList.title',
+          href: '/profile/certificate-list',
+        },
       ]
     : defaultItems;
   const snackbarAutoHideDurationMs = 10_000;
@@ -145,6 +142,9 @@ export const browserSettings = (env: typeof publicEnv) => {
   );
   const loggedInCookieName = 'isLoggedIn';
   const docsAssetsPath = '/gitbook/docs';
+  const qualtricsFeatureFlag = process.env.NEXT_PUBLIC_FF_QUALTRICS;
+  const mixpanelToken = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+  const mixpanelApiHost = process.env.NEXT_PUBLIC_MIXPANEL_API_HOST;
   return {
     CHATBOT_HOST,
     cookieDomainScript,
@@ -187,6 +187,10 @@ export const browserSettings = (env: typeof publicEnv) => {
     authCookieValidityInDays,
     loggedInCookieName,
     docsAssetsPath,
+    qualtricsFeatureFlag,
+    mixpanelToken,
+    mixpanelApiHost,
+    isWebinarsEnabled,
   };
 };
 

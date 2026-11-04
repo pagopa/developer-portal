@@ -21,6 +21,7 @@ import {
   useMediaQuery,
   Theme,
 } from '@mui/material';
+import { useUser } from '@/helpers/user.helper';
 
 type MobileProfileMenuProps = {
   locale: string;
@@ -33,6 +34,12 @@ const MobileProfileMenu = ({
 }: MobileProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
+  const { canUseWebinarFeatures } = useUser();
+
+  const visibleMenuItems = browserEnv.config.profileMenuItems.filter(
+    ({ href }) =>
+      !href.includes('/profile/certificate-list') || canUseWebinarFeatures
+  );
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const [open, setOpen] = useState(false);
@@ -52,25 +59,23 @@ const MobileProfileMenu = ({
 
   const items = (
     <MenuList sx={{ flexDirection: 'column', gap: 2, width: 1 }}>
-      {browserEnv.config.profileMenuItems.map(
-        ({ label, href }, index: number) => (
-          <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
-            <MuiLink
-              component={Link}
-              href={`/${locale}${href}`}
-              sx={{
-                alignSelf: 'stretch',
-                textDecoration: 'none',
-                color: palette.text.primary,
-                py: 1,
-                pl: 6,
-              }}
-            >
-              {t(label)}
-            </MuiLink>
-          </MenuItem>
-        )
-      )}
+      {visibleMenuItems.map(({ label, href }, index: number) => (
+        <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
+          <MuiLink
+            component={Link}
+            href={`/${locale}${href}`}
+            sx={{
+              alignSelf: 'stretch',
+              textDecoration: 'none',
+              color: palette.text.primary,
+              py: 1,
+              pl: 6,
+            }}
+          >
+            {t(label)}
+          </MuiLink>
+        </MenuItem>
+      ))}
     </MenuList>
   );
 

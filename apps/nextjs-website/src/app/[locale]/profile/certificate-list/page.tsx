@@ -1,13 +1,12 @@
 import React from 'react';
 import CertificatesList from '@/components/organisms/CertificatesList/CertificatesList';
-import { browserEnv } from '@/browserConfig';
-import { getVisibleInListWebinars } from '@/lib/api';
+import { getWebinars } from '@/lib/api';
 
 const CertificateListPage = async (props: {
   params: Promise<{ locale: string }>;
 }) => {
   const { locale } = await props.params;
-  const webinars = await getVisibleInListWebinars(locale);
+  const webinars = await getWebinars(locale);
 
   return <CertificatesList webinars={webinars} />;
 };
