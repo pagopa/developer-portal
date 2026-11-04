@@ -176,6 +176,7 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
             {t.rich('profile.certificateList.body', {
               strong: (chunks) => <strong>{chunks}</strong>,
               br: () => <br></br>,
+              mail: (chunks) => <a href={`mailto:${chunks}`}>{chunks}</a>,
             })}
           </Typography>
         </GenericAlertBanner>
