@@ -11,7 +11,7 @@ export const buildSettings = (env: Record<string, string | undefined>) => {
           sessionToken: env.S3_SESSION_TOKEN,
         }
       : undefined;
-  const bucketName = env.S3_BUCKET_NAME || '';
+  const bucketName = env.S3_BUCKET_NAME?.trim() || '';
   const staticContentsUrl = env.STATIC_CONTENTS_URL;
   const baseUrl =
     env.NEXT_PUBLIC_WEBSITE_BASE_URL || 'https://developer.pagopa.it';
@@ -52,6 +52,7 @@ export const makeBuildConfig = (
   (env.FETCH_FROM_STRAPI &&
     env.STRAPI_ENDPOINT &&
     env.STRAPI_API_TOKEN &&
+    env.S3_BUCKET_NAME?.trim() &&
     E.right({
       ...buildSettings(env),
       FETCH_FROM_STRAPI: env.FETCH_FROM_STRAPI === 'true',
