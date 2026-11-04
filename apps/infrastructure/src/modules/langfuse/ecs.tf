@@ -495,6 +495,11 @@ resource "aws_ecs_service" "langfuse_worker" {
   desired_count   = var.worker_desire_count
   launch_type     = "FARGATE"
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   network_configuration {
     security_groups = [aws_security_group.langfuse_worker.id]
     subnets         = var.private_subnet_ids
@@ -514,6 +519,11 @@ resource "aws_ecs_service" "langfuse_web" {
   task_definition = aws_ecs_task_definition.langfuse_web.arn
   desired_count   = var.web_desire_count
   launch_type     = "FARGATE"
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
 
   network_configuration {
     security_groups = [aws_security_group.langfuse_web.id]
@@ -544,6 +554,15 @@ resource "aws_ecs_service" "clickhouse" {
   task_definition = aws_ecs_task_definition.clickhouse.arn
   desired_count   = 1
   launch_type     = "FARGATE"
+
+  deployment_maximum_percent         = 100
+  deployment_minimum_healthy_percent = 0
+  availability_zone_rebalancing      = "DISABLED"
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = false
+  }
 
   network_configuration {
     security_groups = [aws_security_group.clickhouse.id]
