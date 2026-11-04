@@ -1,17 +1,22 @@
 import * as E from 'fp-ts/lib/Either';
 import type { StrapiConfig } from './lib/strapi/strapiConfig';
 
+const secrets = process.env.secrets ? JSON.parse(process.env.secrets) : {};
+
 export const buildSettings = (env: Record<string, string | undefined>) => {
-  const s3DocsPath = env.S3_PATH_TO_GITBOOK_DOCS;
+  const s3DocsPath =
+    secrets.S3_PATH_TO_GITBOOK_DOCS || env.S3_PATH_TO_GITBOOK_DOCS;
   const credentials =
-    env.S3_ACCESS_KEY_ID && env.S3_SECRET_ACCESS_KEY
+    (secrets.S3_ACCESS_KEY_ID || env.S3_ACCESS_KEY_ID) &&
+    (secrets.S3_SECRET_ACCESS_KEY || env.S3_SECRET_ACCESS_KEY)
       ? {
-          accessKeyId: env.S3_ACCESS_KEY_ID,
-          secretAccessKey: env.S3_SECRET_ACCESS_KEY,
-          sessionToken: env.S3_SESSION_TOKEN,
+          accessKeyId: secrets.S3_ACCESS_KEY_ID || env.S3_ACCESS_KEY_ID,
+          secretAccessKey:
+            secrets.S3_SECRET_ACCESS_KEY || env.S3_SECRET_ACCESS_KEY,
+          sessionToken: secrets.S3_SESSION_TOKEN || env.S3_SESSION_TOKEN,
         }
       : undefined;
-  const bucketName = env.S3_BUCKET_NAME?.trim() || '';
+  const bucketName = env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
   const staticContentsUrl = env.STATIC_CONTENTS_URL;
   const baseUrl =
     env.NEXT_PUBLIC_WEBSITE_BASE_URL || 'https://developer.pagopa.it';
@@ -52,7 +57,6 @@ export const makeBuildConfig = (
   (env.FETCH_FROM_STRAPI &&
     env.STRAPI_ENDPOINT &&
     env.STRAPI_API_TOKEN &&
-    env.S3_BUCKET_NAME?.trim() &&
     E.right({
       ...buildSettings(env),
       FETCH_FROM_STRAPI: env.FETCH_FROM_STRAPI === 'true',
