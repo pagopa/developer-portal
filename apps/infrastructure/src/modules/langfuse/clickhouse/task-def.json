@@ -1,0 +1,46 @@
+{
+  "family": "langfuse-clickhouse-debug",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "runtimePlatform": {
+    "cpuArchitecture": "ARM64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "executionRoleArn": "arn:aws:iam::195239627635:role/LangfuseProdEcsTaskExecuteRole",
+  "taskRoleArn": "arn:aws:iam::195239627635:role/LangfuseProdTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "debug",
+      "image": "195239627635.dkr.ecr.eu-south-1.amazonaws.com/clickhouse:25.8.8.26-alpine",
+      "entryPoint": ["sleep"],
+      "command": ["3600"],
+      "essential": true,
+      "mountPoints": [
+        {
+          "sourceVolume": "clickhouse_data",
+          "containerPath": "/mnt/efs",
+          "readOnly": false
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/aws/ecs/langfuse_clickhouse_log",
+          "awslogs-region": "eu-south-1",
+          "awslogs-stream-prefix": "debug"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "clickhouse_data",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "fs-052e268f74cf25d75",
+        "rootDirectory": "/"
+      }
+    }
+  ]
+}

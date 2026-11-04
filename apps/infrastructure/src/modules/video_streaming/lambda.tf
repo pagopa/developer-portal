@@ -33,15 +33,10 @@ resource "aws_lambda_function" "webinar_metrics" {
   role          = aws_iam_role.webinar_metrics.arn
 
   environment {
-    variables = merge(
-      {
-        ATHENA_DATABASE       = aws_athena_database.webinar_db.name
-        ATHENA_RESULTS_BUCKET = aws_s3_bucket.athena_results.bucket
-      },
-      var.webinar_metrics_channel_key != null ? {
-        IVS_CHANNEL_ARN = aws_ivs_channel.channels[var.webinar_metrics_channel_key].arn
-      } : {}
-    )
+    variables = {
+      ATHENA_DATABASE       = aws_athena_database.webinar_db.name
+      ATHENA_RESULTS_BUCKET = aws_s3_bucket.athena_results.bucket
+    }
   }
 
   depends_on = [aws_cloudwatch_log_group.webinar_metrics_logs]
