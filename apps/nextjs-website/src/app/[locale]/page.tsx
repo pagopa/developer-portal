@@ -8,7 +8,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,7 +75,7 @@ export async function generateMetadata(props: {
     : makeMetadata({
         title: 'PagoPA DevPortal',
         description: 'Il portale per gli sviluppatori di PagoPA',
-        url: `${baseUrl}/${locale}`,
+        url: `${browserEnv.config.baseUrl}/${locale}`,
 
         langCode: locale,
       });

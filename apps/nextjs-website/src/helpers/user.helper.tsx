@@ -18,7 +18,8 @@ import {
   useContext,
 } from 'react';
 import type { CertificateResponse } from '@/lib/webinars/webinarCertificates';
-import { isWebinarsEnabled } from '@/config';
+import { browserEnv } from '@/browserConfig';
+const { isWebinarsEnabled } = browserEnv.config;
 
 type UserContextValue = ReturnType<typeof useUserState>;
 

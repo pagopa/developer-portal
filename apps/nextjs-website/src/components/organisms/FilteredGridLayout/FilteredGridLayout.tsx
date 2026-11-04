@@ -11,7 +11,7 @@ import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { PRODUCT_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import CardsGrid, {
   CardProps,
 } from '@/components/molecules/CardsGrid/CardsGrid';
@@ -81,7 +81,7 @@ export const FilteredGridLayout = ({
       const y =
         element.getBoundingClientRect().top +
         window.pageYOffset -
-        PRODUCT_HEADER_HEIGHT;
+        browserEnv.config.PRODUCT_HEADER_HEIGHT;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
     setSelectedTag(newTag);
