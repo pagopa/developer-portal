@@ -5,6 +5,7 @@ module "dynamodb_webinar_questions" {
 
   billing_mode                = "PAY_PER_REQUEST"
   deletion_protection_enabled = true
+  tags                        = merge(var.tags, var.environment == "prod" ? { Backup = "True" } : {})
 
   name                                  = "WebinarQuestions"
   hash_key                              = "webinarId"
@@ -32,6 +33,7 @@ module "dynamodb_webinar_subscriptions" {
 
   billing_mode                = "PAY_PER_REQUEST"
   deletion_protection_enabled = true
+  tags                        = merge(var.tags, var.environment == "prod" ? { Backup = "True" } : {})
 
   name                                  = "WebinarSubscriptions"
   hash_key                              = "username"
