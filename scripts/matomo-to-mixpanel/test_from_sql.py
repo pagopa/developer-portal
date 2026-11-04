@@ -130,14 +130,14 @@ class MainCLITests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(json.loads((root / name / 'report.json').read_text())['visits'], 1)
 
-    def test_json_input_is_rejected(self) -> None:
+    def test_json_input_is_dispatched_to_the_restored_reader(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / 'day.json'
             source.write_text('[]')
             result = self.invoke(str(source), '--output-dir', str(root / 'out'))
-            self.assertEqual(result.returncode, 2)
-            self.assertFalse((root / 'out').exists())
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads((root / 'out/manifest.json').read_text())['events'], 0)
 
     def test_sql_errors_propagate_to_main_exit_code(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

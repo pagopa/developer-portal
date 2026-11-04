@@ -1,4 +1,4 @@
-"""Convert an uncompressed Matomo SQL dump to Mixpanel NDJSON locally."""
+"""Convert Matomo SQL dumps or visit/action JSON to Mixpanel NDJSON locally."""
 
 import argparse
 import json
@@ -249,10 +249,39 @@ def convert_action(
     return {"event": EVENT_NAMES[kind], "properties": properties}
 
 
+def matches_event(
+    event: dict[str, Any], site_id: int | None = None,
+    start: date | None = None, end: date | None = None,
+) -> bool:
+    """Select any event family by Matomo site and inclusive Rome event dates."""
+    if site_id is None and start is None and end is None:
+        return True
+    props = event.get("properties")
+    if not isinstance(props, dict):
+        raise ValueError("Missing event properties for event selection")
+    if site_id is not None:
+        site = props.get("matomo_site_id")
+        if isinstance(site, bool) or not isinstance(site, (str, int)):
+            raise ValueError("Missing or invalid matomo_site_id for site selection")
+        if str(site) != str(site_id):
+            return False
+    if start is not None or end is not None:
+        stamp = props.get("time")
+        if isinstance(stamp, bool) or not isinstance(stamp, int):
+            raise ValueError("Missing or invalid event time for date selection")
+        try:
+            day = datetime.fromtimestamp(stamp, UTC).astimezone(ROME).date()
+        except (OverflowError, OSError, ValueError):
+            raise ValueError("Event time outside the supported date range") from None
+        if (start and day < start) or (end and day > end):
+            return False
+    return True
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path, nargs="?", default=SCRIPT_DIR / "input",
-                        help="SQL dump or directory containing SQL dumps (default: input folder)")
+                        help="SQL dump, visits JSON, or directory (mixed directories prefer SQL)")
     parser.add_argument("--output-dir", type=Path, help="New output directory (default: timestamped run in output)")
     parser.add_argument("--site-id", type=int, help="Optional site filter (default: all sites)")
     parser.add_argument("--from-date", type=date.fromisoformat, help="First Rome calendar date, YYYY-MM-DD")
@@ -265,6 +294,9 @@ def main() -> int:
     parser.add_argument("--part-mib", type=int, default=8)
     parser.add_argument("--min-free-gib", type=float, default=2)
     parser.add_argument("--host-volume", type=Path)
+    parser.add_argument("--count-only", action="store_true", help="JSON only: validate/count without event files")
+    parser.add_argument("--all-events", action="store_true",
+                        help="JSON only: retain all supported event types instead of pageviews only")
     args = parser.parse_args()
     if args.resume and args.output_dir is None:
         parser.error("--resume requires --output-dir")
@@ -273,12 +305,37 @@ def main() -> int:
     sql_files = sorted(path for path in args.input.rglob('*')
                        if path.is_file() and path.suffix.lower() == '.sql') if args.input.is_dir() else (
                            [args.input] if args.input.suffix.lower() == '.sql' else [])
-    if not sql_files:
-        parser.error("Input must be an uncompressed .sql dump or a directory containing .sql dumps")
     if args.site_id is not None and args.site_id <= 0:
         parser.error("--site-id must be positive")
     if args.to_date is not None and args.from_date is not None and args.to_date < args.from_date:
         parser.error("--to-date must not precede --from-date")
+
+    if not sql_files:
+        json_files = sorted(path for path in args.input.rglob('*')
+                            if path.is_file() and path.suffix.lower() == '.json') if args.input.is_dir() else (
+                                [args.input] if args.input.suffix.lower() == '.json' else [])
+        if not json_files:
+            parser.error("Input must contain an uncompressed .sql dump or visit/action .json files")
+        if args.resume or args.table_prefix is not None or args.include_unplayed_media:
+            parser.error("--resume, --table-prefix and --include-unplayed-media apply only to SQL input")
+        from from_json import main as json_main
+
+        json_args = [str(args.input), "--part-events", str(args.part_events),
+                     "--part-mib", str(args.part_mib), "--min-free-gib", str(args.min_free_gib)]
+        for flag, value in {"--site-id": args.site_id, "--from-date": args.from_date,
+                            "--to-date": args.to_date, "--output-dir": args.output_dir,
+                            "--host-volume": args.host_volume}.items():
+            if value is not None:
+                json_args.extend([flag, str(value)])
+        if args.count_only:
+            json_args.append("--count-only")
+        if args.all_events:
+            json_args.append("--all-events")
+        return json_main(json_args)
+    if args.count_only:
+        parser.error("--count-only applies to JSON input; use filter_pageviews.py on an existing SQL export")
+    if args.all_events:
+        parser.error("--all-events applies only to JSON input; SQL already considers all supported event types")
 
     # The reader is separate because it contains the SQL parser and table joins.
     from from_sql import main as sql_main
