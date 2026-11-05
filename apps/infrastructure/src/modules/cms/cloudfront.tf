@@ -2,6 +2,24 @@ resource "aws_cloudfront_response_headers_policy" "cms_media_library" {
   name    = "cms-media-library-response-headers-policy"
   comment = "Response headers policy for CMS media library distribution"
 
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+
+    access_control_allow_origins {
+      items = ["https://${var.dns_domain_name}", "https://${keys(var.dns_domain_name_cms)[0]}"]
+    }
+
+    origin_override = true
+  }
+
   custom_headers_config {
     items {
       header   = "Server"
