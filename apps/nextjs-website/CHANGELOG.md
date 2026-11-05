@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 17.5.6
+
+### Patch Changes
+
+- 1febf93: Update styles of Feature editorial component
+- b2fd325: Update certificates list information text
+
 ## 17.5.5
 
 ### Patch Changes
