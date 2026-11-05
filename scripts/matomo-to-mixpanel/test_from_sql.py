@@ -75,7 +75,7 @@ class MainCLITests(unittest.TestCase):
                                  '--include-unplayed-media', '--output-dir', str(root / 'out'))
             self.assertEqual(result.returncode, 0, result.stderr)
             report = json.loads((root / 'out/report.json').read_text())
-            self.assertEqual(report['converted_actions'], 4)
+            self.assertEqual(report['converted_actions'], 1)
             self.assertEqual(report['unplayed_media_skipped'], 0)
 
     def test_sql_validation_does_not_create_output(self) -> None:
@@ -90,7 +90,7 @@ class MainCLITests(unittest.TestCase):
                 self.assertEqual(result.returncode, 2)
                 self.assertFalse((root / 'out').exists())
 
-    def test_no_arguments_discovers_sql_and_keeps_only_site8_all_events(self) -> None:
+    def test_no_arguments_discovers_sql_and_keeps_only_site8_pageviews(self) -> None:
         import main as entry
 
         with tempfile.TemporaryDirectory() as directory:
@@ -117,10 +117,10 @@ class MainCLITests(unittest.TestCase):
             self.assertEqual(report['last_visit_date'], '2026-06-07')
             events = read_events(report_path.parent)
             media = [e for e in events if e['event'] == 'Media Interaction']
-            self.assertEqual(len(media), 1)
+            self.assertEqual(len(media), 0)
             self.assertEqual({event['properties']['matomo_site_id'] for event in events}, {'8'})
             self.assertEqual({event['event'] for event in events},
-                             {'Page Viewed', 'Media Interaction', 'Application Crash'})
+                             {'Page Viewed'})
 
     def test_sql_without_filters_and_optional_site_filter(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -155,7 +155,7 @@ class MainCLITests(unittest.TestCase):
             self.assertEqual(report['rejected_actions'], 1)
             summary = (root / 'out/summary.txt').read_text()
             self.assertIn(summary, result.stdout)
-            self.assertIn('2 events converted.', summary)
+            self.assertIn('0 events converted.', summary)
             self.assertIn('1 actions rejected.', summary)
             self.assertIn('1 unplayed media rows intentionally excluded.', summary)
             self.assertIn('Missing log_action reference: 999', summary)

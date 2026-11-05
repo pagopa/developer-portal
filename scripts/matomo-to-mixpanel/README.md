@@ -2,10 +2,10 @@
 
 The converter reads uncompressed Matomo MySQL dumps or Matomo visit/action JSON
 and writes NDJSON for the Mixpanel [Import API](https://docs.mixpanel.com/reference/import-events).
-SQL and JSON inputs export **all supported events from Matomo site 8
+SQL and JSON inputs export **only Page Viewed events from Matomo site 8
 (`developer.pagopa.it`) by default**. No site or event-selection parameter is
-needed. The command-line readers accept only site 8; `--site-id 8` and
-`--all-events` remain compatibility options for older commands.
+needed. The command-line readers accept only site 8. `--site-id 8` remains an optional
+compatibility argument; `--all-events` is rejected on this branch.
 
 Python >=3.12,<3.14 on Linux/WSL and the system `Europe/Rome` timezone database are required.
 No third-party Python packages or platform credentials are needed.
@@ -70,7 +70,7 @@ An explicit SQL path also selects site 8 automatically. Other site IDs and
 reversed date ranges are rejected before creating output.
 
 When supplied, dates are inclusive and select visits by their first action's **Europe/Rome
-calendar date**. All supported actions belonging to those visits are considered,
+calendar date**. Only pageview actions belonging to those visits are retained,
 including actions after midnight. SQL datetimes are interpreted as UTC; unlike the
 API wall-clock timestamps they are already unambiguous. No credentials are needed.
 Use `--table-prefix matomo_` for a prefixed database, and `--output-dir /tmp/new-run`
@@ -239,57 +239,30 @@ history; review the run's summaries and rejection reasons before import.
 
 ## Visit/action JSON through main.py
 
-The reader accepts a single JSON file or a directory of daily visit arrays with
-`actionDetails`. It retains all supported event types from site 8 automatically:
-pageviews, downloads, outbound links, custom events, crashes, media interactions
-and site searches. Other sites are excluded. The existing event mapping and IDs
-are preserved. Aggregate reports and API error objects are rejected; Windows
-`:Zone.Identifier` sidecars are ignored.
-
-To export complete October data:
+The JSON reader retains **only Page Viewed events from site 8** automatically.
+No site or event-selection flags are needed:
 
 ```bash
 python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10
 ```
 
-To count without writing event files:
+The direct `from_json.py` command has the same defaults. Other site IDs and
+`--all-events` are rejected before output is created. JSON files must contain
+visit arrays with `actionDetails`; aggregate reports and API errors are rejected.
+Optional date filters use actual inclusive Europe/Rome event dates. Existing
+payloads, timestamps and stable event IDs are preserved.
 
-```bash
-python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
-  --count-only --output-dir scripts/matomo-to-mixpanel/output/october-site8-count
-```
+The complete October data produces 62,553 pageviews in 32 parts and 67,440,504
+payload bytes. The other 6,200 actions are excluded before mapping. Parts are
+limited to 2,000 events and 8 MiB by default. Reports list excluded actions,
+rejections, duplicates, source hashes and selected dates. `--count-only` validates
+and counts without writing payloads. JSON resume is unsupported; use a new output
+directory on each run. Conversion makes no network requests.
 
-No `--site-id` or `--all-events` flag is needed. The direct `from_json.py` entry
-point has the same defaults. Compatibility options cannot select another site.
-SQL already exports all supported event types. The command-line behavior is
-specific to the `matomo-to-mixpanel` branch; the separate `pageviews-only` branch
-selects pageviews by default.
-
-Optional `--from-date` and `--to-date` select inclusive **actual event dates** in
-Europe/Rome, including DST transitions. A visit starting before the period can
-still contribute events inside it. SQL dates instead select visits by their first
-action, as documented above. SQL-only flags (`--resume`, `--table-prefix`,
-`--include-unplayed-media`) are rejected for JSON input.
-
-The reader processes one JSON file at a time (64 MiB maximum), verifies source
-fingerprints, detects duplicate/conflicting IDs across files and packs events
-into parts of at most 2,000 events and 8 MiB by default. `--part-events` and
-`--part-mib` adjust the limits. The duplicate index grows with the selected count.
-Disk-space checks and an output lock also apply.
-
-Each run writes `report.json`, `summary.txt` and redacted `issues.ndjson`.
-Export runs publish event files and `manifest.json` only after all inputs finish;
-count-only runs write no payload or manifest. Invalid visits or rejected actions
-produce `completed_with_errors` and exit code 1; accepted events remain available
-in the manifest. Fatal errors leave no manifest. JSON runs require a new output
-directory and do not support resume. Reports include counts by event type,
-filtered dates, duplicates, errors and first/last retained timestamps.
-
-The supplied complete October data produces 68,707 accepted events in 35 parts,
-73,334,279 bytes: 62,553 pageviews, 4,014 outbound links, 1,204 downloads, 510 custom
-events, 418 crashes and 8 media interactions. Another 46 crash actions fail the
-existing timestamp/visit-bound validation and remain rejected. Nothing is
-uploaded during conversion; historical ingestion remains a separate decision.
+SQL input also retains only pageviews on this branch. Other supported action
+families are counted in `non_pageview_actions_skipped`; unplayed media remain
+separately counted. SQL checkpoint identity includes the pageview-only scope, so
+all-event and pageview-only runs cannot share a resume directory.
 
 ## Developer Portal scope and historical counts
 
@@ -360,12 +333,22 @@ remain in `input/`.
 ## Reducing an existing export to pageviews (DEV-4641)
 
 `filter_pageviews.py` reads a completed converter manifest and keeps events
-whose name is exactly `Page Viewed`, optionally restricted by site and event date.
+whose name is exactly `Page Viewed`, restricted to site 8 by default and optionally by event date.
 It does not reread SQL or recalculate page
 durations. Searches, custom events and other actions are excluded even if they
 carry a URL or pageview ID. It uses only the Python standard library and makes
 no network requests. Keep `upload.py`, `sql_pipeline.py` and `sql_storage.py`
 beside it: the filter reuses their validation, atomic JSON writes and disk checks.
+
+Run with no arguments to filter the prepared combined history:
+
+```bash
+python3 scripts/matomo-to-mixpanel/filter_pageviews.py
+```
+
+The default source is `output/site8-history-through-2026-10/manifest.json`.
+A different manifest can still be supplied as the positional input. Output goes
+to a new timestamped directory. The source export is preserved.
 
 First count the pageviews and their exact payload size before allocating space
 for another export. From the repository root, use the manifest inside the
@@ -374,7 +357,6 @@ prepared site-8 export directory:
 ```bash
 python3 scripts/matomo-to-mixpanel/filter_pageviews.py \
   scripts/matomo-to-mixpanel/output/site8-history-through-2026-10/manifest.json \
-  --site-id 8 \
   --count-only \
   --output-dir scripts/matomo-to-mixpanel/output/pageviews-count
 ```
@@ -401,7 +383,6 @@ in a **different, new directory**:
 ```bash
 python3 scripts/matomo-to-mixpanel/filter_pageviews.py \
   scripts/matomo-to-mixpanel/output/site8-history-through-2026-10/manifest.json \
-  --site-id 8 \
   --output-dir scripts/matomo-to-mixpanel/output/pageviews-export
 ```
 
@@ -413,12 +394,11 @@ filtered part for each nonempty source part; numbering gaps are intentional.
 Each part remains within the original count/size limits. The original export is
 preserved, including all non-pageview events, for any subsequent archival decision.
 
-`--site-id 8` excludes pageviews from the other Matomo sites. Missing site metadata
+Site 8 is selected automatically; other CLI site IDs are rejected. Missing site metadata
 on a pageview is an error when site selection is requested. `--from-date` and
 `--to-date` select inclusive Europe/Rome event dates. Filtered-out pageviews are
 included under `Page Viewed` in `excluded_by_type`, separately from retained
-`kept_events`; `filtered_pageviews` gives their total. Omit these options only
-when an all-site/all-date export is intended.
+`kept_events`; `filtered_pageviews` gives their total. Omitting date options includes every date for site 8.
 
 `manifest.json` is published only after every source part completes. It includes
 new counts, sizes and SHA-256 checksums and preserves the source conversion status.
@@ -457,7 +437,6 @@ directory, adding `--resume`:
 ```bash
 python3 scripts/matomo-to-mixpanel/filter_pageviews.py \
   scripts/matomo-to-mixpanel/output/site8-history-through-2026-10/manifest.json \
-  --site-id 8 \
   --count-only \
   --output-dir scripts/matomo-to-mixpanel/output/pageviews-count --resume
 ```

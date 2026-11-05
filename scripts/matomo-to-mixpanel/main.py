@@ -15,7 +15,7 @@ from zoneinfo import ZoneInfo
 ROME = ZoneInfo("Europe/Rome")
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_SITE_ID = 8
-PAGEVIEWS_ONLY = False
+PAGEVIEWS_ONLY = True
 VISIT_BOUND_TOLERANCE_SECONDS = 5
 EVENT_NAMES = {
     "action": "Page Viewed",

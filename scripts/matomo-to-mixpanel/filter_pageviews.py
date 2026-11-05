@@ -17,7 +17,7 @@ from multiprocessing import get_context
 from pathlib import Path
 from typing import Any
 
-from main import matches_pageview
+from main import DEFAULT_SITE_ID, SCRIPT_DIR, matches_pageview
 from sql_pipeline import atomic_json
 from sql_storage import DiskGuard
 from upload import Manifest, Part, locked
@@ -253,7 +253,7 @@ class Progress:
 def run(manifest_path: Path, output: Path, *, count_only: bool = False,
         resume: bool = False, max_files: int | None = None,
         reserve_bytes: int = 2 * 1024**3, host_volume: Path | None = None,
-        workers: int = 1, site_id: int | None = None,
+        workers: int = 1, site_id: int | None = DEFAULT_SITE_ID,
         start: date | None = None, end: date | None = None) -> dict[str, Any]:
     if max_files is not None and max_files < 1:
         raise ValueError("--max-files must be positive")
@@ -330,10 +330,13 @@ def save_report(state: State, manifest: Manifest, output: Path, count_only: bool
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("manifest", type=Path, help="Completed source export manifest.json")
+    parser.add_argument("manifest", type=Path, nargs="?",
+                        default=SCRIPT_DIR / "output" / "site8-history-through-2026-10" / "manifest.json",
+                        help="Source manifest (default: prepared site-8 history)")
     parser.add_argument("--output-dir", type=Path, help="Separate directory for reports/checkpoints and any event files")
     parser.add_argument("--count-only", action="store_true", help="Validate and count without writing event files")
-    parser.add_argument("--site-id", type=int, help="Matomo site selection; use 8 for Developer Portal")
+    parser.add_argument("--site-id", type=int, choices=(DEFAULT_SITE_ID,), default=DEFAULT_SITE_ID,
+                        help="Compatibility option; the site is fixed to Developer Portal (8)")
     parser.add_argument("--from-date", type=date.fromisoformat, help="First inclusive Rome event date")
     parser.add_argument("--to-date", type=date.fromisoformat, help="Last inclusive Rome event date")
     parser.add_argument("--resume", action="store_true", help="Resume the same output directory and mode")
@@ -347,7 +350,7 @@ def main(argv: list[str] | None = None) -> int:
     if not math.isfinite(args.min_free_gib) or args.min_free_gib < 0:
         parser.error("--min-free-gib must be finite and nonnegative")
     mode = "count" if args.count_only else "export"
-    output = args.output_dir or Path(__file__).resolve().parent / "output" / datetime.now(UTC).strftime(
+    output = args.output_dir or SCRIPT_DIR / "output" / datetime.now(UTC).strftime(
         f"pageviews-{mode}-%Y%m%dT%H%M%S-%fZ")
     print(f"Output directory: {output}", flush=True)
     try:

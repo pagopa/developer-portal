@@ -328,5 +328,30 @@ class FilterTests(unittest.TestCase):
             self.assertEqual(filtering.main([str(self.manifest), "--max-files", "0"]), 1)
 
 
+    def test_default_run_selects_site8_without_selection_arguments(self) -> None:
+        other = json.loads(event('Page Viewed', 22))
+        other['properties']['matomo_site_id'] = '4'
+        source = export(self.root / 'mixed-defaults', [[self.first, json.dumps(other).encode() + b'\n']])
+        report = filtering.run(source, self.output, reserve_bytes=0)
+        self.assertEqual(report['site_id'], 8)
+        self.assertEqual(report['kept_events'], 1)
+
+    def test_no_arguments_filters_the_prepared_history_of_site8(self) -> None:
+        base = self.root / 'default-input'
+        parent = base / 'output'
+        parent.mkdir(parents=True)
+        other = json.loads(event('Page Viewed', 22))
+        other['properties']['matomo_site_id'] = '4'
+        export(parent / 'site8-history-through-2026-10',
+               [[self.first, json.dumps(other).encode() + b'\n', event('Matomo Custom Event', 23)]])
+        with patch.object(filtering, 'SCRIPT_DIR', base):
+            self.assertEqual(filtering.main([]), 0)
+        reports = list(parent.glob('pageviews-export-*/report.json'))
+        self.assertEqual(len(reports), 1)
+        report = json.loads(reports[0].read_text())
+        self.assertEqual(report['site_id'], 8)
+        self.assertEqual((report['kept_events'], report['excluded_events']), (1, 2))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -106,7 +106,8 @@ def run_compact(source: Path, output: Path, site: int | None = None,
                 start: date | None = None, end: date | None = None, prefix: str = '',
                 include_unplayed: bool = False, *, resume: bool = False,
                 part_events: int = 2000, part_bytes: int = 8 * 1024**2,
-                reserve_bytes: int = 2 * 1024**3, host_volume: Path | None = None) -> dict[str, Any]:
+                reserve_bytes: int = 2 * 1024**3, host_volume: Path | None = None,
+                pageviews_only: bool = False) -> dict[str, Any]:
     from from_sql import (Progress, ROME, VISIT_BOUND_TOLERANCE_SECONDS, build_action,
                           calculate_durations, convert_action, index_dump, records,
                           utc_seconds, visit_data)
@@ -121,7 +122,10 @@ def run_compact(source: Path, output: Path, site: int | None = None,
               'start': str(start), 'end': str(end), 'prefix': prefix,
               'include_unplayed': include_unplayed, 'part_events': part_events,
               'part_bytes': part_bytes}
+    if pageviews_only:
+        config['pageviews_only'] = True
     report: dict[str, Any] = {'status': 'running', 'site_id': site,
+        'event_scope': 'pageviews' if pageviews_only else 'all', 'non_pageview_actions_skipped': 0,
         'from_date': str(start) if start else None, 'to_date': str(end) if end else None,
         'sites': {}, 'first_visit_date': None, 'last_visit_date': None,
         'visits': 0, 'actions': 0, 'converted_actions': 0, 'rejected_actions': 0,
@@ -167,6 +171,8 @@ def run_compact(source: Path, output: Path, site: int | None = None,
                      'inserts': {}, 'files': [], 'issues_offset': 0,
                      'export_table': 0, 'export_seq': 0, 'processed': 0}
             db.checkpoint(state)
+        report.setdefault('event_scope', 'pageviews' if pageviews_only else 'all')
+        report.setdefault('non_pageview_actions_skipped', 0)
         report['status'] = 'running'
         report.pop('failure', None)
         with (output / 'issues.ndjson').open('ab') as issues:
@@ -268,50 +274,56 @@ def run_compact(source: Path, output: Path, site: int | None = None,
                         ref = {'table': table, 'id': key, 'matomo_visit_id': row['idvisit']}
                         if table == 'log_media' and not include_unplayed and not row.get('watched_time'):
                             report['unplayed_media_skipped'] += 1
+                        elif pageviews_only and table != 'log_link_visit_action':
+                            report['actions'] += 1
+                            report['non_pageview_actions_skipped'] += 1
                         else:
                             report['actions'] += 1
                             try:
                                 raw_visit = db.lookup('log_visit', row['idvisit'])
                                 visit = visit_data(raw_visit)
                                 action, extra = build_action(db, table, row)
-                                stamp = utc_seconds(row['server_time'])
-                                lower, upper = visit['firstActionTimestamp'], visit['lastActionTimestamp']
-                                if not lower - VISIT_BOUND_TOLERANCE_SECONDS <= stamp <= upper + VISIT_BOUND_TOLERANCE_SECONDS:
-                                    raise ValueError('timestamp: outside visit bounds')
-                                notes: list[dict[str, str]] = []
-                                if not lower <= stamp <= upper:
-                                    notes.append({'reason': 'timestamp: accepted within 5-second tolerance'})
-                                visit.update(firstActionTimestamp=stamp, lastActionTimestamp=stamp)
-                                event = convert_action(visit, action, notes)
-                                props = event['properties']
-                                props.update(source_format='matomo_sql', sql_mapping_version='1')
-                                if extra.pop('_stack_omitted', False):
-                                    notes.append({'reason': 'compressed crash stack omitted'})
-                                props.update(extra)
-                                for field in ('config_browser_name', 'config_os', 'config_device_type',
-                                              'config_device_brand', 'location_region', 'referer_type'):
-                                    if raw_visit.get(field) not in (None, ''):
-                                        props['matomo_' + field] = raw_visit[field]
-                                if table == 'log_media':
-                                    props['$insert_id'] = str(uuid5(NAMESPACE_URL, f"matomo/{row['idsite']}/{row['idvisit']}/mediaView:{row['idview']}"))
-                                    if not row.get('watched_time'):
-                                        event['event'] = 'Media Observed'
-                                line = json.dumps(event, ensure_ascii=False, allow_nan=False, separators=(',', ':')).encode()
-                                digest = hashlib.sha256(line).digest()
-                                seen = db.execute('SELECT hash FROM seen WHERE id=?', (props['$insert_id'],)).fetchone()
-                                if seen:
-                                    if seen[0] != digest:
-                                        raise ValueError('Conflicting records share an event identifier')
-                                    report['duplicates'] += 1
+                                if pageviews_only and action['type'] != 'action':
+                                    report['non_pageview_actions_skipped'] += 1
                                 else:
-                                    # Validate the part size before registering the identifier.
-                                    if len(line) + 1 > part_bytes:
-                                        raise ValueError('One event exceeds the configured output part size')
-                                    db.execute('INSERT INTO seen VALUES (?,?)', (props['$insert_id'], digest))
-                                    parts.write(line + b'\n')
-                                    report['converted_actions'] += 1
-                                    for note in notes:
-                                        issue('warning', note['reason'], ref)
+                                    stamp = utc_seconds(row['server_time'])
+                                    lower, upper = visit['firstActionTimestamp'], visit['lastActionTimestamp']
+                                    if not lower - VISIT_BOUND_TOLERANCE_SECONDS <= stamp <= upper + VISIT_BOUND_TOLERANCE_SECONDS:
+                                        raise ValueError('timestamp: outside visit bounds')
+                                    notes: list[dict[str, str]] = []
+                                    if not lower <= stamp <= upper:
+                                        notes.append({'reason': 'timestamp: accepted within 5-second tolerance'})
+                                    visit.update(firstActionTimestamp=stamp, lastActionTimestamp=stamp)
+                                    event = convert_action(visit, action, notes)
+                                    props = event['properties']
+                                    props.update(source_format='matomo_sql', sql_mapping_version='1')
+                                    if extra.pop('_stack_omitted', False):
+                                        notes.append({'reason': 'compressed crash stack omitted'})
+                                    props.update(extra)
+                                    for field in ('config_browser_name', 'config_os', 'config_device_type',
+                                                  'config_device_brand', 'location_region', 'referer_type'):
+                                        if raw_visit.get(field) not in (None, ''):
+                                            props['matomo_' + field] = raw_visit[field]
+                                    if table == 'log_media':
+                                        props['$insert_id'] = str(uuid5(NAMESPACE_URL, f"matomo/{row['idsite']}/{row['idvisit']}/mediaView:{row['idview']}"))
+                                        if not row.get('watched_time'):
+                                            event['event'] = 'Media Observed'
+                                    line = json.dumps(event, ensure_ascii=False, allow_nan=False, separators=(',', ':')).encode()
+                                    digest = hashlib.sha256(line).digest()
+                                    seen = db.execute('SELECT hash FROM seen WHERE id=?', (props['$insert_id'],)).fetchone()
+                                    if seen:
+                                        if seen[0] != digest:
+                                            raise ValueError('Conflicting records share an event identifier')
+                                        report['duplicates'] += 1
+                                    else:
+                                        # Validate the part size before registering the identifier.
+                                        if len(line) + 1 > part_bytes:
+                                            raise ValueError('One event exceeds the configured output part size')
+                                        db.execute('INSERT INTO seen VALUES (?,?)', (props['$insert_id'], digest))
+                                        parts.write(line + b'\n')
+                                        report['converted_actions'] += 1
+                                        for note in notes:
+                                            issue('warning', note['reason'], ref)
                             except (ValueError, TypeError, UnicodeError) as error:
                                 report['rejected_actions'] += 1
                                 issue('error', str(error), ref)

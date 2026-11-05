@@ -227,7 +227,73 @@ class PipelineTests(unittest.TestCase):
         resumed = invoke(*args, '--resume')
         self.assertEqual(resumed.returncode, 0, resumed.stderr)
         report = json.loads((self.output / 'files/dump.sql/report.json').read_text())
-        self.assertEqual(report['converted_actions'], 3)
+        self.assertEqual(report['converted_actions'], 1)
+
+
+
+
+class PageviewProfileTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.root = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        self.source = self.root / 'dump.sql'
+        self.output = self.root / 'pageviews'
+        self.enterContext(redirect_stdout(io.StringIO()))
+        data = fixture()
+        base = data['log_link_visit_action'][0]
+        data['log_action'].extend([
+            {'idaction': 4, 'type': 2, 'name': 'https://example.com/out', 'url_prefix': None},
+            {'idaction': 5, 'type': 3, 'name': 'https://example.com/file', 'url_prefix': None},
+            {'idaction': 6, 'type': 10, 'name': 'custom', 'url_prefix': None}])
+        data['log_link_visit_action'].extend([
+            {**base, 'idlink_va': 101, 'idaction_url': 4},
+            {**base, 'idlink_va': 102, 'idaction_url': 5},
+            {**base, 'idlink_va': 103, 'idaction_url': 6},
+            {**base, 'idlink_va': 104, 'idaction_name': 3}])
+        dump(self.source, data)
+
+    def test_pageview_selection_preserves_payload_and_reconciles_other_types(self) -> None:
+        full = self.root / 'all'
+        run(self.source, full, site=8, reserve_bytes=0)
+        report = run(self.source, self.output, site=8, pageviews_only=True, reserve_bytes=0)
+        expected = [event for event in read_events(full) if event['event'] == 'Page Viewed']
+        self.assertEqual(read_events(self.output), expected)
+        self.assertEqual(len(expected), 1)
+        self.assertEqual(report['event_scope'], 'pageviews')
+        self.assertEqual(report['non_pageview_actions_skipped'], 6)
+        self.assertEqual(report['unplayed_media_skipped'], 1)
+        self.assertEqual(report['actions'], report['converted_actions'] + report['non_pageview_actions_skipped'])
+        self.assertEqual(report['rejected_actions'], 0)
+
+    def test_filtered_actions_are_checkpointed_and_do_not_repeat_after_resume(self) -> None:
+        original = Store.checkpoint
+        interrupted = False
+
+        def checkpoint(db: Store, state: dict) -> None:
+            nonlocal interrupted
+            original(db, state)
+            if not interrupted and state['phase'] == 'export' and state['processed'] >= 2:
+                interrupted = True
+                raise KeyboardInterrupt()
+
+        with patch.object(Store, 'checkpoint', checkpoint), self.assertRaises(KeyboardInterrupt):
+            run(self.source, self.output, site=8, pageviews_only=True, part_events=1, reserve_bytes=0)
+        report = run(self.source, self.output, site=8, pageviews_only=True,
+                     part_events=1, resume=True, reserve_bytes=0)
+        self.assertTrue(interrupted)
+        self.assertEqual(report['status'], 'completed')
+        self.assertEqual(report['converted_actions'], 1)
+        self.assertEqual(report['non_pageview_actions_skipped'], 6)
+        self.assertEqual(report['duplicates'], 0)
+        self.assertEqual(len(read_events(self.output)), 1)
+
+    def test_resume_cannot_change_between_all_events_and_pageviews(self) -> None:
+        for selected in (False, True):
+            with self.subTest(pageviews_only=selected):
+                destination = self.root / str(selected)
+                run(self.source, destination, site=8, pageviews_only=selected, reserve_bytes=0)
+                with self.assertRaisesRegex(ValueError, 'options changed'):
+                    run(self.source, destination, site=8, pageviews_only=not selected,
+                        resume=True, reserve_bytes=0)
 
 
 if __name__ == '__main__':

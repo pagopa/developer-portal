@@ -13,7 +13,7 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
-from main import DEFAULT_SITE_ID, ROME, SCRIPT_DIR, VISIT_BOUND_TOLERANCE_SECONDS, convert_action
+from main import DEFAULT_SITE_ID, PAGEVIEWS_ONLY, ROME, SCRIPT_DIR, VISIT_BOUND_TOLERANCE_SECONDS, convert_action
 from sql_storage import Store
 
 # This reader targets the single-line extended INSERT format of the supplied dump.
@@ -382,12 +382,12 @@ def run(source: Path, output: Path, site: int | None = None,
         prefix: str = '', include_unplayed: bool = False, *,
         resume: bool = False, part_events: int = 2000,
         part_bytes: int = 8 * 1024**2, reserve_bytes: int = 2 * 1024**3,
-        host_volume: Path | None = None) -> dict[str, Any]:
+        host_volume: Path | None = None, pageviews_only: bool = False) -> dict[str, Any]:
     from sql_pipeline import run_compact
 
     return run_compact(source, output, site, start, end, prefix, include_unplayed,
                        resume=resume, part_events=part_events, part_bytes=part_bytes,
-                       reserve_bytes=reserve_bytes, host_volume=host_volume)
+                       reserve_bytes=reserve_bytes, host_volume=host_volume, pageviews_only=pageviews_only)
 
 
 def format_summary(report: dict[str, Any], output: Path) -> str:
@@ -432,6 +432,8 @@ def format_summary(report: dict[str, Any], output: Path) -> str:
                   f'Import file list: {output / "manifest.json"}',
                   f'Detailed report: {output / "report.json"}',
                   f'Individual errors and warnings: {output / "issues.ndjson"}'])
+    if report.get('event_scope') == 'pageviews':
+        lines.append(f"- Non-pageview actions excluded: {report.get('non_pageview_actions_skipped', 0):,}.")
     return '\n'.join(lines) + '\n'
 
 
@@ -458,7 +460,7 @@ def main(argv: list[str] | None = None) -> int:
         report = run(args.input, output, args.site_id, args.from_date, args.to_date,
                      args.table_prefix, args.include_unplayed_media, resume=args.resume,
                      part_events=args.part_events, part_bytes=args.part_mib * 1024**2,
-                     reserve_bytes=int(args.min_free_gib * 1024**3), host_volume=args.host_volume)
+                     reserve_bytes=int(args.min_free_gib * 1024**3), host_volume=args.host_volume, pageviews_only=PAGEVIEWS_ONLY)
     except KeyboardInterrupt:
         print(f'Interrupted. Resume with the same input/options and --resume --output-dir {output}', file=sys.stderr)
         return 130
