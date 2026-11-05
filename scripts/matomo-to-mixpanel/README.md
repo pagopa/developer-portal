@@ -2,13 +2,10 @@
 
 The converter reads uncompressed Matomo MySQL dumps or Matomo visit/action JSON
 and writes NDJSON for the Mixpanel [Import API](https://docs.mixpanel.com/reference/import-events).
-SQL input retains its existing event-family mapping and recovery support. The
-restored JSON reader exports pageviews by default; `--all-events` retains every
-supported JSON action type using the same event mapping and IDs.
-
-**The Developer Portal scope is Matomo site 8 (`developer.pagopa.it`). Always pass
-`--site-id 8` for this migration.** The original SQL dump contains data from nine
-sites; omitting this filter includes other websites and test environments.
+SQL and JSON inputs export **all supported events from Matomo site 8
+(`developer.pagopa.it`) by default**. No site or event-selection parameter is
+needed. The command-line readers accept only site 8; `--site-id 8` and
+`--all-events` remain compatibility options for older commands.
 
 Python >=3.12,<3.14 on Linux/WSL and the system `Europe/Rome` timezone database are required.
 No third-party Python packages or platform credentials are needed.
@@ -16,8 +13,8 @@ No third-party Python packages or platform credentials are needed.
 From the repository root:
 
 ```bash
-python3 scripts/matomo-to-mixpanel/main.py /path/to/matomo.sql --site-id 8
-python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 --site-id 8
+python3 scripts/matomo-to-mixpanel/main.py /path/to/matomo.sql
+python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10
 python3 -m unittest discover -s scripts/matomo-to-mixpanel -p 'test_*.py' -v
 ```
 
@@ -36,7 +33,7 @@ required.
 
 For the simplest workflow, place the uncompressed `.sql` file in `input/`
 and run `python3 scripts/matomo-to-mixpanel/main.py` without parameters.
-It processes all sites and dates, reports site IDs with visit counts and the
+It processes site 8 across all dates, reports visit counts and the
 observed date range, and writes one output directory per SQL file under
 `output/sql-.../files/`. The run's `summary.json` lists each input, exit code
 and report path. Individual `report.json` files hold conversion totals.
@@ -64,12 +61,12 @@ Alternatively, restrict a test to one day and site:
 
 ```bash
 python3 scripts/matomo-to-mixpanel/main.py /path/to/matomo.sql \
-  --site-id 8 \
+  \
   --from-date 2026-06-07 \
   --to-date 2026-06-07
 ```
 
-An explicit SQL path also works without any filters. Nonpositive site IDs and
+An explicit SQL path also selects site 8 automatically. Other site IDs and
 reversed date ranges are rejected before creating output.
 
 When supplied, dates are inclusive and select visits by their first action's **Europe/Rome
@@ -97,7 +94,7 @@ Estimates vary with disk speed and record complexity; they are not deadlines.
 
 The SQL reader stages only columns used by the existing mapping, validation,
 identifiers and joins, using native SQLite values instead of full JSON rows.
-All sites and dates remain included by default, including page-performance
+All dates for site 8 remain included by default, including page-performance
 components and consumed media segments. Insert buffers are limited to 5,000 rows
 or approximately 8 MiB, the database cache to 64 MiB, and lookup caching to
 2,048 small records or approximately 8 MiB. Each complete source INSERT is a
@@ -242,80 +239,57 @@ history; review the run's summaries and rejection reasons before import.
 
 ## Visit/action JSON through main.py
 
-The previous JSON reading path is restored alongside SQL input. It accepts a
-single JSON file or a directory of daily visit arrays containing `actionDetails`.
-Daily aggregate reports and API error objects cannot produce individual events
-and are rejected. Windows `:Zone.Identifier` sidecar files are ignored.
+The reader accepts a single JSON file or a directory of daily visit arrays with
+`actionDetails`. It retains all supported event types from site 8 automatically:
+pageviews, downloads, outbound links, custom events, crashes, media interactions
+and site searches. Other sites are excluded. The existing event mapping and IDs
+are preserved. Aggregate reports and API error objects are rejected; Windows
+`:Zone.Identifier` sidecars are ignored.
 
-For a count-only run on the Developer Portal's complete October data:
+To export complete October data:
+
+```bash
+python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10
+```
+
+To count without writing event files:
 
 ```bash
 python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
-  --site-id 8 --from-date 2026-10-01 --to-date 2026-10-31 \
   --count-only --output-dir scripts/matomo-to-mixpanel/output/october-site8-count
 ```
 
-To generate the actual export, omit `--count-only` and choose a new directory:
+No `--site-id` or `--all-events` flag is needed. The direct `from_json.py` entry
+point has the same defaults. Compatibility options cannot select another site.
+SQL already exports all supported event types. The command-line behavior is
+specific to the `matomo-to-mixpanel` branch; the separate `pageviews-only` branch
+selects pageviews by default.
 
-```bash
-python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
-  --site-id 8 --from-date 2026-10-01 --to-date 2026-10-31 \
-  --output-dir scripts/matomo-to-mixpanel/output/october-site8-pageviews
-```
+Optional `--from-date` and `--to-date` select inclusive **actual event dates** in
+Europe/Rome, including DST transitions. A visit starting before the period can
+still contribute events inside it. SQL dates instead select visits by their first
+action, as documented above. SQL-only flags (`--resume`, `--table-prefix`,
+`--include-unplayed-media`) are rejected for JSON input.
 
-These commands retain only pageviews. To prepare all supported event types from
-the same site, use the explicit JSON-only option `--all-events`:
-
-```bash
-python3 scripts/matomo-to-mixpanel/main.py scripts/matomo-to-mixpanel/input/10 \
-  --site-id 8 --all-events --from-date 2026-10-01 --to-date 2026-10-31 \
-  --output-dir scripts/matomo-to-mixpanel/output/october-site8-all-events
-```
-
-This includes pageviews, downloads, outbound links, custom events, crashes, media
-interactions and site searches. Unsupported types and invalid actions are
-reported as rejections; optional malformed metadata remains a warning. Existing
-IDs, mappings and validation rules are unchanged. `--all-events` is also supported
-with `--count-only`. SQL already considers all supported event types and rejects
-this JSON-only option. JSON conversion and its tests do not require the uploader.
-
-Only events belonging to the selected site and **actual event dates** are
-retained. JSON dates are inclusive Europe/Rome dates, including the October DST
-transition; a visit beginning before the selected period can still contribute
-events inside it. This differs from the SQL visit-start-date selection described
-above. SQL-only flags (`--resume`, `--table-prefix`, `--include-unplayed-media`)
-are rejected for JSON input.
-
-The reader processes one JSON file at a time, with a 64 MiB per-file limit.
-It checks source fingerprints and detects duplicate/conflicting event IDs across
-files. Events are packed across daily files into numbered parts containing
-at most 2,000 events and 8 MiB by default. `--part-events` and `--part-mib` adjust
-these limits. The in-memory duplicate index grows with the selected event count.
-The standard disk-space checks and output lock also apply.
+The reader processes one JSON file at a time (64 MiB maximum), verifies source
+fingerprints, detects duplicate/conflicting IDs across files and packs events
+into parts of at most 2,000 events and 8 MiB by default. `--part-events` and
+`--part-mib` adjust the limits. The duplicate index grows with the selected count.
+Disk-space checks and an output lock also apply.
 
 Each run writes `report.json`, `summary.txt` and redacted `issues.ndjson`.
-Export runs also write event parts and a compatible `manifest.json`, published
-only after all input files complete. Count-only runs write no event parts or
-upload manifest. Invalid visits or rejected actions produce
-`completed_with_errors` and exit code 1; accepted events remain reported and are
-included in the manifest. `events_by_type` counts retained unique events;
-`date_filtered_actions` counts valid actions outside the selected dates. The
-pageview-specific date counters and first/last timestamps remain available, while
-`first_event` and `last_event` cover every selected event family.
-Fatal errors leave no upload manifest. JSON runs use a new output directory and
-do not support resume; restart a failed JSON conversion in a new directory.
+Export runs publish event files and `manifest.json` only after all inputs finish;
+count-only runs write no payload or manifest. Invalid visits or rejected actions
+produce `completed_with_errors` and exit code 1; accepted events remain available
+in the manifest. Fatal errors leave no manifest. JSON runs require a new output
+directory and do not support resume. Reports include counts by event type,
+filtered dates, duplicates, errors and first/last retained timestamps.
 
-The supplied site-8 JSON files contain 41,522 pageviews in August 2026, 56,730 in
-September and 62,553 in October, with no duplicate pageview IDs across the three
-months. October produces 32 parts and 67,440,504 bytes of event payload.
-With `--all-events`, the same October JSON contains 68,707 valid unique events:
-62,553 pageviews, 4,014 outbound links, 1,204 downloads, 510 custom events, 418
-crashes and 8 media interactions, in 35 parts and 73,334,279 payload bytes.
-Another 46 crash actions fail the existing
-timestamp/visit-bound validation and are reported as rejections; the run therefore
-finishes with `completed_with_errors`. Do not relax timestamp validation to include
-them. These exports and dry-run checks are entirely local; the historical import
-remains pending the team's decision.
+The supplied complete October data produces 68,707 accepted events in 35 parts,
+73,334,279 bytes: 62,553 pageviews, 4,014 outbound links, 1,204 downloads, 510 custom
+events, 418 crashes and 8 media interactions. Another 46 crash actions fail the
+existing timestamp/visit-bound validation and remain rejected. Nothing is
+uploaded during conversion; historical ingestion remains a separate decision.
 
 ## Developer Portal scope and historical counts
 
@@ -348,8 +322,8 @@ original conversion, plus the 46 rejected crash actions in the complete October
 JSON. The prepared export below contains the entire-history selection.
 
 The date cutoff is explicit and must be refreshed for the actual import date.
-The default SQL/JSON readers remain usable for other sites when a different site
-selection is deliberately supplied.
+The command-line SQL/JSON readers are fixed to site 8. Their reusable internal
+mapping/storage functions retain explicit selection support for tests and other callers.
 
 September's JSON has three more pageviews than the accepted SQL export. Those
 three action IDs occur in the original SQL rejection log as `Unsupported SQL

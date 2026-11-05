@@ -14,6 +14,8 @@ from zoneinfo import ZoneInfo
 
 ROME = ZoneInfo("Europe/Rome")
 SCRIPT_DIR = Path(__file__).resolve().parent
+DEFAULT_SITE_ID = 8
+PAGEVIEWS_ONLY = False
 VISIT_BOUND_TOLERANCE_SECONDS = 5
 EVENT_NAMES = {
     "action": "Page Viewed",
@@ -283,7 +285,8 @@ def main() -> int:
     parser.add_argument("input", type=Path, nargs="?", default=SCRIPT_DIR / "input",
                         help="SQL dump, visits JSON, or directory (mixed directories prefer SQL)")
     parser.add_argument("--output-dir", type=Path, help="New output directory (default: timestamped run in output)")
-    parser.add_argument("--site-id", type=int, help="Optional site filter (default: all sites)")
+    parser.add_argument("--site-id", type=int, choices=(DEFAULT_SITE_ID,), default=DEFAULT_SITE_ID,
+                        help="Compatibility option; the site is fixed to Developer Portal (8)")
     parser.add_argument("--from-date", type=date.fromisoformat, help="First Rome calendar date, YYYY-MM-DD")
     parser.add_argument("--to-date", type=date.fromisoformat, help="Last Rome calendar date, YYYY-MM-DD")
     parser.add_argument("--table-prefix", default=None, help="Table prefix, for example matomo_")
@@ -295,9 +298,10 @@ def main() -> int:
     parser.add_argument("--min-free-gib", type=float, default=2)
     parser.add_argument("--host-volume", type=Path)
     parser.add_argument("--count-only", action="store_true", help="JSON only: validate/count without event files")
-    parser.add_argument("--all-events", action="store_true",
-                        help="JSON only: retain all supported event types instead of pageviews only")
+    parser.add_argument("--all-events", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if PAGEVIEWS_ONLY and args.all_events:
+        parser.error("This branch exports Page Viewed events only")
     if args.resume and args.output_dir is None:
         parser.error("--resume requires --output-dir")
     if args.resume and not args.output_dir.is_dir():
@@ -334,8 +338,6 @@ def main() -> int:
         return json_main(json_args)
     if args.count_only:
         parser.error("--count-only applies to JSON input; use filter_pageviews.py on an existing SQL export")
-    if args.all_events:
-        parser.error("--all-events applies only to JSON input; SQL already considers all supported event types")
 
     # The reader is separate because it contains the SQL parser and table joins.
     from from_sql import main as sql_main
@@ -360,7 +362,7 @@ def main() -> int:
         return sql_main([str(args.input), *sql_args])
 
     print(f"Found {len(sql_files)} SQL dump(s).")
-    print("Unspecified site/date filters include all sites and dates in the dump.")
+    print("Site 8 (Developer Portal) is selected; unspecified dates include its entire history.")
     output = args.output_dir or SCRIPT_DIR / 'output' / datetime.now(UTC).strftime('sql-%Y%m%dT%H%M%S-%fZ')
     try:
         if output.resolve().is_relative_to(args.input.resolve()):

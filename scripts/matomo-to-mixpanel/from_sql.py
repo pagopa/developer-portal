@@ -13,7 +13,7 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
-from main import ROME, SCRIPT_DIR, VISIT_BOUND_TOLERANCE_SECONDS, convert_action
+from main import DEFAULT_SITE_ID, ROME, SCRIPT_DIR, VISIT_BOUND_TOLERANCE_SECONDS, convert_action
 from sql_storage import Store
 
 # This reader targets the single-line extended INSERT format of the supplied dump.
@@ -438,7 +438,8 @@ def format_summary(report: dict[str, Any], output: Path) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path, help='Uncompressed .sql mysqldump')
-    parser.add_argument('--site-id', type=int, help='Optional site filter (default: all sites)')
+    parser.add_argument('--site-id', type=int, choices=(DEFAULT_SITE_ID,), default=DEFAULT_SITE_ID,
+                        help='Compatibility option; the site is fixed to Developer Portal (8)')
     parser.add_argument('--from-date', type=date.fromisoformat, help='Optional first date')
     parser.add_argument('--to-date', type=date.fromisoformat, help='Optional last date')
     parser.add_argument('--table-prefix', default='', help='For example matomo_ (default: no prefix)')

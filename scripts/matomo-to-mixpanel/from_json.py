@@ -11,7 +11,7 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
-from main import ROME, SCRIPT_DIR, convert_action, identifier, matches_event
+from main import DEFAULT_SITE_ID, PAGEVIEWS_ONLY, ROME, SCRIPT_DIR, convert_action, identifier, matches_event
 from sql_pipeline import Parts, atomic_json
 from sql_storage import DiskGuard
 
@@ -71,9 +71,9 @@ def format_summary(report: dict[str, Any]) -> str:
     return '\n'.join(lines) + '\n'
 
 
-def run(source: Path, output: Path, *, site_id: int | None = None,
+def run(source: Path, output: Path, *, site_id: int | None = DEFAULT_SITE_ID,
         start: date | None = None, end: date | None = None, count_only: bool = False,
-        all_events: bool = False,
+        all_events: bool = not PAGEVIEWS_ONLY,
         part_events: int = 2000, part_bytes: int = 8 * 1024**2,
         reserve_bytes: int = 2 * 1024**3, host_volume: Path | None = None) -> dict[str, Any]:
     if site_id is not None and site_id <= 0:
@@ -229,17 +229,19 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path, help='Matomo visit/action JSON file or directory')
     parser.add_argument('--output-dir', type=Path)
-    parser.add_argument('--site-id', type=int, help='Matomo site selection; use 8 for Developer Portal')
+    parser.add_argument('--site-id', type=int, choices=(DEFAULT_SITE_ID,), default=DEFAULT_SITE_ID,
+                        help='Compatibility option; the site is fixed to Developer Portal (8)')
     parser.add_argument('--from-date', type=date.fromisoformat, help='First inclusive Rome event date')
     parser.add_argument('--to-date', type=date.fromisoformat, help='Last inclusive Rome event date')
     parser.add_argument('--count-only', action='store_true')
-    parser.add_argument('--all-events', action='store_true',
-                        help='Retain all supported event types; default: pageviews only')
+    parser.add_argument('--all-events', action='store_true', default=not PAGEVIEWS_ONLY, help=argparse.SUPPRESS)
     parser.add_argument('--part-events', type=int, default=2000)
     parser.add_argument('--part-mib', type=int, default=8)
     parser.add_argument('--min-free-gib', type=float, default=2)
     parser.add_argument('--host-volume', type=Path)
     args = parser.parse_args(argv)
+    if PAGEVIEWS_ONLY and args.all_events:
+        parser.error('This branch exports Page Viewed events only')
     if not math.isfinite(args.min_free_gib) or args.min_free_gib < 0:
         parser.error('--min-free-gib must be finite and nonnegative')
     output = args.output_dir or SCRIPT_DIR / 'output' / datetime.now(UTC).strftime('json-%Y%m%dT%H%M%S-%fZ')

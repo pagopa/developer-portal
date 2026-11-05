@@ -40,6 +40,7 @@ class JsonTests(unittest.TestCase):
         return path
 
     def convert(self, **options: object) -> dict:
+        options.setdefault('all_events', False)
         return from_json.run(self.source, self.output, reserve_bytes=0, **options)
 
     def manifest(self) -> dict:
@@ -307,15 +308,36 @@ class JsonTests(unittest.TestCase):
         self.assertEqual(len(self.events()), 2)
         self.assertIn('JSON all-event export completed', result.stdout)
 
-    def test_main_explains_that_sql_already_considers_all_event_types(self) -> None:
-        source = self.source / 'dump.sql'
-        source.write_text('')
+    def test_json_defaults_keep_all_event_types_of_site8_without_selection_flags(self) -> None:
+        selected = visit()
+        selected['actionDetails'].append({**selected['actionDetails'][0], 'type': 'event', 'pageId': 101})
+        self.write('day.json', [selected, visit(site=4, visit_id=43)])
+        report = from_json.run(self.source, self.output, reserve_bytes=0)
+        self.assertEqual(report['site_id'], 8)
+        self.assertEqual(report['event_scope'], 'all')
+        self.assertEqual(report['converted_actions'], 2)
+        self.assertEqual(report['other_site_actions_skipped'], 1)
+        self.assertEqual({event['event'] for event in self.events()}, {'Page Viewed', 'Matomo Custom Event'})
+
+    def test_main_defaults_keep_all_event_types_of_site8(self) -> None:
+        selected = visit()
+        selected['actionDetails'].append({**selected['actionDetails'][0], 'type': 'event', 'pageId': 101})
+        self.write('day.json', [selected, visit(site=4, visit_id=43)])
         result = subprocess.run([sys.executable, '-B', str(Path(__file__).with_name('main.py')),
-                                 str(source), '--all-events', '--output-dir', str(self.output)],
+                                 str(self.source), '--min-free-gib', '0', '--output-dir', str(self.output)],
                                 capture_output=True, text=True)
-        self.assertEqual(result.returncode, 2)
-        self.assertIn('SQL already considers all supported event types', result.stderr)
-        self.assertFalse(self.output.exists())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(self.events()), 2)
+        self.assertEqual({event['properties']['matomo_site_id'] for event in self.events()}, {'8'})
+
+    def test_cli_readers_reject_other_sites_before_creating_output(self) -> None:
+        self.write('day.json', [visit()])
+        for script in ('main.py', 'from_json.py', 'from_sql.py'):
+            result = subprocess.run([sys.executable, '-B', str(Path(__file__).with_name(script)),
+                                     str(self.source / 'day.json'), '--site-id', '4',
+                                     '--output-dir', str(self.output)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertFalse(self.output.exists())
 
 
 if __name__ == '__main__':

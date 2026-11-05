@@ -84,13 +84,13 @@ class MainCLITests(unittest.TestCase):
             source = root / 'input.sql'
             dump(source, fixture())
             cases = [['--site-id', '8', '--from-date', '2026-06-08', '--to-date', '2026-06-07'],
-                     ['--site-id', '0', '--from-date', '2026-06-07', '--to-date', '2026-06-07']]
+                     ['--site-id', '0'], ['--site-id', '4']]
             for options in cases:
                 result = self.invoke(str(source), *options, '--output-dir', str(root / 'out'))
                 self.assertEqual(result.returncode, 2)
                 self.assertFalse((root / 'out').exists())
 
-    def test_no_arguments_discovers_sql_and_includes_all_sites_and_dates(self) -> None:
+    def test_no_arguments_discovers_sql_and_keeps_only_site8_all_events(self) -> None:
         import main as entry
 
         with tempfile.TemporaryDirectory() as directory:
@@ -112,13 +112,15 @@ class MainCLITests(unittest.TestCase):
             summary = json.loads(summaries[0].read_text())
             report_path = summaries[0].parent / summary['results'][0]['report']
             report = json.loads(report_path.read_text())
-            self.assertEqual(report['sites'], {'8': 1, '9': 1})
+            self.assertEqual(report['sites'], {'8': 1})
             self.assertEqual(report['first_visit_date'], '2026-06-07')
-            self.assertEqual(report['last_visit_date'], '2026-06-08')
+            self.assertEqual(report['last_visit_date'], '2026-06-07')
             events = read_events(report_path.parent)
             media = [e for e in events if e['event'] == 'Media Interaction']
-            self.assertEqual(len(media), 2)
-            self.assertEqual(len({e['properties']['$insert_id'] for e in media}), 2)
+            self.assertEqual(len(media), 1)
+            self.assertEqual({event['properties']['matomo_site_id'] for event in events}, {'8'})
+            self.assertEqual({event['event'] for event in events},
+                             {'Page Viewed', 'Media Interaction', 'Application Crash'})
 
     def test_sql_without_filters_and_optional_site_filter(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
