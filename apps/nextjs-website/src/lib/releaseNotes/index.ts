@@ -1,6 +1,8 @@
 import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 import { fetchReleaseNotes } from './fetcher';
 import { mapReleaseNotesProps } from './mapper';
+import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export const ReleaseNotesRepository = {
   /**
@@ -24,5 +26,72 @@ export const ReleaseNotesRepository = {
   ): Promise<ReleaseNotePageProps | undefined> => {
     const all = await ReleaseNotesRepository.getAll(locale);
     return all.find((releaseNote) => releaseNote.product.slug === productSlug);
+  },
+  getLocalizedPaths: async (
+    currentLocale: string,
+    releaseNote: ReleaseNotePageProps,
+    currentPagePath: string
+  ): Promise<
+    readonly { readonly langCode: string; readonly path: string }[]
+  > => {
+    if (!releaseNote.documentId) {
+      return [];
+    }
+
+    const basePath = releaseNote.path;
+
+    if (
+      currentPagePath !== basePath &&
+      !currentPagePath.startsWith(`${basePath}/`)
+    ) {
+      return [];
+    }
+
+    const relativePath = currentPagePath.slice(basePath.length);
+
+    const translations = await Promise.all(
+      SUPPORTED_LOCALES.filter(
+        ({ langCode }) => langCode !== currentLocale
+      ).map(async ({ langCode }) => {
+        const releaseNotes = await ReleaseNotesRepository.getAll(langCode);
+
+        const translatedReleaseNote = releaseNotes.find(
+          ({ documentId }) => documentId === releaseNote.documentId
+        );
+
+        if (!translatedReleaseNote) {
+          return null;
+        }
+
+        const translatedPath = `${translatedReleaseNote.path}${relativePath}`;
+
+        const metadata = await getReleaseNotesMetadata(
+          langCode,
+          translatedReleaseNote.dirName
+        );
+
+        return metadata.some(({ path }) => path === translatedPath)
+          ? {
+              langCode,
+              path: translatedPath,
+            }
+          : null;
+      })
+    );
+
+    return [
+      {
+        langCode: currentLocale,
+        path: currentPagePath,
+      },
+      ...translations.filter(
+        (
+          translation
+        ): translation is {
+          readonly langCode: string;
+          readonly path: string;
+        } => translation !== null
+      ),
+    ];
   },
 };

@@ -9,6 +9,7 @@ import type { Tutorial } from '@/lib/tutorials/types';
 import React from 'react';
 import type { ProductParams } from '@/lib/products/types';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -20,6 +21,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 import { notFound } from 'next/navigation';
+import { TutorialListPageRepository } from '@/lib/tutorialListPage';
 
 export type TutorialsPageProps = {
   readonly updatedAt: string;
@@ -31,6 +33,7 @@ export type TutorialsPageProps = {
   readonly tutorials: readonly Tutorial[];
   readonly seo?: SEO;
   readonly enableFilters?: boolean;
+  readonly documentId?: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -45,21 +48,37 @@ export async function generateMetadata(
     notFound();
   }
 
-  if (tutorialListPage?.seo) {
-    return makeMetadataFromStrapi(tutorialListPage.seo);
+  const { abstract, path, product, seo } = tutorialListPage;
+
+  if (seo) {
+    const metadata = makeMetadataFromStrapi(seo);
+
+    if (!seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await TutorialListPageRepository.getLocalizedPaths(
+      locale,
+      tutorialListPage
+    );
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
+      },
+    };
   }
 
   return makeMetadata({
     parent: resolvedParent,
-    title: [tutorialListPage?.abstract?.title, tutorialListPage?.product.name]
-      .filter(Boolean)
-      .join(' | '),
-    description: tutorialListPage?.abstract?.description,
-    url: tutorialListPage?.path,
-    image: tutorialListPage?.product.logo?.url,
+    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
+    description: abstract?.description,
+    url: path,
+    image: product.logo?.url,
   });
 }
-
 const TutorialsPage = async (props: ProductParams) => {
   const { locale, productSlug } = await props.params;
   const tutorialListPage = await getTutorialListPageProps(locale, productSlug);

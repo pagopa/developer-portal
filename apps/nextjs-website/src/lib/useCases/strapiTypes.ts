@@ -29,6 +29,7 @@ export type StrapiUseCase = StrapiBaseUseCase & {
   readonly bannerLinks?: readonly StrapiBannerLink[];
   readonly relatedLinks?: StrapiRelatedLinks;
   readonly seo?: StrapiSeo;
+  readonly documentId?: string;
 };
 
 export type StrapiUseCases = Paginated<StrapiUseCase>;
@@ -37,4 +38,5 @@ export type UseCaseProps = UseCase & {
   readonly productSlug: string;
   readonly relatedLinks?: RelatedLinksProps;
   readonly bannerLinks?: readonly BannerLinkProps[];
+  readonly documentId?: string;
 };

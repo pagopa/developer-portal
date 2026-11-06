@@ -34,6 +34,7 @@ export type ApiData = BaseApiData & {
   readonly product?: StrapiBaseProductWithRelations;
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
+  readonly documentId?: string;
 };
 
 export type BaseApiDataList = RootEntity<readonly BaseApiData[]>;

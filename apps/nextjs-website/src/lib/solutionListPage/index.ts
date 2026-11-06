@@ -2,6 +2,7 @@ import { buildEnv } from '@/lib/buildEnv';
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { fetchSolutionListPage } from './fetcher';
 import { mapSolutionListPageProps } from './mapper';
+import { getAvailableSingleTypeLocales } from '../strapi/getAvailableSingleTypeLocales';
 
 export const SolutionListPageRepository = {
   /**
@@ -16,4 +17,11 @@ export const SolutionListPageRepository = {
     );
     return mapSolutionListPageProps(locale, strapiSolutionListPage);
   },
+
+  getAvailableLocales: (currentLocale: string): Promise<readonly string[]> =>
+    getAvailableSingleTypeLocales(
+      'solution-list-page',
+      currentLocale,
+      buildEnv
+    ),
 };

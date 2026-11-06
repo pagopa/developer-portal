@@ -5,6 +5,7 @@ import NewsShowcase, {
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -25,6 +26,7 @@ import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarH
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import { HomepageRepository } from '@/lib/homepage';
 import UserCancellationSnackbar from '@/components/atoms/UserCancellationSnackbar/UserCancellationSnackbar';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 type EcosystemCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
@@ -70,15 +72,35 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   const homepage = await HomepageRepository.get(locale);
 
-  return homepage.seo
-    ? makeMetadataFromStrapi(homepage.seo)
-    : makeMetadata({
-        title: 'PagoPA DevPortal',
-        description: 'Il portale per gli sviluppatori di PagoPA',
-        url: `${baseUrl}/${locale}`,
+  if (!homepage.seo) {
+    return makeMetadata({
+      title: 'PagoPA DevPortal',
+      description: 'Il portale per gli sviluppatori di PagoPA',
+      url: `${baseUrl}/${locale}`,
+      langCode: locale,
+    });
+  }
 
-        langCode: locale,
-      });
+  const metadata = makeMetadataFromStrapi(homepage.seo);
+
+  if (!homepage.seo.canonicalURL) {
+    return metadata;
+  }
+
+  const availableLocales = await HomepageRepository.getAvailableLocales(locale);
+
+  const localizedPaths = availableLocales.map((langCode) => ({
+    langCode,
+    path: `/${langCode}`,
+  }));
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(homepage.seo.canonicalURL, localizedPaths),
+    },
+  };
 }
 
 const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {

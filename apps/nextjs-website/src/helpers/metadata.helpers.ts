@@ -14,6 +14,11 @@ type MakeMetadataParams = {
 
 type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
 
+type LocalizedPath = {
+  readonly langCode: string;
+  readonly path: string;
+};
+
 export const makeMetadata: MakeMetadataFunction = ({
   parent,
   title,
@@ -136,4 +141,29 @@ const enhanceTwitterMetadata = (
   });
 
   return enhancedTwitter;
+};
+
+export const makeHreflangAlternates = (
+  canonicalURL: string,
+  localizedPaths: readonly LocalizedPath[]
+): Metadata['alternates'] => {
+  const languages = Object.fromEntries(
+    localizedPaths.map(({ langCode, path }) => [
+      langCode,
+      new URL(path, canonicalURL).toString(),
+    ])
+  );
+
+  const italianPath = localizedPaths.find(
+    ({ langCode }) => langCode === 'it'
+  )?.path;
+
+  return {
+    languages: {
+      ...languages,
+      ...(italianPath && {
+        'x-default': new URL(italianPath, canonicalURL).toString(),
+      }),
+    },
+  };
 };

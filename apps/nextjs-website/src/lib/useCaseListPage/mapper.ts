@@ -62,6 +62,7 @@ export function mapUseCaseListPageProps(
       );
 
       return {
+        documentId: attributes.documentId,
         path: `/${locale}/${attributes.product.slug}/use-cases`,
         product: makeBaseProductWithoutLogoProps(locale, attributes.product),
         abstract: {

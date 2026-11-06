@@ -59,6 +59,7 @@ export type SolutionTemplateProps = {
   readonly path?: string;
   readonly seo?: SEO;
   readonly updatedAt?: string;
+  readonly documentId?: string;
 };
 
 const SolutionTemplate = ({

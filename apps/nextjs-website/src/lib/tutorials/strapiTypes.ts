@@ -31,11 +31,13 @@ export type StrapiTutorial = StrapiBaseTutorial & {
   readonly bannerLinks?: readonly StrapiBannerLink[];
   readonly relatedLinks?: StrapiRelatedLinks;
   readonly seo?: StrapiSeo;
+  readonly documentId?: string;
 };
 
 export type StrapiTutorials = Paginated<StrapiTutorial>;
 
 export type TutorialProps = Tutorial & {
+  readonly documentId?: string;
   readonly productSlug: string;
   readonly relatedLinks?: RelatedLinksProps;
   readonly bannerLinks?: readonly BannerLinkProps[];

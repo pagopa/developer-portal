@@ -2,6 +2,7 @@ import { buildEnv } from '@/lib/buildEnv';
 import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 import { fetchUseCaseListPages } from './fetcher';
 import { mapUseCaseListPageProps } from './mapper';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export const UseCaseListPageRepository = {
   /**
@@ -30,5 +31,50 @@ export const UseCaseListPageRepository = {
     return all.find(
       (useCaseListPage) => useCaseListPage.product.slug === productSlug
     );
+  },
+  getLocalizedPaths: async (
+    currentLocale: string,
+    useCaseListPage: UseCasesPageProps
+  ): Promise<
+    readonly { readonly langCode: string; readonly path: string }[]
+  > => {
+    if (!useCaseListPage.documentId) {
+      return [];
+    }
+
+    const otherLocales = SUPPORTED_LOCALES.filter(
+      ({ langCode }) => langCode !== currentLocale
+    );
+
+    const translations = await Promise.all(
+      otherLocales.map(async ({ langCode }) => {
+        const pages = await UseCaseListPageRepository.getAll(langCode);
+
+        const translatedPage = pages.find(
+          ({ documentId }) => documentId === useCaseListPage.documentId
+        );
+
+        return translatedPage?.path
+          ? {
+              langCode,
+              path: translatedPage.path,
+            }
+          : null;
+      })
+    );
+
+    return [
+      ...(useCaseListPage.path
+        ? [{ langCode: currentLocale, path: useCaseListPage.path }]
+        : []),
+      ...translations.filter(
+        (
+          translation
+        ): translation is {
+          readonly langCode: string;
+          readonly path: string;
+        } => translation !== null
+      ),
+    ];
   },
 };

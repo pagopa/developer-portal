@@ -34,6 +34,7 @@ export function mapGuideListPages(
           })),
         ];
         return {
+          documentId: attributes.documentId,
           path: `/${locale}/${productData.slug}/guides`,
           product,
           abstract: {

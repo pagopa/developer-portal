@@ -7,6 +7,7 @@ import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -22,6 +23,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { GuidesRepository } from '@/lib/guides';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,6 +59,7 @@ export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { locale, productGuidePage, productSlug } = await props.params;
+
   const guidePageProps = await getGuidePage(
     productGuidePage ?? [''],
     locale,
@@ -67,27 +70,48 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (guidePageProps?.seo) {
-    return makeMetadataFromStrapi(guidePageProps?.seo);
+  const { seo, page, source, version } = guidePageProps;
+
+  if (seo) {
+    const metadata = makeMetadataFromStrapi(seo);
+
+    if (!seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await GuidesRepository.getLocalizedPaths(
+      locale,
+      guidePageProps,
+      page.path,
+      source.pathPrefix,
+      version
+    );
+
+    const canonicalURL = new URL(page.path, seo.canonicalURL).toString();
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        canonical: canonicalURL,
+        ...makeHreflangAlternates(canonicalURL, localizedPaths),
+      },
+    };
   }
+
   return {
-    ...(guidePageProps?.version?.main ? {} : { robots: 'noindex, follow' }),
+    ...(version.main ? {} : { robots: 'noindex, follow' }),
     ...makeMetadata({
       title: [
-        guidePageProps ? guidePageProps.page.title : '',
-        guidePageProps
-          ? [
-              guidePageProps.guide.name,
-              !guidePageProps.version.main && guidePageProps.version.name,
-            ]
-              .filter(Boolean)
-              .join(' ')
-          : [],
-        guidePageProps ? guidePageProps.product.name : '',
+        page.title,
+        [guidePageProps.guide.name, !version.main && version.name]
+          .filter(Boolean)
+          .join(' '),
+        guidePageProps.product.name,
       ]
         .filter(Boolean)
         .join(' | '),
-      url: guidePageProps?.page.path,
+      url: page.path,
     }),
   };
 }

@@ -1,3 +1,4 @@
+import { SUPPORTED_LOCALES } from '@/locales';
 import { fetchApiDataListPages } from './fetcher';
 import { mapApiDataListPages } from './mapper';
 import { ApiDataListPageTemplateProps } from './types';
@@ -31,5 +32,49 @@ export const ApiDataListPagesRepository = {
     return all.find(
       (apiDataListPage) => apiDataListPage.product.slug === productSlug
     );
+  },
+  getLocalizedPaths: async (
+    currentLocale: string,
+    page: ApiDataListPageTemplateProps
+  ): Promise<
+    readonly { readonly langCode: string; readonly path: string }[]
+  > => {
+    if (!page.documentId) {
+      return [];
+    }
+
+    const translations = await Promise.all(
+      SUPPORTED_LOCALES.filter(
+        ({ langCode }) => langCode !== currentLocale
+      ).map(async ({ langCode }) => {
+        const pages = await ApiDataListPagesRepository.getAll(langCode);
+
+        const translatedPage = pages.find(
+          ({ documentId }) => documentId === page.documentId
+        );
+
+        return translatedPage
+          ? {
+              langCode,
+              path: `/${langCode}/${translatedPage.product.slug}/api`,
+            }
+          : null;
+      })
+    );
+
+    return [
+      {
+        langCode: currentLocale,
+        path: `/${currentLocale}/${page.product.slug}/api`,
+      },
+      ...translations.filter(
+        (
+          translation
+        ): translation is {
+          readonly langCode: string;
+          readonly path: string;
+        } => translation !== null
+      ),
+    ];
   },
 };

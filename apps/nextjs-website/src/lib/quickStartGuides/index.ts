@@ -2,6 +2,7 @@ import { buildEnv } from '@/lib/buildEnv';
 import { fetchQuickStartGuides } from './fetcher';
 import { mapQuickStartGuidesProps } from './mapper';
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export const QuickStartGuidesRepository = {
   /**
@@ -32,5 +33,50 @@ export const QuickStartGuidesRepository = {
     return all.find(
       (quickStartGuide) => quickStartGuide.product.slug === productSlug
     );
+  },
+  getLocalizedPaths: async (
+    currentLocale: string,
+    quickStartGuide: QuickStartGuidePageProps
+  ): Promise<
+    readonly { readonly langCode: string; readonly path: string }[]
+  > => {
+    if (!quickStartGuide.documentId) {
+      return [];
+    }
+
+    const otherLocales = SUPPORTED_LOCALES.filter(
+      ({ langCode }) => langCode !== currentLocale
+    );
+
+    const translations = await Promise.all(
+      otherLocales.map(async ({ langCode }) => {
+        const guides = await QuickStartGuidesRepository.getAll(langCode);
+
+        const translatedGuide = guides.find(
+          ({ documentId }) => documentId === quickStartGuide.documentId
+        );
+
+        return translatedGuide?.path
+          ? {
+              langCode,
+              path: translatedGuide.path,
+            }
+          : null;
+      })
+    );
+
+    return [
+      ...(quickStartGuide.path
+        ? [{ langCode: currentLocale, path: quickStartGuide.path }]
+        : []),
+      ...translations.filter(
+        (
+          translation
+        ): translation is {
+          readonly langCode: string;
+          readonly path: string;
+        } => translation !== null
+      ),
+    ];
   },
 };

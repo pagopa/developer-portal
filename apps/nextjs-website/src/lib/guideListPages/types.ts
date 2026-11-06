@@ -16,6 +16,7 @@ export type StrapiGuideListPage = {
   readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
   readonly seo?: StrapiSeo;
   readonly updatedAt: string;
+  readonly documentId?: string;
 };
 
 export type StrapiGuideListPages = Paginated<StrapiGuideListPage>;

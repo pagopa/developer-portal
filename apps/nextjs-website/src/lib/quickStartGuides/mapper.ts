@@ -35,6 +35,7 @@ export function mapQuickStartGuidesProps(
 
       try {
         return {
+          documentId: quickStart.documentId,
           abstract: {
             title: quickStart.title,
             description: quickStart.description,

@@ -14,6 +14,7 @@ import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import type { ProductParams } from '@/lib/products/types';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -30,6 +31,7 @@ import type { UseCase } from '@/lib/useCases/types';
 import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
 import OverviewItemList from '@/components/organisms/OverviewItemList/OverviewItemList';
 import { notFound } from 'next/navigation';
+import { OverviewsRepository } from '@/lib/overviews';
 
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -101,6 +103,7 @@ export type OverviewPageProps = {
     }[];
   };
   readonly seo?: SEO;
+  readonly documentId?: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -118,7 +121,24 @@ export async function generateMetadata(
   const { product, path, seo, hero } = overview;
 
   if (seo) {
-    return makeMetadataFromStrapi(seo);
+    const metadata = makeMetadataFromStrapi(seo);
+
+    if (!seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await OverviewsRepository.getLocalizedPaths(
+      locale,
+      overview
+    );
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
+      },
+    };
   }
 
   return makeMetadata({

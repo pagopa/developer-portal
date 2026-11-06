@@ -2,6 +2,7 @@ import { buildEnv } from '@/lib/buildEnv';
 import type { Webinar } from '@/lib/webinars/types';
 import { fetchWebinars } from './fetcher';
 import { mapWebinarsProps } from './mapper';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export const WebinarsRepository = {
   /**
@@ -25,5 +26,49 @@ export const WebinarsRepository = {
   ): Promise<Webinar | undefined> => {
     const all = await WebinarsRepository.getAll(locale);
     return all.find((webinar) => webinar.slug === webinarSlug);
+  },
+  getLocalizedPaths: async (
+    currentLocale: string,
+    webinar: Webinar
+  ): Promise<
+    readonly { readonly langCode: string; readonly path: string }[]
+  > => {
+    if (!webinar.documentId) {
+      return [];
+    }
+
+    const translations = await Promise.all(
+      SUPPORTED_LOCALES.filter(
+        ({ langCode }) => langCode !== currentLocale
+      ).map(async ({ langCode }) => {
+        const webinars = await WebinarsRepository.getAll(langCode);
+
+        const translatedWebinar = webinars.find(
+          ({ documentId }) => documentId === webinar.documentId
+        );
+
+        return translatedWebinar
+          ? {
+              langCode,
+              path: `/${langCode}/webinars/${translatedWebinar.slug}`,
+            }
+          : null;
+      })
+    );
+
+    return [
+      {
+        langCode: currentLocale,
+        path: `/${currentLocale}/webinars/${webinar.slug}`,
+      },
+      ...translations.filter(
+        (
+          translation
+        ): translation is {
+          readonly langCode: string;
+          readonly path: string;
+        } => translation !== null
+      ),
+    ];
   },
 };
