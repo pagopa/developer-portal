@@ -1,5 +1,5 @@
 # Use the specific version requested
-FROM docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine
+FROM docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine@sha256:68b9d9eb4cb949a03d1f90b76fd8d396a5999dd57ba1ee914ea36c77716ce937
 
 # 1. Switch to root briefly to handle file permissions
 USER root
