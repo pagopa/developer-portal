@@ -2,7 +2,8 @@ import { buildEnv } from '@/lib/buildEnv';
 import { fetchQuickStartGuides } from './fetcher';
 import { mapQuickStartGuidesProps } from './mapper';
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
-import { SUPPORTED_LOCALES } from '@/locales';
+
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
 
 export const QuickStartGuidesRepository = {
   /**
@@ -34,49 +35,20 @@ export const QuickStartGuidesRepository = {
       (quickStartGuide) => quickStartGuide.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for a Quick Start Guide page.
+   * @param currentLocale The locale of the current Quick Start Guide page.
+   * @param quickStartGuide The current Quick Start Guide page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedPaths: async (
     currentLocale: string,
     quickStartGuide: QuickStartGuidePageProps
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!quickStartGuide.documentId) {
-      return [];
-    }
-
-    const otherLocales = SUPPORTED_LOCALES.filter(
-      ({ langCode }) => langCode !== currentLocale
-    );
-
-    const translations = await Promise.all(
-      otherLocales.map(async ({ langCode }) => {
-        const guides = await QuickStartGuidesRepository.getAll(langCode);
-
-        const translatedGuide = guides.find(
-          ({ documentId }) => documentId === quickStartGuide.documentId
-        );
-
-        return translatedGuide?.path
-          ? {
-              langCode,
-              path: translatedGuide.path,
-            }
-          : null;
-      })
-    );
-
-    return [
-      ...(quickStartGuide.path
-        ? [{ langCode: currentLocale, path: quickStartGuide.path }]
-        : []),
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: quickStartGuide,
+      getAll: QuickStartGuidesRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

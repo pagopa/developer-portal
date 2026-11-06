@@ -2,7 +2,8 @@ import { buildEnv } from '@/lib/buildEnv';
 import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 import { fetchTutorialListPages } from './fetcher';
 import { mapTutorialListPageProps } from './mapper';
-import { SUPPORTED_LOCALES } from '@/locales';
+
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
 
 export const TutorialListPageRepository = {
   /**
@@ -33,49 +34,20 @@ export const TutorialListPageRepository = {
       (tutorialListPage) => tutorialListPage.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for a Tutorial List page.
+   * @param currentLocale The locale of the current Tutorial List page.
+   * @param tutorialListPage The current Tutorial List page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedPaths: async (
     currentLocale: string,
     tutorialListPage: TutorialsPageProps
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!tutorialListPage.documentId) {
-      return [];
-    }
-
-    const otherLocales = SUPPORTED_LOCALES.filter(
-      ({ langCode }) => langCode !== currentLocale
-    );
-
-    const translations = await Promise.all(
-      otherLocales.map(async ({ langCode }) => {
-        const pages = await TutorialListPageRepository.getAll(langCode);
-
-        const translatedPage = pages.find(
-          ({ documentId }) => documentId === tutorialListPage.documentId
-        );
-
-        return translatedPage?.path
-          ? {
-              langCode,
-              path: translatedPage.path,
-            }
-          : null;
-      })
-    );
-
-    return [
-      ...(tutorialListPage.path
-        ? [{ langCode: currentLocale, path: tutorialListPage.path }]
-        : []),
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: tutorialListPage,
+      getAll: TutorialListPageRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

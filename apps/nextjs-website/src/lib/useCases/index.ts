@@ -4,7 +4,8 @@ import { getMarkdownContentDict } from '@/helpers/s3Metadata.helpers';
 import { fetchUseCases } from './fetcher';
 import { mapUseCasesProps } from './mapper';
 import type { UseCaseProps } from './strapiTypes';
-import { SUPPORTED_LOCALES } from '@/locales';
+
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
 
 export const UseCasesRepository = {
   /**
@@ -37,50 +38,17 @@ export const UseCasesRepository = {
     const all = await UseCasesRepository.getAll(locale);
     return all.find((useCase) => useCase.path === path);
   },
-  getLocalizedPaths: async (
-    currentLocale: string,
-    useCase: UseCaseProps
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!useCase.documentId) {
-      return [];
-    }
-
-    const otherLocales = SUPPORTED_LOCALES.filter(
-      ({ langCode }) => langCode !== currentLocale
-    );
-
-    const translations = await Promise.all(
-      otherLocales.map(async ({ langCode }) => {
-        const useCases = await UseCasesRepository.getAll(langCode);
-
-        const translatedUseCase = useCases.find(
-          ({ documentId }) => documentId === useCase.documentId
-        );
-
-        return translatedUseCase
-          ? {
-              langCode,
-              path: translatedUseCase.path,
-            }
-          : null;
-      })
-    );
-
-    return [
-      {
-        langCode: currentLocale,
-        path: useCase.path,
-      },
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  /**
+   * Returns localized paths for a Use Case.
+   * @param currentLocale The locale of the current Use Case.
+   * @param useCase The current Use Case.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (currentLocale: string, useCase: UseCaseProps) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: useCase,
+      getAll: UseCasesRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

@@ -1,8 +1,12 @@
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { fetchSolutions } from './fetcher';
 import { mapSolutionsProps } from './mapper';
-import { SUPPORTED_LOCALES } from '@/locales';
 import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
+
+import {
+  getLocalizedPaths as resolveLocalizedPaths,
+  getLocalizedGitBookPaths as resolveLocalizedGitBookPaths,
+} from '@/helpers/localizedPaths.helpers';
 
 export const SolutionRepository = {
   /**
@@ -29,118 +33,42 @@ export const SolutionRepository = {
     const all = await SolutionRepository.getAll(locale);
     return all.find((solution) => solution.slug === slug);
   },
-
+  /**
+   * Returns localized paths for the main Solution page.
+   * @param currentLocale The locale of the current Solution.
+   * @param solution The current Solution.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedPaths: async (
     currentLocale: string,
     solution: SolutionTemplateProps
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!solution.documentId) {
-      return [];
-    }
-
-    const translations = await Promise.all(
-      SUPPORTED_LOCALES.filter(
-        ({ langCode }) => langCode !== currentLocale
-      ).map(async ({ langCode }) => {
-        const solutions = await SolutionRepository.getAll(langCode);
-
-        const translatedSolution = solutions.find(
-          ({ documentId }) => documentId === solution.documentId
-        );
-
-        return translatedSolution
-          ? {
-              langCode,
-              path: `/${langCode}/solutions/${translatedSolution.slug}`,
-            }
-          : null;
-      })
-    );
-
-    return [
-      {
-        langCode: currentLocale,
-        path: `/${currentLocale}/solutions/${solution.slug}`,
-      },
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: solution,
+      getAll: SolutionRepository.getAll,
+      getPath: (locale, item) => `/${locale}/solutions/${item.slug}`,
+    }),
+  /**
+   * Returns localized paths for a Solution GitBook page, excluding unavailable translations.
+   * @param currentLocale The locale of the current Solution GitBook page.
+   * @param solution The Solution associated with the current page.
+   * @param currentPagePath The full path of the current GitBook page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedGitBookPaths: async (
     currentLocale: string,
     solution: SolutionTemplateProps,
     currentPagePath: string
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!solution.documentId || !currentPagePath) {
-      return [];
-    }
-
-    const basePath = `/${currentLocale}/solutions/${solution.slug}/details`;
-
-    if (
-      currentPagePath !== basePath &&
-      !currentPagePath.startsWith(`${basePath}/`)
-    ) {
-      return [];
-    }
-
-    const relativePath = currentPagePath.slice(basePath.length);
-
-    const translations = await Promise.all(
-      SUPPORTED_LOCALES.filter(
-        ({ langCode }) => langCode !== currentLocale
-      ).map(async ({ langCode }) => {
-        const solutions = await SolutionRepository.getAll(langCode);
-
-        const translatedSolution = solutions.find(
-          ({ documentId }) => documentId === solution.documentId
-        );
-
-        if (!translatedSolution) {
-          return null;
-        }
-
-        const translatedBasePath = `/${langCode}/solutions/${translatedSolution.slug}/details`;
-
-        const translatedPath = `${translatedBasePath}${relativePath}`;
-
-        const metadata = await getSolutionsMetadata(
-          langCode,
-          translatedSolution.dirName
-        );
-
-        return metadata.some(({ path }) => path === translatedPath)
-          ? {
-              langCode,
-              path: translatedPath,
-            }
-          : null;
-      })
-    );
-
-    return [
-      {
-        langCode: currentLocale,
-        path: currentPagePath,
-      },
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  ) =>
+    resolveLocalizedGitBookPaths({
+      currentLocale,
+      currentItem: solution,
+      currentPagePath,
+      getAll: SolutionRepository.getAll,
+      getBasePath: (locale, item) =>
+        `/${locale}/solutions/${item.slug}/details`,
+      getMetadataPaths: (locale, item) =>
+        getSolutionsMetadata(locale, item.dirName),
+    }),
 };

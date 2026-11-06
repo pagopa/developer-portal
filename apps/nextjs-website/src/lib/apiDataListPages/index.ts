@@ -1,7 +1,8 @@
-import { SUPPORTED_LOCALES } from '@/locales';
 import { fetchApiDataListPages } from './fetcher';
 import { mapApiDataListPages } from './mapper';
 import { ApiDataListPageTemplateProps } from './types';
+
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
 
 export const ApiDataListPagesRepository = {
   /**
@@ -33,48 +34,20 @@ export const ApiDataListPagesRepository = {
       (apiDataListPage) => apiDataListPage.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for an API Data List page.
+   * @param currentLocale The locale of the current API Data List page.
+   * @param page The current API Data List page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedPaths: async (
     currentLocale: string,
     page: ApiDataListPageTemplateProps
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!page.documentId) {
-      return [];
-    }
-
-    const translations = await Promise.all(
-      SUPPORTED_LOCALES.filter(
-        ({ langCode }) => langCode !== currentLocale
-      ).map(async ({ langCode }) => {
-        const pages = await ApiDataListPagesRepository.getAll(langCode);
-
-        const translatedPage = pages.find(
-          ({ documentId }) => documentId === page.documentId
-        );
-
-        return translatedPage
-          ? {
-              langCode,
-              path: `/${langCode}/${translatedPage.product.slug}/api`,
-            }
-          : null;
-      })
-    );
-
-    return [
-      {
-        langCode: currentLocale,
-        path: `/${currentLocale}/${page.product.slug}/api`,
-      },
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: page,
+      getAll: ApiDataListPagesRepository.getAll,
+      getPath: (locale, item) => `/${locale}/${item.product.slug}/api`,
+    }),
 };

@@ -48,6 +48,15 @@ export const GuidesRepository = {
         guide.guide.slug === guideSlug && guide.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for a versioned Guide GitBook page, including only pages found in the translated metadata.
+   * @param currentLocale The locale of the current Guide GitBook page.
+   * @param guide The Guide document identifier used to find translations.
+   * @param currentPagePath The full path of the current GitBook page.
+   * @param currentPathPrefix The path prefix used to calculate the relative GitBook path.
+   * @param currentVersion The selected Guide version, including its main flag and name.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedPaths: async (
     currentLocale: string,
     guide: Pick<Guide, 'documentId'>,

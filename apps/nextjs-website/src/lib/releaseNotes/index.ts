@@ -2,7 +2,8 @@ import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/
 import { fetchReleaseNotes } from './fetcher';
 import { mapReleaseNotesProps } from './mapper';
 import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
-import { SUPPORTED_LOCALES } from '@/locales';
+
+import { getLocalizedGitBookPaths as resolveLocalizedGitBookPaths } from '@/helpers/localizedPaths.helpers';
 
 export const ReleaseNotesRepository = {
   /**
@@ -27,71 +28,25 @@ export const ReleaseNotesRepository = {
     const all = await ReleaseNotesRepository.getAll(locale);
     return all.find((releaseNote) => releaseNote.product.slug === productSlug);
   },
+  /**
+   * Returns localized paths for a Release Note GitBook page, excluding unavailable translations.
+   * @param currentLocale The locale of the current Release Note page.
+   * @param releaseNote The Release Note associated with the current page.
+   * @param currentPagePath The full path of the current GitBook page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
   getLocalizedPaths: async (
     currentLocale: string,
     releaseNote: ReleaseNotePageProps,
     currentPagePath: string
-  ): Promise<
-    readonly { readonly langCode: string; readonly path: string }[]
-  > => {
-    if (!releaseNote.documentId) {
-      return [];
-    }
-
-    const basePath = releaseNote.path;
-
-    if (
-      currentPagePath !== basePath &&
-      !currentPagePath.startsWith(`${basePath}/`)
-    ) {
-      return [];
-    }
-
-    const relativePath = currentPagePath.slice(basePath.length);
-
-    const translations = await Promise.all(
-      SUPPORTED_LOCALES.filter(
-        ({ langCode }) => langCode !== currentLocale
-      ).map(async ({ langCode }) => {
-        const releaseNotes = await ReleaseNotesRepository.getAll(langCode);
-
-        const translatedReleaseNote = releaseNotes.find(
-          ({ documentId }) => documentId === releaseNote.documentId
-        );
-
-        if (!translatedReleaseNote) {
-          return null;
-        }
-
-        const translatedPath = `${translatedReleaseNote.path}${relativePath}`;
-
-        const metadata = await getReleaseNotesMetadata(
-          langCode,
-          translatedReleaseNote.dirName
-        );
-
-        return metadata.some(({ path }) => path === translatedPath)
-          ? {
-              langCode,
-              path: translatedPath,
-            }
-          : null;
-      })
-    );
-
-    return [
-      {
-        langCode: currentLocale,
-        path: currentPagePath,
-      },
-      ...translations.filter(
-        (
-          translation
-        ): translation is {
-          readonly langCode: string;
-          readonly path: string;
-        } => translation !== null
-      ),
-    ];
-  },
+  ) =>
+    resolveLocalizedGitBookPaths({
+      currentLocale,
+      currentItem: releaseNote,
+      currentPagePath,
+      getAll: ReleaseNotesRepository.getAll,
+      getBasePath: (_locale, item) => item.path,
+      getMetadataPaths: (locale, item) =>
+        getReleaseNotesMetadata(locale, item.dirName),
+    }),
 };
