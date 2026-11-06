@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.6.0
+
+### Minor Changes
+
+- 60dc205: Update Quick Start Guide fetcher to reflect Strapi update to v5.61.0
+
 ## 17.5.6
 
 ### Patch Changes
