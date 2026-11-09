@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { useState, useEffect, useCallback } from 'react';
-import { useDynamicSeo } from '@/hooks/useDynamicSeo';
+import { useDynamicSeo, DynamicSeo } from '@/hooks/useDynamicSeo';
 import {
   gitBookPageToBreadcrumbs,
   pageToBreadcrumbs,
@@ -64,11 +64,7 @@ const GitBookTemplate = ({
   });
   const [breadcrumbs, setBreadcrumbs] =
     useState<BreadcrumbSegment[]>(initialBreadcrumbs);
-  const [seo, setSeo] = useState<{
-    metaTitle?: string;
-    metaDescription?: string;
-    canonical?: string;
-  } | null>(null);
+  const [seo, setSeo] = useState<DynamicSeo | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.location.hash) {
@@ -147,9 +143,10 @@ const GitBookTemplate = ({
       // SEO
       if (payload?.seo) {
         setSeo({
-          metaTitle: payload?.seo.metaTitle,
-          metaDescription: payload?.seo.metaDescription || '',
-          canonical: payload?.page?.path,
+          metaTitle: payload.seo.metaTitle,
+          metaDescription: payload.seo.metaDescription || '',
+          canonical: payload.dynamicSeo?.canonical || payload.page.path,
+          languages: payload.dynamicSeo?.languages || {},
         });
       } else {
         const guideTitleBits = compact([
@@ -171,7 +168,8 @@ const GitBookTemplate = ({
         setSeo({
           metaTitle: fallbackTitleParts.join(' | '),
           metaDescription: '',
-          canonical: payload?.page?.path || undefined,
+          canonical: payload.dynamicSeo?.canonical || payload.page.path,
+          languages: payload.dynamicSeo?.languages || {},
         });
       }
       if (typeof window !== 'undefined' && payload?.page?.path) {

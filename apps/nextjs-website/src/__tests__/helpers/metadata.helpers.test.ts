@@ -1,6 +1,7 @@
 import { ResolvedMetadata } from 'next';
 import {
   makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
 } from '@/helpers/metadata.helpers';
 import { baseUrl, websiteName } from '@/config';
@@ -193,7 +194,7 @@ it('should return the correct metadata when parent is missing', () => {
 });
 
 describe('makeHreflangAlternates', () => {
-  const baseUrl = 'https://developer.pagopa.it';
+  const baseUrl = 'https://www.pagopa.it';
 
   it('should generate hreflang alternates for Italian and English', () => {
     const result = makeHreflangAlternates(baseUrl, [
@@ -286,5 +287,49 @@ describe('makeHreflangAlternates', () => {
         'x-default': 'https://www.pagopa.it/it/solutions',
       },
     });
+  });
+});
+
+describe('makeHreflangUrls', () => {
+  const canonicalURL = 'https://www.pagopa.it/it/solutions';
+
+  it('should generate absolute URLs for localized paths', () => {
+    const result = makeHreflangUrls(canonicalURL, [
+      { langCode: 'it', path: '/it/solutions/pagamenti' },
+      { langCode: 'en', path: '/en/solutions/payments' },
+    ]);
+
+    expect(result).toEqual({
+      it: 'https://www.pagopa.it/it/solutions/pagamenti',
+      en: 'https://www.pagopa.it/en/solutions/payments',
+      'x-default': 'https://www.pagopa.it/it/solutions/pagamenti',
+    });
+  });
+
+  it('should generate Italian and x-default only', () => {
+    const result = makeHreflangUrls(canonicalURL, [
+      { langCode: 'it', path: '/it/solutions' },
+    ]);
+
+    expect(result).toEqual({
+      it: 'https://www.pagopa.it/it/solutions',
+      'x-default': 'https://www.pagopa.it/it/solutions',
+    });
+  });
+
+  it('should not generate x-default when Italian is missing', () => {
+    const result = makeHreflangUrls(canonicalURL, [
+      { langCode: 'en', path: '/en/solutions' },
+    ]);
+
+    expect(result).toEqual({
+      en: 'https://www.pagopa.it/en/solutions',
+    });
+  });
+
+  it('should return an empty object when no paths are available', () => {
+    const result = makeHreflangUrls(canonicalURL, []);
+
+    expect(result).toEqual({});
   });
 });

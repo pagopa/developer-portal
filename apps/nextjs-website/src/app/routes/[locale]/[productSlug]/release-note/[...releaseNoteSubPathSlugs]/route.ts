@@ -1,6 +1,8 @@
+import { makeHreflangUrls } from '@/helpers/metadata.helpers';
 import { getReleaseNote } from '@/lib/api';
 import { getUrlReplaceMap } from '@/lib/api';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
+import { ReleaseNotesRepository } from '@/lib/releaseNotes';
 
 export async function GET(
   request: Request,
@@ -32,9 +34,28 @@ export async function GET(
         );
       }
 
-      return getUrlReplaceMap(locale).then((urlReplaceMap) => {
+      return getUrlReplaceMap(locale).then(async (urlReplaceMap) => {
         const { page, product, seo, source, title, bodyConfig } =
           releaseNoteProps;
+
+        const canonicalURL = seo?.canonicalURL
+          ? new URL(page.path, seo.canonicalURL).toString()
+          : undefined;
+
+        const localizedPaths = canonicalURL
+          ? await ReleaseNotesRepository.getLocalizedPaths(
+              locale,
+              releaseNoteProps,
+              page.path
+            )
+          : [];
+
+        const dynamicSeo = {
+          canonical: canonicalURL,
+          languages: canonicalURL
+            ? makeHreflangUrls(canonicalURL, localizedPaths)
+            : {},
+        };
 
         const payload: GitBookContentData = {
           page: page,
@@ -56,6 +77,7 @@ export async function GET(
           },
           seo: seo,
           title: title,
+          dynamicSeo,
         };
 
         return new Response(JSON.stringify(payload), {

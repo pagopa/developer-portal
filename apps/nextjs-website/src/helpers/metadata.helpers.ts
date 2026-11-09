@@ -143,10 +143,10 @@ const enhanceTwitterMetadata = (
   return enhancedTwitter;
 };
 
-export const makeHreflangAlternates = (
+export const makeHreflangUrls = (
   canonicalURL: string,
   localizedPaths: readonly LocalizedPath[]
-): Metadata['alternates'] => {
+): Readonly<Record<string, string>> => {
   const languages = Object.fromEntries(
     localizedPaths.map(({ langCode, path }) => [
       langCode,
@@ -159,11 +159,16 @@ export const makeHreflangAlternates = (
   )?.path;
 
   return {
-    languages: {
-      ...languages,
-      ...(italianPath && {
-        'x-default': new URL(italianPath, canonicalURL).toString(),
-      }),
-    },
+    ...languages,
+    ...(italianPath && {
+      'x-default': new URL(italianPath, canonicalURL).toString(),
+    }),
   };
 };
+
+export const makeHreflangAlternates = (
+  canonicalURL: string,
+  localizedPaths: readonly LocalizedPath[]
+): Metadata['alternates'] => ({
+  languages: makeHreflangUrls(canonicalURL, localizedPaths),
+});
