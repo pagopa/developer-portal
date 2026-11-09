@@ -14,15 +14,17 @@ const ChatbotHistoryLayout = ({
   return (
     <Stack direction='column'>
       <ChatbotHistoryList sessionsList={paginatedSessions.items} />
-      <Box display='flex' marginY='1rem' width='100%' justifyContent='center'>
-        <Pagination
-          count={paginatedSessions.pages}
-          page={paginatedSessions.page}
-          onChange={(_, page) => getSessionsByPage(page)}
-          hidePrevButton={paginatedSessions.page === 1}
-          hideNextButton={paginatedSessions.page === paginatedSessions.pages}
-        />
-      </Box>
+      {paginatedSessions.items.length > 0 && (
+        <Box display='flex' marginY='1rem' width='100%' justifyContent='center'>
+          <Pagination
+            count={paginatedSessions.pages}
+            page={paginatedSessions.page}
+            onChange={(_, page) => getSessionsByPage(page)}
+            hidePrevButton={paginatedSessions.page === 1}
+            hideNextButton={paginatedSessions.page === paginatedSessions.pages}
+          />
+        </Box>
+      )}
     </Stack>
   );
 };
