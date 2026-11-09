@@ -123,9 +123,7 @@ No modules.
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | A name for the project to prefix resources. | `string` | n/a | yes |
 | <a name="input_route53_zone_id"></a> [route53\_zone\_id](#input\_route53\_zone\_id) | The ID of the existing Route 53 hosted zone for the custom domain. | `string` | `null` | no |
 | <a name="input_strapi_api_url"></a> [strapi\_api\_url](#input\_strapi\_api\_url) | The URL of the Strapi API. | `string` | n/a | yes |
-
 | <a name="input_webinar_certificate_min_watch_percentage"></a> [webinar\_certificate\_min\_watch\_percentage](#input\_webinar\_certificate\_min\_watch\_percentage) | Minimum fraction of the webinar duration a user must watch to obtain a certificate (e.g. 0.6 = 60%). Exposed to the webinar certificate Lambda as the MIN\_WATCH\_PERCENTAGE environment variable. | `number` | `0.6` | no |
-
 | <a name="input_webinar_metrics_stage_name"></a> [webinar\_metrics\_stage\_name](#input\_webinar\_metrics\_stage\_name) | The api webinar metrics stage name. | `string` | `"v1"` | no |
 
 ## Outputs
