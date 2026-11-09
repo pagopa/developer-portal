@@ -1,8 +1,7 @@
-import { makeHreflangUrls } from '@/helpers/metadata.helpers';
+import { getGuideSeoUrls } from '@/__tests__/helpers/guideSeo.helpers';
 import { getGuidePage } from '@/lib/api';
 import { getUrlReplaceMap } from '@/lib/api';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
-import { GuidesRepository } from '@/lib/guides';
 
 export async function GET(
   request: Request,
@@ -32,26 +31,13 @@ export async function GET(
       });
     }
 
-    const canonicalURL = guideData.seo?.canonicalURL
-      ? new URL(guideData.page.path, guideData.seo.canonicalURL).toString()
-      : undefined;
-
-    const localizedPaths = canonicalURL
-      ? await GuidesRepository.getLocalizedPaths(
-          locale,
-          guideData,
-          guideData.page.path,
-          guideData.source.pathPrefix,
-          guideData.version
-        )
-      : [];
-
-    const dynamicSeo = {
-      canonical: canonicalURL,
-      languages: canonicalURL
-        ? makeHreflangUrls(canonicalURL, localizedPaths)
-        : {},
-    };
+    const dynamicSeo = await getGuideSeoUrls({
+      currentLocale: locale,
+      guide: guideData,
+      pagePath: guideData.page.path,
+      pathPrefix: guideData.source.pathPrefix,
+      version: guideData.version,
+    });
 
     const payload: GitBookContentData = {
       page: guideData.page,

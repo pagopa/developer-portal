@@ -68,10 +68,20 @@ export async function generateMetadata({
       props.page.path
     );
 
+    const relativePath = props.page.path.slice(props.path.length);
+
+    const canonicalURL = relativePath
+      ? new URL(
+          relativePath.replace(/^\//, ''),
+          `${props.seo.canonicalURL.replace(/\/$/, '')}/`
+        ).toString()
+      : props.seo.canonicalURL;
+
     return {
       ...metadata,
       alternates: {
         ...metadata.alternates,
+        canonical: canonicalURL,
         ...makeHreflangAlternates(props.seo.canonicalURL, localizedPaths),
       },
     };

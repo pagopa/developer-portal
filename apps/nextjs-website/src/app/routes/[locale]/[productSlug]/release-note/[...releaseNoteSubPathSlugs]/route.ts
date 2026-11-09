@@ -38,8 +38,15 @@ export async function GET(
         const { page, product, seo, source, title, bodyConfig } =
           releaseNoteProps;
 
+        const relativePath = page.path.slice(releaseNoteProps.path.length);
+
         const canonicalURL = seo?.canonicalURL
-          ? new URL(page.path, seo.canonicalURL).toString()
+          ? relativePath
+            ? new URL(
+                relativePath.replace(/^\//, ''),
+                `${seo.canonicalURL.replace(/\/$/, '')}/`
+              ).toString()
+            : seo.canonicalURL
           : undefined;
 
         const localizedPaths = canonicalURL

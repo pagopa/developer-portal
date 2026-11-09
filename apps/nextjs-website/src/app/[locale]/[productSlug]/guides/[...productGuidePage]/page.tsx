@@ -7,7 +7,6 @@ import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
-  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -23,7 +22,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { GuidesRepository } from '@/lib/guides';
+import { getGuideSeoUrls } from '@/__tests__/helpers/guideSeo.helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -79,22 +78,20 @@ export async function generateMetadata(props: {
       return metadata;
     }
 
-    const localizedPaths = await GuidesRepository.getLocalizedPaths(
-      locale,
-      guidePageProps,
-      page.path,
-      source.pathPrefix,
-      version
-    );
-
-    const canonicalURL = new URL(page.path, seo.canonicalURL).toString();
+    const { canonical, languages } = await getGuideSeoUrls({
+      currentLocale: locale,
+      guide: guidePageProps,
+      pagePath: page.path,
+      pathPrefix: source.pathPrefix,
+      version,
+    });
 
     return {
       ...metadata,
       alternates: {
         ...metadata.alternates,
-        canonical: canonicalURL,
-        ...makeHreflangAlternates(canonicalURL, localizedPaths),
+        canonical,
+        languages,
       },
     };
   }
