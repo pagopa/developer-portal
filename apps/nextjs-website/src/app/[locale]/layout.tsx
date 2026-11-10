@@ -1,11 +1,9 @@
 import {
   baseUrl,
-  cookieCategory,
   cookieDomainScript,
   cookieScriptUrl,
   isChatbotActive,
   isProduction,
-  matomoScriptSrc,
   mixpanelApiHost,
   mixpanelToken,
   qualtricsFeatureFlag,
@@ -29,7 +27,6 @@ import { notFound } from 'next/navigation';
 import AuthProvider from '@/components/organisms/Auth/AuthProvider';
 import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
 import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
-import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
@@ -39,52 +36,6 @@ import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
 import MixpanelInit from '@/components/atoms/Mixpanel/MixpanelInit';
 import { UserProvider } from '@/helpers/user.helper';
-
-// TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
-const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
-  `
-  var _mtm = window._mtm = window._mtm || [];
-  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-  (function() {
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src='` +
-  matomoScriptSrc +
-  `'; s.parentNode.insertBefore(g,s);
-  })();
-`;
-const MATOMO_TAG_MANAGER_SCRIPT =
-  `
-  var _mtm = window._mtm = window._mtm || [];
-  var waitForTrackerCount = 0;
-  function matomoWaitForTracker() {
-    if (typeof _mtm === 'undefined' || typeof OnetrustActiveGroups === 'undefined') {
-      if (waitForTrackerCount < 40) {
-        setTimeout(matomoWaitForTracker, 250);
-        waitForTrackerCount++;
-        return;
-      }
-    } else {
-      window.addEventListener('OneTrustGroupsUpdated', function () {
-        consentSet();
-      });
-    }
-  }
-
-  function consentSet() {
-    if (OnetrustActiveGroups.includes('${cookieCategory}')) {
-      _mtm.push({ event: 'consent_given' });
-        _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.async=true; g.src='` +
-  matomoScriptSrc +
-  `'; s.parentNode.insertBefore(g,s);
-    } else {
-      _mtm.push({ event: 'consent_withdrawn' });
-    }
-  }
-
-  matomoWaitForTracker();
-`;
 
 const titilliumWeb = Titillium_Web({
   fallback: ['serif'],
@@ -130,20 +81,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className={titilliumWeb.variable}>
-      <head>
-        {isProduction && (
-          <Script
-            id='matomo-tag-manager'
-            key='script-matomo-tag-manager'
-            dangerouslySetInnerHTML={{
-              __html: useNewCookie
-                ? MATOMO_TAG_MANAGER_SCRIPT
-                : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
-            }}
-            strategy='lazyOnload'
-          />
-        )}
-      </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
           locale={locale}
