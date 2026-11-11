@@ -1,6 +1,8 @@
 import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
+
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
 export type ContentHeadingProps = {
   level: number;

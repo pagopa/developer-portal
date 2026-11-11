@@ -1,5 +1,12 @@
 # infrastructure
 
+## 14.7.0
+
+### Minor Changes
+
+- f6dd629: Configure CORS on the CMS media library CloudFront response headers policy so the portal and CMS domains can load media assets.
+- 63ef0dd: Tag the production Langfuse ClickHouse EFS file system for backups.
+
 ## 14.6.0
 
 ### Minor Changes

@@ -24,5 +24,5 @@ This is the PagoPA Developer Portal repository. It is a multi-language project:
 
 ### Terraform (apps/infrastructure/src)
 - Follow the PagoPA standard modules pattern.
-- Always run `terraform fmt` and `tflint`.
 - Infrastructure is AWS-based. Use tags for cost allocation (CostCenter, Owner, Source, and Environment).
+- Never read from the directory ./terraform 

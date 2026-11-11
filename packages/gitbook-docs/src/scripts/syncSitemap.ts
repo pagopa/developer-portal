@@ -5,13 +5,15 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-let */
 
-import { baseUrl } from 'nextjs-website/src/config';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { makeS3Client } from '../helpers/s3Bucket.helper';
 import dotenv from 'dotenv';
+import { browserEnv } from 'nextjs-website/src/browserConfig';
 
 // Load environment variables
 dotenv.config();
+
+const { baseUrl } = browserEnv.config;
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
