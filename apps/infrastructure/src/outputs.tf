@@ -32,3 +32,19 @@ output "video_streaming" {
 
   description = "Outputs from the video streaming module."
 }
+
+output "backup" {
+  description = "AWS Backup resources by region; null when enable_backup is false."
+  value = var.enable_backup ? {
+    for region, backup in {
+      "eu-south-1"   = module.backup_eu_south_1[0]
+      "eu-central-1" = module.backup_eu_central_1[0]
+      } : region => {
+      plan_arn                = backup.backup_plan_arn
+      role_arn                = backup.backup_role_arn
+      vault_arn               = backup.backup_vault_arn
+      vault_name              = backup.backup_vault_name
+      notifications_topic_arn = backup.notifications_topic_arn
+    }
+  } : null
+}

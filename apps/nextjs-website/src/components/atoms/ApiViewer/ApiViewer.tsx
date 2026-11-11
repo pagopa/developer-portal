@@ -3,8 +3,10 @@
 'use client';
 import { ElementType, FC, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import 'rapidoc';
+
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
 type ApiViewerProps = {
   specURL: string;

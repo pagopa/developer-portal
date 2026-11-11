@@ -92,7 +92,6 @@ const CertificateTemplate = ({
               >
                 {createdAt} {createdOn}
               </Text>
-
               <View
                 style={{
                   paddingTop: '24px',

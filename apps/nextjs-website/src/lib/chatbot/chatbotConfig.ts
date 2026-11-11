@@ -1,3 +1,4 @@
+import { browserEnv } from '@/browserConfig';
 import * as E from 'fp-ts/lib/Either';
 
 export type ChatbotConfig = {
@@ -5,7 +6,7 @@ export type ChatbotConfig = {
 };
 
 export const publicEnv = {
-  CHATBOT_HOST: process.env.NEXT_PUBLIC_CHATBOT_HOST,
+  CHATBOT_HOST: browserEnv.config.CHATBOT_HOST,
 };
 
 export const makeChatbotConfig = (

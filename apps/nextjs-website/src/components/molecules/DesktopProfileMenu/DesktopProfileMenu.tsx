@@ -3,8 +3,9 @@ import React from 'react';
 import { Box, Link as MuiLink, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import { profileMenuItems } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Link from 'next/link';
+import { useUser } from '@/helpers/user.helper';
 
 type DesktopProfileMenuProps = {
   locale: string;
@@ -19,6 +20,13 @@ const DesktopProfileMenu = ({
 }: DesktopProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
+
+  const { canUseWebinarFeatures } = useUser();
+
+  const visibleMenuItems = browserEnv.config.profileMenuItems.filter(
+    ({ href }) =>
+      !href.includes('/profile/certificate-list') || canUseWebinarFeatures
+  );
 
   return (
     <Box
@@ -54,7 +62,7 @@ const DesktopProfileMenu = ({
             {userFullName}
           </Typography>
         </Box>
-        {profileMenuItems.map(
+        {visibleMenuItems.map(
           ({ label, href }: { label: string; href: string }, index: number) => {
             const isCurrent = currentPathname.startsWith(`/${locale}${href}`);
 

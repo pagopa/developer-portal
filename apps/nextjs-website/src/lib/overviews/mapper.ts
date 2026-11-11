@@ -186,7 +186,12 @@ export function mapOverviewsProps(
                     );
                     return null;
                   }
-
+                  if (!guide.product?.slug) {
+                    console.error(
+                      `Error while processing post-integration guide with title "${guide.title}": associated product is missing, unpublished, or has no slug. Skipping...`
+                    );
+                    return null;
+                  }
                   return {
                     title: guide.title,
                     description: {
@@ -198,7 +203,7 @@ export function mapOverviewsProps(
                     mobileImagePath: guide.mobileImage.url,
                     link: {
                       label: 'shared.goToGuide',
-                      href: `guides/${guide.slug}`,
+                      href: `/${locale}/${guide.product.slug}/guides/${guide.slug}`,
                       translate: true,
                     },
                   };

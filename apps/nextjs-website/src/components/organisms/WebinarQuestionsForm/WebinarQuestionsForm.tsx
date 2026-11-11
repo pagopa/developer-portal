@@ -1,5 +1,5 @@
 'use client';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { sendWebinarQuestion } from '@/lib/webinarApi';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -276,7 +276,7 @@ export const WebinarQuestionsForm = ({
 
       <Snackbar
         open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
+        autoHideDuration={browserEnv.config.snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Webinar } from '@/lib/webinars/types';
-import {
-  isWebinarHeartbeatEnabled,
-  webinarHeartbeatIntervalInSeconds,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
+
+const { isWebinarHeartbeatEnabled, webinarHeartbeatIntervalInSeconds } =
+  browserEnv.config;
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
@@ -34,7 +34,7 @@ export const useWebinar = () => {
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
   const lastHeartbeatSentTime = useRef<Date | null>(null);
   const videoStartedAt = useRef<string | null>(null);
-  const { user } = useUser();
+  const { user, canUseWebinarFeatures } = useUser();
 
   const setIsVideoPlaying = useCallback((isPlaying: boolean) => {
     if (isPlaying) {
@@ -185,7 +185,13 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
+    if (
+      !canUseWebinarFeatures ||
+      !isWebinarHeartbeatEnabled ||
+      !webinar ||
+      !isVideoPlaying
+    )
+      return;
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {
@@ -224,7 +230,7 @@ export const useWebinar = () => {
     }, webinarHeartbeatIntervalInSeconds * 1000);
 
     return () => clearInterval(heartbeatIntervalId);
-  }, [webinar, isVideoPlaying, webinarState, user]);
+  }, [webinar, isVideoPlaying, webinarState, user, canUseWebinarFeatures]);
 
   return {
     webinarState,

@@ -29,9 +29,7 @@ export function mapGuideListPages(
           ...attributes.guidesByCategory.map(({ category, guides }) => ({
             title: category,
             guides: compact(
-              guides.map((guide) =>
-                makeGuideCardProps(locale, guide, product.slug)
-              )
+              guides.map((guide) => makeGuideCardProps(locale, guide))
             ),
           })),
         ];
@@ -64,14 +62,16 @@ export function mapGuideListPages(
 
 function makeGuideCardProps(
   locale: string,
-  guide: StrapiBaseGuide,
-  productSlug: string
+  guide: StrapiBaseGuide
 ): GuideCardProps | null {
   if (!guide.slug) {
     console.error('guide slug is missing:', guide);
     return null;
   }
-
+  if (!guide.product?.slug) {
+    console.error('guide product slug is missing:', guide);
+    return null;
+  }
   try {
     return {
       title: guide.title,
@@ -84,7 +84,7 @@ function makeGuideCardProps(
       mobileImagePath: guide.mobileImage?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel',
-        href: `/${locale}/${productSlug}/guides/${guide.slug}`,
+        href: `/${locale}/${guide.product.slug}/guides/${guide.slug}`,
         translate: true,
       },
     } satisfies GuideCardProps;

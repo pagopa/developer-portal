@@ -1,5 +1,83 @@
 # nextjs-website
 
+## 17.6.0
+
+### Minor Changes
+
+- 60dc205: Update Quick Start Guide fetcher to reflect Strapi update to v5.61.0
+
+## 17.5.6
+
+### Patch Changes
+
+- 1febf93: Update styles of Feature editorial component
+- b2fd325: Update certificates list information text
+
+## 17.5.5
+
+### Patch Changes
+
+- ffb7e6d: Restrict webinar certificates and heartbeat to internal users
+
+## 17.5.4
+
+### Patch Changes
+
+- ab0b670: Move sessionStorage check in UserCancellationSnackbar to a useEffect to prevent 500 error on page request from browser
+
+## 17.5.3
+
+### Patch Changes
+
+- 2a6c39c: Fix unlisted webinar certificates visibility
+
+## 17.5.2
+
+### Patch Changes
+
+- e7a13c8: Update the text on the certificates page
+
+## 17.5.1
+
+### Patch Changes
+
+- 9ce34b7: Update webinar certificates to use the new API response and completion date
+
+## 17.5.0
+
+### Minor Changes
+
+- 82c04db: Add Mixpanel tracking
+
+## 17.4.8
+
+### Patch Changes
+
+- 4842ede: Add feature flag for webinar certificates and analytics
+
+## 17.4.7
+
+### Patch Changes
+
+- dda0a45: remove an always true condition on CaseHistoryPageTemplate component
+
+## 17.4.6
+
+### Patch Changes
+
+- 8b725bf: Make webinar dates mandatory
+- 8b725bf: - Update Cognito custom parameter and add webinar monitoring consent
+  - Add PDF download and webinar certificate functionality
+  - Add LiveWebinarWarningBanner and its Storybook story
+  - Add CertificateBanner and its Storybook story
+  - Show webinar monitoring components only when the feature flag is enabled
+  - Add consent popup when subscribing to a webinar
+  - Add parameters to the heartbeat API call
+  - Add webinar certificate list page, shown only when the feature flag is enabled
+- 7711e9c: Fix post-integration guide links
+- 3924ad8: Fix BannerLink padding
+- 6defc45: make certificate date optional and address 502 error
+
 ## 17.4.5
 
 ### Patch Changes

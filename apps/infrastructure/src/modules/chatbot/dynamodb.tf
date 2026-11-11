@@ -1,8 +1,10 @@
 module "dynamodb_chatbot_queries" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git?ref=715399dbe24f6443820bf5de80f6100b35d56355" # v4.0.0
 
-  billing_mode                = "PAY_PER_REQUEST"
-  deletion_protection_enabled = true
+  billing_mode                   = "PAY_PER_REQUEST"
+  deletion_protection_enabled    = true
+  point_in_time_recovery_enabled = var.environment == "prod"
+  tags                           = merge(var.tags, var.environment == "prod" ? { Backup = "True" } : {})
 
   name                           = "${local.prefix}-queries"
   hash_key                       = "sessionId"
@@ -52,8 +54,10 @@ module "dynamodb_chatbot_queries" {
 module "dynamodb_chatbot_sessions" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git?ref=715399dbe24f6443820bf5de80f6100b35d56355" # v4.0.0
 
-  billing_mode                = "PAY_PER_REQUEST"
-  deletion_protection_enabled = true
+  billing_mode                   = "PAY_PER_REQUEST"
+  deletion_protection_enabled    = true
+  point_in_time_recovery_enabled = var.environment == "prod"
+  tags                           = merge(var.tags, var.environment == "prod" ? { Backup = "True" } : {})
 
   name                           = "${local.prefix}-sessions"
   hash_key                       = "userId"
@@ -91,8 +95,10 @@ module "dynamodb_chatbot_sessions" {
 module "dynamodb_chatbot_salts" {
   source = "git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git?ref=715399dbe24f6443820bf5de80f6100b35d56355" # v4.0.0
 
-  billing_mode                = "PAY_PER_REQUEST"
-  deletion_protection_enabled = true
+  billing_mode                   = "PAY_PER_REQUEST"
+  deletion_protection_enabled    = true
+  point_in_time_recovery_enabled = var.environment == "prod"
+  tags                           = merge(var.tags, var.environment == "prod" ? { Backup = "True" } : {})
 
   name                           = "${local.prefix}-salts"
   hash_key                       = "sessionId"

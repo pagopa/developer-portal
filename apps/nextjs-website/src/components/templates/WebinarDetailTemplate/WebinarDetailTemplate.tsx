@@ -10,10 +10,7 @@ import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import {
-  snackbarAutoHideDurationMs,
-  isWebinarHeartbeatEnabled,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
@@ -28,6 +25,9 @@ import ConfirmationModal from '@/components/atoms/ConfirmationModal/Confirmation
 import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 
+const { isWebinarHeartbeatEnabled, snackbarAutoHideDurationMs } =
+  browserEnv.config;
+
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
 };
@@ -37,7 +37,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
-  const { user, setUserAttributes } = useUser();
+  const { user, setUserAttributes, canUseWebinarFeatures } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showSubscribePopup, setShowSubscribePopup] = useState(false);
   const {
@@ -55,7 +55,10 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     user?.attributes['custom:webinar_accepted'] === 'true';
 
   useEffect(() => {
-    if (!user) return;
+    if (!canUseWebinarFeatures || !isWebinarHeartbeatEnabled || !user) {
+      setShowSubscribePopup(false);
+      return;
+    }
     const rememberOption = getCookie('consent_monitoring_remember_choice');
     if (
       isSubscribed &&
@@ -66,7 +69,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     else if (hasAcceptedWebinarMonitoringSubscription) {
       setShowSubscribePopup(false);
     }
-  }, [isSubscribed, hasAcceptedWebinarMonitoringSubscription, user]);
+  }, [
+    isSubscribed,
+    hasAcceptedWebinarMonitoringSubscription,
+    user,
+    canUseWebinarFeatures,
+  ]);
   useEffect(() => {
     if (webinar) {
       setWebinar(webinar);
@@ -129,7 +137,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
-        {isWebinarHeartbeatEnabled && (
+        {canUseWebinarFeatures && isWebinarHeartbeatEnabled && (
           <ConfirmationModal
             title={t('subscriptionPopup.title')}
             text={
@@ -221,30 +229,30 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           )}
         </SummaryInformation>
       </Box>
-      {!hasAcceptedWebinarMonitoringSubscription &&
+      {canUseWebinarFeatures &&
+        isWebinarHeartbeatEnabled &&
+        !hasAcceptedWebinarMonitoringSubscription &&
         user &&
         isSubscribed &&
         ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
           <EContainer>
-            {isWebinarHeartbeatEnabled && (
-              <LiveWebinarWarningBanner
-                onEnableConsent={() => {
-                  if (!user) return null;
-                  setUserAttributes(
-                    {
-                      ...user.attributes,
-                      'custom:webinar_accepted': 'true',
-                    },
-                    () => null,
-                    () => {
-                      setError(t('genericSubscriptionError'));
-                      return null;
-                    }
-                  );
-                  return null;
-                }}
-              />
-            )}
+            <LiveWebinarWarningBanner
+              onEnableConsent={() => {
+                if (!user) return null;
+                setUserAttributes(
+                  {
+                    ...user.attributes,
+                    'custom:webinar_accepted': 'true',
+                  },
+                  () => null,
+                  () => {
+                    setError(t('genericSubscriptionError'));
+                    return null;
+                  }
+                );
+                return null;
+              }}
+            />
           </EContainer>
         )}
       {user &&
@@ -261,7 +269,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           ></WebinarPlayerSection>
         )}
 
-      {isWebinarHeartbeatEnabled && (
+      {canUseWebinarFeatures && (
         <EContainer containerSx={{ marginTop: '64px' }}>
           <CertificateBanner
             imagePath={'/images/certificato-di-partecipazione-webinar.png'}

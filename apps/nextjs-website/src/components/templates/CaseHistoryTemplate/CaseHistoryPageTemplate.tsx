@@ -74,11 +74,7 @@ const CaseHistoryPageTemplate = ({
             {title}
           </Typography>
           {description && (
-            <Typography
-              component={typeof description === 'string' ? 'p' : 'div'}
-              color={'text.primary'}
-              variant='body1'
-            >
+            <Typography component={'p'} color={'text.primary'} variant='body1'>
               {description}
             </Typography>
           )}

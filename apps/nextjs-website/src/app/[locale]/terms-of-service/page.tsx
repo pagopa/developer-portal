@@ -1,5 +1,5 @@
 import TermsOfServiceTemplate from '@/components/templates/TermsOfServiceTemplate/TermsOfServiceTemplate';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
@@ -10,7 +10,7 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   return makeMetadata({
     title: 'Termini e condizioni',
-    url: `${baseUrl}/${locale}/terms-of-service`,
+    url: `${browserEnv.config.baseUrl}/${locale}/terms-of-service`,
     langCode: locale,
   });
 }
