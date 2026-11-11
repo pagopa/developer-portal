@@ -9,10 +9,6 @@ export const browserSettings = (env: typeof publicEnv) => {
     env.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT;
   const useNewCookie = env.NEXT_PUBLIC_USE_NEW_COOKIE === 'true';
   const cookieScriptUrl = env.NEXT_PUBLIC_COOKIE_SCRIPT_URL;
-  const cookieCategory = env.NEXT_PUBLIC_COOKIE_CATEGORY;
-  const matomoScriptSrc =
-    env.NEXT_PUBLIC_MATOMO_SCRIPT_SRC ||
-    'https://cdn.matomo.cloud/pagopa.matomo.cloud/container_cT0RWuHZ.js';
   const amazonIvsVersion = env.NEXT_PUBLIC_AMAZON_IVS_VERSION || '1.45.0';
   const isProduction = env.NEXT_PUBLIC_ENVIRONMENT === 'prod';
   const isChatbotActive = env.NEXT_PUBLIC_CHATBOT_ACTIVE === 'true';
@@ -150,8 +146,6 @@ export const browserSettings = (env: typeof publicEnv) => {
     cookieDomainScript,
     useNewCookie,
     cookieScriptUrl,
-    cookieCategory,
-    matomoScriptSrc,
     amazonIvsVersion,
     isProduction,
     isChatbotActive,
