@@ -1,15 +1,3 @@
-import {
-  baseUrl,
-  cookieDomainScript,
-  cookieScriptUrl,
-  isChatbotActive,
-  isProduction,
-  mixpanelApiHost,
-  mixpanelToken,
-  qualtricsFeatureFlag,
-  SITE_HEADER_HEIGHT,
-  useNewCookie,
-} from '@/config';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -36,6 +24,20 @@ import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
 import MixpanelInit from '@/components/atoms/Mixpanel/MixpanelInit';
 import { UserProvider } from '@/helpers/user.helper';
+import { browserEnv } from '@/browserConfig';
+
+const {
+  baseUrl,
+  isProduction,
+  useNewCookie,
+  cookieDomainScript,
+  cookieScriptUrl,
+  isChatbotActive,
+  SITE_HEADER_HEIGHT,
+  qualtricsFeatureFlag,
+  mixpanelApiHost,
+  mixpanelToken,
+} = browserEnv.config;
 
 const titilliumWeb = Titillium_Web({
   fallback: ['serif'],
