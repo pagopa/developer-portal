@@ -734,17 +734,6 @@ async function main() {
       (dirNames) => !setMainNames.has(dirNames)
     );
 
-    if (dirNamesToRemove.length > 0) {
-      await putS3File(
-        { dirNames: dirNamesToRemove },
-        getLocalizedPath(
-          S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
-          LOCALE
-        ),
-        S3_BUCKET_NAME!,
-        getS3Client()
-      );
-    }
     await putS3File(
       mainVersionsDirNames,
       getLocalizedPath(S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH, LOCALE),
@@ -899,6 +888,20 @@ async function main() {
 
       console.log(
         `Saved ${filteredReleaseNotesMetadata.length} release note items to S3`
+      );
+    }
+
+    // Written last: its S3 event makes the chatbot index lambda align the vector index with
+    // the folders lists and the metadata files, so they must already be up to date
+    if (dirNamesToRemove.length > 0) {
+      await putS3File(
+        { dirNames: dirNamesToRemove },
+        getLocalizedPath(
+          S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+          LOCALE
+        ),
+        S3_BUCKET_NAME!,
+        getS3Client()
       );
     }
 

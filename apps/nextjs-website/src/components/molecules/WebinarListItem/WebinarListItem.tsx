@@ -1,5 +1,5 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import { webinarDateOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Image from 'next/image';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import React from 'react';
@@ -46,7 +46,10 @@ const WebinarListItem = ({ locale, webinar }: WebinarListItemProps) => {
           fontWeight={400}
           my={2}
         >
-          {format.dateTime(new Date(webinar.startDateTime), webinarDateOptions)}
+          {format.dateTime(
+            new Date(webinar.startDateTime),
+            browserEnv.config.webinarDateOptions
+          )}
         </Typography>
       )}
       <Stack justifyContent='space-between' flexGrow={1}>

@@ -1,5 +1,15 @@
 # chatbot-index
 
+## 2.6.4
+
+### Patch Changes
+
+- 1b47ead: Set linux64 chrome and chrome-driver downloads in the Docker image installer. Previously, th first entry of the chrome versions was used
+- 1b47ead: Fail the index lambda invocation and the refresh scripts when documents cannot be read, updated or deleted, instead of logging and returning success, while still processing the remaining documents and knowledge base URLs
+- 1b47ead: Store the document hashes when the vector index is created, so the first update of a document after the creation replaces its chunks instead of duplicating them
+- 1b47ead: Keep only the main version of each guide in the vector index: align the static folders of the index when the main guide versions change, and index each main version page once with its versionless URL
+- 1b47ead: Match static docs S3 keys against the full dirName, so docs in nested dirNames are updated by the index lambda and are no longer removed by the add missing static docs refresh
+
 ## 2.6.3
 
 ### Patch Changes

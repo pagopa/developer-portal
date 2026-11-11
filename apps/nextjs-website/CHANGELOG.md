@@ -1,5 +1,36 @@
 # nextjs-website
 
+## 17.6.0
+
+### Minor Changes
+
+- 60dc205: Update Quick Start Guide fetcher to reflect Strapi update to v5.61.0
+
+## 17.5.6
+
+### Patch Changes
+
+- 1febf93: Update styles of Feature editorial component
+- b2fd325: Update certificates list information text
+
+## 17.5.5
+
+### Patch Changes
+
+- ffb7e6d: Restrict webinar certificates and heartbeat to internal users
+
+## 17.5.4
+
+### Patch Changes
+
+- ab0b670: Move sessionStorage check in UserCancellationSnackbar to a useEffect to prevent 500 error on page request from browser
+
+## 17.5.3
+
+### Patch Changes
+
+- 2a6c39c: Fix unlisted webinar certificates visibility
+
 ## 17.5.2
 
 ### Patch Changes

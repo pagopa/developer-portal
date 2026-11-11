@@ -1,6 +1,8 @@
 import { ResolvedMetadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { baseUrl, websiteName } from '@/config';
+import { browserEnv } from '@/browserConfig';
+
+const { baseUrl, websiteName } = browserEnv.config;
 
 const parent = {
   title: {
