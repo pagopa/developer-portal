@@ -2,7 +2,7 @@ import { getVisibleInListWebinars } from '@/lib/api';
 import { getWebinarCategories } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import WebinarsTemplate from '@/components/organisms/WebinarsTemplate/WebinarsTemplate';
 import { Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -16,7 +16,7 @@ export async function generateMetadata(props: {
   return makeMetadata({
     title: 'PagoPA DevPortal - Webinars',
     description: 'I nostri webinar',
-    url: `${baseUrl}/${locale}/webinars`,
+    url: `${browserEnv.config.baseUrl}/${locale}/webinars`,
     langCode: locale,
   });
 }

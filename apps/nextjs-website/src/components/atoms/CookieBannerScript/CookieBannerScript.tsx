@@ -1,5 +1,5 @@
 'use client';
-import { isProduction } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Script from 'next/script';
 type CookieBannerScriptProps = {
   cookieDomainScript?: string;
@@ -11,7 +11,7 @@ const CookieBannerScript = ({
   cookieScript,
 }: CookieBannerScriptProps) => {
   return (
-    isProduction && (
+    browserEnv.config.isProduction && (
       <>
         <Script
           src={cookieScript}

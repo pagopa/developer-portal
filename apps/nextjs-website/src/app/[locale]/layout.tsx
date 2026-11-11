@@ -1,17 +1,4 @@
-import {
-  baseUrl,
-  cookieCategory,
-  cookieDomainScript,
-  cookieScriptUrl,
-  isChatbotActive,
-  isProduction,
-  matomoScriptSrc,
-  mixpanelApiHost,
-  mixpanelToken,
-  qualtricsFeatureFlag,
-  SITE_HEADER_HEIGHT,
-  useNewCookie,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Metadata } from 'next';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -39,6 +26,21 @@ import { Box } from '@mui/material';
 import QualtricsIntercept from '../../components/atoms/QualtricsIntercept/QualtricsIntercept';
 import MixpanelInit from '@/components/atoms/Mixpanel/MixpanelInit';
 import { UserProvider } from '@/helpers/user.helper';
+
+const {
+  matomoScriptSrc,
+  cookieCategory,
+  baseUrl,
+  isProduction,
+  useNewCookie,
+  cookieDomainScript,
+  cookieScriptUrl,
+  isChatbotActive,
+  SITE_HEADER_HEIGHT,
+  qualtricsFeatureFlag,
+  mixpanelApiHost,
+  mixpanelToken,
+} = browserEnv.config;
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
