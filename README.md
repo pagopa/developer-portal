@@ -29,16 +29,9 @@ In order to get the Strapi API token needed in the .env.local:
 - for local developement, you can find the token at: [http://localhost:1337/admin/settings/api-tokens] (http://localhost:1337/admin/settings/api-tokens)
 - for the dev api token, ask one of the mantainer with admin access to [https://cms.dev.developer.pagopa.it] (https://cms.dev.developer.pagopa.it)
 
-### Populate the local Strapi CMS
+### Populate strapi cms
 
-To populate the local CMS database with content from the dev environment, run the following command from the CMS repository:
-
-```bash
-cd apps/strapi-cms
-npx strapi transfer --from https://cms.dev.developer.pagopa.it/admin --from-token <strapi_transfer_token>
-```
-
-Ask a maintainer with admin access to the dev CMS for the transfer token. See the [CMS repository](https://github.com/pagopa/developer-portal-cms/) for the local SQLite configuration required before the transfer.
+See the repository <https://github.com/pagopa/developer-portal-cms/>
 
 ### Compile the applications and the packages in the monorepo
 
