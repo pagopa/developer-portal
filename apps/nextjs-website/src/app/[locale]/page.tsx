@@ -9,7 +9,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +26,6 @@ import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarH
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import { HomepageRepository } from '@/lib/homepage';
 import UserCancellationSnackbar from '@/components/atoms/UserCancellationSnackbar/UserCancellationSnackbar';
-import { SUPPORTED_LOCALES } from '@/locales';
 
 type EcosystemCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
@@ -76,7 +75,7 @@ export async function generateMetadata(props: {
     return makeMetadata({
       title: 'PagoPA DevPortal',
       description: 'Il portale per gli sviluppatori di PagoPA',
-      url: `${baseUrl}/${locale}`,
+      url: `${browserEnv.config.baseUrl}/${locale}`,
       langCode: locale,
     });
   }

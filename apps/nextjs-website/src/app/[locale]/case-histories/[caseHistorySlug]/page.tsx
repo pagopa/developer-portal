@@ -4,7 +4,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { getCaseHistory } from '@/lib/api';
 import CaseHistoryPageTemplate from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
@@ -53,7 +53,7 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: caseHistory.title,
-    url: `${baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
+    url: `${browserEnv.config.baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
     langCode: locale,
   });
 }

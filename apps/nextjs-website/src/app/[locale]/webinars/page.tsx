@@ -5,7 +5,7 @@ import {
   makeMetadata,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import WebinarsTemplate from '@/components/organisms/WebinarsTemplate/WebinarsTemplate';
 import { Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -36,7 +36,7 @@ export async function generateMetadata(props: {
       item !== null
   );
 
-  const canonicalURL = `${baseUrl}/${locale}/webinars`;
+  const canonicalURL = `${browserEnv.config.baseUrl}/${locale}/webinars`;
 
   return {
     ...makeMetadata({
@@ -47,7 +47,7 @@ export async function generateMetadata(props: {
     }),
     alternates: {
       canonical: canonicalURL,
-      ...makeHreflangAlternates(baseUrl, localizedPaths),
+      ...makeHreflangAlternates(browserEnv.config.baseUrl, localizedPaths),
     },
   };
 }

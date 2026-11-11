@@ -2,7 +2,7 @@ import { CkEditorMenuItem } from '@/components/molecules/CkEditorPart/CkEditorPa
 import { JSDOM } from 'jsdom';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
 import DOMPurify from 'isomorphic-dompurify';
-import { headingLevelsToShowInMenu } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { includes } from 'lodash';
 
 export function parseCkEditorContent(content: string): {
@@ -27,7 +27,7 @@ export function parseCkEditorContent(content: string): {
     element.parentNode?.replaceChild(wrapper, element);
     if (
       includes(
-        headingLevelsToShowInMenu.map((level) => `h${level}`),
+        browserEnv.config.headingLevelsToShowInMenu.map((level) => `h${level}`),
         element.tagName.toLowerCase()
       )
     ) {

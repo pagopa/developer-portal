@@ -1,6 +1,6 @@
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import ApiDataListTemplate from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -63,7 +63,7 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: [hero.title, product.name].filter(Boolean).join(' | '),
-    url: `${baseUrl}/${locale}/${product.slug}/api`,
+    url: `${browserEnv.config.baseUrl}/${locale}/${product.slug}/api`,
     langCode: locale,
   });
 }

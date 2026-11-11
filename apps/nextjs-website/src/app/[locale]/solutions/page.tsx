@@ -8,8 +8,8 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { baseUrl } from '@/config';
 import { SolutionListPageRepository } from '@/lib/solutionListPage';
+import { browserEnv } from '@/browserConfig';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
@@ -20,7 +20,7 @@ export async function generateMetadata(props: {
   if (!solutionsList.seo) {
     return makeMetadata({
       title: 'Soluzioni',
-      url: `${baseUrl}/${locale}/solutions`,
+      url: `${browserEnv.config.baseUrl}/${locale}/solutions`,
       langCode: locale,
     });
   }
