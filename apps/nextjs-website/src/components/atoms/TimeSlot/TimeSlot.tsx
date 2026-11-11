@@ -1,9 +1,8 @@
-import {
-  longDateOptions,
-  timeSlotDateOptions,
-  timeSlotTimeOptions,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useFormatter } from 'next-intl';
+
+const { timeSlotDateOptions, longDateOptions, timeSlotTimeOptions } =
+  browserEnv.config;
 
 function isSameDay(start: Date, end: Date): boolean {
   return (

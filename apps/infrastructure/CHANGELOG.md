@@ -1,5 +1,24 @@
 # infrastructure
 
+## 14.7.0
+
+### Minor Changes
+
+- f6dd629: Configure CORS on the CMS media library CloudFront response headers policy so the portal and CMS domains can load media assets.
+- 63ef0dd: Tag the production Langfuse ClickHouse EFS file system for backups.
+
+## 14.6.0
+
+### Minor Changes
+
+- a0d5ae3: Prevent overlapping ClickHouse tasks during Langfuse deployments by setting deployment maximum/minimum healthy percentages to 100/0 and disabling Availability Zone rebalancing. ClickHouse deployments now stop the existing task before starting its replacement, causing brief downtime.
+
+  Enable deployment circuit breakers for ClickHouse, Langfuse web, and Langfuse worker. Automatically roll back failed web and worker deployments, but leave rollback disabled for ClickHouse.
+
+### Patch Changes
+
+- 51fa7e0: Enable point-in-time recovery for production chatbot DynamoDB tables and tag production DynamoDB tables for backups.
+
 ## 14.5.0
 
 ### Minor Changes

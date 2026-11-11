@@ -68,3 +68,14 @@ variable "cognito_user_pool_client_id" {
   description = "The Cognito User Pool Client ID used as audience for the JWT authorizer"
   type        = string
 }
+
+variable "webinar_certificate_min_watch_percentage" {
+  description = "Minimum fraction of the webinar duration a user must watch to obtain a certificate (e.g. 0.6 = 60%). Exposed to the webinar certificate Lambda as the MIN_WATCH_PERCENTAGE environment variable."
+  type        = number
+  default     = 0.6
+
+  validation {
+    condition     = var.webinar_certificate_min_watch_percentage > 0 && var.webinar_certificate_min_watch_percentage <= 1
+    error_message = "The webinar_certificate_min_watch_percentage must be greater than 0 and less than or equal to 1."
+  }
+}

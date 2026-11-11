@@ -142,6 +142,7 @@ resource "aws_lambda_function" "webinar_certificate" {
       ATHENA_DATABASE        = aws_athena_database.webinar_db.name
       ATHENA_OUTPUT_LOCATION = "s3://${aws_s3_bucket.athena_results.bucket}/query-results/"
       ATHENA_WORKGROUP       = aws_athena_workgroup.webinar_analytics.name
+      MIN_WATCH_PERCENTAGE   = tostring(var.webinar_certificate_min_watch_percentage)
     }
   }
 

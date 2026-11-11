@@ -64,11 +64,12 @@ const Feature = (props: FeatureProps) => {
         )}
       </Grid>
       <Grid item mt={8} sx={{ marginX: 'auto' }}>
-        <Grid container justifyContent='center'>
+        <Grid container justifyContent='space-between'>
           {items.map((item, index) => (
             <Grid
               md={items.length < 4 ? 4 : 3}
               px={{ xs: 4, md: items.length < 4 ? 7 : 2 }}
+              py={{ xs: 4, md: 0 }}
               item
               key={index}
             >

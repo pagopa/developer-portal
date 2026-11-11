@@ -10,7 +10,7 @@ import {
 import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
 import { Box } from '@mui/material';
-import { amazonIvsVersion } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import '@/styles/videojs-custom.css';
 import { useTranslations } from 'next-intl';
 import { Chapter } from '@/lib/webinars/types';
@@ -56,6 +56,8 @@ const parseVttTime = (time: string): number | undefined => {
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 const PLAYBACK_RATES = [0.5, 1, 1.25, 1.5, 2];
+
+const { amazonIvsVersion } = browserEnv.config;
 
 const VideoJsPlayer = (props: PlayerProps) => {
   const t = useTranslations('webinar');
