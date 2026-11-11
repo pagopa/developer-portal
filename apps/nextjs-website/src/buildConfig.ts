@@ -47,19 +47,15 @@ export const buildSettings = (env: Record<string, string | undefined>) => {
   };
 };
 
-export type BuildConfig = ReturnType<typeof buildSettings> & {
-  readonly FETCH_FROM_STRAPI: boolean;
-} & StrapiConfig;
+export type BuildConfig = ReturnType<typeof buildSettings> & StrapiConfig;
 
 export const makeBuildConfig = (
   env: Record<string, undefined | string>
 ): E.Either<string, BuildConfig> =>
-  (env.FETCH_FROM_STRAPI &&
-    env.STRAPI_ENDPOINT &&
+  (env.STRAPI_ENDPOINT &&
     env.STRAPI_API_TOKEN &&
     E.right({
       ...buildSettings(env),
-      FETCH_FROM_STRAPI: env.FETCH_FROM_STRAPI === 'true',
       STRAPI_ENDPOINT: env.STRAPI_ENDPOINT,
       STRAPI_API_TOKEN: env.STRAPI_API_TOKEN,
     })) ||

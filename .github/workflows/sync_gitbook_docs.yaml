@@ -102,7 +102,6 @@ jobs:
           s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
@@ -147,7 +146,6 @@ jobs:
           s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
@@ -189,7 +187,6 @@ jobs:
           s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
