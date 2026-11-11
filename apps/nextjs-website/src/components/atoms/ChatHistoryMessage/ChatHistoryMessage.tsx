@@ -1,6 +1,6 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { chatTimeOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
 import { useFormatter } from 'next-intl';
 
@@ -24,7 +24,8 @@ const ChatHistoryMessage = ({
   const iconSize = 28;
 
   const timeLabel =
-    timestamp && format.dateTime(new Date(timestamp), chatTimeOptions);
+    timestamp &&
+    format.dateTime(new Date(timestamp), browserEnv.config.chatTimeOptions);
 
   return (
     <Stack direction='column' width='100%' spacing={1}>

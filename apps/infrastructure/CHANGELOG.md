@@ -1,5 +1,50 @@
 # infrastructure
 
+## 14.7.0
+
+### Minor Changes
+
+- f6dd629: Configure CORS on the CMS media library CloudFront response headers policy so the portal and CMS domains can load media assets.
+- 63ef0dd: Tag the production Langfuse ClickHouse EFS file system for backups.
+
+## 14.6.0
+
+### Minor Changes
+
+- a0d5ae3: Prevent overlapping ClickHouse tasks during Langfuse deployments by setting deployment maximum/minimum healthy percentages to 100/0 and disabling Availability Zone rebalancing. ClickHouse deployments now stop the existing task before starting its replacement, causing brief downtime.
+
+  Enable deployment circuit breakers for ClickHouse, Langfuse web, and Langfuse worker. Automatically roll back failed web and worker deployments, but leave rollback disabled for ClickHouse.
+
+### Patch Changes
+
+- 51fa7e0: Enable point-in-time recovery for production chatbot DynamoDB tables and tag production DynamoDB tables for backups.
+
+## 14.5.0
+
+### Minor Changes
+
+- 7390d8a: Tag the production CMS and website static-content S3 buckets for backups, and enable versioning on the website bucket.
+
+## 14.4.0
+
+### Minor Changes
+
+- 1848b7f: Add the `Backup=True` tag to the production CMS and Langfuse Aurora clusters to support backup management.
+
+## 14.3.1
+
+### Patch Changes
+
+- 5b8dcb4: Redeploy the webinar metrics API when its resource, method, or integration configuration changes.
+- 5b8dcb4: Remove unused IVS_CHANNEL_ARN environment variable and webinar_metrics_channel_key parameter from video streaming Terraform module.
+
+  The Lambda function webinar_metrics no longer uses the IVS_CHANNEL_ARN environment variable. Clean up unused variables in:
+
+  - `apps/infrastructure/src/modules/video_streaming/lambda.tf` - removed IVS_CHANNEL_ARN from environment variables
+  - `apps/infrastructure/src/modules/video_streaming/variables.tf` - removed webinar_metrics_channel_key variable
+  - `apps/infrastructure/src/main.tf` - removed webinar_metrics_channel_key parameter
+  - `apps/infrastructure/src/modules/video_streaming/README.md` - removed variable documentation
+
 ## 14.3.0
 
 ### Minor Changes

@@ -13,8 +13,10 @@ import type { Part } from '@/lib/parts/types';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useParams } from 'next/navigation';
+
+const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
