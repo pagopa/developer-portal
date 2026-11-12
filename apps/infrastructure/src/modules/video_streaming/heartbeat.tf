@@ -18,6 +18,16 @@ resource "aws_s3_bucket" "heartbeat_storage" {
   tags = var.environment == "prod" ? { Backup = "True" } : {}
 }
 
+resource "aws_s3_bucket_versioning" "heartbeat_storage" {
+  provider = aws.eu-south-1
+  count    = var.environment == "prod" ? 1 : 0
+  bucket   = aws_s3_bucket.heartbeat_storage.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_s3_bucket_public_access_block" "heartbeat_storage_pac" {
   provider = aws.eu-south-1
   bucket   = aws_s3_bucket.heartbeat_storage.id
