@@ -3,6 +3,10 @@ import { useUser } from '@/helpers/user.helper';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
+interface Window {
+  qualtricsEmbeddedData?: Record<string, string>;
+}
+
 const QualtricsIntercept = () => {
   const { user, webinarCertificates } = useUser();
   const pathname = usePathname();
@@ -14,6 +18,8 @@ const QualtricsIntercept = () => {
     });
 
     if (user && user.attributes['custom:survey_accepted']) {
+      (window as Window).qualtricsEmbeddedData = { FirstName: 'TEST' };
+
       if (['/', '/it', '/en'].includes(pathname)) {
         // Homepage, only show survey if second login or more
         if (sessionStorage.getItem('isFirstLogin') === 'false') {
