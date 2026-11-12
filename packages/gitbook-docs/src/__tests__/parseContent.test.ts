@@ -1139,4 +1139,76 @@ describe('parseContent', () => {
       }),
     ]);
   });
+
+  it('should parse figure with figcaption containing a paragraph', () => {
+    expect(
+      parseContent(
+        '<figure><img src="img-src.jpg" alt="anAlt"><figcaption><p>Caption</p></figcaption></figure>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+          caption: new Markdoc.Tag('Paragraph', {}, ['Caption']),
+        }),
+      ]),
+    ]);
+  });
+
+  it('should preserve formatting inside figure captions', () => {
+    const result = parseContent(
+      '<figure><img src="img-src.jpg" alt="anAlt"><figcaption><p><strong>Caption</strong></p></figcaption></figure>',
+      config
+    );
+
+    expect(result).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+          caption: new Markdoc.Tag('Paragraph', {}, [
+            new Markdoc.Tag('StyledText', { style: 'strong' }, ['Caption']),
+          ]),
+        }),
+      ]),
+    ]);
+  });
+
+  it('should parse figure with strong caption without paragraph', () => {
+    expect(
+      parseContent(
+        '<figure><img src="img-src.jpg" alt="anAlt"><figcaption><strong>Caption</strong></figcaption></figure>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+          caption: new Markdoc.Tag('StyledText', { style: 'strong' }, [
+            'Caption',
+          ]),
+        }),
+      ]),
+    ]);
+  });
+
+  it('should parse figure with plain text caption', () => {
+    expect(
+      parseContent(
+        '<figure><img src="img-src.jpg" alt="anAlt"><figcaption>Caption</figcaption></figure>',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Image', {
+          src: `${config.assetsPrefix}/img-src.jpg`,
+          alt: 'anAlt',
+          caption: 'Caption',
+        }),
+      ]),
+    ]);
+  });
 });
