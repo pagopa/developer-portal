@@ -54,6 +54,8 @@ const QualtricsIntercept = () => {
     return () => {
       // The pathname dependency currently means that the script gets removed at every page change
       script.remove();
+      // Minimize how long user data is readable on window by other scripts on the page
+      delete (window as Window).qualtricsEmbeddedData;
     };
   }, [user, pathname, webinarCertificates]);
 
