@@ -3,6 +3,15 @@ import { useUser } from '@/helpers/user.helper';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
+interface Window {
+  qualtricsEmbeddedData?: Record<string, string>;
+}
+
+const toIsoDate = (epochSeconds: string): string => {
+  const date = new Date(Number(epochSeconds) * 1000);
+  return Number.isNaN(date.getTime()) ? '' : date.toISOString();
+};
+
 const QualtricsIntercept = () => {
   const { user, webinarCertificates } = useUser();
   const pathname = usePathname();
@@ -14,6 +23,19 @@ const QualtricsIntercept = () => {
     });
 
     if (user && user.attributes['custom:survey_accepted']) {
+      (window as Window).qualtricsEmbeddedData = {
+        FirstName: user.attributes.given_name,
+        LastName: user.attributes.family_name,
+        email: user.attributes.email,
+        ruolo: user.attributes['custom:job_role'],
+        azienda: user.attributes['custom:company_type'],
+        FirstVisitDate: toIsoDate(
+          user.attributes['custom:first_login'] ??
+            String(Math.floor(Date.now() / 1000))
+        ), // If no first_login, now is the first login
+        PageUrl: pathname,
+      };
+
       if (['/', '/it', '/en'].includes(pathname)) {
         // Homepage, only show survey if second login or more
         if (sessionStorage.getItem('isFirstLogin') === 'false') {
@@ -32,6 +54,8 @@ const QualtricsIntercept = () => {
     return () => {
       // The pathname dependency currently means that the script gets removed at every page change
       script.remove();
+      // Minimize how long user data is readable on window by other scripts on the page
+      delete (window as Window).qualtricsEmbeddedData;
     };
   }, [user, pathname, webinarCertificates]);
 
