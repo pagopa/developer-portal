@@ -1,4 +1,8 @@
-import { canRedirectToUrl, isExternalLink } from '@/helpers/navigation.helpers';
+import {
+  canRedirectToUrl,
+  isExternalLink,
+  shouldRedirectAfterLogout,
+} from '@/helpers/navigation.helpers';
 
 describe('canRedirectToUrl', () => {
   it('returns true for the root path', () => {
@@ -52,6 +56,14 @@ describe('canRedirectToUrl', () => {
     expect(canRedirectToUrl(undefined)).toBe(false);
     // @ts-expect-error Testing invalid input
     expect(canRedirectToUrl(123)).toBe(false);
+  });
+});
+
+describe('shouldRedirectAfterLogout', () => {
+  it('returns true for a localized webinar questions page', () => {
+    expect(shouldRedirectAfterLogout('/it/webinars/example/questions')).toBe(
+      true
+    );
   });
 });
 

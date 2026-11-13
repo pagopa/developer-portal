@@ -9,11 +9,14 @@ import MobileProfileMenu from '@/components/molecules/MobileProfileMenu/MobilePr
 import { useUser } from '@/helpers/user.helper';
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading, userFullName } = useUser();
+  const { user, loading, userFullName, isLoggingOut } = useUser();
   const { locale } = useParams<{ locale: string }>();
 
   const pathname = usePathname();
 
+  if (isLoggingOut) {
+    return <Spinner />;
+  }
   if (!loading && !user) {
     return <PageNotFound />;
   }

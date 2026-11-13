@@ -2,13 +2,14 @@
 import { Login, Logout, PersonOutline } from '@mui/icons-material';
 import { Box, Link as MuiLink, Typography, useTheme } from '@mui/material';
 import { Auth } from 'aws-amplify';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helpers';
+import { shouldRedirectAfterLogout } from '@/helpers/navigation.helpers';
 
 type MobileUserInfoProps = {
   // eslint-disable-next-line functional/no-return-void
@@ -20,18 +21,50 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
-  const { user, loading } = useUser();
+  const { user, loading, setIsLoggingOut } = useUser();
+  const navigationVersion = useRef(0);
+
+  useEffect(() => {
+    return () => {
+      // Cancel pending logout navigation after a route change or unmount.
+      // eslint-disable-next-line functional/immutable-data
+      navigationVersion.current += 1;
+    };
+  }, [pathname]);
 
   const { palette } = useTheme();
 
   const signOut = useCallback(async () => {
+    const navigationAtLogout = navigationVersion.current;
+    const pathnameAtLogout = window.location.pathname;
     if (onClick) onClick();
-    await Auth.signOut().then(() => {
-      flushChatQueriesFromLocalStorage();
-    });
+    setIsLoggingOut(true);
+    const result = await Auth.signOut()
+      .then(() => true)
+      .catch(() => {
+        setIsLoggingOut(false);
+        return false;
+      });
+
+    if (!result) {
+      return;
+    }
+
+    await Promise.resolve()
+      .then(flushChatQueriesFromLocalStorage)
+      .catch(() => {
+        console.warn('Could not clear local chatbot history after logout.');
+      });
+
+    if (
+      navigationVersion.current !== navigationAtLogout ||
+      window.location.pathname !== pathnameAtLogout
+    ) {
+      return;
+    }
 
     // Check if the user in an auth only page
-    if (['/auth', '/profile'].some((path) => pathname.match(path))) {
+    if (shouldRedirectAfterLogout(pathname)) {
       router.replace(`/${locale}/`);
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
@@ -39,7 +72,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
         window.location.reload();
       }
     }
-  }, [pathname, router, onClick, locale]);
+  }, [pathname, router, onClick, locale, setIsLoggingOut]);
 
   return (
     <>
@@ -120,9 +153,9 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             {t('shared.yourData')}
           </Typography>
           <MuiLink
-            href={`/${locale}/auth/login`}
-            component={Link}
+            component={'button'}
             onClick={signOut}
+            type='button'
             sx={{
               display: 'flex',
               alignItems: 'center',
