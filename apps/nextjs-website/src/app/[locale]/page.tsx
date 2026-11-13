@@ -5,6 +5,7 @@ import NewsShowcase, {
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -70,15 +71,35 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   const homepage = await HomepageRepository.get(locale);
 
-  return homepage.seo
-    ? makeMetadataFromStrapi(homepage.seo)
-    : makeMetadata({
-        title: 'PagoPA DevPortal',
-        description: 'Il portale per gli sviluppatori di PagoPA',
-        url: `${browserEnv.config.baseUrl}/${locale}`,
+  if (!homepage.seo) {
+    return makeMetadata({
+      title: 'PagoPA DevPortal',
+      description: 'Il portale per gli sviluppatori di PagoPA',
+      url: `${browserEnv.config.baseUrl}/${locale}`,
+      langCode: locale,
+    });
+  }
 
-        langCode: locale,
-      });
+  const metadata = makeMetadataFromStrapi(homepage.seo);
+
+  if (!homepage.seo.canonicalURL) {
+    return metadata;
+  }
+
+  const availableLocales = await HomepageRepository.getAvailableLocales(locale);
+
+  const localizedPaths = availableLocales.map((langCode) => ({
+    langCode,
+    path: `/${langCode}`,
+  }));
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(homepage.seo.canonicalURL, localizedPaths),
+    },
+  };
 }
 
 const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {

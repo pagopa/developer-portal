@@ -27,6 +27,7 @@ export type StrapiGuide = StrapiBaseGuide & {
   readonly product?: StrapiBaseProductWithRelations;
   readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
   readonly seo?: StrapiSeo;
+  readonly documentId?: string;
 };
 
 export type StrapiGuides = Paginated<StrapiGuide>;

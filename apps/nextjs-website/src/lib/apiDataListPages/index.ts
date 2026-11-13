@@ -2,6 +2,8 @@ import { fetchApiDataListPages } from './fetcher';
 import { mapApiDataListPages } from './mapper';
 import { ApiDataListPageTemplateProps } from './types';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const ApiDataListPagesRepository = {
   /**
    * Returns all API Data List pages
@@ -32,4 +34,20 @@ export const ApiDataListPagesRepository = {
       (apiDataListPage) => apiDataListPage.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for an API Data List page.
+   * @param currentLocale The locale of the current API Data List page.
+   * @param page The current API Data List page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (
+    currentLocale: string,
+    page: ApiDataListPageTemplateProps
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: page,
+      getAll: ApiDataListPagesRepository.getAll,
+      getPath: (locale, item) => `/${locale}/${item.product.slug}/api`,
+    }),
 };

@@ -29,6 +29,7 @@ export function mapGuides(
       try {
         const product = makeBaseProductWithoutLogoProps(locale, guide.product);
         return {
+          documentId: guide.documentId,
           product,
           guide: {
             name: guide.title,

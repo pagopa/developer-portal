@@ -2,6 +2,8 @@ import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistory
 import { fetchCaseHistories } from './fetcher';
 import { mapCaseHistoriesProps } from './mapper';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const CaseHistoriesRepository = {
   /**
    * Returns all Case History pages
@@ -14,4 +16,20 @@ export const CaseHistoriesRepository = {
     const strapiCaseHistories = await fetchCaseHistories(locale);
     return mapCaseHistoriesProps(strapiCaseHistories);
   },
+  /**
+   * Returns localized paths for a Case History.
+   * @param currentLocale The locale of the current Case History.
+   * @param caseHistory The current Case History.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (
+    currentLocale: string,
+    caseHistory: CaseHistoryPageTemplateProps
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: caseHistory,
+      getAll: CaseHistoriesRepository.getAll,
+      getPath: (locale, item) => `/${locale}/case-histories/${item.slug}`,
+    }),
 };

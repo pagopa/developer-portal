@@ -7,6 +7,7 @@ import ProductLayout, {
 import React from 'react';
 import type { ProductParams } from '@/lib/products/types';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -20,6 +21,7 @@ import type { UseCase } from '@/lib/useCases/types';
 import { getUseCaseListPageProps } from '@/lib/api';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 import { notFound } from 'next/navigation';
+import { UseCaseListPageRepository } from '@/lib/useCaseListPage';
 
 export type UseCasesPageProps = {
   readonly product: Product;
@@ -30,6 +32,7 @@ export type UseCasesPageProps = {
   readonly useCases: readonly UseCase[];
   readonly seo?: SEO;
   readonly enableFilters: boolean | undefined;
+  readonly documentId?: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -47,7 +50,24 @@ export async function generateMetadata(
   const { product, abstract, path, seo } = useCaseListPage;
 
   if (seo) {
-    return makeMetadataFromStrapi(seo);
+    const metadata = makeMetadataFromStrapi(seo);
+
+    if (!seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await UseCaseListPageRepository.getLocalizedPaths(
+      locale,
+      useCaseListPage
+    );
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
+      },
+    };
   }
 
   return makeMetadata({

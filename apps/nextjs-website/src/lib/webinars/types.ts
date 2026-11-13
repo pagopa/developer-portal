@@ -60,6 +60,7 @@ export type Webinar = {
   readonly updatedAt: string;
   readonly chapters?: readonly Chapter[];
   readonly webvttContent?: string;
+  readonly documentId?: string;
 };
 
 export type Speaker = {

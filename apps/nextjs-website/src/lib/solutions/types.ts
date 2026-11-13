@@ -62,6 +62,7 @@ export type StrapiSolution = {
   readonly products: readonly StrapiBaseProductWithoutBannerLinks[];
   readonly caseHistories?: CaseHistoriesComponent;
   readonly seo?: StrapiSeo;
+  readonly documentId?: string;
 };
 
 export type StrapiSolutions = Paginated<StrapiSolution>;

@@ -12,6 +12,7 @@ export type BaseCaseHistory = {
   readonly publishedAt: string;
   readonly updatedAt: string;
   readonly image?: StrapiMedia;
+  readonly documentId?: string;
 };
 
 export type CaseHistory = BaseCaseHistory & {

@@ -31,6 +31,7 @@ export type ApiDataListPageTemplateProps = {
   readonly theme?: Theme;
   readonly apiData: BaseApiDataList;
   readonly seo?: SEO;
+  readonly documentId?: string;
 };
 
 const ApiDataListTemplate = ({

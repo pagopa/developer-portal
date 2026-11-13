@@ -27,6 +27,7 @@ export type CaseHistoryPageTemplateProps = {
   >[];
   readonly parts: Part[];
   readonly seo?: SEO;
+  readonly documentId?: string;
 };
 
 const CaseHistoryPageTemplate = ({

@@ -86,6 +86,7 @@ export type StrapiOverview = {
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
   readonly whatsNew?: StrapiNewsShowcase;
+  readonly documentId?: string;
 };
 
 export type StrapiOverviews = Paginated<StrapiOverview>;

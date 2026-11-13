@@ -3,6 +3,8 @@ import type { Webinar } from '@/lib/webinars/types';
 import { fetchWebinars } from './fetcher';
 import { mapWebinarsProps } from './mapper';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const WebinarsRepository = {
   /**
    * Returns all webinars
@@ -26,4 +28,17 @@ export const WebinarsRepository = {
     const all = await WebinarsRepository.getAll(locale);
     return all.find((webinar) => webinar.slug === webinarSlug);
   },
+  /**
+   * Returns localized paths for a Webinar.
+   * @param currentLocale The locale of the current Webinar.
+   * @param webinar The current Webinar.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (currentLocale: string, webinar: Webinar) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: webinar,
+      getAll: WebinarsRepository.getAll,
+      getPath: (locale, item) => `/${locale}/webinars/${item.slug}`,
+    }),
 };

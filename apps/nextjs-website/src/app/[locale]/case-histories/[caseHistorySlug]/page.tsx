@@ -1,4 +1,5 @@
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -12,6 +13,7 @@ import {
   getItemFromPaths,
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
+import { CaseHistoriesRepository } from '@/lib/caseHistories';
 
 type Params = {
   locale: string;
@@ -28,8 +30,25 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (caseHistory?.seo) {
-    return makeMetadataFromStrapi(caseHistory.seo);
+  if (caseHistory.seo) {
+    const metadata = makeMetadataFromStrapi(caseHistory.seo);
+
+    if (!caseHistory.seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await CaseHistoriesRepository.getLocalizedPaths(
+      locale,
+      caseHistory
+    );
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        ...makeHreflangAlternates(caseHistory.seo.canonicalURL, localizedPaths),
+      },
+    };
   }
 
   return makeMetadata({

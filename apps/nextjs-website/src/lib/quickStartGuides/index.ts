@@ -3,6 +3,8 @@ import { fetchQuickStartGuides } from './fetcher';
 import { mapQuickStartGuidesProps } from './mapper';
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const QuickStartGuidesRepository = {
   /**
    * Returns all Quick Start Guide pages
@@ -33,4 +35,20 @@ export const QuickStartGuidesRepository = {
       (quickStartGuide) => quickStartGuide.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for a Quick Start Guide page.
+   * @param currentLocale The locale of the current Quick Start Guide page.
+   * @param quickStartGuide The current Quick Start Guide page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (
+    currentLocale: string,
+    quickStartGuide: QuickStartGuidePageProps
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: quickStartGuide,
+      getAll: QuickStartGuidesRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

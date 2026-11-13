@@ -1,4 +1,5 @@
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -9,6 +10,7 @@ import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTe
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
+import { SolutionRepository } from '@/lib/solutions';
 
 type Params = {
   locale: string;
@@ -26,15 +28,32 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (solution.seo) {
-    return makeMetadataFromStrapi(solution.seo);
+  if (!solution.seo) {
+    return makeMetadata({
+      title: solution.title,
+      url: `${browserEnv.config.baseUrl}/${locale}/solutions/${solution.slug}`,
+      langCode: locale,
+    });
   }
 
-  return makeMetadata({
-    title: solution.title,
-    url: `${browserEnv.config.baseUrl}/${locale}/solutions/${solution.slug}`,
-    langCode: locale,
-  });
+  const metadata = makeMetadataFromStrapi(solution.seo);
+
+  if (!solution.seo.canonicalURL) {
+    return metadata;
+  }
+
+  const localizedPaths = await SolutionRepository.getLocalizedPaths(
+    locale,
+    solution
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(solution.seo.canonicalURL, localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

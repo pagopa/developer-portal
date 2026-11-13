@@ -2,6 +2,8 @@ import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { fetchGuideListPages } from './fetcher';
 import { mapGuideListPages } from './mapper';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const GuideListPagesRepository = {
   /**
    * Returns all Guide List pages
@@ -32,4 +34,20 @@ export const GuideListPagesRepository = {
       (guideListPage) => guideListPage.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for a Guide List page.
+   * @param currentLocale The locale of the current Guide List page.
+   * @param guideListPage The current Guide List page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (
+    currentLocale: string,
+    guideListPage: GuideListPageProps
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: guideListPage,
+      getAll: GuideListPagesRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

@@ -30,6 +30,7 @@ export function mapReleaseNoteProps(
 
   try {
     return {
+      documentId: attributes.documentId,
       bannerLinks:
         attributes.bannerLinks.length > 0
           ? attributes.bannerLinks.map(mapBannerLinkProps)

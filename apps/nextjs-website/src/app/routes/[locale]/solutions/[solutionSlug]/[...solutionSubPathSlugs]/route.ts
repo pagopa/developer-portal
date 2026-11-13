@@ -1,6 +1,8 @@
+import { makeHreflangUrls } from '@/helpers/metadata.helpers';
 import { getSolutionDetail } from '@/lib/api';
 import { getUrlReplaceMap } from '@/lib/api';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
+import { SolutionRepository } from '@/lib/solutions';
 
 export async function GET(
   request: Request,
@@ -36,6 +38,28 @@ export async function GET(
       );
     }
 
+    const canonicalURL = solutionData.seo?.canonicalURL
+      ? new URL(
+          solutionData.page.path,
+          solutionData.seo.canonicalURL
+        ).toString()
+      : undefined;
+
+    const localizedPaths = canonicalURL
+      ? await SolutionRepository.getLocalizedGitBookPaths(
+          locale,
+          solutionData,
+          solutionData.page.path
+        )
+      : [];
+
+    const dynamicSeo = {
+      canonical: canonicalURL,
+      languages: canonicalURL
+        ? makeHreflangUrls(canonicalURL, localizedPaths)
+        : {},
+    };
+
     const bodyConfig = {
       isPageIndex: solutionData.page.isIndex,
       pagePath: solutionData.page.path,
@@ -53,6 +77,7 @@ export async function GET(
       },
       bodyConfig,
       seo: solutionData.seo,
+      dynamicSeo,
     };
     return new Response(JSON.stringify(payload), {
       status: 200,

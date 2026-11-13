@@ -1,6 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeHreflangAlternates,
+  makeMetadata,
+} from '@/helpers/metadata.helpers';
 import { getSolutionDetail } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
@@ -10,6 +13,7 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
+import { SolutionRepository } from '@/lib/solutions';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -31,25 +35,45 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props.params;
+  const { locale, solutionSlug, solutionSubPathSlugs } = await props.params;
+
   const solutionDetail = await getSolutionDetail(
-    params?.solutionSlug,
-    params?.locale,
-    params?.solutionSubPathSlugs
+    solutionSlug,
+    locale,
+    solutionSubPathSlugs
   );
 
   if (!solutionDetail) {
     notFound();
   }
 
-  return makeMetadata({
-    title: solutionDetail?.title,
-    url: solutionDetail
-      ? `/${params.locale}/solutions/${
-          solutionDetail?.slug
-        }/${params.solutionSubPathSlugs.join('/')}`
-      : `/${params.locale}`,
+  const metadata = makeMetadata({
+    title: solutionDetail.title,
+    url: `/${locale}/solutions/${
+      solutionDetail.slug
+    }/${solutionSubPathSlugs.join('/')}`,
   });
+
+  if (!solutionDetail.seo?.canonicalURL) {
+    return metadata;
+  }
+
+  const localizedPaths = await SolutionRepository.getLocalizedGitBookPaths(
+    locale,
+    solutionDetail,
+    solutionDetail.page.path
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(
+        solutionDetail.seo.canonicalURL,
+        localizedPaths
+      ),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

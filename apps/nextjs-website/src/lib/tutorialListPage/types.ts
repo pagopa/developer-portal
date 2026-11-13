@@ -13,6 +13,7 @@ export type StrapiTutorialsListPage = {
   readonly tutorials: readonly StrapiBaseTutorial[];
   readonly seo?: StrapiSeo;
   readonly enableFilters?: boolean;
+  readonly documentId?: string;
 };
 
 export type StrapiTutorialListPages = Paginated<StrapiTutorialsListPage>;

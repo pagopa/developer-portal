@@ -1,3 +1,4 @@
+import { SUPPORTED_LOCALES } from '@/locales';
 import { fetchApiDataList, fetchProductApiData } from './fetcher';
 import { mapApiDataList } from './mapper';
 import { ApiDataPageProps } from './types';
@@ -56,4 +57,50 @@ export const ApiDataListRepository = {
    */
   getProductApiData: async (locale: string, productSlug: string) =>
     fetchProductApiData(locale, productSlug),
+  getLocalizedPaths: async (
+    currentLocale: string,
+    page: ApiDataPageProps
+  ): Promise<
+    readonly { readonly langCode: string; readonly path: string }[]
+  > => {
+    if (!page.documentId || !page.product?.slug) {
+      return [];
+    }
+
+    const translations = await Promise.all(
+      SUPPORTED_LOCALES.filter(
+        ({ langCode }) => langCode !== currentLocale
+      ).map(async ({ langCode }) => {
+        const pages = await ApiDataListRepository.getAll(langCode);
+
+        const translatedPage = pages.find(
+          ({ documentId }) => documentId === page.documentId
+        );
+
+        if (!translatedPage?.product?.slug) {
+          return null;
+        }
+
+        return {
+          langCode,
+          path: `/${langCode}/${translatedPage.product.slug}/api/${translatedPage.apiDataSlug}`,
+        };
+      })
+    );
+
+    return [
+      {
+        langCode: currentLocale,
+        path: `/${currentLocale}/${page.product.slug}/api/${page.apiDataSlug}`,
+      },
+      ...translations.filter(
+        (
+          translation
+        ): translation is {
+          readonly langCode: string;
+          readonly path: string;
+        } => translation !== null
+      ),
+    ];
+  },
 };

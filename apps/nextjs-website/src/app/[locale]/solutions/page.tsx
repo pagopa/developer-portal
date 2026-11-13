@@ -3,19 +3,50 @@ import { getSolutionListPage } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import {
+  makeHreflangAlternates,
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
+import { SolutionListPageRepository } from '@/lib/solutionListPage';
 import { browserEnv } from '@/browserConfig';
-import { SUPPORTED_LOCALES } from '@/locales';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await props.params;
-  return makeMetadata({
-    title: 'Soluzioni',
-    url: `${browserEnv.config.baseUrl}/${locale}/solutions`,
-    langCode: locale,
-  });
+  const solutionsList = await getSolutionListPage(locale);
+
+  if (!solutionsList.seo) {
+    return makeMetadata({
+      title: 'Soluzioni',
+      url: `${browserEnv.config.baseUrl}/${locale}/solutions`,
+      langCode: locale,
+    });
+  }
+
+  const metadata = makeMetadataFromStrapi(solutionsList.seo);
+
+  if (!solutionsList.seo.canonicalURL) {
+    return metadata;
+  }
+
+  const availableLocales = await SolutionListPageRepository.getAvailableLocales(
+    locale
+  );
+
+  const localizedPaths = availableLocales.map((langCode) => ({
+    langCode,
+    path: `/${langCode}/solutions`,
+  }));
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(solutionsList.seo.canonicalURL, localizedPaths),
+    },
+  };
 }
 
 export const dynamic = 'force-dynamic';

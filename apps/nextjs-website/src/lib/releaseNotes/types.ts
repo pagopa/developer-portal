@@ -14,6 +14,7 @@ export type StrapiReleaseNote = {
   readonly seo?: StrapiSeo;
   readonly title: string;
   readonly updatedAt: string;
+  readonly documentId?: string;
 };
 
 export type StrapiReleaseNotes = Paginated<StrapiReleaseNote>;

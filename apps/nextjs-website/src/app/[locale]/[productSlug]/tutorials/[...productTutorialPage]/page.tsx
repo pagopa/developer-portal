@@ -1,6 +1,7 @@
 import { getTutorial } from '@/lib/api';
 import { Metadata } from 'next';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -12,6 +13,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 import { notFound, redirect } from 'next/navigation';
+import { TutorialRepository } from '@/lib/tutorials';
 
 type Params = {
   locale: string;
@@ -33,7 +35,24 @@ export async function generateMetadata(props: {
   const { title, path, seo } = tutorialProps;
 
   if (seo) {
-    return makeMetadataFromStrapi(seo);
+    const metadata = makeMetadataFromStrapi(seo);
+
+    if (!seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await TutorialRepository.getLocalizedPaths(
+      locale,
+      tutorialProps
+    );
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
+      },
+    };
   }
 
   return makeMetadata({

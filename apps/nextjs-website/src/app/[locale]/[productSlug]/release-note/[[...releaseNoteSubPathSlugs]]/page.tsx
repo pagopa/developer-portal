@@ -20,12 +20,14 @@ import React from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Metadata } from 'next';
 import {
+  makeHreflangAlternates,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import type { BreadcrumbSegment } from '@/lib/paths/types';
 import { browserEnv } from '@/browserConfig';
 import PageNotFound from '@/app/[locale]/not-found';
+import { ReleaseNotesRepository } from '@/lib/releaseNotes';
 
 type ReleaseNotePageStaticParams = {
   locale: string;
@@ -42,19 +44,49 @@ export async function generateMetadata({
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
   const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
+
   if (productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
+
   const props = await getReleaseNote(locale, productSlug, [
     'release-note',
     ...(releaseNoteSubPathSlugs || []),
   ]);
 
   if (props?.seo) {
-    return makeMetadataFromStrapi(props?.seo);
+    const metadata = makeMetadataFromStrapi(props.seo);
+
+    if (!props.seo.canonicalURL) {
+      return metadata;
+    }
+
+    const localizedPaths = await ReleaseNotesRepository.getLocalizedPaths(
+      locale,
+      props,
+      props.page.path
+    );
+
+    const relativePath = props.page.path.slice(props.path.length);
+
+    const canonicalURL = relativePath
+      ? new URL(
+          relativePath.replace(/^\//, ''),
+          `${props.seo.canonicalURL.replace(/\/$/, '')}/`
+        ).toString()
+      : props.seo.canonicalURL;
+
+    return {
+      ...metadata,
+      alternates: {
+        ...metadata.alternates,
+        canonical: canonicalURL,
+        ...makeHreflangAlternates(props.seo.canonicalURL, localizedPaths),
+      },
+    };
   }
 
   return makeMetadata({
@@ -71,6 +103,7 @@ export type ReleaseNotePageProps = {
   readonly product: Product;
   readonly seo?: SEO;
   readonly title: string;
+  readonly documentId?: string;
 } & ProductLayoutProps;
 
 const ReleaseNotePage = async ({

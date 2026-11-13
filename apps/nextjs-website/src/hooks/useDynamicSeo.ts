@@ -7,6 +7,7 @@ export type DynamicSeo = {
   readonly metaTitle?: string;
   readonly metaDescription?: string;
   readonly canonical?: string;
+  readonly languages?: Readonly<Record<string, string>>;
 };
 
 export function useDynamicSeo(seo: DynamicSeo | null) {
@@ -41,6 +42,10 @@ export function useDynamicSeo(seo: DynamicSeo | null) {
 
     // Canonical link
     if (seo.canonical && seo.canonical !== prevRef.current?.canonical) {
+      const canonicalURL = new URL(
+        seo.canonical,
+        window.location.origin
+      ).toString();
       const existingLink = document.head.querySelector('link[rel="canonical"]');
       const linkTag = existingLink || document.createElement('link');
       if (!existingLink) {
@@ -48,9 +53,28 @@ export function useDynamicSeo(seo: DynamicSeo | null) {
         document.head.appendChild(linkTag);
       }
       const currentHref = linkTag.getAttribute('href');
-      if (currentHref !== seo.canonical) {
-        linkTag.setAttribute('href', seo.canonical);
+      if (currentHref !== canonicalURL) {
+        linkTag.setAttribute('href', canonicalURL);
       }
+    }
+
+    // Hreflang
+    if (seo.languages !== undefined) {
+      const existingLinks = document.head.querySelectorAll(
+        'link[rel="alternate"][hreflang]'
+      );
+
+      existingLinks.forEach((link) => link.remove());
+
+      Object.entries(seo.languages).forEach(([langCode, href]) => {
+        const link = document.createElement('link');
+
+        link.setAttribute('rel', 'alternate');
+        link.setAttribute('hreflang', langCode);
+        link.setAttribute('href', href);
+
+        document.head.appendChild(link);
+      });
     }
 
     prevRef.current = seo;

@@ -15,6 +15,7 @@ export type ApiDataListPage = {
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
   readonly enableFilters?: boolean;
+  readonly documentId?: string;
 };
 
 export type ApiDataListPageWithoutProduct = {

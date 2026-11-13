@@ -1,3 +1,4 @@
+import { getGuideSeoUrls } from '@/__tests__/helpers/guideSeo.helpers';
 import { getGuidePage } from '@/lib/api';
 import { getUrlReplaceMap } from '@/lib/api';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
@@ -30,6 +31,14 @@ export async function GET(
       });
     }
 
+    const dynamicSeo = await getGuideSeoUrls({
+      currentLocale: locale,
+      guide: guideData,
+      pagePath: guideData.page.path,
+      pathPrefix: guideData.source.pathPrefix,
+      version: guideData.version,
+    });
+
     const payload: GitBookContentData = {
       page: guideData.page,
       guide: guideData.guide,
@@ -49,6 +58,7 @@ export async function GET(
         urlReplaces: urlReplaceMap,
       },
       seo: guideData.seo,
+      dynamicSeo,
     };
 
     return new Response(JSON.stringify(payload), {
