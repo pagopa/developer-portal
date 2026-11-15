@@ -203,6 +203,7 @@
 | <a name="output_lambda_function_name"></a> [lambda\_function\_name](#output\_lambda\_function\_name) | The name of the Lambda Function |
 | <a name="output_lambda_role_arn"></a> [lambda\_role\_arn](#output\_lambda\_role\_arn) | The ARN of the IAM role created for the Lambda Function |
 | <a name="output_lambda_role_name"></a> [lambda\_role\_name](#output\_lambda\_role\_name) | The name of the IAM role created for the Lambda Function |
+| <a name="output_langfuse_load_balancer_arn"></a> [langfuse\_load\_balancer\_arn](#output\_langfuse\_load\_balancer\_arn) | ARN of the Langfuse application load balancer |
 | <a name="output_redis_nlb_dns_name"></a> [redis\_nlb\_dns\_name](#output\_redis\_nlb\_dns\_name) | DNS name of the internal NLB fronting the Redis ECS service |
 | <a name="output_security_groups"></a> [security\_groups](#output\_security\_groups) | n/a |
 <!-- END_TF_DOCS -->

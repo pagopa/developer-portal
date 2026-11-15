@@ -130,5 +130,6 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_load_balancer"></a> [load\_balancer](#output\_load\_balancer) | The load balancer details |
+| <a name="output_load_balancer_arn"></a> [load\_balancer\_arn](#output\_load\_balancer\_arn) | ARN of the Langfuse application load balancer |
 | <a name="output_service_discovery_endpoint"></a> [service\_discovery\_endpoint](#output\_service\_discovery\_endpoint) | The private address of the service discovery of langfuse-web |
 <!-- END_TF_DOCS -->

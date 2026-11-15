@@ -404,3 +404,21 @@ moved {
   from = module.chatbot[0].module.langfuse[0]
   to   = module.chatbot[0].module.langfuse
 }
+
+
+# aws backup modules
+
+moved {
+  from = module.backup_eu_south_1
+  to   = module.backup_eu_south_1[0]
+}
+
+moved {
+  from = module.backup_eu_central_1
+  to   = module.backup_eu_central_1[0]
+}
+
+moved {
+  from = module.alb_waf
+  to   = module.alb_waf[0]
+}

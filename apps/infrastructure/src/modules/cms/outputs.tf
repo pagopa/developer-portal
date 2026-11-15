@@ -23,3 +23,8 @@ output "internal_load_balancer" {
     arn      = module.cms_load_balancer_internal.arn
   }
 }
+
+output "public_load_balancer_arn" {
+  description = "ARN of the public CMS application load balancer"
+  value       = module.cms_load_balancer.arn
+}

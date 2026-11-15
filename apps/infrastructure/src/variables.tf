@@ -9,6 +9,12 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "enable_alb_waf" {
+  type        = bool
+  description = "Enable the public ALB WAF in production."
+  default     = false
+}
+
 variable "enable_backup" {
   type        = bool
   description = "Create AWS Backup resources in eu-south-1 and eu-central-1."

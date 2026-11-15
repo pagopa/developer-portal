@@ -388,12 +388,18 @@ module "backup_eu_central_1" {
   region      = "eu-central-1"
 }
 
-moved {
-  from = module.backup_eu_south_1
-  to   = module.backup_eu_south_1[0]
-}
+module "alb_waf" {
+  count  = var.enable_alb_waf && var.environment == "prod" ? 1 : 0
+  source = "./modules/waf"
 
-moved {
-  from = module.backup_eu_central_1
-  to   = module.backup_eu_central_1[0]
+  providers = {
+    aws = aws.eu-south-1
+  }
+
+  environment = var.environment
+  associated_resource_arns = toset(concat(
+    [module.cms.public_load_balancer_arn],
+    var.create_chatbot ? [module.chatbot[0].langfuse_load_balancer_arn] : []
+  ))
+  tags = var.tags
 }
