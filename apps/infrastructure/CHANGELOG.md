@@ -1,5 +1,18 @@
 # infrastructure
 
+## 14.10.0
+
+### Minor Changes
+
+- 43b7fdf: Add CloudWatch alarms for Langfuse ClickHouse running task counts.
+- 93abc71: Schedule the chatbot vector index refresh to run every Monday at 2:00 AM UTC.
+
+## 14.9.0
+
+### Minor Changes
+
+- caf9bac: Ensure the webinar heartbeat S3 bucket retains its AWS Backup tag in production.
+
 ## 14.8.0
 
 ### Minor Changes
