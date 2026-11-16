@@ -53,7 +53,12 @@ const QualtricsIntercept = ({ webinars }: QualtricsInterceptProps) => {
       } else if (pathname.endsWith('webinars')) {
         // Webinars overview page, only show survey if user has completed at least one webinar before
         if (webinarCertificates.length > 0) {
-          const mostRecentWebinarID = webinarCertificates[0].webinarid;
+          const sortedWebinarCertificates = webinarCertificates.toSorted(
+            (a, b) =>
+              new Date(b.reached_80_percent_at).getTime() -
+              new Date(a.reached_80_percent_at).getTime()
+          );
+          const mostRecentWebinarID = sortedWebinarCertificates[0].webinarid;
 
           // Find most recent webinar's data without knowing its locale
           // (currently not returned by /certificate endpoint)
