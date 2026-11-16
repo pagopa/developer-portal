@@ -48,11 +48,12 @@ const QualtricsIntercept = () => {
           const mostRecentWebinarID = webinarCertificates[0].webinarid;
 
           // Fetch data of most recent webinar (both it and en version since we don't know ahead of time if the webinar was it or en)
-          const mostRecentWebinarIT = getWebinar('it', mostRecentWebinarID);
-          const mostRecentWebinarEN = getWebinar('en', mostRecentWebinarID);
-
-          console.log(mostRecentWebinarIT);
-          console.log(mostRecentWebinarEN);
+          Promise.all([
+            getWebinar('it', mostRecentWebinarID),
+            getWebinar('en', mostRecentWebinarID),
+          ])
+            .then((data) => console.log(data))
+            .catch((err) => console.error(err));
 
           (window as QualtricsWindow).qualtricsEmbeddedData = {
             ...(window as QualtricsWindow).qualtricsEmbeddedData,
