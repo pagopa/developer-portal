@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { chatTimeOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import ChatbotFeedbackButton from '@/components/atoms/ChatbotFeedbackButton/ChatbotFeedbackButton';
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
@@ -39,7 +39,8 @@ const ChatMessage = ({
   const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
 
   const timeLabel =
-    timestamp && format.dateTime(new Date(timestamp), chatTimeOptions);
+    timestamp &&
+    format.dateTime(new Date(timestamp), browserEnv.config.chatTimeOptions);
 
   const iconSize = 40;
   const marginLeftMessage = 20;

@@ -5,16 +5,14 @@
 
 import { Amplify, Auth, Hub } from 'aws-amplify';
 
-import {
-  amplifyConfig,
-  authCookieValidityInDays,
-  baseUrl,
-  loggedInCookieName,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { CognitoUser } from '@aws-amplify/auth';
 import mixpanel from 'mixpanel-browser';
+
+const { amplifyConfig, baseUrl, authCookieValidityInDays, loggedInCookieName } =
+  browserEnv.config;
 
 Amplify.configure(amplifyConfig);
 

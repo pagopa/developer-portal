@@ -9,16 +9,17 @@ import {
   getPastWebinarsFrom,
 } from '@/helpers/webinars.helpers';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
-import { baseUrl } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 import type { Tag } from '@/lib/tags/types';
-import { SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useUser } from '@/helpers/user.helper';
+
+const { baseUrl, SITE_HEADER_HEIGHT } = browserEnv.config;
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 

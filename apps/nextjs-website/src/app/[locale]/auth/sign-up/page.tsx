@@ -9,7 +9,7 @@ import type { SignUpUserData } from '@/lib/auth/user/types';
 import { useTranslations } from 'next-intl';
 import { generateSignUpData } from '@/helpers/auth.helpers';
 import { useState, Suspense } from 'react';
-import { signUpAdvantages } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 
 enum SignUpSteps {
@@ -77,7 +77,7 @@ const SignUpContent = () => {
             <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
               {signUp('whyCreateAccount')}
             </Typography>
-            {signUpAdvantages.map((advantage, index) => {
+            {browserEnv.config.signUpAdvantages.map((advantage, index) => {
               return (
                 <CheckItem
                   key={index}

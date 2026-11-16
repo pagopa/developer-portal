@@ -5,7 +5,7 @@ import {
   ProfileDataCardItem,
   ProfileDataCardItemProps,
 } from '@/components/atoms/InfoCardItem/ProfileDataCardItem';
-import { isProduction } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import {
   validateMaxLenght,
   validateRequired,
@@ -107,7 +107,7 @@ export const ProfileDataCard = ({
     </Stack>
   );
 
-  const addValueComponent = !isProduction ? (
+  const addValueComponent = !browserEnv.config.isProduction ? (
     <Button
       color='primary'
       sx={{ paddingLeft: 0, paddingRight: 0, fontWeight: 600, fontSize: 16 }}

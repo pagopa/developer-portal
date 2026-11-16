@@ -8,7 +8,7 @@ import { getWebinarQuestionList } from '@/lib/webinarApi';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
 import PageNotFound from '@/app/[locale]/not-found';
-import { fetchWebinarsQuestionsIntervalMs } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useUser } from '@/helpers/user.helper';
 import WebinarQuestionsTable from '@/components/organisms/WebinarQuestionsTable/WebinarQuestionsTable';
 import { useTranslations } from 'next-intl';
@@ -27,7 +27,7 @@ const WebinarQuestionsTemplate = ({
   const [questions, setQuestions] = useState<readonly WebinarQuestion[]>([]);
 
   const { data, error } = useSWR(webinar.slug, getWebinarQuestionList, {
-    refreshInterval: fetchWebinarsQuestionsIntervalMs,
+    refreshInterval: browserEnv.config.fetchWebinarsQuestionsIntervalMs,
   });
 
   useEffect(() => {

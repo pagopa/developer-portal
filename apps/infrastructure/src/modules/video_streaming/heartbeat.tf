@@ -13,6 +13,19 @@ data "aws_partition" "current" {}
 resource "aws_s3_bucket" "heartbeat_storage" {
   provider = aws.eu-south-1
   bucket   = "${var.project_name}-webinar-heartbeats-${random_id.suffix.hex}"
+
+  # Enrolls the bucket in the production AWS Backup plan.
+  tags = var.environment == "prod" ? { Backup = "True" } : {}
+}
+
+resource "aws_s3_bucket_versioning" "heartbeat_storage" {
+  provider = aws.eu-south-1
+  count    = var.environment == "prod" ? 1 : 0
+  bucket   = aws_s3_bucket.heartbeat_storage.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "heartbeat_storage_pac" {

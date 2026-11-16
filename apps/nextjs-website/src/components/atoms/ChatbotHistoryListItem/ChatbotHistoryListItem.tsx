@@ -1,4 +1,4 @@
-import { chatbotListDateOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { Session } from '@/lib/chatbot/queries';
 import { ListItem, ListItemButton, Typography, useTheme } from '@mui/material';
 import { useTranslations, useFormatter } from 'next-intl';
@@ -15,7 +15,7 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   const format = useFormatter();
   const formattedDate = format.dateTime(
     new Date(session.createdAt),
-    chatbotListDateOptions
+    browserEnv.config.chatbotListDateOptions
   );
 
   return (

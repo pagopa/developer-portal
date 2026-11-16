@@ -1,7 +1,7 @@
 import type { Part } from '@/lib/parts/types';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import type { StrapiPart } from '@/lib/parts/strapiTypes';
-import { s3DocsPath, staticContentsUrl } from '@/config';
+import { buildSettings } from '@/buildConfig';
 
 export function mapPartProps(
   strapiPart: StrapiPart,
@@ -48,7 +48,9 @@ export function mapPartProps(
         quote: strapiPart.text,
         backgroundImage: strapiPart.backgroundImage,
       };
-    case 'parts.markdown':
+    case 'parts.markdown': {
+      // Read only the build settings needed for asset URLs; no Strapi credentials required.
+      const { staticContentsUrl, s3DocsPath } = buildSettings(process.env);
       if (!markdownContentDict)
         return {
           component: 'markdown',
@@ -67,6 +69,7 @@ export function mapPartProps(
           strapiPart.dirName
         }`,
       };
+    }
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
       const { parsedContent, menuItems } = parseCkEditorContent(

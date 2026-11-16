@@ -1,5 +1,5 @@
 'use client';
-import { profileMenuItems } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -36,7 +36,7 @@ const MobileProfileMenu = ({
   const t = useTranslations('profile');
   const { canUseWebinarFeatures } = useUser();
 
-  const visibleMenuItems = profileMenuItems.filter(
+  const visibleMenuItems = browserEnv.config.profileMenuItems.filter(
     ({ href }) =>
       !href.includes('/profile/certificate-list') || canUseWebinarFeatures
   );

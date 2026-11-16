@@ -9,7 +9,7 @@ import {
   useChatbot,
 } from '@/helpers/chatbot.helpers';
 import { useUser } from '@/helpers/user.helper';
-import { isChatbotActive } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
@@ -51,7 +51,7 @@ const ChatbotHistoryContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Needs to run only once
 
-  if (!isChatbotActive) {
+  if (!browserEnv.config.isChatbotActive) {
     router.replace(`/${locale}/not-found`);
     return null;
   }

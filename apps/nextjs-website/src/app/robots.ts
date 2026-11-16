@@ -1,14 +1,15 @@
-import { allowCrawler, baseUrl } from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
+import { browserEnv } from '@/browserConfig';
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  if (allowCrawler) {
+  if (buildEnv.config.allowCrawler) {
     return {
       rules: {
         userAgent: '*',
         allow: '/',
       },
-      sitemap: `${baseUrl}/sitemap.xml`,
+      sitemap: `${browserEnv.config.baseUrl}/sitemap.xml`,
     };
   } else {
     return {

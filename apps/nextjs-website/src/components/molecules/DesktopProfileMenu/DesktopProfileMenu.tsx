@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Link as MuiLink, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
-import { profileMenuItems } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import Link from 'next/link';
 import { useUser } from '@/helpers/user.helper';
 
@@ -23,7 +23,7 @@ const DesktopProfileMenu = ({
 
   const { canUseWebinarFeatures } = useUser();
 
-  const visibleMenuItems = profileMenuItems.filter(
+  const visibleMenuItems = browserEnv.config.profileMenuItems.filter(
     ({ href }) =>
       !href.includes('/profile/certificate-list') || canUseWebinarFeatures
   );

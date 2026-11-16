@@ -6,7 +6,7 @@ import {
   getFutureWebinarsFrom,
   getPastWebinarsFrom,
 } from '@/helpers/webinars.helpers';
-import { maxPastWebinarsInHome } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 type WebinarsSectionProps = {
   webinars: readonly Webinar[];
@@ -16,7 +16,7 @@ const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
   const futureWebinars = getFutureWebinarsFrom(webinars);
   const pastWebinars = getPastWebinarsFrom(webinars).slice(
     0,
-    maxPastWebinarsInHome
+    browserEnv.config.maxPastWebinarsInHome
   );
 
   return (

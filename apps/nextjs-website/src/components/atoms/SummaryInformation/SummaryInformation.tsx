@@ -5,7 +5,7 @@ import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { webinarDateOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { useFormatter } from 'next-intl';
 
@@ -99,7 +99,10 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                     color: textColor || palette.grey[600],
                   }}
                 >
-                  {format.dateTime(new Date(endDateTime), webinarDateOptions)}
+                  {format.dateTime(
+                    new Date(endDateTime),
+                    browserEnv.config.webinarDateOptions
+                  )}
                 </Typography>
               </Box>
             </Stack>

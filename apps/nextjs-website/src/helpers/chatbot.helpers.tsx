@@ -8,7 +8,7 @@ import {
   deleteChatbotSession,
 } from '@/lib/chatbotApi';
 import { ChatbotChip, PaginatedSessions, Query } from '@/lib/chatbot/queries';
-import { chatMaxHistoryMessages } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 const HISTORY_PAGE_SIZE = 10;
 const EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY = 'expireChatDate';
@@ -137,7 +137,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       question: queryMessage,
       queriedAt: queriedAt,
       knowledgeBase: knowledgeBase,
-      history: previousQueries.slice(-chatMaxHistoryMessages),
+      history: previousQueries.slice(-browserEnv.config.chatMaxHistoryMessages),
     })
       .then((response) => {
         setIsAwaitingResponse(false);

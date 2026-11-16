@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import React, { ForwardedRef, forwardRef, useMemo } from 'react';
 import MobileSiteHeader from '../MobileSiteHeader/MobileSiteHeader';
 import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopSiteHeader';
-import { SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
 
 export type SiteHeaderProps = {
   locale: string;
@@ -14,6 +14,8 @@ export type SiteHeaderProps = {
   shouldShowLinkToSolutions: boolean;
   shouldShowLinkToWebinars: boolean;
 };
+
+const { SITE_HEADER_HEIGHT } = browserEnv.config;
 
 const SiteHeader = (
   {
