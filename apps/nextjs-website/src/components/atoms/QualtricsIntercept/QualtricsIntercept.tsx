@@ -24,6 +24,7 @@ const QualtricsIntercept = () => {
     });
 
     if (user && user.attributes['custom:survey_accepted']) {
+      // eslint-disable-next-line functional/immutable-data
       (window as QualtricsWindow).qualtricsEmbeddedData = {
         FirstName: user.attributes.given_name,
         LastName: user.attributes.family_name,
@@ -55,6 +56,7 @@ const QualtricsIntercept = () => {
             .then((data) => console.log(data))
             .catch((err) => console.error(err));
 
+          // eslint-disable-next-line functional/immutable-data
           (window as QualtricsWindow).qualtricsEmbeddedData = {
             ...(window as QualtricsWindow).qualtricsEmbeddedData,
           };
@@ -70,6 +72,7 @@ const QualtricsIntercept = () => {
       // The pathname dependency currently means that the script gets removed at every page change
       script.remove();
       // Minimize how long user data is readable on window by other scripts on the page
+      // eslint-disable-next-line functional/immutable-data
       delete (window as QualtricsWindow).qualtricsEmbeddedData;
     };
   }, [user, pathname, webinarCertificates]);
