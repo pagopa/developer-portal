@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.9.0
+
+### Minor Changes
+
+- caf9bac: Ensure the webinar heartbeat S3 bucket retains its AWS Backup tag in production.
+
 ## 14.8.0
 
 ### Minor Changes
