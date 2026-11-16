@@ -1,6 +1,6 @@
 'use client';
 import { useUser } from '@/helpers/user.helper';
-import { getWebinar } from '@/lib/api';
+import { Webinar } from '@/lib/webinars/types';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -8,12 +8,19 @@ interface QualtricsWindow {
   qualtricsEmbeddedData?: Record<string, string>;
 }
 
+type QualtricsInterceptProps = {
+  webinars: {
+    it: ReadonlyArray<Webinar>;
+    en: ReadonlyArray<Webinar>;
+  };
+};
+
 const toIsoDate = (epochSeconds: string): string => {
   const date = new Date(Number(epochSeconds) * 1000);
   return Number.isNaN(date.getTime()) ? '' : date.toISOString();
 };
 
-const QualtricsIntercept = () => {
+const QualtricsIntercept = ({ webinars }: QualtricsInterceptProps) => {
   const { user, webinarCertificates } = useUser();
   const pathname = usePathname();
 
@@ -48,18 +55,23 @@ const QualtricsIntercept = () => {
         if (webinarCertificates.length > 0) {
           const mostRecentWebinarID = webinarCertificates[0].webinarid;
 
-          // Fetch data of most recent webinar (both it and en version since we don't know ahead of time if the webinar was it or en)
-          Promise.all([
-            getWebinar('it', mostRecentWebinarID),
-            getWebinar('en', mostRecentWebinarID),
-          ])
-            .then((data) => console.log(data))
-            .catch((err) => console.error(err));
+          // Find most recent webinar's data without knowing its locale
+          // (currently not returned by /certificate endpoint)
+          const allWebinars = webinars.it.concat(webinars.en);
+          const mostRecentWebinarData = allWebinars.find(
+            (webinar) => webinar.slug === mostRecentWebinarID
+          );
 
-          // eslint-disable-next-line functional/immutable-data
-          (window as QualtricsWindow).qualtricsEmbeddedData = {
-            ...(window as QualtricsWindow).qualtricsEmbeddedData,
-          };
+          if (mostRecentWebinarData) {
+            // eslint-disable-next-line functional/immutable-data
+            (window as QualtricsWindow).qualtricsEmbeddedData = {
+              ...(window as QualtricsWindow).qualtricsEmbeddedData,
+              WebinarName: mostRecentWebinarData.title,
+              ...(mostRecentWebinarData.tag && {
+                WebinarType: mostRecentWebinarData.tag.name,
+              }),
+            };
+          }
 
           document.body.appendChild(script);
         }
