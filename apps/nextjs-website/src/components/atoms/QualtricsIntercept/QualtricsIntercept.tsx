@@ -1,9 +1,10 @@
 'use client';
 import { useUser } from '@/helpers/user.helper';
+import { getWebinar } from '@/lib/api';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-interface Window {
+interface QualtricsWindow {
   qualtricsEmbeddedData?: Record<string, string>;
 }
 
@@ -23,7 +24,7 @@ const QualtricsIntercept = () => {
     });
 
     if (user && user.attributes['custom:survey_accepted']) {
-      (window as Window).qualtricsEmbeddedData = {
+      (window as QualtricsWindow).qualtricsEmbeddedData = {
         FirstName: user.attributes.given_name,
         LastName: user.attributes.family_name,
         email: user.attributes.email,
@@ -44,6 +45,19 @@ const QualtricsIntercept = () => {
       } else if (pathname.endsWith('webinars')) {
         // Webinars overview page, only show survey if user has completed at least one webinar before
         if (webinarCertificates.length > 0) {
+          const mostRecentWebinarID = webinarCertificates[0].webinarid;
+
+          // Fetch data of most recent webinar (both it and en version since we don't know ahead of time if the webinar was it or en)
+          const mostRecentWebinarIT = getWebinar('it', mostRecentWebinarID);
+          const mostRecentWebinarEN = getWebinar('en', mostRecentWebinarID);
+
+          console.log(mostRecentWebinarIT);
+          console.log(mostRecentWebinarEN);
+
+          (window as QualtricsWindow).qualtricsEmbeddedData = {
+            ...(window as QualtricsWindow).qualtricsEmbeddedData,
+          };
+
           document.body.appendChild(script);
         }
       } else {
