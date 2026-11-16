@@ -111,7 +111,9 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <UserProvider>
-                {qualtricsFeatureFlag === 'true' && <QualtricsIntercept webinars={webinars} />}
+                {qualtricsFeatureFlag === 'true' && (
+                  <QualtricsIntercept webinars={webinars} />
+                )}
                 <ChatbotProvider isChatbotVisible={isChatbotActive}>
                   <SiteHeader
                     locale={locale}
