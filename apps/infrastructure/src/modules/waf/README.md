@@ -26,8 +26,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_associated_resource_arns"></a> [associated\_resource\_arns](#input\_associated\_resource\_arns) | Map of stable resource keys to regional resource ARNs; CloudFront associations are configured on the distribution | `map(string)` | `{}` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment used to name the web ACL | `string` | n/a | yes |
-| <a name="input_associated_resource_arns"></a> [associated\_resource\_arns](#input\_associated\_resource\_arns) | ARNs of regional resources to associate with this web ACL; CloudFront associations are configured on the distribution | `set(string)` | `[]` | no |
 | <a name="input_metric_name_prefix"></a> [metric\_name\_prefix](#input\_metric\_name\_prefix) | Optional prefix for WAF CloudWatch metric names | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Optional name for the web ACL | `string` | `null` | no |
 | <a name="input_rate_limit"></a> [rate\_limit](#input\_rate\_limit) | Requests per IP during the rate-based rule's 60-second evaluation window | `number` | `100` | no |

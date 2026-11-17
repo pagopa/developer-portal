@@ -397,9 +397,9 @@ module "alb_waf" {
   }
 
   environment = var.environment
-  associated_resource_arns = toset(concat(
-    [module.cms.public_load_balancer_arn],
-    var.create_chatbot ? [module.chatbot[0].langfuse_load_balancer_arn] : []
-  ))
+  associated_resource_arns = merge(
+    { cms = module.cms.public_load_balancer_arn },
+    var.create_chatbot ? { langfuse = module.chatbot[0].langfuse_load_balancer_arn } : {}
+  )
   tags = var.tags
 }

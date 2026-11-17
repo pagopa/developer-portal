@@ -15,9 +15,9 @@ variable "scope" {
 }
 
 variable "associated_resource_arns" {
-  description = "ARNs of regional resources to associate with this web ACL; CloudFront associations are configured on the distribution"
-  type        = set(string)
-  default     = []
+  description = "Map of stable resource keys to regional resource ARNs; CloudFront associations are configured on the distribution"
+  type        = map(string)
+  default     = {}
 
   validation {
     condition     = var.scope == "REGIONAL" || length(var.associated_resource_arns) == 0

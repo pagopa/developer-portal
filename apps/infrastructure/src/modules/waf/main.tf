@@ -90,7 +90,7 @@ resource "aws_wafv2_web_acl" "public_albs" {
 }
 
 resource "aws_wafv2_web_acl_association" "public_albs" {
-  for_each = var.scope == "REGIONAL" ? var.associated_resource_arns : toset([])
+  for_each = var.scope == "REGIONAL" ? var.associated_resource_arns : {}
 
   resource_arn = each.value
   web_acl_arn  = aws_wafv2_web_acl.public_albs.arn
