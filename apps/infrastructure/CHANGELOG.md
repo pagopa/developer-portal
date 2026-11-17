@@ -1,5 +1,12 @@
 # infrastructure
 
+## 14.11.0
+
+### Minor Changes
+
+- 46a3a7b: Remove obsolete Matomo environment variables from the CloudFront configuration.
+- 020ba9e: Enable the webinars feature flag in all environments.
+
 ## 14.10.0
 
 ### Minor Changes
