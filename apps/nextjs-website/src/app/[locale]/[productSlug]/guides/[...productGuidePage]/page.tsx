@@ -187,6 +187,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         initialBreadcrumbs={initialBreadcrumbs}
         versionName={productGuidePageProps.version.name}
         {...productGuidePageProps}
+        showGuideFeedback
       />
     </ProductLayout>
   );

@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  type ReactNode,
 } from 'react';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
@@ -13,6 +14,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog,
+  Box,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -32,6 +34,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
   hasProductHeader?: boolean;
+  feedbackLink?: ReactNode;
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -124,7 +127,27 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     />
   );
 
-  return (
+  const feedbackLink = menuProps.feedbackLink && (
+    <Box
+      sx={{
+        position: {
+          xs: menuProps.menu ? 'absolute' : 'fixed',
+          lg: 'fixed',
+        },
+        top: menuProps.menu
+          ? { xs: '100%', lg: SITE_HEADER_HEIGHT + productHeaderHeight }
+          : topStyle,
+        right: 0,
+        zIndex: 51,
+        display: 'flex',
+        transition: 'top 0.5s linear',
+      }}
+    >
+      {menuProps.feedbackLink}
+    </Box>
+  );
+
+  return menuProps.menu ? (
     <Fragment>
       <Stack
         ref={menuContainerRef}
@@ -134,7 +157,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           position: 'sticky',
           top: topStyle,
           height: { lg: height },
-          overflowY: 'auto',
+          overflowY: { xs: 'visible', lg: 'auto' },
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
@@ -178,6 +201,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           </Stack>
           {isDesktop && items}
         </Stack>
+        {feedbackLink}
       </Stack>
       {!isDesktop && (
         <Dialog open={open} onClose={handleClick} fullScreen>
@@ -216,6 +240,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         </Dialog>
       )}
     </Fragment>
+  ) : (
+    feedbackLink
   );
 };
 
