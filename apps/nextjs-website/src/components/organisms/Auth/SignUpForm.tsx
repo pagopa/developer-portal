@@ -28,7 +28,7 @@ import Link from 'next/link';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { PasswordTextField } from './PasswordTextField';
 import PoliciesParagraph from './PoliciesParagraph';
-import { companyRoles } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { useParams } from 'next/navigation';
 
 interface SignUpFormProps {
@@ -298,7 +298,7 @@ const SignUpForm = ({
                     value={company}
                     onChange={handleInputChange}
                   >
-                    {companyRoles.map((role) => (
+                    {browserEnv.config.companyRoles.map((role) => (
                       <MenuItem key={role} value={role}>
                         {t(`auth.signUp.companyRoles.${role}`)}
                       </MenuItem>

@@ -20,9 +20,11 @@ import {
   minimalMarkdownPart,
 } from '@/lib/parts/__tests__/factories';
 
-jest.mock('@/config', () => ({
-  staticContentsUrl: 'https://static-contents.test.developer.pagopa.it',
-  s3DocsPath: 'devportal-docs/docs',
+jest.mock('@/buildConfig', () => ({
+  buildSettings: jest.fn(() => ({
+    staticContentsUrl: 'https://static-contents.test.developer.pagopa.it',
+    s3DocsPath: 'devportal-docs/docs',
+  })),
 }));
 
 describe('makePartProps', () => {

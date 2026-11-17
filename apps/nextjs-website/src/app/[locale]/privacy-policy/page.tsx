@@ -1,5 +1,5 @@
 import PrivacyPolicyTemplate from '@/components/templates/PrivacyPolicyTemplate/PrivacyPolicyTemplate';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
@@ -10,7 +10,7 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   return makeMetadata({
     title: 'Privacy Policy',
-    url: `${baseUrl}/${locale}/privacy-policy`,
+    url: `${browserEnv.config.baseUrl}/${locale}/privacy-policy`,
     langCode: locale,
   });
 }

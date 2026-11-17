@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import {
   ChatbotErrorsType,
@@ -73,7 +73,9 @@ const Chat = ({
       firstMessage(
         user
           ? t('chatBot.welcomeMessage')
-          : t('chatBot.guestMessage', { host: `${baseUrl}/${locale}` }),
+          : t('chatBot.guestMessage', {
+              host: `${browserEnv.config.baseUrl}/${locale}`,
+            }),
         mustFillFeedbackForm
       ),
       ...compact(

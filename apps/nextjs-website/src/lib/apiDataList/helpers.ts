@@ -1,5 +1,5 @@
 import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
-import { staticContentsUrl } from '@/config';
+import { buildEnv } from '@/lib/buildEnv';
 
 export async function getApiSoapContentUrls(
   locale: string,
@@ -14,6 +14,6 @@ export async function getApiSoapContentUrls(
   }
 
   return soapApiMetadata.contentS3Paths.map(
-    (url) => `${staticContentsUrl}/${locale}/soap-api/${url}`
+    (url) => `${buildEnv.config.staticContentsUrl}/${locale}/soap-api/${url}`
   );
 }

@@ -4,7 +4,7 @@ import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
@@ -100,7 +100,7 @@ const FutureWebinarsShowcase = ({
       </EContainer>
       <Snackbar
         open={!!error}
-        autoHideDuration={snackbarAutoHideDurationMs}
+        autoHideDuration={browserEnv.config.snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
         <Alert severity={'error'}>{error}</Alert>

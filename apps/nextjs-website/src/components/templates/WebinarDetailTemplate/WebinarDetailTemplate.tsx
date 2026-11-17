@@ -10,10 +10,7 @@ import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import {
-  snackbarAutoHideDurationMs,
-  isWebinarHeartbeatEnabled,
-} from '@/config';
+import { browserEnv } from '@/browserConfig';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
@@ -27,6 +24,9 @@ import LiveWebinarWarningBanner from '@/components/molecules/LiveWebinarWarningB
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
+
+const { isWebinarHeartbeatEnabled, snackbarAutoHideDurationMs } =
+  browserEnv.config;
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;

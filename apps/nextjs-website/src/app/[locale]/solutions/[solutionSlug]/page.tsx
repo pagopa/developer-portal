@@ -3,7 +3,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { getSolution } from '@/lib/api';
 import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
@@ -32,7 +32,7 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: solution.title,
-    url: `${baseUrl}/${locale}/solutions/${solution.slug}`,
+    url: `${browserEnv.config.baseUrl}/${locale}/solutions/${solution.slug}`,
     langCode: locale,
   });
 }

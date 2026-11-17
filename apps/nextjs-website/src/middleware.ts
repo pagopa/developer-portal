@@ -1,7 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { baseUrl, defaultLocale, loggedInCookieName } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import { SUPPORTED_LOCALES } from '@/locales';
+
+const { defaultLocale, loggedInCookieName, baseUrl } = browserEnv.config;
 
 const guestPath = '/auth/';
 

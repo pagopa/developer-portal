@@ -26,13 +26,11 @@ export const figure: Schema = {
   transform: (node, config) => {
     const caption = node.children
       .find(({ tag }) => tag === 'figcaption')
-      ?.transformChildren(config)
-      .find((text) => typeof text === 'string');
+      ?.transformChildren(config)[0];
     const imgAttrs = node.children
       .find(({ tag }) => tag === 'img')
       ?.transformAttributes(config);
-    const attrs =
-      typeof caption === 'string' ? { ...imgAttrs, caption } : imgAttrs;
+    const attrs = caption ? { ...imgAttrs, caption } : imgAttrs;
     return new Markdoc.Tag('Image', attrs);
   },
 };

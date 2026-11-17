@@ -97,7 +97,10 @@ const QuickStartGuideStepper = ({
                     }}
                   >
                     {index - 1 >= 0 && (
-                      <Tab key={index} id={steps[index - 1].anchor}>
+                      <Tab
+                        key={`prev-${steps[index - 1].anchor}`}
+                        id={steps[index - 1].anchor}
+                      >
                         <GoToStep
                           previousOrNext='previous'
                           title={`${steps[index - 1].anchor} - ${
@@ -107,7 +110,10 @@ const QuickStartGuideStepper = ({
                       </Tab>
                     )}
                     {index + 1 < steps?.length && (
-                      <Tab key={index} id={steps[index + 1].anchor}>
+                      <Tab
+                        key={`next-${steps[index + 1].anchor}`}
+                        id={steps[index + 1].anchor}
+                      >
                         <GoToStep
                           previousOrNext='next'
                           title={`${steps[index + 1].anchor} - ${

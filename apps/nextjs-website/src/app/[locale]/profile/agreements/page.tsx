@@ -14,9 +14,11 @@ import {
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
-import { snackbarAutoHideDurationMs } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 import { useParams } from 'next/navigation';
+
+const { snackbarAutoHideDurationMs } = browserEnv.config;
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {

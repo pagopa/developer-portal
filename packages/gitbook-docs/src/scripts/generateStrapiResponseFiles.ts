@@ -7,11 +7,11 @@ import dotenv from 'dotenv';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { makeS3Client, putS3File } from '../helpers/s3Bucket.helper';
 import { StrapiApiData, StrapiProduct } from '../helpers/strapiTypes';
-import { baseUrl } from 'nextjs-website/src/config';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { browserEnv } from 'nextjs-website/src/browserConfig';
 
 dotenv.config();
-
+const { baseUrl } = browserEnv.config;
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
 const S3_PRODUCTS_METADATA_JSON_PATH =

@@ -26,13 +26,17 @@ import {
   mockDocument,
 } from '../__mocks__/structuredDataFromDocumentMock';
 
-jest.mock('@/config', () => ({
-  baseUrl: 'https://test.base.url',
-  websiteName: 'Test Website Name',
-  organizationInfo: {
-    name: 'Test Organization',
-    url: 'https://test.org.url',
-    logo: 'https://test.org.url/logo.png',
+jest.mock('@/browserConfig', () => ({
+  browserEnv: {
+    config: {
+      baseUrl: 'https://test.base.url',
+      websiteName: 'Test Website Name',
+      organizationInfo: {
+        name: 'Test Organization',
+        url: 'https://test.org.url',
+        logo: 'https://test.org.url/logo.png',
+      },
+    },
   },
 }));
 

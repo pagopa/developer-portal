@@ -3,9 +3,12 @@ resource "aws_efs_file_system" "clickhouse_data" {
   throughput_mode                 = "provisioned"
   provisioned_throughput_in_mibps = var.efs_provisioned_throughput_in_mibps
 
-  tags = {
-    Name = "clickhouse-data"
-  }
+  tags = merge(
+    {
+      Name = "clickhouse-data"
+    },
+    var.environment == "prod" ? { Backup = "True" } : {}
+  )
 }
 
 resource "aws_efs_mount_target" "clickhouse_data" {

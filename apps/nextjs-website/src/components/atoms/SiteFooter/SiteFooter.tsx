@@ -4,7 +4,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Divider } from '@mui/material';
 import { Footer } from '@/editorialComponents/Footer';
-import { isProduction } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import type {
   FooterLinksType,
   PreLoginFooterLinksType,
@@ -180,7 +180,7 @@ const SiteFooter = () => {
   const { resources, ...rest } = links;
   const resourcesLinks = [
     ...resources.links,
-    ...(isProduction ? [cookiePreferenceLink] : []),
+    ...(browserEnv.config.isProduction ? [cookiePreferenceLink] : []),
   ];
 
   const footerLinks = {

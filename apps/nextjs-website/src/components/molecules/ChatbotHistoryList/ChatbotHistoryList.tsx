@@ -1,4 +1,4 @@
-import { chatbotHeaderDateOptions } from '@/config';
+import { browserEnv } from '@/browserConfig';
 import {
   capitalize,
   Divider,
@@ -41,6 +41,8 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
 };
 
 export default ChatbotHistoryList;
+
+const { chatbotHeaderDateOptions } = browserEnv.config;
 
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],

@@ -7,8 +7,20 @@ const makeStrapiQuickStartGuidesPopulate = () =>
   qs.stringify({
     populate: {
       quickstartGuideItems: {
-        populate:
-          'parts.responseCode,parts.requestCode,parts.requestAttributes',
+        populate: {
+          parts: {
+            on: {
+              'parts.api-tester': {
+                populate: ['requestCode', 'requestAttributes', 'responseCode'],
+              },
+              'parts.html': { populate: '*' },
+              'parts.alert': { populate: '*' },
+              'parts.code-block': { populate: '*' },
+              'parts.embed-html': { populate: '*' },
+              'parts.quote': { populate: '*' },
+            },
+          },
+        },
       },
       product: {
         ...productRelationsPopulate,

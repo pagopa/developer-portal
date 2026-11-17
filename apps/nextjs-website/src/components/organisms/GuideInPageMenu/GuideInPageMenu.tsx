@@ -8,7 +8,10 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { browserEnv } from '@/browserConfig';
+
+const { headingLevelsToShowInMenu, PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } =
+  browserEnv.config;
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
@@ -33,7 +36,11 @@ const GuideInPageMenu = ({
   const { fragment, setFragmentFromScroll } = useFragment();
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
-  const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
+  const nodes = parseInPageMenu(inPageMenu, {
+    assetsPrefix,
+    pagePath,
+    headingLevelsToShowInMenu: headingLevelsToShowInMenu,
+  });
   const productHeaderHeight = hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0;
   const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
 
