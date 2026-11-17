@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 2.4.3
+
+### Patch Changes
+
+- ee8bbe4: Remove config.ts
+- f30d96f: Fix missing figcaption text
+
 ## 2.4.2
 
 ### Patch Changes

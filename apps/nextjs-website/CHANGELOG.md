@@ -1,5 +1,22 @@
 # nextjs-website
 
+## 17.6.2
+
+### Patch Changes
+
+- ccf71e7: Add embedded data to Qualtrics
+
+## 17.6.1
+
+### Patch Changes
+
+- ee8bbe4: Remove config.ts
+- 1346067: Remove Matomo scripts
+- 423baf8: Remove the unused FETCH_FROM_STRAPI environment variable.
+- Updated dependencies [ee8bbe4]
+- Updated dependencies [f30d96f]
+  - gitbook-docs@2.4.3
+
 ## 17.6.0
 
 ### Minor Changes
