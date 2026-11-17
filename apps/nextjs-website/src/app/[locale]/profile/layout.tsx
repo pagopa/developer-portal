@@ -1,5 +1,4 @@
 'use client';
-import PageNotFound from '@/app/[locale]/not-found';
 import React from 'react';
 import { Box } from '@mui/material';
 import { useParams, usePathname, useRouter } from 'next/navigation';
@@ -17,7 +16,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (!loading && !user) {
     router.replace(`/${locale}/auth/login?redirect=${btoa(pathname)}`);
-    return null;
+    return <Spinner />;
   }
   if (loading) {
     return <Spinner />;
