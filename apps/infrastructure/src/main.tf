@@ -389,7 +389,7 @@ module "backup_eu_central_1" {
 }
 
 module "alb_waf" {
-  count  = var.enable_alb_waf && var.environment == "prod" ? 1 : 0
+  count  = var.enable_alb_waf ? 1 : 0
   source = "./modules/waf"
 
   providers = {
@@ -397,6 +397,9 @@ module "alb_waf" {
   }
 
   environment = var.environment
+  alerting = {
+    topic_arn = module.core.alerting_topic_arn
+  }
   associated_resource_arns = merge(
     { cms = module.cms.public_load_balancer_arn },
     var.create_chatbot ? { langfuse = module.chatbot[0].langfuse_load_balancer_arn } : {}

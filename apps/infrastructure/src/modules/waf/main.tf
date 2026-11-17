@@ -3,6 +3,9 @@ locals {
 
   metric_name_prefix = var.metric_name_prefix != null ? var.metric_name_prefix : "devportal-${var.environment}-alb"
   acl_metric_name    = var.metric_name_prefix != null ? var.metric_name_prefix : local.name
+
+  ip_rate_limit_metric_name    = "${local.metric_name_prefix}-ip-rate-limit"
+  known_bad_inputs_metric_name = "${local.metric_name_prefix}-known-bad-inputs"
 }
 
 resource "aws_wafv2_web_acl" "public_albs" {
@@ -54,7 +57,7 @@ resource "aws_wafv2_web_acl" "public_albs" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${local.metric_name_prefix}-known-bad-inputs"
+      metric_name                = local.known_bad_inputs_metric_name
       sampled_requests_enabled   = true
     }
   }
@@ -77,7 +80,7 @@ resource "aws_wafv2_web_acl" "public_albs" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "${local.metric_name_prefix}-ip-rate-limit"
+      metric_name                = local.ip_rate_limit_metric_name
       sampled_requests_enabled   = true
     }
   }

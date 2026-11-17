@@ -19,13 +19,16 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_cloudwatch_metric_alarm.counted_requests](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_wafv2_web_acl.public_albs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
 | [aws_wafv2_web_acl_association.public_albs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_association) | resource |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_alerting"></a> [alerting](#input\_alerting) | Optional SNS destination and per-minute CountedRequests alarm thresholds for a regional web ACL | <pre>object({<br/>    topic_arn                  = string<br/>    ip_rate_limit_threshold    = optional(number, 100)<br/>    known_bad_inputs_threshold = optional(number, 25)<br/>  })</pre> | `null` | no |
 | <a name="input_associated_resource_arns"></a> [associated\_resource\_arns](#input\_associated\_resource\_arns) | Map of stable resource keys to regional resource ARNs; CloudFront associations are configured on the distribution | `map(string)` | `{}` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment used to name the web ACL | `string` | n/a | yes |
 | <a name="input_metric_name_prefix"></a> [metric\_name\_prefix](#input\_metric\_name\_prefix) | Optional prefix for WAF CloudWatch metric names | `string` | `null` | no |

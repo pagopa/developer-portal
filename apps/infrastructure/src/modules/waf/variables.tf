@@ -1,3 +1,13 @@
+variable "alerting" {
+  description = "Optional SNS destination and per-minute CountedRequests alarm thresholds for a regional web ACL"
+  type = object({
+    topic_arn                  = string
+    ip_rate_limit_threshold    = optional(number, 100)
+    known_bad_inputs_threshold = optional(number, 25)
+  })
+  default = null
+}
+
 variable "environment" {
   description = "Environment used to name the web ACL"
   type        = string
