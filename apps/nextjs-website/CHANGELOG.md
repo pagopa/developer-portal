@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.6.2
+
+### Patch Changes
+
+- ccf71e7: Add embedded data to Qualtrics
+
 ## 17.6.1
 
 ### Patch Changes

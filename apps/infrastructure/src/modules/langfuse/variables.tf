@@ -14,6 +14,11 @@ variable "region" {
   type        = string
 }
 
+variable "alerting_topic_arn" {
+  description = "SNS topic ARN for CloudWatch alarm notifications"
+  type        = string
+}
+
 # variable "availability_zones" {
 #   description = "Availability zones for the VPC"
 #   type        = list(string)
