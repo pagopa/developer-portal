@@ -57,42 +57,39 @@ export async function generateMetadata({
     ...(releaseNoteSubPathSlugs || []),
   ]);
 
-  if (props?.seo) {
-    const metadata = makeMetadataFromStrapi(props.seo);
+  const metadata = props?.seo
+    ? makeMetadataFromStrapi(props.seo)
+    : makeMetadata({
+        title: props?.page.title,
+        url: props?.page.path,
+      });
 
-    if (!props.seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = props
+    ? await ReleaseNotesRepository.getLocalizedPaths(
+        locale,
+        props,
+        props.page.path
+      )
+    : [];
 
-    const localizedPaths = await ReleaseNotesRepository.getLocalizedPaths(
-      locale,
-      props,
-      props.page.path
-    );
-
-    const relativePath = props.page.path.slice(props.path.length);
-
-    const canonicalURL = relativePath
+  const relativePath = props?.page.path.slice(props.path.length) || '';
+  const canonicalURL = props?.seo?.canonicalURL
+    ? relativePath
       ? new URL(
           relativePath.replace(/^\//, ''),
           `${props.seo.canonicalURL.replace(/\/$/, '')}/`
         ).toString()
-      : props.seo.canonicalURL;
+      : props.seo.canonicalURL
+    : undefined;
 
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        canonical: canonicalURL,
-        ...makeHreflangAlternates(props.seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: props?.page.title,
-    url: props?.page.path,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...(canonicalURL && { canonical: canonicalURL }),
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 export type ReleaseNotePageProps = {

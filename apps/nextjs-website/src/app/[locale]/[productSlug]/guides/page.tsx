@@ -51,33 +51,27 @@ export const generateMetadata = async (
 
   const { path, abstract, seo, product } = guideListPageProps;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [abstract?.title, product.name].filter(Boolean).join(' | '),
+        description: abstract?.description,
+        url: path,
+        parent: resolvedParent,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await GuideListPagesRepository.getLocalizedPaths(
+    locale,
+    guideListPageProps
+  );
 
-    const localizedPaths = await GuideListPagesRepository.getLocalizedPaths(
-      locale,
-      guideListPageProps
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
-    description: abstract?.description,
-    url: path,
-    parent: resolvedParent,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 };
 
 const GuideListPage = async (props: ProductParams) => {

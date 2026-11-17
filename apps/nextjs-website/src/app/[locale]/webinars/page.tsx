@@ -47,7 +47,7 @@ export async function generateMetadata(props: {
     }),
     alternates: {
       canonical: canonicalURL,
-      ...makeHreflangAlternates(browserEnv.config.baseUrl, localizedPaths),
+      ...makeHreflangAlternates(localizedPaths),
     },
   };
 }

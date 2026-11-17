@@ -28,19 +28,13 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (!solution.seo) {
-    return makeMetadata({
-      title: solution.title,
-      url: `${browserEnv.config.baseUrl}/${locale}/solutions/${solution.slug}`,
-      langCode: locale,
-    });
-  }
-
-  const metadata = makeMetadataFromStrapi(solution.seo);
-
-  if (!solution.seo.canonicalURL) {
-    return metadata;
-  }
+  const metadata = solution.seo
+    ? makeMetadataFromStrapi(solution.seo)
+    : makeMetadata({
+        title: solution.title,
+        url: `${browserEnv.config.baseUrl}/${locale}/solutions/${solution.slug}`,
+        langCode: locale,
+      });
 
   const localizedPaths = await SolutionRepository.getLocalizedPaths(
     locale,
@@ -51,7 +45,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(solution.seo.canonicalURL, localizedPaths),
+      ...makeHreflangAlternates(localizedPaths),
     },
   };
 }

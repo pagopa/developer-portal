@@ -22,7 +22,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { getGuideSeoUrls } from '@/__tests__/helpers/guideSeo.helpers';
+import { getGuideSeoUrls } from '@/helpers/guideSeo.helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,45 +71,39 @@ export async function generateMetadata(props: {
 
   const { seo, page, source, version } = guidePageProps;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata: Metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : {
+        ...(version.main ? {} : { robots: 'noindex, follow' }),
+        ...makeMetadata({
+          title: [
+            page.title,
+            [guidePageProps.guide.name, !version.main && version.name]
+              .filter(Boolean)
+              .join(' '),
+            guidePageProps.product.name,
+          ]
+            .filter(Boolean)
+            .join(' | '),
+          url: page.path,
+        }),
+      };
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
-
-    const { canonical, languages } = await getGuideSeoUrls({
-      currentLocale: locale,
-      guide: guidePageProps,
-      pagePath: page.path,
-      pathPrefix: source.pathPrefix,
-      version,
-    });
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        canonical,
-        languages,
-      },
-    };
-  }
+  const { canonical, languages } = await getGuideSeoUrls({
+    currentLocale: locale,
+    guide: guidePageProps,
+    pagePath: page.path,
+    pathPrefix: source.pathPrefix,
+    version,
+  });
 
   return {
-    ...(version.main ? {} : { robots: 'noindex, follow' }),
-    ...makeMetadata({
-      title: [
-        page.title,
-        [guidePageProps.guide.name, !version.main && version.name]
-          .filter(Boolean)
-          .join(' '),
-        guidePageProps.product.name,
-      ]
-        .filter(Boolean)
-        .join(' | '),
-      url: page.path,
-    }),
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...(canonical && { canonical }),
+      languages,
+    },
   };
 }
 

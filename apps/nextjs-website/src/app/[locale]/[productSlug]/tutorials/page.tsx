@@ -50,34 +50,28 @@ export async function generateMetadata(
 
   const { abstract, path, product, seo } = tutorialListPage;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        parent: resolvedParent,
+        title: [abstract?.title, product.name].filter(Boolean).join(' | '),
+        description: abstract?.description,
+        url: path,
+        image: product.logo?.url,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await TutorialListPageRepository.getLocalizedPaths(
+    locale,
+    tutorialListPage
+  );
 
-    const localizedPaths = await TutorialListPageRepository.getLocalizedPaths(
-      locale,
-      tutorialListPage
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    parent: resolvedParent,
-    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
-    description: abstract?.description,
-    url: path,
-    image: product.logo?.url,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 const TutorialsPage = async (props: ProductParams) => {
   const { locale, productSlug } = await props.params;

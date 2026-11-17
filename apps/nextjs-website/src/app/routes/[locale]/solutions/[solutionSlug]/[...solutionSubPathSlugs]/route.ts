@@ -45,19 +45,15 @@ export async function GET(
         ).toString()
       : undefined;
 
-    const localizedPaths = canonicalURL
-      ? await SolutionRepository.getLocalizedGitBookPaths(
-          locale,
-          solutionData,
-          solutionData.page.path
-        )
-      : [];
+    const localizedPaths = await SolutionRepository.getLocalizedGitBookPaths(
+      locale,
+      solutionData,
+      solutionData.page.path
+    );
 
     const dynamicSeo = {
       canonical: canonicalURL,
-      languages: canonicalURL
-        ? makeHreflangUrls(canonicalURL, localizedPaths)
-        : {},
+      languages: makeHreflangUrls(localizedPaths),
     };
 
     const bodyConfig = {

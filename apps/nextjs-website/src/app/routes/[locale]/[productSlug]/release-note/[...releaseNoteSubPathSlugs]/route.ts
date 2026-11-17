@@ -49,19 +49,15 @@ export async function GET(
             : seo.canonicalURL
           : undefined;
 
-        const localizedPaths = canonicalURL
-          ? await ReleaseNotesRepository.getLocalizedPaths(
-              locale,
-              releaseNoteProps,
-              page.path
-            )
-          : [];
+        const localizedPaths = await ReleaseNotesRepository.getLocalizedPaths(
+          locale,
+          releaseNoteProps,
+          page.path
+        );
 
         const dynamicSeo = {
           canonical: canonicalURL,
-          languages: canonicalURL
-            ? makeHreflangUrls(canonicalURL, localizedPaths)
-            : {},
+          languages: makeHreflangUrls(localizedPaths),
         };
 
         const payload: GitBookContentData = {

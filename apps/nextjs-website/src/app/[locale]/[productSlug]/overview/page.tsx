@@ -120,34 +120,28 @@ export async function generateMetadata(
 
   const { product, path, seo, hero } = overview;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        parent: resolvedParent,
+        title: [hero?.title, product.name].filter(Boolean).join(' | '),
+        description: product.description,
+        url: path,
+        image: product.logo?.url,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await OverviewsRepository.getLocalizedPaths(
+    locale,
+    overview
+  );
 
-    const localizedPaths = await OverviewsRepository.getLocalizedPaths(
-      locale,
-      overview
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    parent: resolvedParent,
-    title: [hero?.title, product.name].filter(Boolean).join(' | '),
-    description: product.description,
-    url: path,
-    image: product.logo?.url,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const OverviewPage = async ({ params }: ProductParams) => {

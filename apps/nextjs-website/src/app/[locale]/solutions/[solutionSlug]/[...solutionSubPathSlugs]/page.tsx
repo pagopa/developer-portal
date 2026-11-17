@@ -54,10 +54,6 @@ export async function generateMetadata(props: {
     }/${solutionSubPathSlugs.join('/')}`,
   });
 
-  if (!solutionDetail.seo?.canonicalURL) {
-    return metadata;
-  }
-
   const localizedPaths = await SolutionRepository.getLocalizedGitBookPaths(
     locale,
     solutionDetail,
@@ -68,10 +64,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(
-        solutionDetail.seo.canonicalURL,
-        localizedPaths
-      ),
+      ...makeHreflangAlternates(localizedPaths),
     },
   };
 }

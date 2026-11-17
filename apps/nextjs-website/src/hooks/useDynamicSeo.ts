@@ -71,7 +71,10 @@ export function useDynamicSeo(seo: DynamicSeo | null) {
 
         link.setAttribute('rel', 'alternate');
         link.setAttribute('hreflang', langCode);
-        link.setAttribute('href', href);
+        link.setAttribute(
+          'href',
+          new URL(href, window.location.origin).toString()
+        );
 
         document.head.appendChild(link);
       });

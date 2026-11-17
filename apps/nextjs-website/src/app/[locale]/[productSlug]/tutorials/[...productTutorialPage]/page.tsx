@@ -34,31 +34,25 @@ export async function generateMetadata(props: {
 
   const { title, path, seo } = tutorialProps;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
+        url: path,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await TutorialRepository.getLocalizedPaths(
+    locale,
+    tutorialProps
+  );
 
-    const localizedPaths = await TutorialRepository.getLocalizedPaths(
-      locale,
-      tutorialProps
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
-    url: path,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

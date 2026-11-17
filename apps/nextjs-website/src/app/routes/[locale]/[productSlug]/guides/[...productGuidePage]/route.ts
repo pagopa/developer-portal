@@ -1,4 +1,4 @@
-import { getGuideSeoUrls } from '@/__tests__/helpers/guideSeo.helpers';
+import { getGuideSeoUrls } from '@/helpers/guideSeo.helpers';
 import { getGuidePage } from '@/lib/api';
 import { getUrlReplaceMap } from '@/lib/api';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';

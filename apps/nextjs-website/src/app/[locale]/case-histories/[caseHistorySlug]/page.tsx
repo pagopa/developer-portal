@@ -30,32 +30,26 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (caseHistory.seo) {
-    const metadata = makeMetadataFromStrapi(caseHistory.seo);
+  const metadata = caseHistory.seo
+    ? makeMetadataFromStrapi(caseHistory.seo)
+    : makeMetadata({
+        title: caseHistory.title,
+        url: `${browserEnv.config.baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
+        langCode: locale,
+      });
 
-    if (!caseHistory.seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await CaseHistoriesRepository.getLocalizedPaths(
+    locale,
+    caseHistory
+  );
 
-    const localizedPaths = await CaseHistoriesRepository.getLocalizedPaths(
-      locale,
-      caseHistory
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(caseHistory.seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: caseHistory.title,
-    url: `${browserEnv.config.baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
-    langCode: locale,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

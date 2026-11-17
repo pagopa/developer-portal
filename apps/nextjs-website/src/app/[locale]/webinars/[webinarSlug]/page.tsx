@@ -29,33 +29,27 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (webinar.seo) {
-    const metadata = makeMetadataFromStrapi(webinar.seo);
+  const metadata = webinar.seo
+    ? makeMetadataFromStrapi(webinar.seo)
+    : makeMetadata({
+        title: webinar.title,
+        url: `${browserEnv.config.baseUrl}/${locale}/webinars/${webinar.slug}`,
+        langCode: locale,
+        image: webinar.imagePath,
+      });
 
-    if (!webinar.seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await WebinarsRepository.getLocalizedPaths(
+    locale,
+    webinar
+  );
 
-    const localizedPaths = await WebinarsRepository.getLocalizedPaths(
-      locale,
-      webinar
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(webinar.seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: webinar.title,
-    url: `${browserEnv.config.baseUrl}/${locale}/webinars/${webinar.slug}`,
-    langCode: locale,
-    image: webinar.imagePath,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

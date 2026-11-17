@@ -50,34 +50,28 @@ export async function generateMetadata(
 
   const { abstract, path, product, seo } = quickStartGuide;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        parent: resolvedParent,
+        title: [abstract?.title, product.name].filter(Boolean).join(' | '),
+        description: abstract?.description,
+        url: path,
+        image: product.logo?.url,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await QuickStartGuidesRepository.getLocalizedPaths(
+    locale,
+    quickStartGuide
+  );
 
-    const localizedPaths = await QuickStartGuidesRepository.getLocalizedPaths(
-      locale,
-      quickStartGuide
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    parent: resolvedParent,
-    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
-    description: abstract?.description,
-    url: path,
-    image: product.logo?.url,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const QuickStartGuidesPage = async (props: ProductParams) => {

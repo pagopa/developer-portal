@@ -40,32 +40,26 @@ export async function generateMetadata(props: {
 
   const { seo, hero, product } = apiDataListPage;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [hero.title, product.name].filter(Boolean).join(' | '),
+        url: `${browserEnv.config.baseUrl}/${locale}/${product.slug}/api`,
+        langCode: locale,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await ApiDataListPagesRepository.getLocalizedPaths(
+    locale,
+    apiDataListPage
+  );
 
-    const localizedPaths = await ApiDataListPagesRepository.getLocalizedPaths(
-      locale,
-      apiDataListPage
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: [hero.title, product.name].filter(Boolean).join(' | '),
-    url: `${browserEnv.config.baseUrl}/${locale}/${product.slug}/api`,
-    langCode: locale,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const ApiDataListPage = async (props: { params: Promise<Params> }) => {

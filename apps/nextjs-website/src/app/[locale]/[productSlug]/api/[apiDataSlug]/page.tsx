@@ -64,33 +64,27 @@ export const generateMetadata = async (
 
   const { seo, product, specUrlsName, path } = apiDataProps;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [specUrlsName, product?.name].filter(Boolean).join(' | '),
+        description: product?.description,
+        url: path,
+        parent: resolvedParent,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await ApiDataListRepository.getLocalizedPaths(
+    params.locale,
+    apiDataProps
+  );
 
-    const localizedPaths = await ApiDataListRepository.getLocalizedPaths(
-      params.locale,
-      apiDataProps
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: [specUrlsName, product?.name].filter(Boolean).join(' | '),
-    description: product?.description,
-    url: path,
-    parent: resolvedParent,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 };
 
 const ApiDataPage = async (props: ApiDataParams) => {

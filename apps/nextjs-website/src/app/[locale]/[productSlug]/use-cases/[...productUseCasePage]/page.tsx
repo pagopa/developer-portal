@@ -33,31 +33,25 @@ export async function generateMetadata(props: {
 
   const { title, path, seo } = useCaseProps;
 
-  if (seo) {
-    const metadata = makeMetadataFromStrapi(seo);
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [title, useCaseProps.product?.name].filter(Boolean).join(' | '),
+        url: path,
+      });
 
-    if (!seo.canonicalURL) {
-      return metadata;
-    }
+  const localizedPaths = await UseCasesRepository.getLocalizedPaths(
+    locale,
+    useCaseProps
+  );
 
-    const localizedPaths = await UseCasesRepository.getLocalizedPaths(
-      locale,
-      useCaseProps
-    );
-
-    return {
-      ...metadata,
-      alternates: {
-        ...metadata.alternates,
-        ...makeHreflangAlternates(seo.canonicalURL, localizedPaths),
-      },
-    };
-  }
-
-  return makeMetadata({
-    title: [title, useCaseProps.product?.name].filter(Boolean).join(' | '),
-    url: path,
-  });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...makeHreflangAlternates(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

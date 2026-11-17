@@ -17,19 +17,13 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   const solutionsList = await getSolutionListPage(locale);
 
-  if (!solutionsList.seo) {
-    return makeMetadata({
-      title: 'Soluzioni',
-      url: `${browserEnv.config.baseUrl}/${locale}/solutions`,
-      langCode: locale,
-    });
-  }
-
-  const metadata = makeMetadataFromStrapi(solutionsList.seo);
-
-  if (!solutionsList.seo.canonicalURL) {
-    return metadata;
-  }
+  const metadata = solutionsList.seo
+    ? makeMetadataFromStrapi(solutionsList.seo)
+    : makeMetadata({
+        title: 'Soluzioni',
+        url: `${browserEnv.config.baseUrl}/${locale}/solutions`,
+        langCode: locale,
+      });
 
   const availableLocales = await SolutionListPageRepository.getAvailableLocales(
     locale
@@ -44,7 +38,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(solutionsList.seo.canonicalURL, localizedPaths),
+      ...makeHreflangAlternates(localizedPaths),
     },
   };
 }

@@ -196,141 +196,129 @@ it('should return the correct metadata when parent is missing', () => {
 });
 
 describe('makeHreflangAlternates', () => {
-  const baseUrl = 'https://www.pagopa.it';
-
   it('should generate hreflang alternates for Italian and English', () => {
-    const result = makeHreflangAlternates(baseUrl, [
+    const result = makeHreflangAlternates([
       { langCode: 'it', path: '/it' },
       { langCode: 'en', path: '/en' },
     ]);
 
     expect(result).toEqual({
       languages: {
-        it: `${baseUrl}/it`,
-        en: `${baseUrl}/en`,
-        'x-default': `${baseUrl}/it`,
+        it: '/it',
+        en: '/en',
+        'x-default': '/it',
       },
     });
   });
 
   it('should generate alternates for Italian only', () => {
-    const result = makeHreflangAlternates(baseUrl, [
-      { langCode: 'it', path: '/it' },
-    ]);
+    const result = makeHreflangAlternates([{ langCode: 'it', path: '/it' }]);
 
     expect(result).toEqual({
       languages: {
-        it: `${baseUrl}/it`,
-        'x-default': `${baseUrl}/it`,
+        it: '/it',
+        'x-default': '/it',
       },
     });
   });
 
   it('should not generate x-default when Italian is missing', () => {
-    const result = makeHreflangAlternates(baseUrl, [
-      { langCode: 'en', path: '/en' },
-    ]);
+    const result = makeHreflangAlternates([{ langCode: 'en', path: '/en' }]);
 
     expect(result).toEqual({
       languages: {
-        en: `${baseUrl}/en`,
+        en: '/en',
       },
     });
   });
 
   it('should support different localized slugs', () => {
-    const result = makeHreflangAlternates(baseUrl, [
+    const result = makeHreflangAlternates([
       { langCode: 'it', path: '/it/solutions/pagamenti' },
       { langCode: 'en', path: '/en/solutions/payments' },
     ]);
 
     expect(result).toEqual({
       languages: {
-        it: `${baseUrl}/it/solutions/pagamenti`,
-        en: `${baseUrl}/en/solutions/payments`,
-        'x-default': `${baseUrl}/it/solutions/pagamenti`,
+        it: '/it/solutions/pagamenti',
+        en: '/en/solutions/payments',
+        'x-default': '/it/solutions/pagamenti',
       },
     });
   });
 
   it('should return empty languages when no paths are provided', () => {
-    const result = makeHreflangAlternates(baseUrl, []);
+    const result = makeHreflangAlternates([]);
 
     expect(result).toEqual({
       languages: {},
     });
   });
 
-  it('should use the provided baseUrl', () => {
-    const result = makeHreflangAlternates('https://www.pagopa.it', [
-      { langCode: 'it', path: '/it' },
-    ]);
+  it('should generate relative paths without a base URL', () => {
+    const result = makeHreflangAlternates([{ langCode: 'it', path: '/it' }]);
 
     expect(result).toEqual({
       languages: {
-        it: 'https://www.pagopa.it/it',
-        'x-default': 'https://www.pagopa.it/it',
+        it: '/it',
+        'x-default': '/it',
       },
     });
   });
 
-  it('should use canonical URL origin for localized paths', () => {
-    const canonicalURL = 'https://www.pagopa.it/it/solutions';
-
-    const result = makeHreflangAlternates(canonicalURL, [
+  it('should generate alternates independently from canonical URL', () => {
+    const result = makeHreflangAlternates([
       { langCode: 'it', path: '/it/solutions' },
       { langCode: 'en', path: '/en/solutions' },
     ]);
 
     expect(result).toEqual({
       languages: {
-        it: 'https://www.pagopa.it/it/solutions',
-        en: 'https://www.pagopa.it/en/solutions',
-        'x-default': 'https://www.pagopa.it/it/solutions',
+        it: '/it/solutions',
+        en: '/en/solutions',
+        'x-default': '/it/solutions',
       },
     });
   });
 });
 
 describe('makeHreflangUrls', () => {
-  const canonicalURL = 'https://www.pagopa.it/it/solutions';
-
-  it('should generate absolute URLs for localized paths', () => {
-    const result = makeHreflangUrls(canonicalURL, [
+  it('should generate relative URLs for localized paths', () => {
+    const result = makeHreflangUrls([
       { langCode: 'it', path: '/it/solutions/pagamenti' },
       { langCode: 'en', path: '/en/solutions/payments' },
     ]);
 
     expect(result).toEqual({
-      it: 'https://www.pagopa.it/it/solutions/pagamenti',
-      en: 'https://www.pagopa.it/en/solutions/payments',
-      'x-default': 'https://www.pagopa.it/it/solutions/pagamenti',
+      it: '/it/solutions/pagamenti',
+      en: '/en/solutions/payments',
+      'x-default': '/it/solutions/pagamenti',
     });
   });
 
   it('should generate Italian and x-default only', () => {
-    const result = makeHreflangUrls(canonicalURL, [
+    const result = makeHreflangUrls([
       { langCode: 'it', path: '/it/solutions' },
     ]);
 
     expect(result).toEqual({
-      it: 'https://www.pagopa.it/it/solutions',
-      'x-default': 'https://www.pagopa.it/it/solutions',
+      it: '/it/solutions',
+      'x-default': '/it/solutions',
     });
   });
 
   it('should not generate x-default when Italian is missing', () => {
-    const result = makeHreflangUrls(canonicalURL, [
+    const result = makeHreflangUrls([
       { langCode: 'en', path: '/en/solutions' },
     ]);
 
     expect(result).toEqual({
-      en: 'https://www.pagopa.it/en/solutions',
+      en: '/en/solutions',
     });
   });
 
   it('should return an empty object when no paths are available', () => {
-    const result = makeHreflangUrls(canonicalURL, []);
+    const result = makeHreflangUrls([]);
 
     expect(result).toEqual({});
   });

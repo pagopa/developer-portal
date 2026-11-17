@@ -71,20 +71,14 @@ export async function generateMetadata(props: {
   const { locale } = await props.params;
   const homepage = await HomepageRepository.get(locale);
 
-  if (!homepage.seo) {
-    return makeMetadata({
-      title: 'PagoPA DevPortal',
-      description: 'Il portale per gli sviluppatori di PagoPA',
-      url: `${browserEnv.config.baseUrl}/${locale}`,
-      langCode: locale,
-    });
-  }
-
-  const metadata = makeMetadataFromStrapi(homepage.seo);
-
-  if (!homepage.seo.canonicalURL) {
-    return metadata;
-  }
+  const metadata = homepage.seo
+    ? makeMetadataFromStrapi(homepage.seo)
+    : makeMetadata({
+        title: 'PagoPA DevPortal',
+        description: 'Il portale per gli sviluppatori di PagoPA',
+        url: `${browserEnv.config.baseUrl}/${locale}`,
+        langCode: locale,
+      });
 
   const availableLocales = await HomepageRepository.getAvailableLocales(locale);
 
@@ -97,7 +91,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(homepage.seo.canonicalURL, localizedPaths),
+      ...makeHreflangAlternates(localizedPaths),
     },
   };
 }
