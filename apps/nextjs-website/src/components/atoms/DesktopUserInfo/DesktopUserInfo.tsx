@@ -12,7 +12,7 @@ import {
   Link as MuiLink,
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -27,15 +27,6 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   const { user, loading, setIsLoggingOut } = useUser();
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const open = Boolean(menu);
-  const navigationVersion = useRef(0);
-
-  useEffect(() => {
-    return () => {
-      // Cancel pending logout navigation after a route change or unmount.
-      // eslint-disable-next-line functional/immutable-data
-      navigationVersion.current += 1;
-    };
-  }, [pathname]);
 
   const { palette } = useTheme();
 
@@ -44,8 +35,6 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   };
 
   const signOut = useCallback(async () => {
-    const navigationAtLogout = navigationVersion.current;
-    const pathnameAtLogout = window.location.pathname;
     setIsLoggingOut(true);
 
     const result = await Auth.signOut()
@@ -58,31 +47,25 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
       return;
     }
 
-    await Promise.resolve()
-      .then(flushChatQueriesFromLocalStorage)
-      .catch(() => {
-        console.warn('Could not clear local chatbot history after logout.');
-      });
-
-    if (
-      navigationVersion.current !== navigationAtLogout ||
-      window.location.pathname !== pathnameAtLogout
-    ) {
-      return;
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      flushChatQueriesFromLocalStorage();
+    } catch {
+      console.warn('Could not clear local chatbot history after logout.');
     }
 
-    // Check if the user in an auth only page
-    if (shouldRedirectAfterLogout(pathname)) {
+    // Choose the destination from the current page after sign-out completes.
+    if (shouldRedirectAfterLogout(window.location.pathname)) {
       router.replace(`/${locale}/`);
     } else {
-      // router.refresh(); is not enough beacuse it will not clean current state of components
+      // Reload the current public page to clear component state.
       if (typeof window !== 'undefined') {
         window.location.reload();
       }
     }
 
     handleClose();
-  }, [pathname, router, locale, setIsLoggingOut]);
+  }, [router, locale, setIsLoggingOut]);
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setMenu(event.currentTarget);
   }, []);

@@ -20,6 +20,7 @@ import {
 import type { CertificateResponse } from '@/lib/webinars/webinarCertificates';
 import { browserEnv } from '@/browserConfig';
 import { usePathname } from 'next/navigation';
+import { shouldRedirectAfterLogout } from '@/helpers/navigation.helpers';
 const { isWebinarsEnabled } = browserEnv.config;
 
 type UserContextValue = ReturnType<typeof useUserState>;
@@ -122,8 +123,11 @@ const useUserState = () => {
     isUserLoggedIn(user);
   }, [user, isUserLoggedIn]);
   useEffect(() => {
-    setIsLoggingOut(false);
-  }, [pathname]);
+    // Keep protected pages covered until sign-out reaches a public page.
+    if (!user && !shouldRedirectAfterLogout(pathname)) {
+      setIsLoggingOut(false);
+    }
+  }, [pathname, user]);
   useEffect(() => {
     if (authStatus === 'authenticated') {
       fetchUserAndWebinarData();

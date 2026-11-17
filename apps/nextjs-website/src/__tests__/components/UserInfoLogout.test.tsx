@@ -67,6 +67,7 @@ jest.mock('@/components/molecules/MobileSiteHeader/MobileSiteHeader', () => ({
 }));
 
 const mockReplace = jest.fn();
+const mockReload = jest.fn();
 const mockSetIsLoggingOut = jest.fn();
 
 const failHistoryCleanup = () => {
@@ -106,6 +107,14 @@ beforeEach(() => {
     prefetch: jest.fn(),
   });
   window.history.replaceState(null, '', '/it/profile/personal-data');
+  const location = window.location;
+  jest.spyOn(window, 'location', 'get').mockReturnValue({
+    ...location,
+    get pathname() {
+      return location.pathname;
+    },
+    reload: mockReload,
+  });
 });
 
 afterEach(() => {
@@ -146,6 +155,7 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
     );
     expect(flushChatQueriesFromLocalStorage).toHaveBeenCalledTimes(1);
     expect(mockSetIsLoggingOut).not.toHaveBeenCalledWith(false);
+    expect(mockReload).not.toHaveBeenCalled();
   });
 
   it('restores the flag and stops navigation when authentication sign-out fails', async () => {
@@ -157,9 +167,10 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
     );
     expect(mockReplace).not.toHaveBeenCalled();
     expect(flushChatQueriesFromLocalStorage).not.toHaveBeenCalled();
+    expect(mockReload).not.toHaveBeenCalled();
   });
 
-  it('does not override navigation while sign-out is pending', async () => {
+  it('reloads the current public page after navigation during sign-out', async () => {
     const pending = createPendingSignOut();
     jest.mocked(Auth.signOut).mockReturnValue(pending.promise);
     const view = startLogout();
@@ -169,9 +180,23 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
 
     expect(flushChatQueriesFromLocalStorage).toHaveBeenCalledTimes(1);
     expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockReload).toHaveBeenCalledTimes(1);
+    expect(window.location.pathname).toBe('/it/solutions');
   });
 
-  it('does not override navigation away from and back to the original page', async () => {
+  it('redirects after navigation to another profile page during sign-out', async () => {
+    const pending = createPendingSignOut();
+    jest.mocked(Auth.signOut).mockReturnValue(pending.promise);
+    const view = startLogout();
+
+    navigateTo(view, '/it/profile/chatbot-history');
+    await finishSignOut(pending);
+
+    expect(mockReplace).toHaveBeenCalledWith('/it/');
+    expect(mockReload).not.toHaveBeenCalled();
+  });
+
+  it('redirects after returning to the original protected page during sign-out', async () => {
     const pending = createPendingSignOut();
     jest.mocked(Auth.signOut).mockReturnValue(pending.promise);
     const view = startLogout();
@@ -180,10 +205,11 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
     navigateTo(view, '/it/profile/personal-data');
     await finishSignOut(pending);
 
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockReplace).toHaveBeenCalledWith('/it/');
+    expect(mockReload).not.toHaveBeenCalled();
   });
 
-  it('does not navigate after the menu component unmounts', async () => {
+  it('redirects from the current protected page after the menu unmounts', async () => {
     const pending = createPendingSignOut();
     jest.mocked(Auth.signOut).mockReturnValue(pending.promise);
     const view = startLogout();
@@ -191,7 +217,8 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
     view.unmount();
     await finishSignOut(pending);
 
-    expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockReplace).toHaveBeenCalledWith('/it/');
+    expect(mockReload).not.toHaveBeenCalled();
   });
 
   it('does not override a browser path change before the router updates', async () => {
@@ -203,6 +230,22 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
     await finishSignOut(pending);
 
     expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockReload).toHaveBeenCalledTimes(1);
+    expect(window.location.pathname).toBe('/it/solutions');
+  });
+
+  it('redirects after moving from a public page to a protected page before the router updates', async () => {
+    window.history.replaceState(null, '', '/it/solutions');
+    jest.mocked(usePathname).mockReturnValue('/it/solutions');
+    const pending = createPendingSignOut();
+    jest.mocked(Auth.signOut).mockReturnValue(pending.promise);
+    startLogout();
+
+    window.history.pushState(null, '', '/it/webinars/example/questions');
+    await finishSignOut(pending);
+
+    expect(mockReplace).toHaveBeenCalledWith('/it/');
+    expect(mockReload).not.toHaveBeenCalled();
   });
 
   it('redirects after successful sign-out even when history cleanup fails', async () => {
@@ -219,9 +262,10 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
     expect(warning).toHaveBeenCalledWith(
       'Could not clear local chatbot history after logout.'
     );
+    expect(mockReload).not.toHaveBeenCalled();
   });
 
-  it('preserves newer navigation when history cleanup also fails', async () => {
+  it('reloads the current public page even when history cleanup fails', async () => {
     jest.spyOn(console, 'warn').mockImplementation(() => undefined);
     const pending = createPendingSignOut();
     jest.mocked(Auth.signOut).mockReturnValue(pending.promise);
@@ -235,5 +279,7 @@ describe.each(['desktop', 'mobile'] as const)('%s logout', (kind) => {
 
     expect(flushChatQueriesFromLocalStorage).toHaveBeenCalledTimes(1);
     expect(mockReplace).not.toHaveBeenCalled();
+    expect(mockReload).toHaveBeenCalledTimes(1);
+    expect(window.location.pathname).toBe('/it/solutions');
   });
 });
