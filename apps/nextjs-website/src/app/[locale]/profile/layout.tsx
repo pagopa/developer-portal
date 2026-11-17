@@ -1,8 +1,7 @@
 'use client';
-import PageNotFound from '@/app/[locale]/not-found';
 import React from 'react';
 import { Box } from '@mui/material';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import DesktopProfileMenu from '@/components/molecules/DesktopProfileMenu/DesktopProfileMenu';
 import MobileProfileMenu from '@/components/molecules/MobileProfileMenu/MobileProfileMenu';
@@ -13,9 +12,11 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   const { locale } = useParams<{ locale: string }>();
 
   const pathname = usePathname();
+  const router = useRouter();
 
   if (!loading && !user) {
-    return <PageNotFound />;
+    router.replace(`/${locale}/auth/login?redirect=${btoa(pathname)}`);
+    return <Spinner />;
   }
   if (loading) {
     return <Spinner />;
