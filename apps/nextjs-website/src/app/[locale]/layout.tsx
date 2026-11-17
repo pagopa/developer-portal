@@ -8,6 +8,7 @@ import {
   getProducts,
   getSolutionListPage,
   getVisibleInListWebinars,
+  getWebinars,
 } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
@@ -64,6 +65,11 @@ export default async function RootLayout({
   const products = [
     ...(await getProducts(locale)).filter((product) => product.isVisible),
   ];
+  const webinars = {
+    it: await getWebinars('it'),
+    en: await getWebinars('en'),
+  };
+
   const shouldShowLinkToSolutions = await getSolutionListPage(locale)
     .then((data) => data.solutions.length > 0)
     .catch(() => false);
@@ -105,7 +111,9 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <UserProvider>
-                {qualtricsFeatureFlag === 'true' && <QualtricsIntercept />}
+                {qualtricsFeatureFlag === 'true' && (
+                  <QualtricsIntercept webinars={webinars} />
+                )}
                 <ChatbotProvider isChatbotVisible={isChatbotActive}>
                   <SiteHeader
                     locale={locale}
