@@ -13,6 +13,11 @@ dev enables it for testing, prod enables it for production, and UAT disables it.
 See the [backup module](src/modules/backup/README.md) for the policy and deployment
 details. Service-native database backups are unaffected.
 
+## Public ALB WAF
+
+`enable_alb_waf` defaults to `false` and is enabled in production. The WAF is
+created only when the flag is enabled and `environment` is `prod`.
+
 ## How set up a new environment
 
 Make sure you don't have a `*.tfstate` file within the `apps/infrastructure/.terraform` folder. If you have any, delete them.

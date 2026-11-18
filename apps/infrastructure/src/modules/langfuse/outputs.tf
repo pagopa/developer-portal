@@ -12,3 +12,8 @@ output "load_balancer" {
   }
 
 }
+
+output "load_balancer_arn" {
+  description = "ARN of the Langfuse application load balancer"
+  value       = module.langfuse_load_balancer.arn
+}
