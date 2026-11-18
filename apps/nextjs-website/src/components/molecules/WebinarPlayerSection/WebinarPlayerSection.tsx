@@ -6,6 +6,10 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
@@ -55,6 +59,7 @@ const WebinarPlayerSection = ({
       isLiveStreamAvailable,
     [webinarState, isLiveStreamAvailable]
   );
+  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false);
 
   if (!isPlayerVisible) {
     return webinar.playerCoverImageUrl ? (
@@ -125,7 +130,33 @@ const WebinarPlayerSection = ({
                 chapters={webinar.chapters}
                 webvttContent={webinar.webvttContent}
                 setIsVideoPlaying={setIsVideoPlaying}
+                onVideoEnded={() => setIsFeedbackDialogOpen(true)}
               />
+              <Dialog
+                open={isFeedbackDialogOpen}
+                onClose={() => setIsFeedbackDialogOpen(false)}
+                fullWidth
+                maxWidth='sm'
+              >
+                <DialogTitle>{t('feedbackDialog.title')}</DialogTitle>
+
+                <DialogContent>
+                  <Typography>{t('feedbackDialog.description')}</Typography>
+                </DialogContent>
+
+                <DialogActions>
+                  <Button onClick={() => setIsFeedbackDialogOpen(false)}>
+                    {t('feedbackDialog.close')}
+                  </Button>
+
+                  <Button
+                    variant='contained'
+                    onClick={() => setIsFeedbackDialogOpen(false)}
+                  >
+                    {t('feedbackDialog.submit')}
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Box>
             {isQuestionFormAvailable ? (
               isQuestionFormExpanded ? (
