@@ -1,3 +1,39 @@
+## Public API protection (DEV-4695)
+
+Production inspection before rollout:
+
+| Endpoint | Exposure and existing controls | Terraform change |
+|---|---|---|
+| Webinar metrics REST API, `v1` | Public `EDGE` endpoint without a WAF association. `POST /metrics` requires an API key. Its usage plan allows 2 requests/second, burst 2, and 100 requests/day; these are best-effort limits, and the key is not an authorizer. The stage also has a broad 2,500 requests/second, burst 1,250 limit. | Convert in place to `REGIONAL`, redeploy, and add the stage to the existing `alb_waf` ACL in `eu-south-1` where `enable_alb_waf` is enabled. The API ID, invoke URL and usage plan stay the same. A CloudFront-scope ACL cannot be attached to the API Gateway-managed distribution. |
+| Webinar HTTP API, `jslbu94z7i` | The video distribution had no ACL. `POST /ingest` and `GET /certificate` already require a Cognito JWT. The public `execute-api` hostname remains enabled and the `$default` stage had no custom throttles. | Attach a CloudFront-scope ACL in `us-east-1` to the video distribution. HTTP APIs don't support direct WAF associations. The ACL inspects only traffic through CloudFront; direct requests still require a JWT. |
+
+Both ACLs start in **count mode**. They report rule matches but do not block
+requests or enforce the WAF IP threshold. The Regional ACL's rules and metrics
+are shared with the existing ALBs. Request sampling is disabled for both ACLs,
+including on the existing ALBs, so samples don't capture API keys or bearer
+tokens. WAF metrics remain enabled.
+
+Keep the existing authorization and throttling unchanged for this rollout.
+Assess IAM or a Lambda authorizer for metrics with its callers before replacing
+key-only access. Use peak traffic and client concurrency to size HTTP API route
+throttles before enforcing them. Closing direct HTTP API access requires changing
+the CloudFront origin design; the distribution currently needs that endpoint.
+
+### Rollout validation
+
+1. Review the environment plan: the REST API should update in place, the
+   deployment should be replaced, and the stage should keep its name. The video
+   distribution should update in place. Check for no changes to the dos68k gateway.
+2. After applying in a lower environment, confirm that API Gateway reports
+   `REGIONAL` and the `v1` stage has its Regional WAF ACL. Confirm that CloudFront
+   reports the global ACL ARN and its distribution status is `Deployed`.
+3. Use the existing metrics URL and a test key to verify normal requests still
+   succeed and requests without the key are rejected. Verify playback and both
+   video API routes through CloudFront with valid test JWTs, and check that
+   missing or invalid JWTs fail through both CloudFront and the direct origin.
+4. Review WAF metrics during representative traffic before changing any rule
+   from count to block.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -17,7 +53,9 @@
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_video_waf"></a> [video\_waf](#module\_video\_waf) | ../waf | n/a |
 
 ## Resources
 
@@ -37,7 +75,9 @@ No modules.
 | [aws_apigatewayv2_api.webinar_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_api) | resource |
 | [aws_apigatewayv2_authorizer.ingest_cognito](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_authorizer) | resource |
 | [aws_apigatewayv2_integration.ingest_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_integration) | resource |
+| [aws_apigatewayv2_integration.webinar_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_integration) | resource |
 | [aws_apigatewayv2_route.ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_route) | resource |
+| [aws_apigatewayv2_route.webinar_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_route) | resource |
 | [aws_apigatewayv2_stage.ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_stage) | resource |
 | [aws_athena_database.webinar_db](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_database) | resource |
 | [aws_athena_workgroup.webinar_analytics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_workgroup) | resource |
@@ -48,6 +88,7 @@ No modules.
 | [aws_cloudwatch_log_group.firehose_delivery_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ingest_lambda_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.lambda_index_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_group.webinar_certificate_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.webinar_metrics_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_stream.firehose_delivery_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_stream) | resource |
 | [aws_cloudwatch_metric_alarm.lambda_dlq_messages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
@@ -60,12 +101,14 @@ No modules.
 | [aws_iam_role.ivs_recording_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ivs_video_processing_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.lambda_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.webinar_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.webinar_metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.firehose_s3_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.ivs_video_processing_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.lambda_firehose_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.lambda_kinesis_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.lambda_logging_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.webinar_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.webinar_metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.deploy_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.ivs_recording_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -74,9 +117,11 @@ No modules.
 | [aws_kinesis_firehose_delivery_stream.s3_delivery](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_firehose_delivery_stream) | resource |
 | [aws_lambda_function.ingest_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_function.ivs_video_processing_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
+| [aws_lambda_function.webinar_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_function.webinar_metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_permission.allow_s3_invoke_ivs_video_processing_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.apigw_ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
+| [aws_lambda_permission.apigw_webinar_certificate](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_lambda_permission.apigw_webinar_metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_route53_record.cdn_alias_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.cert_validation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
@@ -90,6 +135,8 @@ No modules.
 | [aws_s3_bucket_public_access_block.athena_results_pac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_public_access_block.heartbeat_storage_pac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_public_access_block.ivs_recordings_pac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_s3_bucket_versioning.heartbeat_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
+| [aws_s3_bucket_versioning.ivs_recordings](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_object.robots_txt](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_sns_topic.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_sns_topic_policy.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_policy) | resource |
@@ -99,6 +146,7 @@ No modules.
 | [random_id.suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [archive_file.ingest_lambda_function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [archive_file.ivs_function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
+| [archive_file.webinar_certificate](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [archive_file.webinar_metrics](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_cloudfront_cache_policy.caching_disabled](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudfront_cache_policy) | data source |
@@ -141,4 +189,5 @@ No modules.
 | <a name="output_webinar_metrics_api_url"></a> [webinar\_metrics\_api\_url](#output\_webinar\_metrics\_api\_url) | The invoke URL of the webinar metrics API Gateway. |
 | <a name="output_webinar_metrics_lambda_arn"></a> [webinar\_metrics\_lambda\_arn](#output\_webinar\_metrics\_lambda\_arn) | The ARN of the webinar metrics Lambda function. |
 | <a name="output_webinar_metrics_lambda_name"></a> [webinar\_metrics\_lambda\_name](#output\_webinar\_metrics\_lambda\_name) | The name of the webinar metrics Lambda function. |
+| <a name="output_webinar_metrics_stage_arn"></a> [webinar\_metrics\_stage\_arn](#output\_webinar\_metrics\_stage\_arn) | The webinar metrics REST API stage ARN for Regional WAF association. |
 <!-- END_TF_DOCS -->

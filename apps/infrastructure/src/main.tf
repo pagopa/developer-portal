@@ -401,8 +401,13 @@ module "alb_waf" {
     topic_arn = module.core.alerting_topic_arn
   }
   associated_resource_arns = merge(
-    { cms = module.cms.public_load_balancer_arn },
+    {
+      cms             = module.cms.public_load_balancer_arn
+      webinar_metrics = module.video_streaming.webinar_metrics_stage_arn
+    },
     var.create_chatbot ? { langfuse = module.chatbot[0].langfuse_load_balancer_arn } : {}
   )
-  tags = var.tags
+  # WAF samples can include API keys sent to the webinar metrics stage.
+  sampled_requests_enabled = false
+  tags                     = var.tags
 }

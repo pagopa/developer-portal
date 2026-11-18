@@ -58,6 +58,12 @@ variable "rate_limit" {
   }
 }
 
+variable "sampled_requests_enabled" {
+  description = "Whether AWS WAF samples requests, which may contain sensitive headers"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "Tags applied to the web ACL"
   type        = map(string)

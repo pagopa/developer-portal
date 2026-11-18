@@ -34,6 +34,7 @@ No modules.
 | <a name="input_metric_name_prefix"></a> [metric\_name\_prefix](#input\_metric\_name\_prefix) | Optional prefix for WAF CloudWatch metric names | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Optional name for the web ACL | `string` | `null` | no |
 | <a name="input_rate_limit"></a> [rate\_limit](#input\_rate\_limit) | Requests per IP during the rate-based rule's 60-second evaluation window | `number` | `100` | no |
+| <a name="input_sampled_requests_enabled"></a> [sampled\_requests\_enabled](#input\_sampled\_requests\_enabled) | Whether AWS WAF samples requests, which may contain sensitive headers | `bool` | `true` | no |
 | <a name="input_scope"></a> [scope](#input\_scope) | WAF scope: REGIONAL for regional resources or CLOUDFRONT for CloudFront distributions | `string` | `"REGIONAL"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to the web ACL | `map(string)` | `{}` | no |
 
