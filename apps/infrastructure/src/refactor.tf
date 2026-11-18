@@ -422,3 +422,8 @@ moved {
   from = module.alb_waf
   to   = module.alb_waf[0]
 }
+
+moved {
+  from = module.alb_waf[0]
+  to   = module.regional_waf[0]
+}

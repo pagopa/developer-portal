@@ -150,6 +150,7 @@ resource "aws_cloudfront_distribution" "vod" {
   enabled         = true
   is_ipv6_enabled = true
   comment         = "CDN for IVS video recordings"
+  web_acl_id      = module.video_waf.web_acl_arn
   #default_root_object = "index.html" # Optional, good practice
 
   # Cache behavior for the ingest API endpoint

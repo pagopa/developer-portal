@@ -42,7 +42,7 @@ variable "name" {
 }
 
 variable "metric_name_prefix" {
-  description = "Optional prefix for WAF CloudWatch metric names"
+  description = "Optional prefix for WAF rule metric names; defaults to the web ACL name"
   type        = string
   default     = null
 }
@@ -56,6 +56,12 @@ variable "rate_limit" {
     condition     = var.rate_limit >= 10 && floor(var.rate_limit) == var.rate_limit
     error_message = "The rate limit must be an integer of at least 10 requests."
   }
+}
+
+variable "sampled_requests_enabled" {
+  description = "Whether AWS WAF samples requests, which may contain sensitive headers"
+  type        = bool
+  default     = true
 }
 
 variable "tags" {

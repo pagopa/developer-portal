@@ -388,21 +388,30 @@ module "backup_eu_central_1" {
   region      = "eu-central-1"
 }
 
-module "alb_waf" {
-  count  = var.enable_alb_waf ? 1 : 0
+module "regional_waf" {
+  count  = var.enable_regional_waf ? 1 : 0
   source = "./modules/waf"
 
   providers = {
     aws = aws.eu-south-1
   }
 
-  environment = var.environment
+  # Keep the deployed ACL and CloudWatch metric names across the address move.
+  environment        = var.environment
+  name               = "devportal-${var.environment}-public-alb-waf"
+  metric_name_prefix = "devportal-${var.environment}-alb"
+
   alerting = {
     topic_arn = module.core.alerting_topic_arn
   }
   associated_resource_arns = merge(
-    { cms = module.cms.public_load_balancer_arn },
+    {
+      cms             = module.cms.public_load_balancer_arn
+      webinar_metrics = module.video_streaming.webinar_metrics_stage_arn
+    },
     var.create_chatbot ? { langfuse = module.chatbot[0].langfuse_load_balancer_arn } : {}
   )
-  tags = var.tags
+  # WAF samples can include API keys sent to the webinar metrics stage.
+  sampled_requests_enabled = false
+  tags                     = var.tags
 }
