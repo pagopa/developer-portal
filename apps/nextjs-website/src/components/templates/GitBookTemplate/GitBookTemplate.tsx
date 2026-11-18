@@ -1,6 +1,5 @@
 'use client';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
-import GuideFeedbackLink from '@/components/atoms/GuideFeedbackLink/GuideFeedbackLink';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
@@ -191,11 +190,6 @@ const GitBookTemplate = ({
 
   useDynamicSeo(seo);
 
-  // The survey destination will be connected in DEV-4633.
-  const feedbackLink = showGuideFeedback ? (
-    <GuideFeedbackLink label={t('productGuidePage.leaveFeedback')} />
-  ) : null;
-
   return (
     <FragmentProvider>
       <Box
@@ -206,22 +200,20 @@ const GitBookTemplate = ({
           maxWidth: '1900px',
         }}
       >
-        {(menu || feedbackLink) && (
-          <GuideMenu
-            key='menu'
-            hasHeader={hasHeader}
-            menu={menu}
-            assetsPrefix={bodyConfig.assetsPrefix}
-            linkPrefix={pathPrefix}
-            name={menuName}
-            versionName={versionName}
-            versions={versions && [...versions]}
-            distanceFromTop={menuDistanceFromTop}
-            onGuideNavigate={updateContent}
-            hasProductHeader={hasProductHeader}
-            feedbackLink={feedbackLink}
-          />
-        )}
+        <GuideMenu
+          key='menu'
+          hasHeader={hasHeader}
+          menu={menu}
+          assetsPrefix={bodyConfig.assetsPrefix}
+          linkPrefix={pathPrefix}
+          name={menuName}
+          versionName={versionName}
+          versions={versions && [...versions]}
+          distanceFromTop={menuDistanceFromTop}
+          onGuideNavigate={updateContent}
+          hasProductHeader={hasProductHeader}
+          showGuideFeedback={showGuideFeedback}
+        />
         <Stack
           sx={{
             marginTop: responsiveContentMarginTop,

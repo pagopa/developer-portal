@@ -6,7 +6,6 @@ import React, {
   useEffect,
   useRef,
   useState,
-  type ReactNode,
 } from 'react';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
@@ -27,6 +26,7 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 import { browserEnv } from '@/browserConfig';
+import GuideFeedbackLink from '../GuideFeedbackLink/GuideFeedbackLink';
 
 const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
@@ -34,7 +34,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
   hasProductHeader?: boolean;
-  feedbackLink?: ReactNode;
+  showGuideFeedback?: boolean;
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -118,6 +118,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     return () => clearTimeout(timer);
   }, [currentPath, scrollToActiveItem]);
 
+  if (!menuProps.menu && !menuProps.showGuideFeedback) return null;
+
   const items = (
     <GuideMenuItems
       {...menuProps}
@@ -127,7 +129,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     />
   );
 
-  const feedbackLink = menuProps.feedbackLink && (
+  // The survey destination will be connected in DEV-4633.
+  const feedbackLink = menuProps.showGuideFeedback ? (
     <Box
       sx={{
         position: {
@@ -143,9 +146,9 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         transition: 'top 0.5s linear',
       }}
     >
-      {menuProps.feedbackLink}
+      <GuideFeedbackLink label={t('productGuidePage.leaveFeedback')} href='#' />
     </Box>
-  );
+  ) : null;
 
   return menuProps.menu ? (
     <Fragment>

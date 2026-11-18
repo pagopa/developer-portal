@@ -22,6 +22,9 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { browserEnv } from '@/browserConfig';
+
+const { qualtricsFeatureFlag } = browserEnv.config;
 
 export const dynamic = 'force-dynamic';
 
@@ -187,7 +190,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         initialBreadcrumbs={initialBreadcrumbs}
         versionName={productGuidePageProps.version.name}
         {...productGuidePageProps}
-        showGuideFeedback
+        showGuideFeedback={qualtricsFeatureFlag === 'true'}
       />
     </ProductLayout>
   );

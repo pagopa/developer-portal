@@ -3,17 +3,16 @@ import { Button } from '@mui/material';
 
 interface GuideFeedbackLinkProps {
   readonly label: string;
-  readonly href?: string;
+  readonly href: string;
 }
 
 const GuideFeedbackLink = ({ label, href }: GuideFeedbackLinkProps) => {
   return (
     <Button
-      component={href ? 'a' : 'button'}
+      component='a'
       href={href}
-      target={href ? '_blank' : undefined}
-      rel={href ? 'noopener noreferrer' : undefined}
-      type={href ? undefined : 'button'}
+      target='_blank'
+      rel='noopener noreferrer'
       variant='text'
       startIcon={<FeedbackIcon />}
       sx={{
