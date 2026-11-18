@@ -8,12 +8,15 @@ import MobileProfileMenu from '@/components/molecules/MobileProfileMenu/MobilePr
 import { useUser } from '@/helpers/user.helper';
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading, userFullName } = useUser();
+  const { user, loading, userFullName, isLoggingOut } = useUser();
   const { locale } = useParams<{ locale: string }>();
 
   const pathname = usePathname();
   const router = useRouter();
 
+  if (isLoggingOut) {
+    return <Spinner />;
+  }
   if (!loading && !user) {
     router.replace(`/${locale}/auth/login?redirect=${btoa(pathname)}`);
     return <Spinner />;

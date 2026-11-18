@@ -18,12 +18,13 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helpers';
+import { shouldRedirectAfterLogout } from '@/helpers/navigation.helpers';
 
 const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
-  const { user, loading } = useUser();
+  const { user, loading, setIsLoggingOut } = useUser();
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const open = Boolean(menu);
 
@@ -34,22 +35,37 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   };
 
   const signOut = useCallback(async () => {
-    await Auth.signOut().then(() => {
-      flushChatQueriesFromLocalStorage();
-    });
+    setIsLoggingOut(true);
 
-    // Check if the user in an auth only page
-    if (['/auth', '/profile'].some((path) => pathname.match(path))) {
+    const result = await Auth.signOut()
+      .then(() => true)
+      .catch(() => {
+        setIsLoggingOut(false);
+        return false;
+      });
+    if (!result) {
+      return;
+    }
+
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      flushChatQueriesFromLocalStorage();
+    } catch {
+      console.warn('Could not clear local chatbot history after logout.');
+    }
+
+    // Choose the destination from the current page after sign-out completes.
+    if (shouldRedirectAfterLogout(window.location.pathname)) {
       router.replace(`/${locale}/`);
     } else {
-      // router.refresh(); is not enough beacuse it will not clean current state of components
+      // Reload the current public page to clear component state.
       if (typeof window !== 'undefined') {
         window.location.reload();
       }
     }
 
     handleClose();
-  }, [pathname, router, locale]);
+  }, [router, locale, setIsLoggingOut]);
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setMenu(event.currentTarget);
   }, []);

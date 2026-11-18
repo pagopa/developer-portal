@@ -1,4 +1,8 @@
-import { canRedirectToUrl, isExternalLink } from '@/helpers/navigation.helpers';
+import {
+  canRedirectToUrl,
+  isExternalLink,
+  shouldRedirectAfterLogout,
+} from '@/helpers/navigation.helpers';
 
 describe('canRedirectToUrl', () => {
   it('returns true for the root path', () => {
@@ -52,6 +56,47 @@ describe('canRedirectToUrl', () => {
     expect(canRedirectToUrl(undefined)).toBe(false);
     // @ts-expect-error Testing invalid input
     expect(canRedirectToUrl(123)).toBe(false);
+  });
+});
+
+describe('shouldRedirectAfterLogout', () => {
+  it('returns true for a localized webinar questions page', () => {
+    expect(shouldRedirectAfterLogout('/it/webinars/example/questions')).toBe(
+      true
+    );
+  });
+
+  it('returns true for a localized profile page', () => {
+    expect(shouldRedirectAfterLogout('/it/profile/personal-data')).toBe(true);
+  });
+
+  it.each([
+    '/it/auth/login',
+    '/en/profile/agreements',
+    '/profile/personal-data',
+    '/auth/login',
+    '/webinars/example/questions',
+  ])('returns true for the logout redirect path %s', (pathname) => {
+    expect(shouldRedirectAfterLogout(pathname)).toBe(true);
+  });
+
+  it('returns false for a guide with profile in its slug', () => {
+    expect(
+      shouldRedirectAfterLogout('/it/guides/profile-creation-tutorial')
+    ).toBe(false);
+  });
+
+  it('returns false for a webinar detail page', () => {
+    expect(shouldRedirectAfterLogout('/it/webinars/example')).toBe(false);
+  });
+
+  it.each([
+    '/it/profile-creation-tutorial',
+    '/it/webinars',
+    '/it/webinars/example/questions-tutorial',
+    '/it/webinars/example/questions/guide',
+  ])('returns false for the public path %s', (pathname) => {
+    expect(shouldRedirectAfterLogout(pathname)).toBe(false);
   });
 });
 
