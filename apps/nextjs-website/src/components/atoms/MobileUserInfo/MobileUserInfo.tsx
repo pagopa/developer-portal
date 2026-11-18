@@ -6,9 +6,10 @@ import React, { useCallback } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helpers';
+import { shouldRedirectAfterLogout } from '@/helpers/navigation.helpers';
 
 type MobileUserInfoProps = {
   // eslint-disable-next-line functional/no-return-void
@@ -19,27 +20,41 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
   const { locale } = useParams<{ locale: string }>();
   const t = useTranslations();
   const router = useRouter();
-  const pathname = usePathname();
-  const { user, loading } = useUser();
+  const { user, loading, setIsLoggingOut } = useUser();
 
   const { palette } = useTheme();
 
   const signOut = useCallback(async () => {
     if (onClick) onClick();
-    await Auth.signOut().then(() => {
-      flushChatQueriesFromLocalStorage();
-    });
+    setIsLoggingOut(true);
+    const result = await Auth.signOut()
+      .then(() => true)
+      .catch(() => {
+        setIsLoggingOut(false);
+        return false;
+      });
 
-    // Check if the user in an auth only page
-    if (['/auth', '/profile'].some((path) => pathname.match(path))) {
+    if (!result) {
+      return;
+    }
+
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      flushChatQueriesFromLocalStorage();
+    } catch {
+      console.warn('Could not clear local chatbot history after logout.');
+    }
+
+    // Choose the destination from the current page after sign-out completes.
+    if (shouldRedirectAfterLogout(window.location.pathname)) {
       router.replace(`/${locale}/`);
     } else {
-      // router.refresh(); is not enough beacuse it will not clean current state of components
+      // Reload the current public page to clear component state.
       if (typeof window !== 'undefined') {
         window.location.reload();
       }
     }
-  }, [pathname, router, onClick, locale]);
+  }, [router, onClick, locale, setIsLoggingOut]);
 
   return (
     <>
@@ -120,9 +135,9 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             {t('shared.yourData')}
           </Typography>
           <MuiLink
-            href={`/${locale}/auth/login`}
-            component={Link}
+            component={'button'}
             onClick={signOut}
+            type='button'
             sx={{
               display: 'flex',
               alignItems: 'center',

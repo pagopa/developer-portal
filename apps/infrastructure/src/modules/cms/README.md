@@ -121,5 +121,7 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_internal_load_balancer"></a> [internal\_load\_balancer](#output\_internal\_load\_balancer) | n/a |
+| <a name="output_public_load_balancer_arn"></a> [public\_load\_balancer\_arn](#output\_public\_load\_balancer\_arn) | ARN of the public CMS application load balancer |
 | <a name="output_security_groups"></a> [security\_groups](#output\_security\_groups) | n/a |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | n/a |
+<!-- END_TF_DOCS -->

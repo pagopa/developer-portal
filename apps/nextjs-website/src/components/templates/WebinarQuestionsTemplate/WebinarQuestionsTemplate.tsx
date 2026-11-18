@@ -21,7 +21,7 @@ type WebinarQuestionsTemplateProps = {
 const WebinarQuestionsTemplate = ({
   webinar,
 }: WebinarQuestionsTemplateProps) => {
-  const { user, loading } = useUser();
+  const { user, loading, isLoggingOut } = useUser();
   const { webinarState, setWebinar } = useWebinar();
   const t = useTranslations('webinar.questionList');
   const [questions, setQuestions] = useState<readonly WebinarQuestion[]>([]);
@@ -40,6 +40,9 @@ const WebinarQuestionsTemplate = ({
     setQuestions(data ?? []);
   }, [data]);
 
+  if (isLoggingOut) {
+    return <Spinner />;
+  }
   if (error || (!loading && !user)) return <PageNotFound />;
   else if (!data || loading || !user) return <Spinner />;
   else {
