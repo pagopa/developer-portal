@@ -45,6 +45,21 @@ export function canRedirectToUrl(path: string): boolean {
   }
 }
 
+export function shouldRedirectAfterLogout(pathname: string): boolean {
+  const segments = pathname.split('/').filter((s) => s.length > 0);
+  const hasLocalePrefix =
+    segments.length > 0 &&
+    SUPPORTED_LOCALES.some((l) => l.langCode === segments[0]);
+  const routeSegments = hasLocalePrefix ? segments.slice(1) : segments;
+  const isWebinarQuestionsPage =
+    routeSegments.length === 3 &&
+    routeSegments[0] === 'webinars' &&
+    routeSegments[2] === 'questions';
+  return (
+    ['auth', 'profile'].includes(routeSegments[0]) || isWebinarQuestionsPage
+  );
+}
+
 export function isExternalLink(currentHost: string, href: string): boolean {
   if (!/^https?:\/\//.test(href) && !/^\/\//.test(href)) {
     return false;
