@@ -1,14 +1,13 @@
 locals {
-  name = var.name != null ? var.name : "devportal-${var.environment}-public-alb-waf"
+  name = var.name != null ? var.name : "devportal-${var.environment}-public-waf"
 
-  metric_name_prefix = var.metric_name_prefix != null ? var.metric_name_prefix : "devportal-${var.environment}-alb"
-  acl_metric_name    = var.metric_name_prefix != null ? var.metric_name_prefix : local.name
+  metric_name_prefix = var.metric_name_prefix != null ? var.metric_name_prefix : local.name
 
   ip_rate_limit_metric_name    = "${local.metric_name_prefix}-ip-rate-limit"
   known_bad_inputs_metric_name = "${local.metric_name_prefix}-known-bad-inputs"
 }
 
-resource "aws_wafv2_web_acl" "public_albs" {
+resource "aws_wafv2_web_acl" "public_endpoints" {
   name        = local.name
   description = "Count-only WAF protections for public Developer Portal endpoints"
   scope       = var.scope
@@ -87,14 +86,14 @@ resource "aws_wafv2_web_acl" "public_albs" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                = local.acl_metric_name
+    metric_name                = local.name
     sampled_requests_enabled   = var.sampled_requests_enabled
   }
 }
 
-resource "aws_wafv2_web_acl_association" "public_albs" {
+resource "aws_wafv2_web_acl_association" "regional" {
   for_each = var.scope == "REGIONAL" ? var.associated_resource_arns : {}
 
   resource_arn = each.value
-  web_acl_arn  = aws_wafv2_web_acl.public_albs.arn
+  web_acl_arn  = aws_wafv2_web_acl.public_endpoints.arn
 }

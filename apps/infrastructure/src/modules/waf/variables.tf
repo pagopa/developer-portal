@@ -42,7 +42,7 @@ variable "name" {
 }
 
 variable "metric_name_prefix" {
-  description = "Optional prefix for WAF CloudWatch metric names"
+  description = "Optional prefix for WAF rule metric names; defaults to the web ACL name"
   type        = string
   default     = null
 }

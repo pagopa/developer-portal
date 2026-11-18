@@ -28,7 +28,9 @@ run "plan_regional_waf_alerts" {
   command = plan
 
   variables {
-    environment = "prod"
+    environment        = "prod"
+    name               = "devportal-prod-public-alb-waf"
+    metric_name_prefix = "devportal-prod-alb"
     alerting = {
       topic_arn = "arn:aws:sns:eu-south-1:123456789012:alerts"
     }
@@ -43,6 +45,15 @@ run "plan_regional_waf_alerts" {
       ])
     )
     error_message = "Both WAF count alarms must notify the configured SNS topic."
+  }
+
+  assert {
+    condition = alltrue([
+      for key, alarm in aws_cloudwatch_metric_alarm.counted_requests :
+      alarm.dimensions["WebACL"] == var.name &&
+      alarm.dimensions["Rule"] == "${var.metric_name_prefix}-${replace(key, "_", "-")}"
+    ])
+    error_message = "The existing ACL and rule metric dimensions must be preserved for the shared Regional WAF."
   }
 }
 
@@ -60,15 +71,15 @@ run "plan_shared_alb_and_rest_api_stage_associations" {
 
   assert {
     condition = tomap({
-      for key, association in aws_wafv2_web_acl_association.public_albs : key => association.resource_arn
+      for key, association in aws_wafv2_web_acl_association.regional : key => association.resource_arn
     }) == var.associated_resource_arns
     error_message = "The shared regional ACL must keep the ALB association and add the REST API stage association."
   }
 
   assert {
     condition = (
-      !aws_wafv2_web_acl.public_albs.visibility_config[0].sampled_requests_enabled &&
-      alltrue([for rule in aws_wafv2_web_acl.public_albs.rule : !rule.visibility_config[0].sampled_requests_enabled])
+      !aws_wafv2_web_acl.public_endpoints.visibility_config[0].sampled_requests_enabled &&
+      alltrue([for rule in aws_wafv2_web_acl.public_endpoints.rule : !rule.visibility_config[0].sampled_requests_enabled])
     )
     error_message = "Disabling sampling must prevent both ACL and rule request samples."
   }
@@ -83,7 +94,7 @@ run "plan_cloudfront_waf_without_regional_association" {
   }
 
   assert {
-    condition     = length(aws_wafv2_web_acl_association.public_albs) == 0
+    condition     = length(aws_wafv2_web_acl_association.regional) == 0
     error_message = "CloudFront must be associated through the distribution, not a regional association."
   }
 }

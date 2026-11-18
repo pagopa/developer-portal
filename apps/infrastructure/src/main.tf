@@ -388,15 +388,19 @@ module "backup_eu_central_1" {
   region      = "eu-central-1"
 }
 
-module "alb_waf" {
-  count  = var.enable_alb_waf ? 1 : 0
+module "regional_waf" {
+  count  = var.enable_regional_waf ? 1 : 0
   source = "./modules/waf"
 
   providers = {
     aws = aws.eu-south-1
   }
 
-  environment = var.environment
+  # Keep the deployed ACL and CloudWatch metric names across the address move.
+  environment        = var.environment
+  name               = "devportal-${var.environment}-public-alb-waf"
+  metric_name_prefix = "devportal-${var.environment}-alb"
+
   alerting = {
     topic_arn = module.core.alerting_topic_arn
   }

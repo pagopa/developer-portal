@@ -35,6 +35,6 @@ resource "aws_cloudwatch_metric_alarm" "counted_requests" {
   dimensions = {
     Region = data.aws_region.current.region
     Rule   = each.value.metric_name
-    WebACL = local.acl_metric_name
+    WebACL = local.name
   }
 }
