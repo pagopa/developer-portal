@@ -1,5 +1,5 @@
 locals {
-  counted_request_alarms = var.scope == "REGIONAL" && var.alerting != null ? {
+  counted_request_alarms = var.alerting != null ? {
     ip_rate_limit = {
       metric_name = local.ip_rate_limit_metric_name
       threshold   = var.alerting.ip_rate_limit_threshold
@@ -20,7 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "counted_requests" {
 
   alarm_name          = "${local.name}-${replace(each.key, "_", "-")}-counted-requests"
   alarm_description   = each.value.description
-  alarm_actions       = [var.alerting.topic_arn]
+  alarm_actions       = var.alerting.topic_arn == null ? [] : [var.alerting.topic_arn]
   namespace           = "AWS/WAFV2"
   metric_name         = "CountedRequests"
   statistic           = "Sum"
@@ -32,9 +32,9 @@ resource "aws_cloudwatch_metric_alarm" "counted_requests" {
   treat_missing_data  = "notBreaching"
   tags                = var.tags
 
-  dimensions = {
-    Region = data.aws_region.current.region
+  # CloudFront WAF metrics do not have a Region dimension.
+  dimensions = merge({
     Rule   = each.value.metric_name
     WebACL = local.name
-  }
+  }, var.scope == "REGIONAL" ? { Region = data.aws_region.current.region } : {})
 }

@@ -1,7 +1,7 @@
 variable "alerting" {
-  description = "Optional SNS destination and per-minute CountedRequests alarm thresholds for a regional web ACL"
+  description = "Enable CountedRequests alarms with optional thresholds and a same-Region SNS destination"
   type = object({
-    topic_arn                  = string
+    topic_arn                  = optional(string)
     ip_rate_limit_threshold    = optional(number, 100)
     known_bad_inputs_threshold = optional(number, 25)
   })

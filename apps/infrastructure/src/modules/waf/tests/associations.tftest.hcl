@@ -3,6 +3,10 @@ mock_provider "aws" {}
 run "plan_cms_with_unknown_arn" {
   command = plan
 
+  providers = {
+    aws = aws
+  }
+
   module {
     source = "./tests/fixtures/unknown_arns"
   }
@@ -14,6 +18,10 @@ run "plan_cms_with_unknown_arn" {
 
 run "plan_cms_and_langfuse_with_unknown_arns" {
   command = plan
+
+  providers = {
+    aws = aws
+  }
 
   module {
     source = "./tests/fixtures/unknown_arns"
@@ -91,10 +99,22 @@ run "plan_cloudfront_waf_without_regional_association" {
   variables {
     environment = "prod"
     scope       = "CLOUDFRONT"
+    alerting    = {}
   }
 
   assert {
     condition     = length(aws_wafv2_web_acl_association.regional) == 0
     error_message = "CloudFront must be associated through the distribution, not a regional association."
+  }
+
+  assert {
+    condition = (
+      toset(keys(aws_cloudwatch_metric_alarm.counted_requests)) == toset(["ip_rate_limit", "known_bad_inputs"]) &&
+      alltrue([
+        for alarm in aws_cloudwatch_metric_alarm.counted_requests :
+        toset(keys(alarm.dimensions)) == toset(["Rule", "WebACL"]) && length(alarm.alarm_actions) == 0
+      ])
+    )
+    error_message = "CloudFront must create both alarms without a Region dimension or direct SNS action."
   }
 }

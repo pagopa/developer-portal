@@ -10,4 +10,5 @@ module "video_waf" {
   metric_name_prefix       = "devportal-${var.environment}-alb" # Retain existing rule metric names.
   scope                    = "CLOUDFRONT"
   sampled_requests_enabled = false
+  alerting                 = {}
 }

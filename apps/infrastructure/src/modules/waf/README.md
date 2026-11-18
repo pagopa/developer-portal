@@ -28,7 +28,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alerting"></a> [alerting](#input\_alerting) | Optional SNS destination and per-minute CountedRequests alarm thresholds for a regional web ACL | <pre>object({<br/>    topic_arn                  = string<br/>    ip_rate_limit_threshold    = optional(number, 100)<br/>    known_bad_inputs_threshold = optional(number, 25)<br/>  })</pre> | `null` | no |
+| <a name="input_alerting"></a> [alerting](#input\_alerting) | Enable CountedRequests alarms with optional thresholds and a same-Region SNS destination | <pre>object({<br/>    topic_arn                  = optional(string)<br/>    ip_rate_limit_threshold    = optional(number, 100)<br/>    known_bad_inputs_threshold = optional(number, 25)<br/>  })</pre> | `null` | no |
 | <a name="input_associated_resource_arns"></a> [associated\_resource\_arns](#input\_associated\_resource\_arns) | Map of stable resource keys to regional resource ARNs; CloudFront associations are configured on the distribution | `map(string)` | `{}` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment used to name the web ACL | `string` | n/a | yes |
 | <a name="input_metric_name_prefix"></a> [metric\_name\_prefix](#input\_metric\_name\_prefix) | Optional prefix for WAF rule metric names; defaults to the web ACL name | `string` | `null` | no |
@@ -42,5 +42,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alarm_arns"></a> [alarm\_arns](#output\_alarm\_arns) | ARNs of the WAF count alarms, keyed by rule. |
 | <a name="output_web_acl_arn"></a> [web\_acl\_arn](#output\_web\_acl\_arn) | ARN of the WAF web ACL |
 <!-- END_TF_DOCS -->
