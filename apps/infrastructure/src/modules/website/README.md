@@ -94,6 +94,7 @@
 | <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br/>    {<br/>      header   = string<br/>      override = bool<br/>      value    = string<br/>    }<br/>  ))</pre> | `[]` | no |
 | <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
 | <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
+| <a name="input_enable_regional_waf"></a> [enable\_regional\_waf](#input\_enable\_regional\_waf) | Enable the shared Regional WAF for public endpoints. | `bool` | `false` | no |
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_next_public_feedback_form_enabled"></a> [next\_public\_feedback\_form\_enabled](#input\_next\_public\_feedback\_form\_enabled) | Defines if the feedback form should be enabled | `bool` | `false` | no |
 | <a name="input_next_public_ff_qualtrics"></a> [next\_public\_ff\_qualtrics](#input\_next\_public\_ff\_qualtrics) | Defines if the Qualtrics feature should be enabled | `bool` | `false` | no |

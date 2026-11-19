@@ -100,6 +100,8 @@ module "opennext" {
 
   alarms_actions = [var.alerting_topic_arn]
 
+  enable_waf = var.enable_regional_waf
+
   vpc = var.vpc
 
   tags = var.tags
