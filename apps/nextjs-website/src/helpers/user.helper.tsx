@@ -48,23 +48,19 @@ const useUserState = () => {
   }, []);
 
   const isUserLoggedIn = useCallback(
-    async (user?: DevPortalUser | null) => {
+    async (_user?: DevPortalUser | null) => {
       if (authStatus === 'unauthenticated') {
         return false;
       }
       // eslint-disable-next-line functional/no-try-statements
       try {
         const info = await Auth.currentUserInfo();
-        if (!info?.username) {
-          signOutUser(user);
-        }
         return !!info?.username;
       } catch {
-        signOutUser(user);
         return false;
       }
     },
-    [authStatus, signOutUser]
+    [authStatus]
   );
 
   const fetchUserAndWebinarData = useCallback(async () => {
@@ -119,9 +115,6 @@ const useUserState = () => {
     await fetchUserAndWebinarData();
   }, [fetchUserAndWebinarData]);
 
-  useEffect(() => {
-    isUserLoggedIn(user);
-  }, [user, isUserLoggedIn]);
   useEffect(() => {
     // Keep protected pages covered until sign-out reaches a public page.
     if (!user && !shouldRedirectAfterLogout(pathname)) {
