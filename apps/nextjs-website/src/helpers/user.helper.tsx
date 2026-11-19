@@ -19,6 +19,8 @@ import {
 } from 'react';
 import type { CertificateResponse } from '@/lib/webinars/webinarCertificates';
 import { browserEnv } from '@/browserConfig';
+import { usePathname } from 'next/navigation';
+import { shouldRedirectAfterLogout } from '@/helpers/navigation.helpers';
 const { isWebinarsEnabled } = browserEnv.config;
 
 type UserContextValue = ReturnType<typeof useUserState>;
@@ -28,6 +30,8 @@ const useUserState = () => {
   const [isLoaded, setLoading] = useState<boolean>(true);
   const [aligned, setAligned] = useState<boolean>(false);
   const [user, setUser] = useState<DevPortalUser | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const pathname = usePathname();
   const [webinarSubscriptions, setSubscriptions] = useState<
     readonly WebinarSubscription[]
   >([]);
@@ -118,7 +122,12 @@ const useUserState = () => {
   useEffect(() => {
     isUserLoggedIn(user);
   }, [user, isUserLoggedIn]);
-
+  useEffect(() => {
+    // Keep protected pages covered until sign-out reaches a public page.
+    if (!user && !shouldRedirectAfterLogout(pathname)) {
+      setIsLoggingOut(false);
+    }
+  }, [pathname, user]);
   useEffect(() => {
     if (authStatus === 'authenticated') {
       fetchUserAndWebinarData();
@@ -181,6 +190,8 @@ const useUserState = () => {
     isUserLoggedIn,
     userFullName,
     canUseWebinarFeatures,
+    isLoggingOut,
+    setIsLoggingOut,
   };
 };
 

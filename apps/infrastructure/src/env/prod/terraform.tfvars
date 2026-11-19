@@ -1,6 +1,5 @@
 aws_region        = "eu-south-1"
 environment       = "prod"
-enable_backup     = true
 github_repository = "pagopa/developer-portal"
 
 tags = {
@@ -61,5 +60,6 @@ chatbot_models = {
 }
 
 docs_redirect_is_enabled = true
-
-create_devops_agent = true
+create_devops_agent      = true
+enable_regional_waf      = true
+enable_backup            = true

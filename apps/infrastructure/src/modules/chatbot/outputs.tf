@@ -50,3 +50,8 @@ output "redis_nlb_dns_name" {
   description = "DNS name of the internal NLB fronting the Redis ECS service"
   value       = module.nlb.dns_name
 }
+
+output "langfuse_load_balancer_arn" {
+  description = "ARN of the Langfuse application load balancer"
+  value       = module.langfuse.load_balancer_arn
+}

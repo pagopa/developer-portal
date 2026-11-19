@@ -46,6 +46,11 @@ output "webinar_metrics_api_url" {
   value       = "${aws_api_gateway_stage.webinar_metrics.invoke_url}/metrics"
 }
 
+output "webinar_metrics_stage_arn" {
+  description = "The webinar metrics REST API stage ARN for Regional WAF association."
+  value       = aws_api_gateway_stage.webinar_metrics.arn
+}
+
 output "webinar_metrics_api_key_id" {
   description = "The ID of the API key for the webinar metrics API. Retrieve the value with: aws apigateway get-api-key --api-key <id> --include-value"
   value       = aws_api_gateway_api_key.webinar_metrics.id

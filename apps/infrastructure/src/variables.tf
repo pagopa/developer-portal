@@ -9,6 +9,12 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "enable_regional_waf" {
+  type        = bool
+  description = "Enable the shared Regional WAF for public endpoints."
+  default     = false
+}
+
 variable "enable_backup" {
   type        = bool
   description = "Create AWS Backup resources in eu-south-1 and eu-central-1."

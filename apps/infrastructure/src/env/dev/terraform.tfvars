@@ -62,3 +62,4 @@ chatbot_models = {
 }
 
 ecs_chatbotapi_enable_scheduled_scaling = true
+enable_regional_waf                     = true
