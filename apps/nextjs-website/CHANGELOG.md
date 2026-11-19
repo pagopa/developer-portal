@@ -1,5 +1,14 @@
 # nextjs-website
 
+## 17.6.3
+
+### Patch Changes
+
+- ee5ae23: Fix login flow from webinar page
+- 9151fe7: Fix redirect page when user is in profile pages without being logged
+- 430fd4e: Fix logout redirects on protected pages.
+- bc50b28: Hide chatbot history pagination when no sessions are available
+
 ## 17.6.2
 
 ### Patch Changes
