@@ -28,6 +28,7 @@ export type GitBookTemplateProps = {
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
   hasProductHeader?: boolean;
+  showGuideFeedback?: boolean;
   initialBreadcrumbs: BreadcrumbSegment[];
   menu: string;
   menuDistanceFromTop?: number;
@@ -51,6 +52,7 @@ const GitBookTemplate = ({
   hasHeader = true,
   hasInPageMenu = true,
   hasProductHeader = true,
+  showGuideFeedback = false,
   versionName,
   guideTranslationDisclaimer,
 }: GitBookTemplateProps) => {
@@ -198,21 +200,20 @@ const GitBookTemplate = ({
           maxWidth: '1900px',
         }}
       >
-        {menu && (
-          <GuideMenu
-            key='menu'
-            hasHeader={hasHeader}
-            menu={menu}
-            assetsPrefix={bodyConfig.assetsPrefix}
-            linkPrefix={pathPrefix}
-            name={menuName}
-            versionName={versionName}
-            versions={versions && [...versions]}
-            distanceFromTop={menuDistanceFromTop}
-            onGuideNavigate={updateContent}
-            hasProductHeader={hasProductHeader}
-          />
-        )}
+        <GuideMenu
+          key='menu'
+          hasHeader={hasHeader}
+          menu={menu}
+          assetsPrefix={bodyConfig.assetsPrefix}
+          linkPrefix={pathPrefix}
+          name={menuName}
+          versionName={versionName}
+          versions={versions && [...versions]}
+          distanceFromTop={menuDistanceFromTop}
+          onGuideNavigate={updateContent}
+          hasProductHeader={hasProductHeader}
+          showGuideFeedback={showGuideFeedback}
+        />
         <Stack
           sx={{
             marginTop: responsiveContentMarginTop,

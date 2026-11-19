@@ -13,6 +13,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog,
+  Box,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -25,6 +26,7 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 import { browserEnv } from '@/browserConfig';
+import GuideFeedbackLink from '../GuideFeedbackLink/GuideFeedbackLink';
 
 const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
@@ -32,6 +34,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
   hasProductHeader?: boolean;
+  showGuideFeedback?: boolean;
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -115,6 +118,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     return () => clearTimeout(timer);
   }, [currentPath, scrollToActiveItem]);
 
+  if (!menuProps.menu && !menuProps.showGuideFeedback) return null;
+
   const items = (
     <GuideMenuItems
       {...menuProps}
@@ -124,7 +129,28 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     />
   );
 
-  return (
+  // The survey destination will be connected in DEV-4633.
+  const feedbackLink = menuProps.showGuideFeedback ? (
+    <Box
+      sx={{
+        position: {
+          xs: menuProps.menu ? 'absolute' : 'fixed',
+          lg: 'fixed',
+        },
+        top: menuProps.menu
+          ? { xs: '100%', lg: SITE_HEADER_HEIGHT + productHeaderHeight }
+          : topStyle,
+        right: 0,
+        zIndex: 51,
+        display: 'flex',
+        transition: 'top 0.5s linear',
+      }}
+    >
+      <GuideFeedbackLink label={t('productGuidePage.leaveFeedback')} href='#' />
+    </Box>
+  ) : null;
+
+  return menuProps.menu ? (
     <Fragment>
       <Stack
         ref={menuContainerRef}
@@ -134,7 +160,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           position: 'sticky',
           top: topStyle,
           height: { lg: height },
-          overflowY: 'auto',
+          overflowY: { xs: 'visible', lg: 'auto' },
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
@@ -178,6 +204,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           </Stack>
           {isDesktop && items}
         </Stack>
+        {feedbackLink}
       </Stack>
       {!isDesktop && (
         <Dialog open={open} onClose={handleClick} fullScreen>
@@ -216,6 +243,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         </Dialog>
       )}
     </Fragment>
+  ) : (
+    feedbackLink
   );
 };
 
