@@ -59,7 +59,7 @@ export type StrapiWebinar = {
   readonly headerImage?: StrapiMedia;
   readonly updatedAt: string;
   readonly chapters?: readonly Chapter[];
-  readonly documentId?: string;
+  readonly documentId: string;
 };
 
 export type StrapiWebinars = Paginated<StrapiWebinar>;

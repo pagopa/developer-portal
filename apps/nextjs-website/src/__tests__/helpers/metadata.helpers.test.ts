@@ -1,9 +1,5 @@
 import { ResolvedMetadata } from 'next';
-import {
-  makeHreflangAlternates,
-  makeHreflangUrls,
-  makeMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeHreflangUrls, makeMetadata } from '@/helpers/metadata.helpers';
 import { browserEnv } from '@/browserConfig';
 
 const { baseUrl, websiteName } = browserEnv.config;
@@ -195,93 +191,6 @@ it('should return the correct metadata when parent is missing', () => {
   });
 });
 
-describe('makeHreflangAlternates', () => {
-  it('should generate hreflang alternates for Italian and English', () => {
-    const result = makeHreflangAlternates([
-      { langCode: 'it', path: '/it' },
-      { langCode: 'en', path: '/en' },
-    ]);
-
-    expect(result).toEqual({
-      languages: {
-        it: '/it',
-        en: '/en',
-        'x-default': '/it',
-      },
-    });
-  });
-
-  it('should generate alternates for Italian only', () => {
-    const result = makeHreflangAlternates([{ langCode: 'it', path: '/it' }]);
-
-    expect(result).toEqual({
-      languages: {
-        it: '/it',
-        'x-default': '/it',
-      },
-    });
-  });
-
-  it('should not generate x-default when Italian is missing', () => {
-    const result = makeHreflangAlternates([{ langCode: 'en', path: '/en' }]);
-
-    expect(result).toEqual({
-      languages: {
-        en: '/en',
-      },
-    });
-  });
-
-  it('should support different localized slugs', () => {
-    const result = makeHreflangAlternates([
-      { langCode: 'it', path: '/it/solutions/pagamenti' },
-      { langCode: 'en', path: '/en/solutions/payments' },
-    ]);
-
-    expect(result).toEqual({
-      languages: {
-        it: '/it/solutions/pagamenti',
-        en: '/en/solutions/payments',
-        'x-default': '/it/solutions/pagamenti',
-      },
-    });
-  });
-
-  it('should return empty languages when no paths are provided', () => {
-    const result = makeHreflangAlternates([]);
-
-    expect(result).toEqual({
-      languages: {},
-    });
-  });
-
-  it('should generate relative paths without a base URL', () => {
-    const result = makeHreflangAlternates([{ langCode: 'it', path: '/it' }]);
-
-    expect(result).toEqual({
-      languages: {
-        it: '/it',
-        'x-default': '/it',
-      },
-    });
-  });
-
-  it('should generate alternates independently from canonical URL', () => {
-    const result = makeHreflangAlternates([
-      { langCode: 'it', path: '/it/solutions' },
-      { langCode: 'en', path: '/en/solutions' },
-    ]);
-
-    expect(result).toEqual({
-      languages: {
-        it: '/it/solutions',
-        en: '/en/solutions',
-        'x-default': '/it/solutions',
-      },
-    });
-  });
-});
-
 describe('makeHreflangUrls', () => {
   it('should generate relative URLs for localized paths', () => {
     const result = makeHreflangUrls([
@@ -296,25 +205,12 @@ describe('makeHreflangUrls', () => {
     });
   });
 
-  it('should generate Italian and x-default only', () => {
+  it('should return empty object when there is only one path', () => {
     const result = makeHreflangUrls([
-      { langCode: 'it', path: '/it/solutions' },
+      { langCode: 'it', path: '/it/solutions/pagamenti' },
     ]);
 
-    expect(result).toEqual({
-      it: '/it/solutions',
-      'x-default': '/it/solutions',
-    });
-  });
-
-  it('should not generate x-default when Italian is missing', () => {
-    const result = makeHreflangUrls([
-      { langCode: 'en', path: '/en/solutions' },
-    ]);
-
-    expect(result).toEqual({
-      en: '/en/solutions',
-    });
+    expect(result).toEqual({});
   });
 
   it('should return an empty object when no paths are available', () => {

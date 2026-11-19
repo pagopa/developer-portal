@@ -10,7 +10,7 @@ import type { Step } from '@/lib/quickStartGuides/types';
 import type { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -33,7 +33,7 @@ export type QuickStartGuidePageProps = {
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
   readonly seo?: SEO;
-  readonly documentId?: string;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -69,7 +69,7 @@ export async function generateMetadata(
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

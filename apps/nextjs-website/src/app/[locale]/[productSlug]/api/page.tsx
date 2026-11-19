@@ -7,7 +7,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -57,7 +57,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

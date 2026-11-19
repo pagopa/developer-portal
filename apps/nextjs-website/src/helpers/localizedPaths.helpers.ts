@@ -6,7 +6,7 @@ export type LocalizedPath = {
 };
 
 type Localizable = {
-  readonly documentId?: string;
+  readonly documentId: string;
 };
 
 type LocalizedPathsOptions<T extends Localizable> = {
@@ -33,7 +33,7 @@ export const getLocalizedPaths = async <T extends Localizable>({
   const translations = await Promise.all(
     SUPPORTED_LOCALES.filter(({ langCode }) => langCode !== currentLocale).map(
       async ({ langCode }) => {
-        const items = await getAll(langCode);
+        const items = await getAll(langCode).catch(() => []);
         const translation = items.find(
           ({ documentId }) => documentId === currentItem.documentId
         );

@@ -1,7 +1,7 @@
 import { getUseCase } from '@/lib/api';
 import { Metadata } from 'next';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -49,7 +49,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

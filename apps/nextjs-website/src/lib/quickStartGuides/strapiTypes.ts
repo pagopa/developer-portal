@@ -22,7 +22,7 @@ export type StrapiQuickStartGuide = {
   readonly seo?: StrapiSeo;
   readonly title: string;
   readonly updatedAt: string;
-  readonly documentId?: string;
+  readonly documentId: string;
 };
 
 export type StrapiQuickStartGuides = Paginated<StrapiQuickStartGuide>;

@@ -1,7 +1,6 @@
 import type { Guide } from './types';
 import { fetchGuides } from './fetcher';
 import { mapGuides } from './mapper';
-import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 export const GuidesRepository = {
@@ -114,19 +113,10 @@ export const GuidesRepository = {
           ? basePath
           : `${basePath}/${translatedVersion.version}`;
 
-        const translatedPath = `${pathPrefix}${relativePath}`;
-
-        const pages = await getGuidesMetadata(
+        return {
           langCode,
-          translatedVersion.dirName
-        );
-
-        return pages.some(({ path }) => path === translatedPath)
-          ? {
-              langCode,
-              path: translatedPath,
-            }
-          : null;
+          path: `${pathPrefix}${relativePath}`,
+        };
       })
     );
 

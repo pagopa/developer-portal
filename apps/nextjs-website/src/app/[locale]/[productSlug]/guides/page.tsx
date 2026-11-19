@@ -12,7 +12,7 @@ import ProductLayout, {
 import type { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -34,7 +34,7 @@ export type GuideListPageProps = {
   readonly guidesSections?: GuidesSectionProps[];
   readonly seo?: SEO;
   readonly updatedAt?: string;
-  readonly documentId?: string;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
@@ -69,7 +69,7 @@ export const generateMetadata = async (
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 };

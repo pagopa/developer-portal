@@ -148,6 +148,9 @@ const enhanceTwitterMetadata = (
 export const makeHreflangUrls = (
   localizedPaths: readonly LocalizedPath[]
 ): Readonly<Record<string, string>> => {
+  if (localizedPaths.length < 2) {
+    return {};
+  }
   const languages = Object.fromEntries(
     localizedPaths.map(({ langCode, path }) => [langCode, path])
   );
@@ -161,9 +164,3 @@ export const makeHreflangUrls = (
     ...(italianPath && { 'x-default': italianPath }),
   };
 };
-
-export const makeHreflangAlternates = (
-  localizedPaths: readonly LocalizedPath[]
-): Metadata['alternates'] => ({
-  languages: makeHreflangUrls(localizedPaths),
-});

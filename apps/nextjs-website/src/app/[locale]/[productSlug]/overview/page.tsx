@@ -14,7 +14,7 @@ import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
 import type { ProductParams } from '@/lib/products/types';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -103,7 +103,7 @@ export type OverviewPageProps = {
     }[];
   };
   readonly seo?: SEO;
-  readonly documentId?: string;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -139,7 +139,7 @@ export async function generateMetadata(
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

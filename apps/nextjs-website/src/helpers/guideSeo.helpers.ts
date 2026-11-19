@@ -42,6 +42,10 @@ export const getGuideSeoUrls = async ({
       : canonicalURL
     : undefined;
 
+  if (!version.main) {
+    return { canonical, languages: {} };
+  }
+
   const localizedPaths = await GuidesRepository.getLocalizedPaths(
     currentLocale,
     guide,

@@ -7,6 +7,7 @@ export const strapiApiDataListPages: ApiDataListPages = {
   data: [
     {
       id: 1,
+      documentId: 'send-api-documentation-1',
       title: 'SEND API Documentation',
       description: 'Complete documentation for SEND APIs',
       seo: {
@@ -38,6 +39,7 @@ export const strapiApiDataListPages: ApiDataListPages = {
         {
           id: 1,
           bannerLinks: [],
+          documentId: 'send-main-api-1',
           title: 'SEND Main API',
           description: 'Main SEND API for delivery notifications',
           icon: mediaJpeg(),
@@ -57,6 +59,7 @@ export const strapiApiDataListPages: ApiDataListPages = {
         },
         {
           id: 2,
+          documentId: 'send-soap-api-1',
           bannerLinks: [],
           title: 'SEND SOAP API',
           description: 'SOAP API for legacy integrations',
@@ -87,6 +90,7 @@ export const strapiApiDataListPages: ApiDataListPages = {
 export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplateProps> =
   [
     {
+      documentId: 'send-api-documentation-1',
       hero: {
         title: 'SEND API Documentation',
         subtitle: 'Complete documentation for SEND APIs',

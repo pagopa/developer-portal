@@ -1,9 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import {
-  makeHreflangAlternates,
-  makeMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeHreflangUrls, makeMetadata } from '@/helpers/metadata.helpers';
 import { getSolutionDetail } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
@@ -64,7 +61,7 @@ export async function generateMetadata(props: {
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

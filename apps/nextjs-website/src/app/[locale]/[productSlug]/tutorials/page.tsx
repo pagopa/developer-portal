@@ -9,7 +9,7 @@ import type { Tutorial } from '@/lib/tutorials/types';
 import React from 'react';
 import type { ProductParams } from '@/lib/products/types';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -33,7 +33,7 @@ export type TutorialsPageProps = {
   readonly tutorials: readonly Tutorial[];
   readonly seo?: SEO;
   readonly enableFilters?: boolean;
-  readonly documentId?: string;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -69,7 +69,7 @@ export async function generateMetadata(
     ...metadata,
     alternates: {
       ...metadata.alternates,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

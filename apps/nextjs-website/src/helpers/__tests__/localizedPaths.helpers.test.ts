@@ -4,7 +4,7 @@ import {
 } from '@/helpers/localizedPaths.helpers';
 
 type Item = {
-  readonly documentId?: string;
+  readonly documentId: string;
   readonly slug: string;
 };
 
@@ -15,16 +15,6 @@ const getAll = async (locale: string): Promise<readonly Item[]> =>
   locale === 'en' ? [english] : [italian];
 
 describe('getLocalizedPaths', () => {
-  it('does not generate paths without documentId', async () => {
-    const result = await getLocalizedPaths({
-      currentLocale: 'it',
-      currentItem: { slug: 'italiano' },
-      getAll,
-      getPath: (locale, item) => `/${locale}/${item.slug}`,
-    });
-    expect(result).toEqual([]);
-  });
-
   it('resolves actual translated slugs', async () => {
     const result = await getLocalizedPaths({
       currentLocale: 'it',
@@ -47,6 +37,22 @@ describe('getLocalizedPaths', () => {
         locale === 'en' ? undefined : `/${locale}/${item.slug}`,
     });
     expect(result).toEqual([{ langCode: 'it', path: '/it/italiano' }]);
+  });
+
+  it('preserves the current locale when fetching a translation fails', async () => {
+    const failingGetAll = jest
+      .fn()
+      .mockRejectedValue(new Error('English page unavailable'));
+
+    const result = await getLocalizedPaths({
+      currentLocale: 'it',
+      currentItem: italian,
+      getAll: failingGetAll,
+      getPath: (locale, item) => `/${locale}/${item.slug}`,
+    });
+
+    expect(result).toEqual([{ langCode: 'it', path: '/it/italiano' }]);
+    expect(failingGetAll).toHaveBeenCalledWith('en');
   });
 });
 

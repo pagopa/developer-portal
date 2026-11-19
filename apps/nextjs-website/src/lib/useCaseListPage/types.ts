@@ -13,7 +13,7 @@ export type StrapiUseCaseListPage = {
   readonly seo?: StrapiSeo;
   readonly title: string;
   readonly useCases: readonly StrapiBaseUseCase[];
-  readonly documentId?: string;
+  readonly documentId: string;
 };
 
 export type StrapiUseCaseListPages = Paginated<StrapiUseCaseListPage>;

@@ -20,7 +20,7 @@ import React from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Metadata } from 'next';
 import {
-  makeHreflangAlternates,
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -87,7 +87,7 @@ export async function generateMetadata({
     alternates: {
       ...metadata.alternates,
       ...(canonicalURL && { canonical: canonicalURL }),
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }
@@ -100,7 +100,7 @@ export type ReleaseNotePageProps = {
   readonly product: Product;
   readonly seo?: SEO;
   readonly title: string;
-  readonly documentId?: string;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 const ReleaseNotePage = async ({

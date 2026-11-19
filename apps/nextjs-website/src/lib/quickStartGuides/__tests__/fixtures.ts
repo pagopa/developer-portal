@@ -5,6 +5,7 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
   data: [
     {
       id: 1,
+      documentId: 'quick-start-guide-1',
       title: 'Quick Start Guide Title',
       description: 'Quick Start Guide Description',
       updatedAt: '2024-01-01T00:00:00.000Z',

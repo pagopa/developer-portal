@@ -1,9 +1,6 @@
 import { getVisibleInListWebinars } from '@/lib/api';
 import { getWebinarCategories } from '@/lib/api';
-import {
-  makeHreflangAlternates,
-  makeMetadata,
-} from '@/helpers/metadata.helpers';
+import { makeHreflangUrls, makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { browserEnv } from '@/browserConfig';
 import WebinarsTemplate from '@/components/organisms/WebinarsTemplate/WebinarsTemplate';
@@ -47,7 +44,7 @@ export async function generateMetadata(props: {
     }),
     alternates: {
       canonical: canonicalURL,
-      ...makeHreflangAlternates(localizedPaths),
+      languages: makeHreflangUrls(localizedPaths),
     },
   };
 }

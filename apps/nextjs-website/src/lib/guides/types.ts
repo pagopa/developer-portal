@@ -23,5 +23,5 @@ export type Guide = {
     readonly dirPath: string;
     readonly spaceId: string;
   };
-  readonly documentId?: string;
+  readonly documentId: string;
 };
