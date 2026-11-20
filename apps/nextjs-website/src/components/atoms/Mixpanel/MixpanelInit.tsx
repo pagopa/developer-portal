@@ -2,6 +2,7 @@
 import mixpanel from 'mixpanel-browser';
 import { useEffect } from 'react';
 import { hasConsent, OTWindow } from './ConsentCheck';
+import { handleOutboundLinkClick } from './TrackOutboundLink';
 
 type MixpanelConfig = {
   token?: string;
@@ -32,6 +33,9 @@ const MixpanelInit = (config: MixpanelConfig) => {
         batch_requests: false,
         track_pageview: 'full-url', // Consider any URL change (including query params and hash) as a page change
       });
+      if ('enable' in mixpanel && typeof mixpanel.enable === 'function') {
+        mixpanel.enable();
+      }
     };
 
     const otWindow = window as unknown as OTWindow;
@@ -52,6 +56,25 @@ const MixpanelInit = (config: MixpanelConfig) => {
       initMixpanel();
     }
   }, [config]);
+
+  useEffect(() => {
+    if (!config.enableMixpanel || !config.token) {
+      return undefined;
+    }
+
+    const onClick = (event: MouseEvent) => {
+      if ((event.type === 'click' || event.button === 1) && hasConsent()) {
+        handleOutboundLinkClick(event);
+      }
+    };
+
+    document.addEventListener('click', onClick, true);
+    document.addEventListener('auxclick', onClick, true);
+    return () => {
+      document.removeEventListener('click', onClick, true);
+      document.removeEventListener('auxclick', onClick, true);
+    };
+  }, [config.enableMixpanel, config.token]);
 
   return null;
 };
