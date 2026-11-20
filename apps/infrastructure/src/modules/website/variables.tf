@@ -179,3 +179,9 @@ variable "cognito_authenticated_host_user_role_id" {
   type        = string
   description = "The ID of the IAM role for authenticated host users from the auth module"
 }
+
+variable "enable_regional_waf" {
+  type        = bool
+  description = "Enable the shared Regional WAF for public endpoints."
+  default     = false
+}

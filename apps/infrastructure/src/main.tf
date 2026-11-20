@@ -159,6 +159,7 @@ module "website" {
   next_public_ff_qualtrics          = var.environment == "dev"
   next_public_ff_webinars           = true
   next_public_mixpanel_api_host     = var.next_public_mixpanel_api_host
+  enable_regional_waf               = var.enable_regional_waf
 
   vpc = {
     id              = module.cms.vpc.id
