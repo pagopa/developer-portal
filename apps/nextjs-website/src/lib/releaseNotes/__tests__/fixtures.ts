@@ -8,6 +8,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
   data: [
     {
       id: 1,
+      documentId: 'release-notes-1',
       dirName: 'release-notes-dir',
       landingFile: 'release-notes.md',
       title: 'Release Notes Title',
@@ -47,6 +48,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
 };
 
 export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
+  documentId: 'release-notes-1',
   bannerLinks: [
     {
       title: 'Banner Link 1',

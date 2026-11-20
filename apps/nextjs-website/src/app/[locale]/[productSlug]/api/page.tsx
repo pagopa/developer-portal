@@ -7,6 +7,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -23,6 +24,7 @@ export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { locale, productSlug } = await props.params;
+
   const apiDataListPage = await ApiDataListPagesRepository.getByProductSlug(
     locale,
     productSlug
@@ -36,17 +38,28 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (apiDataListPage?.seo) {
-    return makeMetadataFromStrapi(apiDataListPage.seo);
-  }
+  const { seo, hero, product } = apiDataListPage;
 
-  return makeMetadata({
-    title: [apiDataListPage?.hero.title, apiDataListPage?.product.name]
-      .filter(Boolean)
-      .join(' | '),
-    url: `${browserEnv.config.baseUrl}/${locale}/${apiDataListPage?.product.slug}/api`,
-    langCode: locale,
-  });
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [hero.title, product.name].filter(Boolean).join(' | '),
+        url: `${browserEnv.config.baseUrl}/${locale}/${product.slug}/api`,
+        langCode: locale,
+      });
+
+  const localizedPaths = await ApiDataListPagesRepository.getLocalizedPaths(
+    locale,
+    apiDataListPage
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 }
 
 const ApiDataListPage = async (props: { params: Promise<Params> }) => {

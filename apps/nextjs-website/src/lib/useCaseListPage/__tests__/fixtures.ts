@@ -9,6 +9,7 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
     {
       id: 1,
       title: 'Use Cases',
+      documentId: 'use-cases-1',
       description: 'Explore our use cases',
       bannerLinks: generateBannerLinks(1),
       product: {

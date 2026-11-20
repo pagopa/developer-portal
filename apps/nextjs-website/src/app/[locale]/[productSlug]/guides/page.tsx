@@ -12,6 +12,7 @@ import ProductLayout, {
 import type { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -22,6 +23,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
+import { GuideListPagesRepository } from '@/lib/guideListPages';
 
 export type GuideListPageProps = {
   readonly product: Product;
@@ -32,6 +34,7 @@ export type GuideListPageProps = {
   readonly guidesSections?: GuidesSectionProps[];
   readonly seo?: SEO;
   readonly updatedAt?: string;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
@@ -48,16 +51,27 @@ export const generateMetadata = async (
 
   const { path, abstract, seo, product } = guideListPageProps;
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
-  }
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [abstract?.title, product.name].filter(Boolean).join(' | '),
+        description: abstract?.description,
+        url: path,
+        parent: resolvedParent,
+      });
 
-  return makeMetadata({
-    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
-    description: abstract?.description,
-    url: path,
-    parent: resolvedParent,
-  });
+  const localizedPaths = await GuideListPagesRepository.getLocalizedPaths(
+    locale,
+    guideListPageProps
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 };
 
 const GuideListPage = async (props: ProductParams) => {

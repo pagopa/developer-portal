@@ -36,6 +36,7 @@ export const strapiSolutionListPage = {
       case_histories: [
         {
           id: 1,
+          documentId: 'case-history-1',
           slug: 'case-history-1',
           title: 'Case History 1',
           description: 'Case history description',

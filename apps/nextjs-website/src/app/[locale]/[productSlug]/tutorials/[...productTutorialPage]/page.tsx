@@ -1,6 +1,7 @@
 import { getTutorial } from '@/lib/api';
 import { Metadata } from 'next';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -12,6 +13,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 import { notFound, redirect } from 'next/navigation';
+import { TutorialRepository } from '@/lib/tutorials';
 
 type Params = {
   locale: string;
@@ -32,14 +34,25 @@ export async function generateMetadata(props: {
 
   const { title, path, seo } = tutorialProps;
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
-  }
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
+        url: path,
+      });
 
-  return makeMetadata({
-    title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
-    url: path,
-  });
+  const localizedPaths = await TutorialRepository.getLocalizedPaths(
+    locale,
+    tutorialProps
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

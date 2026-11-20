@@ -3,6 +3,8 @@ import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { fetchOverviews } from './fetcher';
 import { mapOverviewsProps } from './mapper';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const OverviewsRepository = {
   /**
    * Returns all Overview pages
@@ -13,4 +15,20 @@ export const OverviewsRepository = {
     const strapiOverviews = await fetchOverviews(locale, buildEnv);
     return mapOverviewsProps(locale, strapiOverviews);
   },
+  /**
+   * Returns localized paths for a product Overview page.
+   * @param currentLocale The locale of the current Overview page.
+   * @param overview The current Overview page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (
+    currentLocale: string,
+    overview: OverviewPageProps
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: overview,
+      getAll: OverviewsRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

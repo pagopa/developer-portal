@@ -64,4 +64,10 @@ describe('makeCaseHistoriesProps', () => {
     const result = mapCaseHistoriesProps(caseHistoriesWithoutImage());
     expect(result[0].image).toBeUndefined();
   });
+
+  it('should preserve documentId when mapping case histories', () => {
+    const result = mapCaseHistoriesProps(strapiCaseHistories);
+
+    expect(result[0].documentId).toBe(strapiCaseHistories.data[0].documentId);
+  });
 });

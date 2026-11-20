@@ -34,4 +34,8 @@ export type GitBookContentData = {
     readonly path: string;
   }[];
   readonly guideTranslationDisclaimer?: BlocksContent;
+  readonly dynamicSeo?: {
+    readonly canonical?: string;
+    readonly languages?: Readonly<Record<string, string>>;
+  };
 };

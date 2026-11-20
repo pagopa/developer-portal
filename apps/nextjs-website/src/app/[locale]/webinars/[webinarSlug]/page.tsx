@@ -1,5 +1,6 @@
 import { getWebinar } from '@/lib/api';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -11,6 +12,7 @@ import WebinarDetailTemplate from '@/components/templates/WebinarDetailTemplate/
 import { Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { notFound } from 'next/navigation';
+import { WebinarsRepository } from '@/lib/webinars';
 
 type Params = {
   locale: string;
@@ -27,16 +29,27 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (webinar.seo) {
-    return makeMetadataFromStrapi(webinar.seo);
-  }
+  const metadata = webinar.seo
+    ? makeMetadataFromStrapi(webinar.seo)
+    : makeMetadata({
+        title: webinar.title,
+        url: `${browserEnv.config.baseUrl}/${locale}/webinars/${webinar.slug}`,
+        langCode: locale,
+        image: webinar.imagePath,
+      });
 
-  return makeMetadata({
-    title: webinar.title,
-    url: `${browserEnv.config.baseUrl}/${locale}/webinars/${webinar.slug}`,
-    langCode: locale,
-    image: webinar.imagePath,
-  });
+  const localizedPaths = await WebinarsRepository.getLocalizedPaths(
+    locale,
+    webinar
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
