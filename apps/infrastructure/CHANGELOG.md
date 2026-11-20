@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.12.0
+
+### Minor Changes
+
+- 464f8ce: Add count-only WAF monitoring for the production CMS and Langfuse public load balancers.
+
 ## 14.11.0
 
 ### Minor Changes
