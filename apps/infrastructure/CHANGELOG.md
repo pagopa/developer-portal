@@ -1,5 +1,11 @@
 # infrastructure
 
+## 14.13.0
+
+### Minor Changes
+
+- 202193d: Add optional Regional WAF integration for the OpenNext website.
+
 ## 14.12.0
 
 ### Minor Changes

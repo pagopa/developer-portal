@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.6.4
+
+### Patch Changes
+
+- c1adcf3: Show consent banner on on-demand webinars
+
 ## 17.6.3
 
 ### Patch Changes
