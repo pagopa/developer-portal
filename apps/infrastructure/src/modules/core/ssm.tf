@@ -1,4 +1,5 @@
 data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
 
 resource "aws_ssm_parameter" "alerting_email" {
   name  = "/alerting/email"
@@ -40,6 +41,23 @@ resource "aws_sns_topic_policy" "cloudwatch_alarms" {
         Action   = "sns:Publish"
         Resource = aws_sns_topic.cloudwatch_alarms.arn
         Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      },
+      {
+        Sid    = "AllowCloudFrontWafAlarmEventBridge"
+        Effect = "Allow"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+        Action   = "sns:Publish"
+        Resource = aws_sns_topic.cloudwatch_alarms.arn
+        Condition = {
+          ArnEquals = {
+            "aws:SourceArn" = "arn:${data.aws_partition.current.partition}:events:eu-south-1:${data.aws_caller_identity.current.account_id}:rule/devportal-cloudfront-waf-alarm-state-changes"
+          }
           StringEquals = {
             "aws:SourceAccount" = data.aws_caller_identity.current.account_id
           }
