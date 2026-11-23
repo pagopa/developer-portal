@@ -70,13 +70,22 @@ describe('getAvailableSingleTypeLocales', () => {
     expect(result).toEqual(['en']);
   });
 
-  it('should propagate errors from Strapi', async () => {
-    const error = new Error('Strapi unavailable');
+  it('should preserve the current locale when another locale fails', async () => {
+    const error = new Error('English page error');
     mockedHasPublishedSingleType.mockRejectedValue(error);
 
-    await expect(
-      getAvailableSingleTypeLocales('homepage', 'it', strapiEnv)
-    ).rejects.toThrow('Strapi unavailable');
+    const result = await getAvailableSingleTypeLocales(
+      'homepage',
+      'it',
+      strapiEnv
+    );
+
+    expect(result).toEqual(['it']);
+    expect(mockedHasPublishedSingleType).toHaveBeenCalledWith(
+      'homepage',
+      'en',
+      strapiEnv
+    );
   });
 
   it('should not check the current locale again', async () => {

@@ -14,7 +14,11 @@ export const getAvailableSingleTypeLocales = async (
   const availableLocales = await Promise.all(
     otherLocales.map(async ({ langCode }) => ({
       langCode,
-      available: await hasPublishedSingleType(contentType, langCode, strapiEnv),
+      available: await hasPublishedSingleType(
+        contentType,
+        langCode,
+        strapiEnv
+      ).catch(() => false),
     }))
   );
 
