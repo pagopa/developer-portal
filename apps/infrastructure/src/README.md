@@ -1,3 +1,5 @@
+The root `enable_regional_waf` setting is also passed to the website module to enable WAF integration in the OpenNext deployment.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
