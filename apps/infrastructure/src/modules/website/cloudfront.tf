@@ -170,3 +170,157 @@ resource "aws_cloudfront_distribution" "static_contents" {
     minimum_protocol_version       = "TLSv1.2_2021"
   }
 }
+
+# CloudFront-scoped WAF metrics are published in us-east-1. The ACL-level
+# metric is disabled, so alarm on the metrics emitted by each managed rule.
+locals {
+  cloudfront_waf_rule_metrics = var.enable_regional_waf ? {
+    common_rule_set_blocked_requests = {
+      rule_metric_name = "${trimsuffix(module.opennext.cloudfront.waf.name, "-waf")}-WAF-AWSManagedRulesCommonRuleSet"
+      metric_name      = "BlockedRequests"
+    }
+    known_bad_inputs_blocked_requests = {
+      rule_metric_name = "${trimsuffix(module.opennext.cloudfront.waf.name, "-waf")}-WAF-AWSManagedRulesKnownBadInputsRuleSet"
+      metric_name      = "BlockedRequests"
+    }
+    linux_rule_set_blocked_requests = {
+      rule_metric_name = "${trimsuffix(module.opennext.cloudfront.waf.name, "-waf")}-WAF-AWSManagedRulesLinuxRuleSet"
+      metric_name      = "BlockedRequests"
+    }
+    unix_rule_set_blocked_requests = {
+      rule_metric_name = "${trimsuffix(module.opennext.cloudfront.waf.name, "-waf")}-WAF-AWSManagedRulesUnixRuleSet"
+      metric_name      = "BlockedRequests"
+    }
+    common_rule_set_counted_requests = {
+      rule_metric_name = "${trimsuffix(module.opennext.cloudfront.waf.name, "-waf")}-WAF-AWSManagedRulesCommonRuleSet"
+      metric_name      = "CountedRequests"
+    }
+  } : {}
+
+  cloudfront_waf_alarm_name_prefix = "DevPortal | Website | CloudFront | WAF |"
+}
+
+resource "aws_cloudwatch_metric_alarm" "cloudfront_waf_requests" {
+  provider = aws.us-east-1
+  for_each = local.cloudfront_waf_rule_metrics
+
+  alarm_name          = "${local.cloudfront_waf_alarm_name_prefix} ${replace(each.key, "_", " ")}"
+  alarm_description   = "Detects anomalous ${each.value.metric_name} activity for the CloudFront WAF managed rule ${each.value.rule_metric_name}."
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 5
+  datapoints_to_alarm = 3
+  threshold_metric_id = "e1"
+  treat_missing_data  = "notBreaching"
+  tags                = var.tags
+
+  metric_query {
+    id          = "m1"
+    return_data = true
+
+    metric {
+      metric_name = each.value.metric_name
+      namespace   = "AWS/WAFV2"
+      period      = 60
+      stat        = "Sum"
+
+      dimensions = {
+        Region = "Global"
+        Rule   = each.value.rule_metric_name
+        WebACL = module.opennext.cloudfront.waf.name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "e1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "${each.value.metric_name} expected range"
+    return_data = true
+  }
+}
+
+# Forward matching WAF alarm state changes from the alarm region to the
+# eu-south-1 default event bus, where they can be delivered to the shared SNS topic.
+data "aws_partition" "current" {}
+
+resource "aws_iam_role" "cloudfront_waf_eventbridge_forwarder" {
+  count = var.enable_regional_waf ? 1 : 0
+
+  name = "devportal-cloudfront-waf-eventbridge-forwarder"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "events.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+      Condition = {
+        ArnEquals = {
+          "aws:SourceArn" = "arn:${data.aws_partition.current.partition}:events:us-east-1:${data.aws_caller_identity.current.account_id}:rule/devportal-cloudfront-waf-alarm-forwarder"
+        }
+        StringEquals = {
+          "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+        }
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "cloudfront_waf_eventbridge_forwarder" {
+  count = var.enable_regional_waf ? 1 : 0
+
+  name = "devportal-cloudfront-waf-eventbridge-forwarder"
+  role = aws_iam_role.cloudfront_waf_eventbridge_forwarder[0].id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = "events:PutEvents"
+      Resource = "arn:${data.aws_partition.current.partition}:events:eu-south-1:${data.aws_caller_identity.current.account_id}:event-bus/default"
+    }]
+  })
+}
+
+resource "aws_cloudwatch_event_rule" "cloudfront_waf_alarm_forwarder" {
+  provider = aws.us-east-1
+  count    = var.enable_regional_waf ? 1 : 0
+
+  name = "devportal-cloudfront-waf-alarm-forwarder"
+  event_pattern = jsonencode({
+    source      = ["aws.cloudwatch"]
+    detail-type = ["CloudWatch Alarm State Change"]
+    detail = {
+      alarmName = [{ prefix = local.cloudfront_waf_alarm_name_prefix }]
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "cloudfront_waf_alarm_forwarder" {
+  provider = aws.us-east-1
+  count    = var.enable_regional_waf ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.cloudfront_waf_alarm_forwarder[0].name
+  target_id = "eu-south-1-default-event-bus"
+  arn       = "arn:${data.aws_partition.current.partition}:events:eu-south-1:${data.aws_caller_identity.current.account_id}:event-bus/default"
+  role_arn  = aws_iam_role.cloudfront_waf_eventbridge_forwarder[0].arn
+
+  depends_on = [aws_iam_role_policy.cloudfront_waf_eventbridge_forwarder]
+}
+
+resource "aws_cloudwatch_event_rule" "cloudfront_waf_alarm_state_changes" {
+  count = var.enable_regional_waf ? 1 : 0
+  name  = "devportal-cloudfront-waf-alarm-state-changes"
+  event_pattern = jsonencode({
+    source      = ["aws.cloudwatch"]
+    detail-type = ["CloudWatch Alarm State Change"]
+    detail = {
+      alarmName = [{ prefix = local.cloudfront_waf_alarm_name_prefix }]
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "cloudfront_waf_alarm_notifications" {
+  count     = var.enable_regional_waf ? 1 : 0
+  rule      = aws_cloudwatch_event_rule.cloudfront_waf_alarm_state_changes[0].name
+  target_id = "devportal-cloudwatch-alarms"
+  arn       = var.alerting_topic_arn
+}
