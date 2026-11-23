@@ -4,6 +4,10 @@ resource "aws_api_gateway_rest_api" "webinar_metrics" {
   provider    = aws.eu-south-1
   name        = "${var.project_name}-webinar-metrics-api"
   description = "REST API for webinar metrics"
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 resource "aws_api_gateway_resource" "metrics" {
@@ -44,6 +48,7 @@ resource "aws_api_gateway_deployment" "webinar_metrics" {
 
   triggers = {
     redeployment = sha1(jsonencode({
+      endpoint_types = aws_api_gateway_rest_api.webinar_metrics.endpoint_configuration[0].types
       resource = {
         id        = aws_api_gateway_resource.metrics.id
         parent_id = aws_api_gateway_resource.metrics.parent_id

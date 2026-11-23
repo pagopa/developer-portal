@@ -61,5 +61,5 @@ chatbot_models = {
 
 docs_redirect_is_enabled = true
 create_devops_agent      = true
-enable_alb_waf           = true
+enable_regional_waf      = true
 enable_backup            = true

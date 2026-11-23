@@ -9,9 +9,9 @@ variable "environment" {
   description = "Environment"
 }
 
-variable "enable_alb_waf" {
+variable "enable_regional_waf" {
   type        = bool
-  description = "Enable the public ALB WAF in production."
+  description = "Enable the shared Regional WAF for public endpoints."
   default     = false
 }
 

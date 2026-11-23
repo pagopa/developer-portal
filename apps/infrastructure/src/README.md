@@ -1,3 +1,5 @@
+The root `enable_regional_waf` setting is also passed to the website module to enable WAF integration in the OpenNext deployment.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -18,7 +20,6 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_active_campaign"></a> [active\_campaign](#module\_active\_campaign) | ./modules/active_campaign | n/a |
-| <a name="module_alb_waf"></a> [alb\_waf](#module\_alb\_waf) | ./modules/waf | n/a |
 | <a name="module_auth"></a> [auth](#module\_auth) | ./modules/auth | n/a |
 | <a name="module_backup_eu_central_1"></a> [backup\_eu\_central\_1](#module\_backup\_eu\_central\_1) | ./modules/backup | n/a |
 | <a name="module_backup_eu_south_1"></a> [backup\_eu\_south\_1](#module\_backup\_eu\_south\_1) | ./modules/backup | n/a |
@@ -30,6 +31,7 @@
 | <a name="module_docs_redirect"></a> [docs\_redirect](#module\_docs\_redirect) | ./modules/docs_redirect | n/a |
 | <a name="module_dos68k_chatbotapi"></a> [dos68k\_chatbotapi](#module\_dos68k\_chatbotapi) | ./modules/dos68k_chatbotapi | n/a |
 | <a name="module_identity"></a> [identity](#module\_identity) | ./identity | n/a |
+| <a name="module_regional_waf"></a> [regional\_waf](#module\_regional\_waf) | ./modules/waf | n/a |
 | <a name="module_video_streaming"></a> [video\_streaming](#module\_video\_streaming) | ./modules/video_streaming | n/a |
 | <a name="module_website"></a> [website](#module\_website) | ./modules/website | n/a |
 
@@ -61,8 +63,8 @@
 | <a name="input_docs_redirect_is_enabled"></a> [docs\_redirect\_is\_enabled](#input\_docs\_redirect\_is\_enabled) | Defines if Docs redirect should be enabled | `bool` | `false` | no |
 | <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the dos68k Chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "2.1.0",<br/>  "memory": 2048<br/>}</pre> | no |
 | <a name="input_ecs_chatbotapi_enable_scheduled_scaling"></a> [ecs\_chatbotapi\_enable\_scheduled\_scaling](#input\_ecs\_chatbotapi\_enable\_scheduled\_scaling) | Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET) | `bool` | `false` | no |
-| <a name="input_enable_alb_waf"></a> [enable\_alb\_waf](#input\_enable\_alb\_waf) | Enable the public ALB WAF in production. | `bool` | `false` | no |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Create AWS Backup resources in eu-south-1 and eu-central-1. | `bool` | `false` | no |
+| <a name="input_enable_regional_waf"></a> [enable\_regional\_waf](#input\_enable\_regional\_waf) | Enable the shared Regional WAF for public endpoints. | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_cms_repository"></a> [github\_cms\_repository](#input\_github\_cms\_repository) | The repository where the CMS workflows will run | `string` | `"pagopa/developer-portal-cms"` | no |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
