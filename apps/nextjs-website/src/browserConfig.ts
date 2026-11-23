@@ -139,6 +139,8 @@ export const browserSettings = (env: typeof publicEnv) => {
   const loggedInCookieName = 'isLoggedIn';
   const docsAssetsPath = '/gitbook/docs';
   const qualtricsFeatureFlag = process.env.NEXT_PUBLIC_FF_QUALTRICS;
+  const hideGuideFeedbackLink =
+    process.env.NEXT_PUBLIC_FF_HIDE_GUIDE_FEEDBACK_LINK === 'true';
   const mixpanelToken = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
   const mixpanelApiHost = process.env.NEXT_PUBLIC_MIXPANEL_API_HOST;
   return {
@@ -185,6 +187,7 @@ export const browserSettings = (env: typeof publicEnv) => {
     mixpanelToken,
     mixpanelApiHost,
     isWebinarsEnabled,
+    hideGuideFeedbackLink,
   };
 };
 
