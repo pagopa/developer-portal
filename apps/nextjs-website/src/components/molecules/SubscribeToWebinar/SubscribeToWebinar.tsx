@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, Suspense } from 'react';
+import React, { useCallback, useEffect, useRef, Suspense } from 'react';
 import { useState } from 'react';
 import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
 import { useTranslations } from 'next-intl';
@@ -33,6 +33,7 @@ const SubscribeToWebinarContent = ({
 }: SubscribeButtonProps) => {
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
+  const autoSubscribeStarted = useRef(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -124,10 +125,18 @@ const SubscribeToWebinarContent = ({
   };
 
   useEffect(() => {
-    if (username && isSubscribeAction) {
-      onSubscribe();
-      router.replace(pathname);
+    if (!isSubscribeAction) {
+      // eslint-disable-next-line functional/immutable-data
+      autoSubscribeStarted.current = false;
+      return;
     }
+    if (!username || autoSubscribeStarted.current) {
+      return;
+    }
+    // eslint-disable-next-line functional/immutable-data
+    autoSubscribeStarted.current = true;
+    onSubscribe();
+    router.replace(pathname);
   }, [onSubscribe, pathname, router, isSubscribeAction, username]);
 
   const subscribeLabelMap = {
