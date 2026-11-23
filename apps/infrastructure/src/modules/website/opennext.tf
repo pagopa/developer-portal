@@ -44,8 +44,12 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 
 module "opennext" {
-  source  = "pagopa-dx/aws-open-next/aws"
-  version = "~> 2.1"
+  source = "git::https://github.com/pagopa/dx.git//infra/modules/aws_open_next?ref=f1769290dfb4d8d3b329f2d767d1ac7616140d71"
+
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
 
   custom_domain = {
     domain_name         = var.dns_domain_name
