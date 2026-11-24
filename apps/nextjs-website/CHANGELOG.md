@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.6.5
+
+### Patch Changes
+
+- 9f04609: Add hreflang attributes to pages
+
 ## 17.6.4
 
 ### Patch Changes
