@@ -9,6 +9,7 @@ export const strapiSolutions = {
   data: [
     {
       id: 1,
+      documentId: 'solution-title-1',
       slug: 'solution-title',
       icon: mediaJpeg(),
       kickerTitle: 'Solution Kicker',
@@ -51,6 +52,7 @@ export const strapiSolutions = {
           id: 1,
           title: 'Webinar Title',
           slug: 'webinar-title',
+          documentId: 'webinar-title-1',
           description: 'Webinar Description',
           playerSrc: 'https://example.com/player',
           startDatetime: fixedDateIsoString,
@@ -89,6 +91,7 @@ export const strapiSolutions = {
         case_histories: [
           {
             id: 1,
+            documentId: 'case-history-1',
             slug: 'case-history-1',
             title: 'Case History 1',
             description: 'Case history description',
@@ -115,6 +118,7 @@ export const strapiSolutions = {
 } satisfies StrapiSolutions;
 
 export const expectedSolutionTemplateProps: SolutionTemplateProps = {
+  documentId: 'solution-title-1',
   slug: 'solution-title',
   icon: {
     url: 'https://example.com/example.jpg',
@@ -173,6 +177,7 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
     {
       title: 'Webinar Title',
       slug: 'webinar-title',
+      documentId: 'webinar-title-1',
       description: 'Webinar Description',
       playerSrc: 'https://example.com/player',
       startDateTime: fixedDateIsoString,

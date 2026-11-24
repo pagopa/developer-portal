@@ -21,6 +21,7 @@ export const strapiGuideListPagesData = {
     {
       id: 48,
       title: 'Guide e manuali',
+      documentId: 'guide-e-manuali-1',
       description:
         'Per una conoscenza approfondita o dubbi puntuali, consulta i manuali e le guide disponibili per la piattaforma pagoPA.\n\n',
       product: {
@@ -334,6 +335,7 @@ export const strapiGuideListPagesData = {
 export const guideListPagesProps = [
   {
     path: '/it/pago-pa/guides',
+    documentId: 'guide-e-manuali-1',
     abstract: {
       title: 'Guide e manuali',
       description:

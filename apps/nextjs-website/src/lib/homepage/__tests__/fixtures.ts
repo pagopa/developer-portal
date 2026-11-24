@@ -100,6 +100,7 @@ export const strapiHomepage: StrapiHomepage = {
     webinars: [
       {
         id: 1,
+        documentId: 'webinar-title-1',
         title: 'Webinar Title',
         slug: 'webinar-title',
         description: 'Webinar Description',
@@ -260,6 +261,7 @@ export const expectedHomepageProps: HomepageProps = {
   },
   webinars: [
     {
+      documentId: 'webinar-title-1',
       title: 'Webinar Title',
       slug: 'webinar-title',
       description: 'Webinar Description',

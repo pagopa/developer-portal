@@ -14,6 +14,7 @@ export const strapiCaseHistories: Paginated<CaseHistory> = {
       publishedAt: '2024-01-01T00:00:00.000Z',
       updatedAt: '2024-01-02T00:00:00.000Z',
       image: mediaJpeg(),
+      documentId: 'case-history-document-1',
       products: [
         {
           ...product,
@@ -49,6 +50,7 @@ export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
   title: 'Case History Title',
   description: 'Case history description',
   updatedAt: '2024-01-02T00:00:00.000Z',
+  documentId: 'case-history-document-1',
   image: mediaJpeg(),
   products: [
     {

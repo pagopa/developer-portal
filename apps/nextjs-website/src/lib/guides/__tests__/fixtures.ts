@@ -18,6 +18,7 @@ export const strapiGuideData = {
   data: [
     {
       title: 'SACI',
+      documentId: 'saci-1',
       slug: 'saci',
       image: {
         name: 'pagoPA Guide Manual.png',
@@ -201,6 +202,7 @@ export const strapiGuideData = {
 
 export const guideProps = [
   {
+    documentId: 'saci-1',
     product: product,
     guide: {
       name: 'SACI',

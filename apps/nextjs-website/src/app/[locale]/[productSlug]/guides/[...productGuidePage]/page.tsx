@@ -22,6 +22,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { getGuideSeoUrls } from '@/helpers/guideSeo.helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,6 +58,7 @@ export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { locale, productGuidePage, productSlug } = await props.params;
+
   const guidePageProps = await getGuidePage(
     productGuidePage ?? [''],
     locale,
@@ -67,28 +69,41 @@ export async function generateMetadata(props: {
     notFound();
   }
 
-  if (guidePageProps?.seo) {
-    return makeMetadataFromStrapi(guidePageProps?.seo);
-  }
-  return {
-    ...(guidePageProps?.version?.main ? {} : { robots: 'noindex, follow' }),
-    ...makeMetadata({
-      title: [
-        guidePageProps ? guidePageProps.page.title : '',
-        guidePageProps
-          ? [
-              guidePageProps.guide.name,
-              !guidePageProps.version.main && guidePageProps.version.name,
-            ]
+  const { seo, page, source, version } = guidePageProps;
+
+  const metadata: Metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : {
+        ...(version.main ? {} : { robots: 'noindex, follow' }),
+        ...makeMetadata({
+          title: [
+            page.title,
+            [guidePageProps.guide.name, !version.main && version.name]
               .filter(Boolean)
-              .join(' ')
-          : [],
-        guidePageProps ? guidePageProps.product.name : '',
-      ]
-        .filter(Boolean)
-        .join(' | '),
-      url: guidePageProps?.page.path,
-    }),
+              .join(' '),
+            guidePageProps.product.name,
+          ]
+            .filter(Boolean)
+            .join(' | '),
+          url: page.path,
+        }),
+      };
+
+  const { canonical, languages } = await getGuideSeoUrls({
+    currentLocale: locale,
+    guide: guidePageProps,
+    pagePath: page.path,
+    pathPrefix: source.pathPrefix,
+    version,
+  });
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      ...(canonical && { canonical }),
+      languages,
+    },
   };
 }
 

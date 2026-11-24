@@ -1,6 +1,7 @@
 import { getUseCase } from '@/lib/api';
 import { Metadata } from 'next';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -11,6 +12,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import UseCaseTemplate from '@/components/templates/UseCaseTemplate/UseCaseTemplate';
 import { notFound } from 'next/navigation';
+import { UseCasesRepository } from '@/lib/useCases';
 
 type Params = {
   locale: string;
@@ -31,14 +33,25 @@ export async function generateMetadata(props: {
 
   const { title, path, seo } = useCaseProps;
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
-  }
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [title, useCaseProps.product?.name].filter(Boolean).join(' | '),
+        url: path,
+      });
 
-  return makeMetadata({
-    title: [title, useCaseProps.product?.name].filter(Boolean).join(' | '),
-    url: path,
-  });
+  const localizedPaths = await UseCasesRepository.getLocalizedPaths(
+    locale,
+    useCaseProps
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 }
 
 const Page = async (props: { params: Promise<Params> }) => {

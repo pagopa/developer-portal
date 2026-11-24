@@ -9,6 +9,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
     {
       id: 1,
       title: 'Tutorials',
+      documentId: 'tutorials-1',
       description: 'Explore our tutorials',
       bannerLinks: generateBannerLinks(1),
       product: {
