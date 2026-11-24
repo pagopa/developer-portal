@@ -36,6 +36,7 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
       <MUICard variant='outlined' sx={{ height: '100%' }}>
         {href ? (
           <CardActionArea
+            data-navigation-href={href}
             sx={{
               height: '100%',
               '.MuiCardActionArea-focusHighlight': {
