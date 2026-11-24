@@ -86,7 +86,7 @@ export const GuidesRepository = {
 
     const translations = await Promise.all(
       otherLocales.map(async ({ langCode }) => {
-        const guides = await GuidesRepository.getAll(langCode);
+        const guides = await GuidesRepository.getAll(langCode).catch(() => []);
 
         const translatedGuide = guides.find(
           ({ documentId }) => documentId === guide.documentId

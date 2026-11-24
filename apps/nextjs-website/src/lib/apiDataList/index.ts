@@ -71,7 +71,9 @@ export const ApiDataListRepository = {
       SUPPORTED_LOCALES.filter(
         ({ langCode }) => langCode !== currentLocale
       ).map(async ({ langCode }) => {
-        const pages = await ApiDataListRepository.getAll(langCode);
+        const pages = await ApiDataListRepository.getAll(langCode).catch(
+          () => []
+        );
 
         const translatedPage = pages.find(
           ({ documentId }) => documentId === page.documentId

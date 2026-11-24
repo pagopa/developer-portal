@@ -18,7 +18,9 @@ export async function generateMetadata(props: {
   const localizedPaths = (
     await Promise.all(
       SUPPORTED_LOCALES.map(async ({ langCode }) => {
-        const webinars = await getVisibleInListWebinars(langCode);
+        const webinars = await getVisibleInListWebinars(langCode).catch(
+          () => []
+        );
 
         return webinars.length > 0
           ? {

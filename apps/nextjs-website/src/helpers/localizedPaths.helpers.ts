@@ -42,7 +42,9 @@ export const getLocalizedPaths = async <T extends Localizable>({
           return null;
         }
 
-        const path = await getPath(langCode, translation);
+        const path = await Promise.resolve()
+          .then(() => getPath(langCode, translation))
+          .catch(() => undefined);
         return path ? { langCode, path } : null;
       }
     )
