@@ -146,7 +146,10 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         transition: 'top 0.5s linear',
       }}
     >
-      <GuideFeedbackLink label={t('productGuidePage.leaveFeedback')} href='#' />
+      <GuideFeedbackLink
+        label={t('productGuidePage.leaveFeedback')}
+        href='https://pagopa.qualtrics.com/jfe/form/SV_8FWDovVSJkbNypE'
+      />
     </Box>
   ) : null;
 
