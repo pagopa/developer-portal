@@ -8,6 +8,7 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
     data: [
       {
         id: 1,
+        documentId: 'minimal-quick-start-1',
         title: 'Minimal Quick Start',
         description: '',
         updatedAt: '2024-01-01T00:00:00.000Z',

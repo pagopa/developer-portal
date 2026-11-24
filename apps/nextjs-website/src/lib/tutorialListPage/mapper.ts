@@ -72,6 +72,7 @@ export function mapTutorialListPageProps(
           : '';
 
       return {
+        documentId: attributes.documentId,
         updatedAt,
         name: attributes.title,
         path: `/${locale}/${attributes.product.slug}/tutorials`,

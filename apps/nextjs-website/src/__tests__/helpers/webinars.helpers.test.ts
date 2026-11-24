@@ -7,6 +7,7 @@ import { mediaRasterJson } from '@/lib/media/__tests__/fixtures';
 
 const testWebinar: Webinar = {
   title: 'Test Webinar',
+  documentId: 'test-webinar-1',
   updatedAt: '2024-03-14T08:30:00.000Z',
   description: 'Questo è un webinar di test',
   playerSrc: 'https://vimeo.com/event/4135276/embed',

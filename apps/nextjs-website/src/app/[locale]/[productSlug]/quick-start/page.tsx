@@ -10,6 +10,7 @@ import type { Step } from '@/lib/quickStartGuides/types';
 import type { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -20,6 +21,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { notFound } from 'next/navigation';
+import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
 
 export type QuickStartGuidePageProps = {
   readonly product: Product;
@@ -31,18 +33,16 @@ export type QuickStartGuidePageProps = {
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
   readonly seo?: SEO;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
   props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const params = await props.params;
+  const { locale, productSlug } = await props.params;
   const resolvedParent = await parent;
-  const quickStartGuide = await getQuickStartGuide(
-    params.locale,
-    params.productSlug
-  );
+  const quickStartGuide = await getQuickStartGuide(locale, productSlug);
 
   if (!quickStartGuide) {
     notFound();
@@ -50,17 +50,28 @@ export async function generateMetadata(
 
   const { abstract, path, product, seo } = quickStartGuide;
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
-  }
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        parent: resolvedParent,
+        title: [abstract?.title, product.name].filter(Boolean).join(' | '),
+        description: abstract?.description,
+        url: path,
+        image: product.logo?.url,
+      });
 
-  return makeMetadata({
-    parent: resolvedParent,
-    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
-    description: abstract?.description,
-    url: path,
-    image: product.logo?.url,
-  });
+  const localizedPaths = await QuickStartGuidesRepository.getLocalizedPaths(
+    locale,
+    quickStartGuide
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 }
 
 const QuickStartGuidesPage = async (props: ProductParams) => {

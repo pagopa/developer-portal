@@ -3,6 +3,8 @@ import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 import { fetchUseCaseListPages } from './fetcher';
 import { mapUseCaseListPageProps } from './mapper';
 
+import { getLocalizedPaths as resolveLocalizedPaths } from '@/helpers/localizedPaths.helpers';
+
 export const UseCaseListPageRepository = {
   /**
    * Returns all Use Case List pages
@@ -31,4 +33,20 @@ export const UseCaseListPageRepository = {
       (useCaseListPage) => useCaseListPage.product.slug === productSlug
     );
   },
+  /**
+   * Returns localized paths for a Use Case List page.
+   * @param currentLocale The locale of the current Use Case List page.
+   * @param useCaseListPage The current Use Case List page.
+   * @returns Localized paths for the available translations, or an empty array if the document ID is missing.
+   */
+  getLocalizedPaths: async (
+    currentLocale: string,
+    useCaseListPage: UseCasesPageProps
+  ) =>
+    resolveLocalizedPaths({
+      currentLocale,
+      currentItem: useCaseListPage,
+      getAll: UseCaseListPageRepository.getAll,
+      getPath: (_locale, item) => item.path,
+    }),
 };

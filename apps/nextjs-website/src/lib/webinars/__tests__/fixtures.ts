@@ -39,6 +39,7 @@ export const strapiWebinars: StrapiWebinars = {
   data: [
     {
       id: 1,
+      documentId: 'webinar-title-1',
       title: 'Webinar Title',
       description: 'Webinar Description',
       slug: 'webinar-title',
@@ -99,6 +100,7 @@ export const strapiWebinarsWithMissingData: StrapiWebinars = {
     ...strapiWebinars.data,
     {
       id: 2,
+      documentId: 'minimal-webinar-title-1',
       title: 'Minimal Webinar',
       description: 'Minimal Description',
       slug: 'minimal-webinar',
@@ -137,6 +139,7 @@ export const strapiWebinarsWithMissingData: StrapiWebinars = {
 };
 
 export const webinarProps = {
+  documentId: 'webinar-title-1',
   title: 'Webinar Title',
   description: 'Webinar Description',
   slug: 'webinar-title',

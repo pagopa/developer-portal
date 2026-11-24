@@ -6,6 +6,7 @@ export function minimalUseCaseListPages(): StrapiUseCaseListPages {
     data: [
       {
         id: 1,
+        documentId: 'minimal-use-cases-1',
         title: 'Minimal Use Cases',
         description: '',
         bannerLinks: [],
@@ -35,6 +36,7 @@ export function useCaseListPagesWithItemMissingBannerLinks(): StrapiUseCaseListP
     data: [
       {
         id: 1,
+        documentId: 'no-banner-tutorials-1',
         title: 'No Banner Tutorials',
         description: 'No banner links',
         bannerLinks: [],

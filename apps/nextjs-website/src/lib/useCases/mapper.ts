@@ -28,6 +28,7 @@ export function mapUseCasesProps(
 
       try {
         return {
+          documentId: attributes.documentId,
           coverImage: attributes.coverImage
             ? {
                 url: attributes.coverImage.url,
