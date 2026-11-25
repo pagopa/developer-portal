@@ -35,6 +35,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
   hasHeader: boolean;
   hasProductHeader?: boolean;
   showGuideFeedback?: boolean;
+  productName?: string;
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -128,8 +129,11 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       containerRef={menuContainerRef}
     />
   );
-
-  // The survey destination will be connected in DEV-4633.
+  const surveyParams = new URLSearchParams({
+    url_pagina: new URL(currentPath, browserEnv.config.baseUrl).toString(),
+    nome_manuale: menuProps.name,
+    nome_prodotto: menuProps.productName ?? '',
+  });
   const feedbackLink = menuProps.showGuideFeedback ? (
     <Box
       sx={{
@@ -148,7 +152,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     >
       <GuideFeedbackLink
         label={t('productGuidePage.leaveFeedback')}
-        href='https://pagopa.qualtrics.com/jfe/form/SV_8FWDovVSJkbNypE'
+        href={`https://pagopa.qualtrics.com/jfe/form/SV_8FWDovVSJkbNypE?${surveyParams.toString()}`}
       />
     </Box>
   ) : null;
