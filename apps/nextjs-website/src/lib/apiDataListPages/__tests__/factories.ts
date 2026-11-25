@@ -17,6 +17,7 @@ export function minimalApiDataListPages(): ApiDataListPages {
       api_data: [
         {
           id: 1,
+          documentId: 'minimal-main-api-1',
           title: 'Minimal API',
           description: undefined,
           icon: undefined,
@@ -54,6 +55,7 @@ export function apiDataListPageWithMixedApiTypes(): ApiDataListPages {
         // Valid REST API
         {
           id: 1,
+          documentId: 'rest-api-1',
           bannerLinks: [],
           title: 'REST API',
           description: 'A REST API',
@@ -69,6 +71,7 @@ export function apiDataListPageWithMixedApiTypes(): ApiDataListPages {
         {
           id: 2,
           bannerLinks: [],
+          documentId: 'soap-api-1',
           title: 'SOAP API',
           description: 'A SOAP API',
           icon: undefined,
@@ -84,6 +87,7 @@ export function apiDataListPageWithMixedApiTypes(): ApiDataListPages {
         {
           id: 3,
           bannerLinks: [],
+          documentId: 'invalid-api-1',
           title: 'Invalid API',
           description: 'An invalid API',
           icon: undefined,
@@ -115,6 +119,7 @@ export function apiDataListPageWithInvalidApiData(): ApiDataListPages {
       api_data: [
         {
           id: 1,
+          documentId: 'api-without-title-1',
           bannerLinks: [],
           title: undefined as unknown as string,
           description: 'API without title',
@@ -130,6 +135,7 @@ export function apiDataListPageWithInvalidApiData(): ApiDataListPages {
         {
           id: 2,
           bannerLinks: [],
+          documentId: 'api-without-details-1',
           title: 'API without details',
           description: 'This API has no REST or SOAP details',
           icon: undefined,
@@ -155,6 +161,7 @@ export function multipleApiDataListPages(): ApiDataListPages {
         {
           id: 10,
           bannerLinks: [],
+          documentId: 'another-rest-api-1',
           title: 'Another REST API',
           description: 'Another REST API description',
           icon: undefined,
@@ -183,6 +190,7 @@ export function apiDataListPageWithBothRestAndSoap(): ApiDataListPages {
         {
           id: 1,
           bannerLinks: [],
+          documentId: 'api-with-both-rest-and-soap-1',
           title: 'API with both REST and SOAP',
           description: 'API with both details',
           icon: undefined,

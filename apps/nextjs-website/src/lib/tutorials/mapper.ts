@@ -28,6 +28,7 @@ export function mapTutorialsProps(
 
       try {
         return {
+          documentId: attributes.documentId,
           image: attributes.image
             ? {
                 url: attributes.image.url,

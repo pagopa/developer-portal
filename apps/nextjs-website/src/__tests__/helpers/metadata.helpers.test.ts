@@ -1,5 +1,5 @@
 import { ResolvedMetadata } from 'next';
-import { makeMetadata } from '@/helpers/metadata.helpers';
+import { makeHreflangUrls, makeMetadata } from '@/helpers/metadata.helpers';
 import { browserEnv } from '@/browserConfig';
 
 const { baseUrl, websiteName } = browserEnv.config;
@@ -188,5 +188,34 @@ it('should return the correct metadata when parent is missing', () => {
       site: '@pagopa',
       creator: '@pagopa',
     },
+  });
+});
+
+describe('makeHreflangUrls', () => {
+  it('should generate relative URLs for localized paths', () => {
+    const result = makeHreflangUrls([
+      { langCode: 'it', path: '/it/solutions/pagamenti' },
+      { langCode: 'en', path: '/en/solutions/payments' },
+    ]);
+
+    expect(result).toEqual({
+      it: '/it/solutions/pagamenti',
+      en: '/en/solutions/payments',
+      'x-default': '/it/solutions/pagamenti',
+    });
+  });
+
+  it('should return empty object when there is only one path', () => {
+    const result = makeHreflangUrls([
+      { langCode: 'it', path: '/it/solutions/pagamenti' },
+    ]);
+
+    expect(result).toEqual({});
+  });
+
+  it('should return an empty object when no paths are available', () => {
+    const result = makeHreflangUrls([]);
+
+    expect(result).toEqual({});
   });
 });

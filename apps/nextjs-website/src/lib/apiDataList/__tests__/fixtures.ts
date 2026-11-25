@@ -7,6 +7,7 @@ export const strapiApiDataList: ApiDataList = {
   data: [
     {
       id: 3,
+      documentId: 'send-main-api-1',
       seo: {
         metaTitle: 'SEND Main API',
         metaDescription: 'SEND Main API Documentation',
@@ -46,6 +47,7 @@ export const strapiApiDataList: ApiDataList = {
     },
     {
       id: 7,
+      documentId: 'documentazione-soap-1',
       seo: undefined,
       title: 'Documentazione SOAP',
       description:
@@ -84,6 +86,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
       metaTitle: 'SEND Main API',
       metaDescription: 'SEND Main API Documentation',
     },
+    documentId: 'send-main-api-1',
     title: 'SEND Main',
     apiSoapUrl: undefined,
     apiType: 'rest',
@@ -108,6 +111,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
   },
   {
     seo: undefined,
+    documentId: 'documentazione-soap-1',
     title: 'Documentazione SOAP',
     apiSoapUrl: 'https://github.com/pagopa/pagopa-api/',
     apiType: 'soap',

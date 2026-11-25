@@ -24,6 +24,7 @@ export function mapOverviewsProps(
 
       try {
         return {
+          documentId: attributes.documentId,
           updatedAt: attributes.updatedAt,
           path: `/${locale}/${productData.slug}/overview`,
           product: makeBaseProductWithoutLogoProps(locale, productData),

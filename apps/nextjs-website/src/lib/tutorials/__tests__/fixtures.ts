@@ -7,6 +7,7 @@ export const strapiTutorials: StrapiTutorials = {
   data: [
     {
       description: '',
+      documentId: 'tutorial-title-1',
       icon: mediaJpeg(),
       tags: [],
       title: 'Tutorial Title',

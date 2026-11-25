@@ -6,6 +6,7 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
     data: [
       {
         id: 1,
+        documentId: 'minimal-tutorials-1',
         title: 'Minimal Tutorials',
         description: '',
         bannerLinks: [],
@@ -34,6 +35,7 @@ export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialLis
     data: [
       {
         id: 1,
+        documentId: 'no-banner-tutorials-1',
         title: 'No Banner Tutorials',
         description: 'No banner links',
         bannerLinks: [],

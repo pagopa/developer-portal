@@ -7,6 +7,7 @@ export const strapiUseCases: StrapiUseCases = {
   data: [
     {
       title: 'UseCase Title',
+      documentId: 'use-case-1',
       subtitle: 'UseCase Subtitle',
       slug: 'use-case-title',
       publishedAt: '2024-01-01T00:00:00.000Z',

@@ -5,6 +5,7 @@ import ProductLayout, {
 import { Product } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
+  makeHreflangUrls,
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
@@ -40,6 +41,7 @@ export type ApiDataPageProps = {
   readonly apiSoapUrl?: string;
   readonly apiSoapUrlList: readonly string[];
   readonly seo?: SEO;
+  readonly documentId: string;
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
@@ -48,28 +50,41 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
+
   const apiDataProps = await ApiDataListRepository.getByProductAndSlug(
     params.locale,
     params.productSlug,
     params.apiDataSlug
   );
+
   if (!apiDataProps) {
     console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
     notFound();
   }
 
-  if (apiDataProps?.seo) {
-    return makeMetadataFromStrapi(apiDataProps.seo);
-  }
+  const { seo, product, specUrlsName, path } = apiDataProps;
 
-  return makeMetadata({
-    title: [apiDataProps?.specUrlsName, apiDataProps?.product?.name]
-      .filter(Boolean)
-      .join(' | '),
-    description: apiDataProps?.product?.description,
-    url: apiDataProps?.path,
-    parent: resolvedParent,
-  });
+  const metadata = seo
+    ? makeMetadataFromStrapi(seo)
+    : makeMetadata({
+        title: [specUrlsName, product?.name].filter(Boolean).join(' | '),
+        description: product?.description,
+        url: path,
+        parent: resolvedParent,
+      });
+
+  const localizedPaths = await ApiDataListRepository.getLocalizedPaths(
+    params.locale,
+    apiDataProps
+  );
+
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      languages: makeHreflangUrls(localizedPaths),
+    },
+  };
 };
 
 const ApiDataPage = async (props: ApiDataParams) => {
