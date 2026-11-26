@@ -55,6 +55,7 @@ const GitBookTemplate = ({
   showGuideFeedback = false,
   versionName,
   guideTranslationDisclaimer,
+  product,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const locale = useParams<{ locale: string }>().locale;
@@ -205,6 +206,7 @@ const GitBookTemplate = ({
           assetsPrefix={bodyConfig.assetsPrefix}
           linkPrefix={pathPrefix}
           name={menuName}
+          productName={product?.name}
           versionName={versionName}
           versions={versions && [...versions]}
           distanceFromTop={menuDistanceFromTop}
