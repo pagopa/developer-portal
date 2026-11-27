@@ -26,6 +26,7 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 import { browserEnv } from '@/browserConfig';
+import * as E from 'fp-ts/lib/Either';
 import GuideFeedbackLink from '../GuideFeedbackLink/GuideFeedbackLink';
 
 const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
@@ -36,6 +37,33 @@ type GuideMenuProps = GuideMenuItemsProps & {
   hasProductHeader?: boolean;
   showGuideFeedback?: boolean;
   productName?: string;
+  productGuideSurveyUrl?: string;
+};
+
+const makeSurveyHref = (
+  {
+    showGuideFeedback,
+    productGuideSurveyUrl,
+    name,
+    productName,
+  }: GuideMenuProps,
+  currentPath: string
+): string | undefined => {
+  if (!showGuideFeedback || !productGuideSurveyUrl) return undefined;
+
+  const parsedUrl = E.tryCatch(() => new URL(productGuideSurveyUrl), E.toError);
+  if (E.isLeft(parsedUrl) || parsedUrl.right.protocol !== 'https:') {
+    return undefined;
+  }
+
+  const surveyUrl = parsedUrl.right;
+  surveyUrl.searchParams.set(
+    'url_pagina',
+    new URL(currentPath, browserEnv.config.baseUrl).toString()
+  );
+  surveyUrl.searchParams.set('nome_manuale', name);
+  surveyUrl.searchParams.set('nome_prodotto', productName ?? '');
+  return surveyUrl.toString();
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -119,7 +147,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     return () => clearTimeout(timer);
   }, [currentPath, scrollToActiveItem]);
 
-  if (!menuProps.menu && !menuProps.showGuideFeedback) return null;
+  const surveyHref = makeSurveyHref(menuProps, currentPath);
+  if (!menuProps.menu && !surveyHref) return null;
 
   const items = (
     <GuideMenuItems
@@ -129,12 +158,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       containerRef={menuContainerRef}
     />
   );
-  const surveyParams = new URLSearchParams({
-    url_pagina: new URL(currentPath, browserEnv.config.baseUrl).toString(),
-    nome_manuale: menuProps.name,
-    nome_prodotto: menuProps.productName ?? '',
-  });
-  const feedbackLink = menuProps.showGuideFeedback ? (
+  const feedbackLink = surveyHref ? (
     <Box
       sx={{
         position: {
@@ -152,7 +176,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     >
       <GuideFeedbackLink
         label={t('productGuidePage.leaveFeedback')}
-        href={`https://pagopa.qualtrics.com/jfe/form/SV_8FWDovVSJkbNypE?${surveyParams.toString()}`}
+        href={surveyHref}
       />
     </Box>
   ) : null;
