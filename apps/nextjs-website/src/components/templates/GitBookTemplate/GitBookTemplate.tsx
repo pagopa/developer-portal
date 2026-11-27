@@ -266,6 +266,7 @@ const GitBookTemplate = ({
                 inPageMenu={content.body}
                 title={t('productGuidePage.onThisPage')}
                 hasProductHeader={hasProductHeader}
+                showGuideFeedback={showGuideFeedback}
               />
             </Box>
           </Box>

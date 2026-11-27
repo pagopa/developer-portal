@@ -40,7 +40,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
   productGuideSurveyUrl?: string;
 };
 
-const makeSurveyHref = (
+const makeProductGuideSurveyUrl = (
   {
     showGuideFeedback,
     productGuideSurveyUrl,
@@ -147,7 +147,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     return () => clearTimeout(timer);
   }, [currentPath, scrollToActiveItem]);
 
-  const surveyHref = makeSurveyHref(menuProps, currentPath);
+  const surveyHref = makeProductGuideSurveyUrl(menuProps, currentPath);
   if (!menuProps.menu && !surveyHref) return null;
 
   const items = (
