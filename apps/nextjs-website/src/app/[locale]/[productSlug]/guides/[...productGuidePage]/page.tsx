@@ -2,7 +2,12 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/products/types';
-import { getCustomMessagesMapProps, getGuidePage } from '@/lib/api';
+import {
+  getCustomMessagesMapProps,
+  getGuidePage,
+  getProductGuideSurveyUrl,
+  getUrlReplaceMap,
+} from '@/lib/api';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
@@ -12,7 +17,6 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getUrlReplaceMap } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -112,7 +116,12 @@ export async function generateMetadata(props: {
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
   const { locale, productSlug, productGuidePage } = await params;
-  const [guidePageProps, urlReplaceMap, customMessagesMap] = await Promise.all([
+  const [
+    guidePageProps,
+    urlReplaceMap,
+    customMessagesMap,
+    productGuideSurveyUrl,
+  ] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
     getUrlReplaceMap(locale),
     getCustomMessagesMapProps(locale).catch((error: Error) => {
@@ -120,6 +129,12 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         `Failed to fetch custom messages:\n${error.message}\n${error.stack}`
       );
       return new Map(); // Fallback to empty map if fetching custom messages fails
+    }),
+    getProductGuideSurveyUrl(locale).catch((error: Error) => {
+      if (!error.message.startsWith('404 - ')) {
+        console.warn('Failed to fetch the product guide survey URL', error);
+      }
+      return undefined;
     }),
   ]);
 
@@ -202,10 +217,13 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     >
       <GitBookTemplate
         menuName={productGuidePageProps.guide.name}
+        productGuideSurveyUrl={productGuideSurveyUrl}
         initialBreadcrumbs={initialBreadcrumbs}
         versionName={productGuidePageProps.version.name}
         {...productGuidePageProps}
-        showGuideFeedback={!hideGuideFeedbackLink}
+        showGuideFeedback={
+          !hideGuideFeedbackLink && Boolean(productGuideSurveyUrl)
+        }
       />
     </ProductLayout>
   );

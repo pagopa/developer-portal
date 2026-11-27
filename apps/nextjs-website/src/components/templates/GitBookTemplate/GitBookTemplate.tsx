@@ -36,6 +36,7 @@ export type GitBookTemplateProps = {
   path: string;
   pathPrefix: string;
   versionName?: string;
+  productGuideSurveyUrl?: string;
 } & GitBookContentData;
 
 const GitBookTemplate = ({
@@ -53,6 +54,7 @@ const GitBookTemplate = ({
   hasInPageMenu = true,
   hasProductHeader = true,
   showGuideFeedback = false,
+  productGuideSurveyUrl,
   versionName,
   guideTranslationDisclaimer,
   product,
@@ -213,6 +215,7 @@ const GitBookTemplate = ({
           onGuideNavigate={updateContent}
           hasProductHeader={hasProductHeader}
           showGuideFeedback={showGuideFeedback}
+          productGuideSurveyUrl={productGuideSurveyUrl}
         />
         <Stack
           sx={{
@@ -263,6 +266,7 @@ const GitBookTemplate = ({
                 inPageMenu={content.body}
                 title={t('productGuidePage.onThisPage')}
                 hasProductHeader={hasProductHeader}
+                showGuideFeedback={showGuideFeedback}
               />
             </Box>
           </Box>
