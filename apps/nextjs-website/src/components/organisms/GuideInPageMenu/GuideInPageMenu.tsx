@@ -19,6 +19,7 @@ type GuideInPageMenuProps = {
   inPageMenu: string;
   title: string;
   hasProductHeader?: boolean;
+  showGuideFeedback?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -31,6 +32,7 @@ const GuideInPageMenu = ({
   pagePath,
   title,
   hasProductHeader = true,
+  showGuideFeedback = false,
 }: GuideInPageMenuProps) => {
   const { palette } = useTheme();
   const { fragment, setFragmentFromScroll } = useFragment();
@@ -133,7 +135,8 @@ const GuideInPageMenu = ({
         sx={{
           maxHeight: `calc(100vh - ${headerOffset}px)`,
           overflowY: 'auto',
-          paddingY: '50px',
+          paddingTop: { xs: '50px', xl: showGuideFeedback ? '105px' : '50px' },
+          paddingBottom: '50px',
         }}
       >
         <Typography

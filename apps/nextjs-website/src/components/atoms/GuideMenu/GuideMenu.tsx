@@ -13,6 +13,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog,
+  Box,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -25,6 +26,8 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 import { browserEnv } from '@/browserConfig';
+import * as E from 'fp-ts/lib/Either';
+import GuideFeedbackLink from '../GuideFeedbackLink/GuideFeedbackLink';
 
 const { SITE_HEADER_HEIGHT, PRODUCT_HEADER_HEIGHT } = browserEnv.config;
 
@@ -32,6 +35,35 @@ type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
   hasProductHeader?: boolean;
+  showGuideFeedback?: boolean;
+  productName?: string;
+  productGuideSurveyUrl?: string;
+};
+
+const makeProductGuideSurveyUrl = (
+  {
+    showGuideFeedback,
+    productGuideSurveyUrl,
+    name,
+    productName,
+  }: GuideMenuProps,
+  currentPath: string
+): string | undefined => {
+  if (!showGuideFeedback || !productGuideSurveyUrl) return undefined;
+
+  const parsedUrl = E.tryCatch(() => new URL(productGuideSurveyUrl), E.toError);
+  if (E.isLeft(parsedUrl) || parsedUrl.right.protocol !== 'https:') {
+    return undefined;
+  }
+
+  const surveyUrl = parsedUrl.right;
+  surveyUrl.searchParams.set(
+    'url_pagina',
+    new URL(currentPath, browserEnv.config.baseUrl).toString()
+  );
+  surveyUrl.searchParams.set('nome_manuale', name);
+  surveyUrl.searchParams.set('nome_prodotto', productName ?? '');
+  return surveyUrl.toString();
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -115,6 +147,9 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     return () => clearTimeout(timer);
   }, [currentPath, scrollToActiveItem]);
 
+  const surveyHref = makeProductGuideSurveyUrl(menuProps, currentPath);
+  if (!menuProps.menu && !surveyHref) return null;
+
   const items = (
     <GuideMenuItems
       {...menuProps}
@@ -123,8 +158,30 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       containerRef={menuContainerRef}
     />
   );
+  const feedbackLink = surveyHref ? (
+    <Box
+      sx={{
+        position: {
+          xs: menuProps.menu ? 'absolute' : 'fixed',
+          lg: 'fixed',
+        },
+        top: menuProps.menu
+          ? { xs: '100%', lg: SITE_HEADER_HEIGHT + productHeaderHeight }
+          : topStyle,
+        right: 0,
+        zIndex: 51,
+        display: 'flex',
+        transition: 'top 0.5s linear',
+      }}
+    >
+      <GuideFeedbackLink
+        label={t('productGuidePage.leaveFeedback')}
+        href={surveyHref}
+      />
+    </Box>
+  ) : null;
 
-  return (
+  return menuProps.menu ? (
     <Fragment>
       <Stack
         ref={menuContainerRef}
@@ -134,7 +191,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           position: 'sticky',
           top: topStyle,
           height: { lg: height },
-          overflowY: 'auto',
+          overflowY: { xs: 'visible', lg: 'auto' },
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
@@ -178,6 +235,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           </Stack>
           {isDesktop && items}
         </Stack>
+        {feedbackLink}
       </Stack>
       {!isDesktop && (
         <Dialog open={open} onClose={handleClick} fullScreen>
@@ -216,6 +274,8 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         </Dialog>
       )}
     </Fragment>
+  ) : (
+    feedbackLink
   );
 };
 

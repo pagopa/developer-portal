@@ -26,6 +26,7 @@ import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './products';
 import { makeReleaseNote, makeSolution } from '../helpers/makeS3Docs.helpers';
 import { CustomMessagesMapRepository } from './customMessagesMap';
+import { QualtricsRepository } from './qualtrics';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -243,6 +244,10 @@ export async function getTags(locale: string) {
 
 export async function getUrlReplaceMap(locale: string) {
   return UrlReplaceMapRepository.get(locale);
+}
+
+export async function getProductGuideSurveyUrl(locale: string) {
+  return QualtricsRepository.getProductGuideSurveyUrl(locale);
 }
 
 export async function getReleaseNotes(locale: string) {

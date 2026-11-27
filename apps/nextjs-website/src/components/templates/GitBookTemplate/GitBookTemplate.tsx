@@ -28,6 +28,7 @@ export type GitBookTemplateProps = {
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
   hasProductHeader?: boolean;
+  showGuideFeedback?: boolean;
   initialBreadcrumbs: BreadcrumbSegment[];
   menu: string;
   menuDistanceFromTop?: number;
@@ -35,6 +36,7 @@ export type GitBookTemplateProps = {
   path: string;
   pathPrefix: string;
   versionName?: string;
+  productGuideSurveyUrl?: string;
 } & GitBookContentData;
 
 const GitBookTemplate = ({
@@ -51,8 +53,11 @@ const GitBookTemplate = ({
   hasHeader = true,
   hasInPageMenu = true,
   hasProductHeader = true,
+  showGuideFeedback = false,
+  productGuideSurveyUrl,
   versionName,
   guideTranslationDisclaimer,
+  product,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const locale = useParams<{ locale: string }>().locale;
@@ -196,21 +201,22 @@ const GitBookTemplate = ({
           maxWidth: '1900px',
         }}
       >
-        {menu && (
-          <GuideMenu
-            key='menu'
-            hasHeader={hasHeader}
-            menu={menu}
-            assetsPrefix={bodyConfig.assetsPrefix}
-            linkPrefix={pathPrefix}
-            name={menuName}
-            versionName={versionName}
-            versions={versions && [...versions]}
-            distanceFromTop={menuDistanceFromTop}
-            onGuideNavigate={updateContent}
-            hasProductHeader={hasProductHeader}
-          />
-        )}
+        <GuideMenu
+          key='menu'
+          hasHeader={hasHeader}
+          menu={menu}
+          assetsPrefix={bodyConfig.assetsPrefix}
+          linkPrefix={pathPrefix}
+          name={menuName}
+          productName={product?.name}
+          versionName={versionName}
+          versions={versions && [...versions]}
+          distanceFromTop={menuDistanceFromTop}
+          onGuideNavigate={updateContent}
+          hasProductHeader={hasProductHeader}
+          showGuideFeedback={showGuideFeedback}
+          productGuideSurveyUrl={productGuideSurveyUrl}
+        />
         <Stack
           sx={{
             marginTop: responsiveContentMarginTop,
@@ -260,6 +266,7 @@ const GitBookTemplate = ({
                 inPageMenu={content.body}
                 title={t('productGuidePage.onThisPage')}
                 hasProductHeader={hasProductHeader}
+                showGuideFeedback={showGuideFeedback}
               />
             </Box>
           </Box>
